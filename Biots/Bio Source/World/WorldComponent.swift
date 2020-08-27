@@ -114,7 +114,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			//let physicsWorldSpeed = coComponent(PhysicsWorldComponent.self)?.physicsWorld?.speed ?? 0
 
 			let cellStats = currentCellStats
-			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Environment.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | e: \(cellStats.avgEnergy.formattedToPercent) | d: \(cellStats.avgDamage.formattedToPercent) | h: \(cellStats.avgHealth.formattedToPercent) | m:\(cellStats.maleCount), f:\(cellStats.femaleCount), pf: \(cellStats.pregnantFemaleCount), spa: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
+			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Environment.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | e: \(cellStats.avgEnergy.formattedToPercent) | d: \(cellStats.avgDamage.formattedToPercent) | h: \(cellStats.avgHealth.formattedToPercent) | mate: \(cellStats.canMateCount) | preg: \(cellStats.pregnantCount), spawned: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
 
 			statsComponent.updateStats(statsText)
 			
@@ -173,16 +173,15 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		var avgEnergy: CGFloat
 		var avgDamage: CGFloat
 		var avgHealth: CGFloat
-
-		var maleCount: Int
-		var femaleCount: Int
-		var pregnantFemaleCount: Int
+		
+		var canMateCount: Int
+		var pregnantCount: Int
 		var spawnAverage: CGFloat
 		
 		var resourceStats: ResourceStats
 
 		static var zero: CellStats {
-			return CellStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgDamage: 0, avgHealth: 0, maleCount: 0, femaleCount: 0, pregnantFemaleCount: 0, spawnAverage: 0, resourceStats: .zero)
+			return CellStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgDamage: 0, avgHealth: 0, canMateCount: 0, pregnantCount: 0, spawnAverage: 0, resourceStats: .zero)
 		}
 	}
 	
@@ -201,14 +200,11 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let averageDamage = cells.count == 0 ? 0 : cells.reduce(0) { $0 + (1-$1.damage) } / cells.count.cgFloat
 		let averageHealth = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.health } / cells.count.cgFloat
 
-		let maleCount = cells.reduce(0) { $0 + ($1.genome.gender == .male ? 1 : 0) }
-		let femaleCount = cells.reduce(0) { $0 + ($1.genome.gender == .female ? 1 : 0) }
-		let pregnantFemaleCount = cells.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }
+		let canMateCount = cells.reduce(0) { $0 + ($1.canMate ? 1 : 0) }
+		let pregnantCount = cells.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }
+		let spawnAverage: CGFloat = CGFloat(cells.reduce(0) { $0 + $1.spawnCount }) / cells.count.cgFloat
 
-		let matureFemaleCount = cells.reduce(0) { $0 + ($1.genome.gender == .female && $1.age >= Constants.Cell.matureAge ? 1 : 0) }
-		let spawnAverage: CGFloat = matureFemaleCount == 0 ? 0 : CGFloat(cells.reduce(0) { $0 + $1.spawnCount }) / matureFemaleCount.cgFloat
-
-		return CellStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgDamage: averageDamage, avgHealth: averageHealth, maleCount: maleCount, femaleCount: femaleCount, pregnantFemaleCount: pregnantFemaleCount, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
+		return CellStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgDamage: averageDamage, avgHealth: averageHealth, canMateCount: canMateCount, pregnantCount: pregnantCount, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
 	}
 
 	var currentResourceStats: ResourceStats {

@@ -65,6 +65,7 @@
 		D48E2DE124F74F95009FB3D7 /* lab1.json in Resources */ = {isa = PBXBuildFile; fileRef = D48E2DE024F74F95009FB3D7 /* lab1.json */; };
 		D48E2DE224F750A6009FB3D7 /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473864B2442BA850022E760 /* BiotsTests.swift */; };
 		D48E2DE324F750A6009FB3D7 /* TrainingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FBA02454045400A0614F /* TrainingTests.swift */; };
+		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
 		D4C2FC222483981C0076077A /* EntityStatsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC212483981C0076077A /* EntityStatsComponent.swift */; };
@@ -153,6 +154,7 @@
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DDE24F74EFF009FB3D7 /* RunningInference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningInference.swift; sourceTree = "<group>"; };
 		D48E2DE024F74F95009FB3D7 /* lab1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab1.json; sourceTree = "<group>"; };
+		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceFountainComponent.swift; sourceTree = "<group>"; };
 		D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgaeComponent.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 				D47D71932447F5950079D2F1 /* RunningValue.swift */,
 				D42CE73924449A670049854C /* SpriteKitExtensions.swift */,
 				D41D1F94244ACF8100A876F4 /* StringExtensions.swift */,
+				D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 				D4E573AE244D515E006C2767 /* NoiseGenerator.swift in Sources */,
 				D44EE9B724439592006A2083 /* IntMath.swift in Sources */,
 				D4D18D8E2446B54200BF92FA /* BoundaryComponent.swift in Sources */,
+				D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */,
 				D4D18D9D2447ADBB00BF92FA /* StatsNode.swift in Sources */,
 				D47386D82442BEDB0022E760 /* ButtonStyles.swift in Sources */,
 				D44E60682452740400694462 /* ContactComponent.swift in Sources */,

@@ -44,7 +44,6 @@ final class BrainComponent: OKComponent {
 		let proximityToCenter = Float(1 - distanceToCenter)
 
 		senses.setSenses(
-			gender: cell.genome.gender.inputValue,
 			pregnant: cell.isPregnant ? 1 : 0,
 			canMate: cell.canMate ? 1 : 0,
 			health: Float(cell.health),
@@ -112,6 +111,13 @@ final class BrainComponent: OKComponent {
 		let forceExerted = inference.thrust.dx.unsigned + inference.thrust.dy.unsigned
 		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
 		
+		// healing
+		if cell.damage > 0 {
+			let damageRecovery = -Constants.Cell.perMovementRecovery * (1 - (forceExerted/2))
+			// print("cell.damage: \(cell.damage.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), damageRecovery: \(damageRecovery.formattedTo4Places)")
+			cell.incurDamageChange(damageRecovery)
+		}
+
 		node.fillColor = runningInference.averageColor
 	}
 }

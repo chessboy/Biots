@@ -68,7 +68,7 @@ final class VisionComponent: OKComponent {
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								if showTracer {
-									let color = detection.detectableObject.skColor.withAlpha(proximity)
+									let color = otherCellComponent.skColor.withAlpha(proximity)
 									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: color)
 								}
 							}

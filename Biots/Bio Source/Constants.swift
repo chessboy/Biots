@@ -79,7 +79,7 @@ struct Constants {
 
 		static let collisionDamage: CGFloat = 0.125
 		static let attackDamage: CGFloat = 0.3
-		static let perMovementRecovery: CGFloat = 0.001
+		static let perMovementRecovery: CGFloat = 0.0015
 
 		static let mateHealth: CGFloat = 0.75  // % of maximum health
 		static let spawnHealth: CGFloat = 0.65 // % of maximum health
@@ -87,12 +87,13 @@ struct Constants {
 		static let maximumEnergy: CGFloat = 150
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
 		static let perMovementEnergy: CGFloat = maximumEnergy * 0.0002
+		
 		static let attackEnergyCost = maximumEnergy * 0.2
 
-		static let oldAge: CGFloat = Environment.randomRun ? 2000 : 3500
-		static let matureAge: CGFloat = oldAge * 0.2// % of old age
-		static let gestationAge: CGFloat = oldAge * 0.1// % of old age
-		static let interactionAge: CGFloat = oldAge * 0.1// % of old age
+		static let oldAge: CGFloat = Environment.randomRun ? 2000 : 3200
+		static let matureAge: CGFloat = oldAge * 0.2 // % of old age
+		static let gestationAge: CGFloat = oldAge * 0.1 // % of old age
+		static let interactionAge: CGFloat = oldAge * 0.1 // % of old age
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 15

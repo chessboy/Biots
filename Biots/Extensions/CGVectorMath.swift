@@ -98,6 +98,10 @@ public extension CGVector {
 	var angle: CGFloat {
 		return atan2(dy, dx)
 	}
+	
+	var description: String {
+		return "(\(dx.formattedTo2Places), \(dy.formattedTo2Places))"
+	}
 }
 
 /**

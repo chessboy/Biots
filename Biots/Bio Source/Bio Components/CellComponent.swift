@@ -104,23 +104,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			contactEffect(impact: delta)
 		}
 	}
-	
-	var bodyColor: SKColor {
 		
-		if isPregnant {
-			if genome.id == matingGenome?.id {
-				return .white
-			}
-			return genome.gender == .male ? Constants.Colors.malePregnantCell : Constants.Colors.femalePregnantCell
-		}
-		
-		if canMate {
-			return genome.gender == .male ? Constants.Colors.maleMatingCell : Constants.Colors.femaleMatingCell
-		}
-		
-		return genome.gender.skColor
-	}
-	
 	func kill() {
 		energy = 0
 		damage = 1
@@ -208,7 +192,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		updateHealthNode()
 
 		if Constants.Environment.selfReplication, frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.oldAge * 0.33, spawnCount < 3 {
+			if !isPregnant, canMate, spawnCount < 3, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.oldAge * 0.5 {
 				mated(otherGenome: genome)
 			}
 		}
@@ -293,11 +277,11 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					var thrustDescr = ""
 					
 					if let lastInference = coComponent(BrainComponent.self)?.runningInference.last {
-						thrustDescr = "\(lastInference.thrust.dx.formattedTo2Places), \(lastInference.thrust.dy.formattedTo2Places)"
+						thrustDescr = lastInference.thrust.description
 					}
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), d: \(damageFormatted)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.oldAge).formattedToPercentNoDecimal)", for: .line2)
-					statsNode.setLineOfText("\(genome.gender == .female ? "spawned: \(spawnCount)" : "mated: \(matedCount)"), thrust: \(thrustDescr)", for: .line3)
+					statsNode.setLineOfText("spawned: \(spawnCount), mated: \(matedCount), thrust: \(thrustDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
@@ -332,8 +316,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		for (parentGenome, angle) in spawn {
 			
 			let position = node.position - CGPoint(angle: node.zRotation + angle) * Constants.Cell.radius * 2
-			var clonedGenome = Genome(parent: parentGenome)
-			clonedGenome.gender = Gender.allCases.randomElement() ?? .female
+			let clonedGenome = Genome(parent: parentGenome)
 			let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialEnergy: Constants.Cell.initialEnergy, fountainComponent: RelayComponent(for: coComponent(ResourceFountainComponent.self)))
 			childCell.node?.zRotation = node.zRotation + angle + π
 			

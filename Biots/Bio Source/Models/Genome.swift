@@ -10,26 +10,6 @@ import Foundation
 import OctopusKit
 import SpriteKit
 
-enum Gender: Int, CaseIterable, Codable, CustomStringConvertible {
-	case female = 0
-	case male
-	
-	var description: String {
-		return self == .male ? "male" : "female"
-	}
-	
-	var inputValue: Float {
-		return self == .male ? 1 : 0
-	}
-	
-	var skColor: SKColor {
-		switch self {
-		case .male: return Constants.Colors.maleCell
-		case .female: return Constants.Colors.femaleCell
-		}
-	}
-}
-
 struct Genome: CustomStringConvertible, Codable {
 	
 	static let minMutationIterations = 250
@@ -37,7 +17,6 @@ struct Genome: CustomStringConvertible, Codable {
 
 	var id: String
 	var generation: Int
-	var gender: Gender
 
 	// neural net
 	var inputCount: Int
@@ -50,7 +29,6 @@ struct Genome: CustomStringConvertible, Codable {
 	init(inputCount: Int, hiddenCount: Int, outputCount: Int) {
 		self.id = UUID().uuidString
 		self.generation = 0
-		self.gender = Gender.allCases.randomElement() ?? .female
 
 		self.inputCount = inputCount
 		self.hiddenCount = hiddenCount
@@ -71,7 +49,6 @@ struct Genome: CustomStringConvertible, Codable {
 	init(parent: Genome) {
 		self.generation = parent.generation + (Constants.Environment.mutationsOff ? 0 : 1)
 		self.id = UUID().uuidString
-		self.gender = Gender.allCases.randomElement() ?? .female
 
 		self.inputCount = parent.inputCount
 		self.hiddenCount = parent.hiddenCount
@@ -89,7 +66,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), gen: \(generation), gender: \(gender), inputCount: \(inputCount), hiddenCount: \(hiddenCount), outputCount: \(outputCount)}"
+		return "{id: \(idFormatted), gen: \(generation), inputCount: \(inputCount), hiddenCount: \(hiddenCount), outputCount: \(outputCount)}"
 	}
 
 	var jsonString: String {
@@ -98,7 +75,6 @@ struct Genome: CustomStringConvertible, Codable {
 		{
 			"id": "\(id)",
 			"generation": \(generation),
-			"gender": \(gender),
 			"inputCount": \(inputCount),
 			"hiddenCount": \(hiddenCount),
 			"outputCount": \(outputCount),
