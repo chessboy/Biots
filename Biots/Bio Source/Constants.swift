@@ -1,0 +1,142 @@
+//
+//  Constants.swift
+//  BioGenesis
+//
+//  Created by Robert Silverman on 4/12/20.
+//  Copyright © 2020 Rob Silverman. All rights reserved.
+//
+
+import SpriteKit
+import GameplayKit
+import OctopusKit
+
+struct Constants {
+		
+	struct Environment {
+		static let showSpriteKitStats = true
+		
+		static let randomRun = true
+		static let addWalls = true
+		static let mutationsOff = false
+		static let selfReplication = true
+		static let noAttacks = true
+		static let generationTrainingThreshold = 15000
+		static let filename = "lab1.json"
+
+		static let worldRadius: CGFloat = 4000
+		static let minimumCells = 20
+		static let maximumCells = 36
+		static let startupDelay = randomRun ? 20 : 200
+		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
+	}
+	
+	static let noBitMask: UInt32 = 	0
+
+	// should be exp of 2
+	struct CategoryBitMasks {
+		static let wall: UInt32 = 1
+		static let cell: UInt32 = 2
+		static let algae: UInt32 = 4
+	}
+	
+	// when to "bounce" off another
+	struct CollisionBitMasks {
+		static let wall = CategoryBitMasks.wall
+		static let cell = CategoryBitMasks.wall | CategoryBitMasks.cell
+		static let algae = CategoryBitMasks.wall | CategoryBitMasks.algae
+	}
+	
+	// when to be notified of contact
+	struct ContactBitMasks {
+		static let cell = CategoryBitMasks.cell | CategoryBitMasks.wall | CategoryBitMasks.algae
+	}
+	
+	// used in detecting neighboring bodies
+	struct DetectionBitMasks {
+		static let cell = CategoryBitMasks.cell | CategoryBitMasks.algae | CategoryBitMasks.wall
+	}
+	
+	struct Colors {
+		static let wall = SKColor(white: 0.2, alpha: 1)
+		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
+		static let background = SKColor(red: 17/255, green: 18/255, blue: 20/255, alpha: 1)
+		static let cell = SKColor(red: 0.63, green: 0.8, blue: 1, alpha: 0.5)
+		
+		static let maleCell = SKColor(red: 0.5, green: 0.5, blue: 0.8, alpha: 1)
+		static let maleMatingCell = SKColor(red: 0.7, green: 0.7, blue: 1, alpha: 1)
+		static let malePregnantCell = SKColor(red: 0.8, green: 0.8, blue: 1, alpha: 1)
+
+		static let femaleCell = SKColor(red: 0.8, green: 0.55, blue: 0.55, alpha: 1)
+		static let femaleMatingCell = SKColor(red: 1, green: 0.75, blue: 0.75, alpha: 1)
+		static let femalePregnantCell = SKColor(red: 1, green: 0.85, blue: 0.85, alpha: 1)
+	}
+
+	struct Cell {
+							
+		static let radius: CGFloat = 40
+		static let stateDetectionProximity: CGFloat = 0.4 // 0..1
+		static let clockRate = 60 // Hz
+
+		static let collisionDamage: CGFloat = 0.125
+		static let attackDamage: CGFloat = 0.3
+		static let perMovementRecovery: CGFloat = 0.001
+
+		static let mateHealth: CGFloat = 0.75  // % of maximum health
+		static let spawnHealth: CGFloat = 0.65 // % of maximum health
+
+		static let maximumEnergy: CGFloat = 150
+		static let initialEnergy: CGFloat = maximumEnergy * 0.5
+		static let perMovementEnergy: CGFloat = maximumEnergy * 0.0002
+		static let attackEnergyCost = maximumEnergy * 0.2
+
+		static let oldAge: CGFloat = Environment.randomRun ? 2000 : 3500
+		static let matureAge: CGFloat = oldAge * 0.2// % of old age
+		static let gestationAge: CGFloat = oldAge * 0.1// % of old age
+		static let interactionAge: CGFloat = oldAge * 0.1// % of old age
+
+		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
+		static let thrustForce: CGFloat = 15
+
+		static let showSpeed = true
+		static let matingOutputThreshold: Float = 0.55
+	}
+	
+	struct Algae {
+		static let radius: CGFloat = 16
+		static let bite: CGFloat = 40
+	}
+		
+	struct EyeVector {
+		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
+		static let eyeAngleZeroDegreesIndex = 2
+		static let refinerAngles = [0, -π/12, π/12]
+		static let rayDistance: CGFloat = Environment.worldRadius * 0.28
+	}
+	
+	enum StatsLine: Int { case line1, line2, line3 }
+
+	struct Stats {
+		static let maxLinesOfText = 3
+		static let delimiter = "   "
+	}
+	
+	struct Camera {
+		static let initialScale: CGFloat = 3
+		static let zoomMin: CGFloat = 0.1
+		static let zoomMax: CGFloat = 0.005 * Constants.Environment.worldRadius
+		static let scaleFactor: CGFloat = 1.25
+		static let panBoost: CGFloat = 100
+		static let animationDuration: TimeInterval = 0.25
+	}
+	
+	struct ZeeOrder {
+		static let wall: CGFloat = 0
+		static let algae: CGFloat = 1
+		static let cell: CGFloat = 2
+		static let stats: CGFloat = 100
+	}
+}
+
+extension OctopusKit {
+	public static var logForSim = OKLog(title: "🐠")
+}
