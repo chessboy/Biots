@@ -24,7 +24,6 @@
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
 		D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D473863C2442BA850022E760 /* Preview Assets.xcassets */; };
 		D47386402442BA850022E760 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D473863E2442BA850022E760 /* Main.storyboard */; };
-		D473864C2442BA850022E760 /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473864B2442BA850022E760 /* BiotsTests.swift */; };
 		D473868D2442BD6C0022E760 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386862442BD6C0022E760 /* Storage.swift */; };
 		D473868E2442BD6C0022E760 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386872442BD6C0022E760 /* Error.swift */; };
 		D473868F2442BD6C0022E760 /* Activation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386882442BD6C0022E760 /* Activation.swift */; };
@@ -64,6 +63,8 @@
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DDF24F74F00009FB3D7 /* RunningInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDE24F74EFF009FB3D7 /* RunningInference.swift */; };
 		D48E2DE124F74F95009FB3D7 /* lab1.json in Resources */ = {isa = PBXBuildFile; fileRef = D48E2DE024F74F95009FB3D7 /* lab1.json */; };
+		D48E2DE224F750A6009FB3D7 /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473864B2442BA850022E760 /* BiotsTests.swift */; };
+		D48E2DE324F750A6009FB3D7 /* TrainingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FBA02454045400A0614F /* TrainingTests.swift */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
 		D4C2FC222483981C0076077A /* EntityStatsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC212483981C0076077A /* EntityStatsComponent.swift */; };
@@ -72,7 +73,6 @@
 		D4C6FB9924529DAE00A0614F /* Inference.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FB9824529DAE00A0614F /* Inference.swift */; };
 		D4C6FB9C2452A6E800A0614F /* DetectableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FB9A2452A55600A0614F /* DetectableObject.swift */; };
 		D4C6FB9F2453A84C00A0614F /* Senses.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FB9E2453A84C00A0614F /* Senses.swift */; };
-		D4C6FBA12454045400A0614F /* TrainingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FBA02454045400A0614F /* TrainingTests.swift */; };
 		D4D18D8E2446B54200BF92FA /* BoundaryComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D8D2446B54200BF92FA /* BoundaryComponent.swift */; };
 		D4D18D96244737FD00BF92FA /* BrainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D95244737FD00BF92FA /* BrainComponent.swift */; };
 		D4D18D992447A37000BF92FA /* Genome.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D982447A37000BF92FA /* Genome.swift */; };
@@ -663,8 +663,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D473864C2442BA850022E760 /* BiotsTests.swift in Sources */,
-				D4C6FBA12454045400A0614F /* TrainingTests.swift in Sources */,
+				D48E2DE224F750A6009FB3D7 /* BiotsTests.swift in Sources */,
+				D48E2DE324F750A6009FB3D7 /* TrainingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -869,7 +869,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.applepi.SimStarter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimStarter.app/Contents/MacOS/SimStarter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Biots.app/Contents/MacOS/Biots";
 			};
 			name = Debug;
 		};
@@ -891,7 +891,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.applepi.SimStarter;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimStarter.app/Contents/MacOS/SimStarter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Biots.app/Contents/MacOS/Biots";
 			};
 			name = Release;
 		};

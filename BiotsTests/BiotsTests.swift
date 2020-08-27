@@ -1,6 +1,6 @@
 //
-//  SimStarterTests.swift
-//  SimStarterTests
+//  BiotsTests.swift
+//  BiotsTests
 //
 //  Created by Robert Silverman on 4/11/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.

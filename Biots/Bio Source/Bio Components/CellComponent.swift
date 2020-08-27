@@ -81,7 +81,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	override func didAddToEntity() {
 		if let node = entityNode as? SKShapeNode {
-			node.fillColor = genome.gender.skColor
+			//node.fillColor = genome.gender.skColor
 			node.setScale(0.2)
 			node.run(SKAction.scale(to: 1, duration: 10))
 		}
@@ -193,9 +193,9 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		checkAlgaeContacts()
 		
-		if frame.isMultiple(of: 4), let bodyNode = entityNode as? SKShapeNode {
-			bodyNode.fillColor = bodyColor
-		}
+//		if frame.isMultiple(of: 4), let bodyNode = entityNode as? SKShapeNode {
+//			bodyNode.fillColor = bodyColor
+//		}
 		
 		showStats()
 		
@@ -208,7 +208,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		updateHealthNode()
 
 		if Constants.Environment.selfReplication, frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.oldAge * 0.6, spawnCount < 3 {
+			if !isPregnant, canMate, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.oldAge * 0.33, spawnCount < 3 {
 				mated(otherGenome: genome)
 			}
 		}

@@ -1,6 +1,6 @@
 //
 //  Inference.swift
-//  SimStarter
+//  Biots
 //
 //  Created by Robert Silverman on 4/24/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -35,7 +35,11 @@ struct Inference {
 		}
 		
 		thrust = CGVector(dx: outputs[0].cgFloat, dy: outputs[1].cgFloat)
-		color = ColorVector(red: outputs[2].cgFloat, green: outputs[3].cgFloat, blue: outputs[4].cgFloat)
+		let red = (outputs[2].cgFloat + 1)/2
+		let green = (outputs[3].cgFloat + 1)/2
+		let blue = (outputs[4].cgFloat + 1)/2
+		
+		color = ColorVector(red: red, green: green, blue: blue)
 	}
 	
 	func indexOfMax(of outputs: [Float]) -> Int {

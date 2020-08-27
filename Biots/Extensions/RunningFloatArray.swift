@@ -1,6 +1,6 @@
 //
 //  RunningFloatArray.swift
-//  SimStarter
+//  Biots
 //
 //  Created by Robert Silverman on 8/19/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.

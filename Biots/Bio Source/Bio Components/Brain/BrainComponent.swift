@@ -112,6 +112,6 @@ final class BrainComponent: OKComponent {
 		let forceExerted = inference.thrust.dx.unsigned + inference.thrust.dy.unsigned
 		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
 		
-		//node.fillColor = runningInference.averageColor
+		node.fillColor = runningInference.averageColor
 	}
 }
