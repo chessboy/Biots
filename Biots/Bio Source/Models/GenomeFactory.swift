@@ -27,10 +27,7 @@ class GenomeFactory {
 	}
 	
 	var newRandomGenome: Genome {
-		let detectableCategories = Detection.detectableCategories
-		let eyeCount = Constants.EyeVector.eyeAngles.count
-		let additionalInputs = Senses.senseInputCount
-		let inputCount = detectableCategories * eyeCount + additionalInputs
+		let inputCount = Constants.EyeVector.eyeAngles.count * Constants.EyeVector.colorDepth + Senses.senseInputCount
 		let outputCount = Inference.outputCount
 		let hiddenCount = 16
 

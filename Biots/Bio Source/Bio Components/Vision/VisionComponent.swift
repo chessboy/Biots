@@ -10,6 +10,17 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
+struct AngleVision {
+	
+	var angle: CGFloat = 0
+	var colorVector: ColorVector = .zero
+	
+	init(angle: CGFloat, colorVector: ColorVector) {
+		self.angle = angle
+		self.colorVector = colorVector
+	}
+}
+
 final class VisionComponent: OKComponent {
 
 	override var requiredComponents: [GKComponent.Type]? {[
@@ -17,11 +28,12 @@ final class VisionComponent: OKComponent {
 		GlobalDataComponent.self
 	]}
 
-	func detect() -> [Detection] {
+	func detect() -> [AngleVision] {
+		
+		// 0 (nothing visible) ... 1 (object touching)
+		var angleVisions: [AngleVision] = []
 
 		let showTracer = coComponent(GlobalDataComponent.self)?.showTracer ?? false
-
-		var detections: [Detection] = []
 
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
 			let node = entityNode,
@@ -30,55 +42,57 @@ final class VisionComponent: OKComponent {
 			return []
 		}
 
-		var angleIndex = 0
 		let maxObjectsPerAngle = 2
-
+		
 		for angle in Constants.EyeVector.eyeAngles {
 
+			var redTotal: CGFloat = 0
+			var greenTotal: CGFloat = 0
+			var blueTotal: CGFloat = 0
+			var pings: CGFloat = 0
 			var bodiesSeenAtAngle: [SKPhysicsBody] = []
+			
 			for offset in Constants.EyeVector.refinerAngles {
 
+				let angleOffset = angle + offset
 				let rayDistance = Constants.EyeVector.rayDistance
-				let rayStart = node.position + CGPoint(angle: node.zRotation + angle + offset) * Constants.Cell.radius * 0.95
-				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angle + offset) * rayDistance
+				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
+				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 
 				var blockerSeenAtSubAngle = false
 				physicsWorld.enumerateBodies(alongRayStart: rayStart, end: rayEnd) { (body, hitPoint, normal, stop) in
 					if body != physicsBody, body.categoryBitMask & Constants.DetectionBitMasks.cell > 0 {
+						
 						let distance = rayStart.distance(to: hitPoint)
 						let proximity = 1 - distance/rayDistance
-
+						var color: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
+						
 						if !blockerSeenAtSubAngle, !bodiesSeenAtAngle.contains(body), let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
 
+							// wall
 							if let _ = object.component(ofType: BoundaryComponent.self) {
-								let detection = Detection(angleIndex: angleIndex, detectableObject: DetectableObject.wall, proximity: proximity)
-								detections.append(detection)
+								color = Constants.VisionColors.wall
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								if showTracer {
-									let color = detection.detectableObject.skColor.withAlpha(proximity)
-									self.showTracer(angle: node.zRotation + angle + offset, rayStart: rayStart, distance: distance, color: color)
+									self.showTracer(angle: node.zRotation + angleOffset, rayStart: rayStart, distance: distance, color: Constants.Colors.wall.withAlpha(proximity))
 								}
 							}
 							else if !blockerSeenAtSubAngle, let otherCellComponent = object.component(ofType: CellComponent.self) {
-								let id = angleIndex == Constants.EyeVector.eyeAngleZeroDegreesIndex ? otherCellComponent.genome.id : ""
-								let detection = Detection(id: id, angleIndex: angleIndex, detectableObject: DetectableObject.cell, proximity: proximity)
-								detections.append(detection)
-
+								// cell
+								color = otherCellComponent.skColor.withAlpha(proximity)
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								if showTracer {
-									let color = otherCellComponent.skColor.withAlpha(proximity)
-									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: color)
+									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: color.withAlpha(proximity))
 								}
 							}
 							else if !blockerSeenAtSubAngle, let algae = object.component(ofType: AlgaeComponent.self) {
-								let detection = Detection(angleIndex: angleIndex, detectableObject: DetectableObject.algae, proximity: proximity)
-								detections.append(detection)
+								// algae
+								color = Constants.VisionColors.algae
 								bodiesSeenAtAngle.append(body)
 								if showTracer {
-									let color = detection.detectableObject.skColor.withAlpha(proximity)
-									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: color)
+									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.Colors.algae.withAlpha(proximity))
 								}
 							}
 							else {
@@ -86,29 +100,26 @@ final class VisionComponent: OKComponent {
 							}
 						}
 						
+						redTotal += color.redComponent * proximity
+						greenTotal += color.greenComponent * proximity
+						blueTotal += color.blueComponent * proximity
+						pings += 1
+
 						if bodiesSeenAtAngle.count == maxObjectsPerAngle || blockerSeenAtSubAngle {
 							stop[0] = true
 						}
 					}
 				}
 			}
-			angleIndex += 1
-		}
-
-		// prune detections
-		var prunedDetections: [Detection] = []
-		for angleIndex in 0..<Constants.EyeVector.eyeAngles.count {
-			for detectableObject in DetectableObject.allCases {
-				if let closestOfTypeAtAngle = detections.filter({$0.angleIndex == angleIndex && $0.detectableObject == detectableObject}).sorted(by: { (detection1, detection2) -> Bool in
-					detection1.proximity > detection2.proximity
-				}).first {
-					prunedDetections.append(closestOfTypeAtAngle)
-				}
+			
+			if pings > 0 {
+				let colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
+				let angleVision = AngleVision(angle: angle, colorVector: colorVector)
+				angleVisions.append(angleVision)
 			}
 		}
-
-		// if prunedDetections.count > 0 { print(detections) }
-		return prunedDetections
+		
+		return angleVisions
 	}
 
 	func showTracer(angle: CGFloat, rayStart: CGPoint, distance: CGFloat, color: SKColor) {

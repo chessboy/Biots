@@ -15,11 +15,10 @@ struct Constants {
 	struct Environment {
 		static let showSpriteKitStats = true
 		
-		static let randomRun = true
+		static let randomRun = false
 		static let addWalls = true
 		static let mutationsOff = false
 		static let selfReplication = true
-		static let noAttacks = true
 		static let generationTrainingThreshold = Int.max
 		static let filename = "lab1.json"
 
@@ -57,7 +56,7 @@ struct Constants {
 	}
 	
 	struct Colors {
-		static let wall = SKColor(white: 0.2, alpha: 1)
+		static let wall =  SKColor(red: 0.6, green: 0.1875, blue: 0.1875, alpha: 1)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
 		static let background = SKColor(red: 17/255, green: 18/255, blue: 20/255, alpha: 1)
 		static let cell = SKColor(red: 0.63, green: 0.8, blue: 1, alpha: 0.5)
@@ -69,6 +68,11 @@ struct Constants {
 		static let femaleCell = SKColor(red: 0.8, green: 0.55, blue: 0.55, alpha: 1)
 		static let femaleMatingCell = SKColor(red: 1, green: 0.75, blue: 0.75, alpha: 1)
 		static let femalePregnantCell = SKColor(red: 1, green: 0.85, blue: 0.85, alpha: 1)
+	}
+	
+	struct VisionColors {
+		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
+		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 	}
 
 	struct Cell {
@@ -109,8 +113,8 @@ struct Constants {
 		
 	struct EyeVector {
 		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
-		static let eyeAngleZeroDegreesIndex = 2
 		static let refinerAngles = [0, -π/12, π/12]
+		static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Environment.worldRadius * 0.28
 	}
 	

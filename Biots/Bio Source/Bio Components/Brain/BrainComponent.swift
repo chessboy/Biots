@@ -33,9 +33,10 @@ final class BrainComponent: OKComponent {
 		
 		guard
 			let cell = coComponent(CellComponent.self),
-			let detections = coComponent(VisionComponent.self)?.detect(),
-			let neuralNetComponent = coComponent(NeuralNetComponent.self) else { return }
-
+			let neuralNetComponent = coComponent(NeuralNetComponent.self),
+			let angleVisions = coComponent(VisionComponent.self)?.detect()
+			else { return }
+		
 		let position = cell.entityNode?.position ?? .zero
 		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
 		let distanceToCenter = position.distance(to: .zero)/Constants.Environment.worldRadius
@@ -43,23 +44,12 @@ final class BrainComponent: OKComponent {
 		let angleToCenter = (theta + angle + π).normalizedAngle
 		let proximityToCenter = Float(1 - distanceToCenter)
 
-//		let lastThrustLeft = runningInference.last?.outputs[0] ?? 0
-//		let lastThrustRight = runningInference.last?.outputs[1] ?? 0
-//		let lastColorRed = runningInference.last?.outputs[2] ?? 0
-//		let lastColorGreen = runningInference.last?.outputs[3] ?? 0
-//		let lastColorBlue = runningInference.last?.outputs[4] ?? 0
-
 		senses.setSenses(
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			damage: Float(1-cell.damage),
 			canMate: cell.canMate ? 1 : 0,
 			pregnant: cell.isPregnant ? 1 : 0,
-//			lastThrustLeft: lastThrustLeft,
-//			lastThrustRight: lastThrustRight,
-//			lastColorRed: lastColorRed,
-//			lastColorGreen: lastColorGreen,
-//			lastColorBlue: lastColorBlue,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			proximityToCenter: proximityToCenter,
 			angleToCenter: Float(angleToCenter/(2*π)),
@@ -72,15 +62,27 @@ final class BrainComponent: OKComponent {
 //			print(senses)
 //		}
 
-		//let inputs = Detection.detectionsToInputs(detections, senses: senses, training: cell.genome.generation <= Constants.Environment.generationTrainingThreshold)
-		let inputs = Detection.detectionsToInputs(detections, senses: senses)
+		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.eyeAngles.count * Constants.EyeVector.colorDepth)
+		
+//		case cell = 0
+//		case algae
+//		case wall
 
-//		if cell.genome.id == "2528C8FB-722D-4C9D-9733-FF2B9F4FEBAF-0" {
-//			print(inputs.map({$0.formattedTo2Places}))
-//		}
-
+		
+		var angleIndex = 0
+		for angle in Constants.EyeVector.eyeAngles {
+			if let angleVision = angleVisions.filter({ $0.angle == angle }).first {
+				inputs[angleIndex * Constants.EyeVector.colorDepth] = angleVision.colorVector.red.float
+				inputs[angleIndex * Constants.EyeVector.colorDepth + 1] = angleVision.colorVector.green.float
+				inputs[angleIndex * Constants.EyeVector.colorDepth + 2] = angleVision.colorVector.blue.float
+			}
+			angleIndex += 1
+		}
+		
+		inputs += senses.toArray
+		
 		let outputs = neuralNetComponent.infer(inputs)
-		let inference = Inference(detections: detections, outputs: outputs)
+		let inference = Inference(outputs: outputs)
 		runningInference.addValue(inference)
 		action(inference: inference)
 	}

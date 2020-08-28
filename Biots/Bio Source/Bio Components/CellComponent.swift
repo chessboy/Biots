@@ -248,7 +248,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 
 		if showHealth {
 			let intenstity = health
-			healthNode.fillColor = NSColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
+			healthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
 		}
 	}
 	

@@ -11,7 +11,6 @@ import OctopusKit
 import SpriteKit
 
 struct Inference {
-	var detections: [Detection]
 	var outputs: [Float]
 	var thrust: CGVector = .zero
 	var color: ColorVector = .zero
@@ -22,12 +21,11 @@ struct Inference {
 	
 	static var zero: Inference {
 		let outputs = Array(repeating: Float.zero, count: outputCount)
-		return Inference(detections: [], outputs: outputs)
+		return Inference(outputs: outputs)
 	}
 		
-	init(detections: [Detection], outputs: [Float]) {
+	init(outputs: [Float]) {
 		
-		self.detections = detections
 		self.outputs = outputs
 
 		let count = Inference.outputCount

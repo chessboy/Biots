@@ -20,7 +20,7 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func setPaused(_ paused: Bool) {
-		maskNode.fillColor = paused ? NSColor(red: 0.5, green: 0, blue: 0, alpha: 0.5) : NSColor(white: 0, alpha: 0.75)
+		maskNode.fillColor = paused ? SKColor(red: 0.5, green: 0, blue: 0, alpha: 0.5) : SKColor(white: 0, alpha: 0.75)
 	}
 	
     override var requiredComponents: [GKComponent.Type]? {
@@ -31,7 +31,7 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		let rect = CGRect(x: -750, y: 0, width: 1500, height: 36)
 		maskNode = SKShapeNode(rect: rect, cornerRadius: 18)
 		maskNode.lineWidth = 0
-		maskNode.fillColor = NSColor(white: 0, alpha: 0.75)
+		maskNode.fillColor = SKColor(white: 0, alpha: 0.75)
 		maskNode.position = CGPoint(x: 0, y: -560)
 		maskNode.zPosition = Constants.ZeeOrder.stats
 
