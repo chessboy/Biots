@@ -12,11 +12,16 @@ import OctopusKit
 struct Senses {
 	static let senseInputCount = 11
 	
-	var pregnant: Float = .zero
-	var canMate: Float = .zero
 	var health: Float = .zero
 	var energy: Float = .zero
 	var damage: Float = .zero
+	var canMate: Float = .zero
+	var pregnant: Float = .zero
+//	var lastThrustLeft: Float = .zero
+//	var lastThrustRight: Float = .zero
+//	var lastColorRed: Float = .zero
+//	var lastColorGreen: Float = .zero
+//	var lastColorBlue: Float = .zero
 	var onTopOfFood: Float = .zero
 	var proximityToCenter: Float = .zero
 	var angleToCenter: Float = .zero
@@ -25,11 +30,16 @@ struct Senses {
 	var age: Float = .zero
 
 	mutating func setSenses(
-		pregnant: Float,
-		canMate: Float,
 		health: Float,
 		energy: Float,
 		damage: Float,
+		canMate: Float,
+		pregnant: Float,
+//		lastThrustLeft: Float,
+//		lastThrustRight: Float,
+//		lastColorRed: Float,
+//		lastColorGreen: Float,
+//		lastColorBlue: Float,
 		onTopOfFood: Float,
 		proximityToCenter: Float,
 		angleToCenter: Float,
@@ -38,11 +48,16 @@ struct Senses {
 		age: Float
 		) {
 		
-		self.pregnant = pregnant
-		self.canMate = canMate
 		self.health = health
 		self.energy = energy
 		self.damage = damage
+		self.canMate = canMate
+		self.pregnant = pregnant
+//		self.lastThrustLeft = lastThrustLeft
+//		self.lastThrustRight = lastThrustRight
+//		self.lastColorRed = lastColorRed
+//		self.lastColorGreen = lastColorGreen
+//		self.lastColorBlue = lastColorBlue
 		self.onTopOfFood = onTopOfFood
 		self.proximityToCenter = proximityToCenter
 		self.angleToCenter = angleToCenter
@@ -54,13 +69,18 @@ struct Senses {
 	var toArray: [Float] {
 				
 		return [
-			pregnant,
-			canMate,
 			health,
-			proximityToCenter,
-			angleToCenter,
 			energy,
 			damage,
+			canMate,
+			pregnant,
+//			lastThrustLeft,
+//			lastThrustRight,
+//			lastColorRed,
+//			lastColorGreen,
+//			lastColorBlue,
+			proximityToCenter,
+			angleToCenter,
 			onTopOfFood,
 			clockShort,
 			clockLong,

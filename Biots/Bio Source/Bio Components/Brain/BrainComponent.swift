@@ -43,12 +43,23 @@ final class BrainComponent: OKComponent {
 		let angleToCenter = (theta + angle + π).normalizedAngle
 		let proximityToCenter = Float(1 - distanceToCenter)
 
+//		let lastThrustLeft = runningInference.last?.outputs[0] ?? 0
+//		let lastThrustRight = runningInference.last?.outputs[1] ?? 0
+//		let lastColorRed = runningInference.last?.outputs[2] ?? 0
+//		let lastColorGreen = runningInference.last?.outputs[3] ?? 0
+//		let lastColorBlue = runningInference.last?.outputs[4] ?? 0
+
 		senses.setSenses(
-			pregnant: cell.isPregnant ? 1 : 0,
-			canMate: cell.canMate ? 1 : 0,
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			damage: Float(1-cell.damage),
+			canMate: cell.canMate ? 1 : 0,
+			pregnant: cell.isPregnant ? 1 : 0,
+//			lastThrustLeft: lastThrustLeft,
+//			lastThrustRight: lastThrustRight,
+//			lastColorRed: lastColorRed,
+//			lastColorGreen: lastColorGreen,
+//			lastColorBlue: lastColorBlue,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			proximityToCenter: proximityToCenter,
 			angleToCenter: Float(angleToCenter/(2*π)),
@@ -84,6 +95,7 @@ final class BrainComponent: OKComponent {
 		
 		let position = node.position
 		let zRotation = node.zRotation
+		
 		let left = inference.thrust.dx * Constants.Cell.thrustForce
 		let right = inference.thrust.dy * Constants.Cell.thrustForce
 

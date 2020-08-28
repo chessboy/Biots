@@ -12,6 +12,7 @@ import SpriteKit
 
 struct Inference {
 	var detections: [Detection]
+	var outputs: [Float]
 	var thrust: CGVector = .zero
 	var color: ColorVector = .zero
 
@@ -27,6 +28,7 @@ struct Inference {
 	init(detections: [Detection], outputs: [Float]) {
 		
 		self.detections = detections
+		self.outputs = outputs
 
 		let count = Inference.outputCount
 		guard outputs.count == count else {

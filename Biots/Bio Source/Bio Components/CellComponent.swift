@@ -281,7 +281,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					}
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), d: \(damageFormatted)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.oldAge).formattedToPercentNoDecimal)", for: .line2)
-					statsNode.setLineOfText("spawned: \(spawnCount), mated: \(matedCount), thrust: \(thrustDescr)", for: .line3)
+					statsNode.setLineOfText("spw: \(spawnCount), mat: \(matedCount) | thr: \(thrustDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}

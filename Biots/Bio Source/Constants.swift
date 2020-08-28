@@ -20,10 +20,10 @@ struct Constants {
 		static let mutationsOff = false
 		static let selfReplication = true
 		static let noAttacks = true
-		static let generationTrainingThreshold = 15000
+		static let generationTrainingThreshold = Int.max
 		static let filename = "lab1.json"
 
-		static let worldRadius: CGFloat = 3000
+		static let worldRadius: CGFloat = 3200
 		static let minimumCells = 20
 		static let maximumCells = 36
 		static let startupDelay = randomRun ? 20 : 200

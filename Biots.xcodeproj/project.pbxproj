@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D4040D0C24F8BC6400A2C500 /* lab2.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D0B24F8BC6400A2C500 /* lab2.json */; };
 		D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */; };
 		D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */; };
 		D41D1F95244ACF8100A876F4 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D1F94244ACF8100A876F4 /* StringExtensions.swift */; };
@@ -93,6 +94,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D4040D0B24F8BC6400A2C500 /* lab2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab2.json; sourceTree = "<group>"; };
 		D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceFountainInfluenceComponent.swift; sourceTree = "<group>"; };
 		D41D1F94244ACF8100A876F4 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTrackerComponent.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				D48E2DE024F74F95009FB3D7 /* lab1.json */,
+				D4040D0B24F8BC6400A2C500 /* lab2.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D48E2DE124F74F95009FB3D7 /* lab1.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
+				D4040D0C24F8BC6400A2C500 /* lab2.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
