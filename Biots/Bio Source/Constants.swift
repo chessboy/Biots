@@ -22,7 +22,7 @@ struct Constants {
 		static let generationTrainingThreshold = 1000
 		static let filename = "lab4.json"
 
-		static let worldRadius: CGFloat = 3500
+		static let worldRadius: CGFloat = randomRun ? 3000 : 3500
 		static let minimumCells = 20
 		static let maximumCells = 33
 		static let startupDelay = randomRun ? 20 : 200

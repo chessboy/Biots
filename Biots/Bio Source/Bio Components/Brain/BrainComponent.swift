@@ -27,6 +27,7 @@ final class BrainComponent: OKComponent {
 		frame += 1
 		
 		if !frame.isMultiple(of: 2) {
+			// use last inference every other frame
 			action()
 			return
 		}
@@ -37,6 +38,8 @@ final class BrainComponent: OKComponent {
 			let angleVisions = coComponent(VisionComponent.self)?.detect()
 			else { return }
 		
+		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth)
+
 		let position = cell.entityNode?.position ?? .zero
 		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
 		let distanceToCenter = position.distance(to: .zero)/Constants.Environment.worldRadius
@@ -64,9 +67,6 @@ final class BrainComponent: OKComponent {
 //		}
 
 		let zonedVision = ZonedVision.fromAngleVisions(angleVisions)
-
-		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth)
-		
 		var angleIndex = 0
 		for colorVector in [zonedVision.right, zonedVision.center, zonedVision.left, zonedVision.rear] {
 			inputs[angleIndex * Constants.EyeVector.colorDepth + 0] = colorVector.red.float
