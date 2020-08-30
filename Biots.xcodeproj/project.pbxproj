@@ -66,10 +66,9 @@
 		D484F18424CAA9290079CFD3 /* OctopusKit in Frameworks */ = {isa = PBXBuildFile; productRef = D484F18324CAA9290079CFD3 /* OctopusKit */; };
 		D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */; };
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
-		D48E2DE224F750A6009FB3D7 /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473864B2442BA850022E760 /* BiotsTests.swift */; };
-		D48E2DE324F750A6009FB3D7 /* TrainingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FBA02454045400A0614F /* TrainingTests.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
+		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
 		D4C2FC222483981C0076077A /* EntityStatsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC212483981C0076077A /* EntityStatsComponent.swift */; };
 		D4C2FC242483A4160076077A /* NoiseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC232483A4160076077A /* NoiseComponent.swift */; };
@@ -85,12 +84,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D47386482442BA850022E760 /* PBXContainerItemProxy */ = {
+		D4BE801D24FB6D2900208C6A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D473862A2442BA830022E760 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D47386312442BA830022E760;
-			remoteInfo = BioGenesis;
+			remoteInfo = Biots;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -118,9 +117,6 @@
 		D473863F2442BA850022E760 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D47386412442BA850022E760 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D47386422442BA850022E760 /* Biots.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Biots.entitlements; sourceTree = "<group>"; };
-		D47386472442BA850022E760 /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D473864B2442BA850022E760 /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
-		D473864D2442BA850022E760 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D47386862442BD6C0022E760 /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
 		D47386872442BD6C0022E760 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		D47386882442BD6C0022E760 /* Activation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Activation.swift; sourceTree = "<group>"; };
@@ -161,6 +157,9 @@
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
+		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
+		D4BE801C24FB6D2900208C6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceFountainComponent.swift; sourceTree = "<group>"; };
 		D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgaeComponent.swift; sourceTree = "<group>"; };
 		D4C2FC212483981C0076077A /* EntityStatsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatsComponent.swift; sourceTree = "<group>"; };
@@ -168,7 +167,6 @@
 		D4C2FC2724842C910076077A /* CGRectMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGRectMath.swift; sourceTree = "<group>"; };
 		D4C6FB9824529DAE00A0614F /* Inference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inference.swift; sourceTree = "<group>"; };
 		D4C6FB9E2453A84C00A0614F /* Senses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Senses.swift; sourceTree = "<group>"; };
-		D4C6FBA02454045400A0614F /* TrainingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingTests.swift; sourceTree = "<group>"; };
 		D4D18D8D2446B54200BF92FA /* BoundaryComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundaryComponent.swift; sourceTree = "<group>"; };
 		D4D18D95244737FD00BF92FA /* BrainComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainComponent.swift; sourceTree = "<group>"; };
 		D4D18D982447A37000BF92FA /* Genome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genome.swift; sourceTree = "<group>"; };
@@ -187,7 +185,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D47386442442BA850022E760 /* Frameworks */ = {
+		D4BE801524FB6D2900208C6A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -255,7 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				D47386342442BA830022E760 /* Biots */,
-				D473864A2442BA850022E760 /* BiotsTests */,
+				D4BE801924FB6D2900208C6A /* BiotsTests */,
 				D47386332442BA830022E760 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -264,7 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				D47386322442BA830022E760 /* Biots.app */,
-				D47386472442BA850022E760 /* BiotsTests.xctest */,
+				D4BE801824FB6D2900208C6A /* BiotsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -292,16 +290,6 @@
 				D473863C2442BA850022E760 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		D473864A2442BA850022E760 /* BiotsTests */ = {
-			isa = PBXGroup;
-			children = (
-				D473864B2442BA850022E760 /* BiotsTests.swift */,
-				D4C6FBA02454045400A0614F /* TrainingTests.swift */,
-				D473864D2442BA850022E760 /* Info.plist */,
-			);
-			path = BiotsTests;
 			sourceTree = "<group>";
 		};
 		D47386852442BD6C0022E760 /* Neural Network */ = {
@@ -449,6 +437,15 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		D4BE801924FB6D2900208C6A /* BiotsTests */ = {
+			isa = PBXGroup;
+			children = (
+				D4BE801A24FB6D2900208C6A /* BiotsTests.swift */,
+				D4BE801C24FB6D2900208C6A /* Info.plist */,
+			);
+			path = BiotsTests;
+			sourceTree = "<group>";
+		};
 		D4C6FB9724529D8500A0614F /* Brain */ = {
 			isa = PBXGroup;
 			children = (
@@ -515,22 +512,22 @@
 			productReference = D47386322442BA830022E760 /* Biots.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D47386462442BA850022E760 /* BiotsTests */ = {
+		D4BE801724FB6D2900208C6A /* BiotsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D47386532442BA850022E760 /* Build configuration list for PBXNativeTarget "BiotsTests" */;
+			buildConfigurationList = D4BE801F24FB6D2900208C6A /* Build configuration list for PBXNativeTarget "BiotsTests" */;
 			buildPhases = (
-				D47386432442BA850022E760 /* Sources */,
-				D47386442442BA850022E760 /* Frameworks */,
-				D47386452442BA850022E760 /* Resources */,
+				D4BE801424FB6D2900208C6A /* Sources */,
+				D4BE801524FB6D2900208C6A /* Frameworks */,
+				D4BE801624FB6D2900208C6A /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				D47386492442BA850022E760 /* PBXTargetDependency */,
+				D4BE801E24FB6D2900208C6A /* PBXTargetDependency */,
 			);
 			name = BiotsTests;
-			productName = BioGenesisTests;
-			productReference = D47386472442BA850022E760 /* BiotsTests.xctest */;
+			productName = BiotsTests2;
+			productReference = D4BE801824FB6D2900208C6A /* BiotsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -539,15 +536,15 @@
 		D473862A2442BA830022E760 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1140;
+				LastSwiftUpdateCheck = 1160;
 				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Rob Silverman";
 				TargetAttributes = {
 					D47386312442BA830022E760 = {
 						CreatedOnToolsVersion = 11.4;
 					};
-					D47386462442BA850022E760 = {
-						CreatedOnToolsVersion = 11.4;
+					D4BE801724FB6D2900208C6A = {
+						CreatedOnToolsVersion = 11.6;
 						TestTargetID = D47386312442BA830022E760;
 					};
 				};
@@ -569,7 +566,7 @@
 			projectRoot = "";
 			targets = (
 				D47386312442BA830022E760 /* Biots */,
-				D47386462442BA850022E760 /* BiotsTests */,
+				D4BE801724FB6D2900208C6A /* BiotsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -589,7 +586,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D47386452442BA850022E760 /* Resources */ = {
+		D4BE801624FB6D2900208C6A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -671,22 +668,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D47386432442BA850022E760 /* Sources */ = {
+		D4BE801424FB6D2900208C6A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D48E2DE224F750A6009FB3D7 /* BiotsTests.swift in Sources */,
-				D48E2DE324F750A6009FB3D7 /* TrainingTests.swift in Sources */,
+				D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D47386492442BA850022E760 /* PBXTargetDependency */ = {
+		D4BE801E24FB6D2900208C6A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D47386312442BA830022E760 /* Biots */;
-			targetProxy = D47386482442BA850022E760 /* PBXContainerItemProxy */;
+			targetProxy = D4BE801D24FB6D2900208C6A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -863,44 +859,40 @@
 			};
 			name = Release;
 		};
-		D47386542442BA850022E760 /* Debug */ = {
+		D4BE802024FB6D2900208C6A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = KVXRU4PL78;
-				INFOPLIST_FILE = SimStarterTests/Info.plist;
+				INFOPLIST_FILE = BiotsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.applepi.SimStarter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.applepi.BiotsTests2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Biots.app/Contents/MacOS/Biots";
 			};
 			name = Debug;
 		};
-		D47386552442BA850022E760 /* Release */ = {
+		D4BE802124FB6D2900208C6A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = KVXRU4PL78;
-				INFOPLIST_FILE = SimStarterTests/Info.plist;
+				INFOPLIST_FILE = BiotsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
-				PRODUCT_BUNDLE_IDENTIFIER = com.applepi.SimStarter;
+				PRODUCT_BUNDLE_IDENTIFIER = com.applepi.BiotsTests2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Biots.app/Contents/MacOS/Biots";
@@ -928,11 +920,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D47386532442BA850022E760 /* Build configuration list for PBXNativeTarget "BiotsTests" */ = {
+		D4BE801F24FB6D2900208C6A /* Build configuration list for PBXNativeTarget "BiotsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D47386542442BA850022E760 /* Debug */,
-				D47386552442BA850022E760 /* Release */,
+				D4BE802024FB6D2900208C6A /* Debug */,
+				D4BE802124FB6D2900208C6A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
