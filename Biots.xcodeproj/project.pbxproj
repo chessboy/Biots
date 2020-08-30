@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		D4040D0C24F8BC6400A2C500 /* lab1.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D0B24F8BC6400A2C500 /* lab1.json */; };
 		D4040D1024F8BDFC00A2C500 /* RunningColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */; };
+		D4040D1A24FA4ECA00A2C500 /* lab2.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D1924FA4ECA00A2C500 /* lab2.json */; };
+		D4040D1C24FACF8100A2C500 /* lab3.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D1B24FACF8100A2C500 /* lab3.json */; };
+		D4040D1E24FB00D800A2C500 /* lab4.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D1D24FB00D800A2C500 /* lab4.json */; };
+		D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4040D1F24FB477400A2C500 /* RunningCGVector.swift */; };
 		D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */; };
 		D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */; };
 		D41D1F95244ACF8100A876F4 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D1F94244ACF8100A876F4 /* StringExtensions.swift */; };
@@ -62,7 +66,6 @@
 		D484F18424CAA9290079CFD3 /* OctopusKit in Frameworks */ = {isa = PBXBuildFile; productRef = D484F18324CAA9290079CFD3 /* OctopusKit */; };
 		D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */; };
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
-		D48E2DDF24F74F00009FB3D7 /* RunningInference.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDE24F74EFF009FB3D7 /* RunningInference.swift */; };
 		D48E2DE224F750A6009FB3D7 /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473864B2442BA850022E760 /* BiotsTests.swift */; };
 		D48E2DE324F750A6009FB3D7 /* TrainingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C6FBA02454045400A0614F /* TrainingTests.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
@@ -94,6 +97,10 @@
 /* Begin PBXFileReference section */
 		D4040D0B24F8BC6400A2C500 /* lab1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab1.json; sourceTree = "<group>"; };
 		D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningColorVector.swift; sourceTree = "<group>"; };
+		D4040D1924FA4ECA00A2C500 /* lab2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab2.json; sourceTree = "<group>"; };
+		D4040D1B24FACF8100A2C500 /* lab3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab3.json; sourceTree = "<group>"; };
+		D4040D1D24FB00D800A2C500 /* lab4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab4.json; sourceTree = "<group>"; };
+		D4040D1F24FB477400A2C500 /* RunningCGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningCGVector.swift; sourceTree = "<group>"; };
 		D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceFountainInfluenceComponent.swift; sourceTree = "<group>"; };
 		D41D1F94244ACF8100A876F4 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTrackerComponent.swift; sourceTree = "<group>"; };
@@ -152,7 +159,6 @@
 		D47D719824493E590079D2F1 /* JsonLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoad.swift; sourceTree = "<group>"; };
 		D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVectorMath.swift; sourceTree = "<group>"; };
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
-		D48E2DDE24F74EFF009FB3D7 /* RunningInference.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningInference.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceFountainComponent.swift; sourceTree = "<group>"; };
@@ -229,6 +235,9 @@
 			isa = PBXGroup;
 			children = (
 				D4040D0B24F8BC6400A2C500 /* lab1.json */,
+				D4040D1924FA4ECA00A2C500 /* lab2.json */,
+				D4040D1B24FACF8100A2C500 /* lab3.json */,
+				D4040D1D24FB00D800A2C500 /* lab4.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -435,6 +444,7 @@
 				D42CE73924449A670049854C /* SpriteKitExtensions.swift */,
 				D41D1F94244ACF8100A876F4 /* StringExtensions.swift */,
 				D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */,
+				D4040D1F24FB477400A2C500 /* RunningCGVector.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -446,7 +456,6 @@
 				D4C6FB9824529DAE00A0614F /* Inference.swift */,
 				D47387322443748B0022E760 /* NeuralNetComponent.swift */,
 				D4D18D95244737FD00BF92FA /* BrainComponent.swift */,
-				D48E2DDE24F74EFF009FB3D7 /* RunningInference.swift */,
 			);
 			path = Brain;
 			sourceTree = "<group>";
@@ -571,9 +580,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
+				D4040D1E24FB00D800A2C500 /* lab4.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D4040D0C24F8BC6400A2C500 /* lab1.json in Resources */,
+				D4040D1A24FA4ECA00A2C500 /* lab2.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
+				D4040D1C24FACF8100A2C500 /* lab3.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -615,6 +627,7 @@
 				D47386D62442BEDB0022E760 /* 4 - LogoState.swift in Sources */,
 				D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */,
 				D473868E2442BD6C0022E760 /* Error.swift in Sources */,
+				D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */,
 				D47386922442BD6C0022E760 /* Cache.swift in Sources */,
 				D47386932442BD6C0022E760 /* NeuralNet.swift in Sources */,
 				D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */,
@@ -623,7 +636,6 @@
 				D42CE738244430CE0049854C /* RulerComponent.swift in Sources */,
 				D42CE73224440EC20049854C /* GlobalStatsComponent.swift in Sources */,
 				D47387332443748B0022E760 /* NeuralNetComponent.swift in Sources */,
-				D48E2DDF24F74F00009FB3D7 /* RunningInference.swift in Sources */,
 				D47386D02442BEDB0022E760 /* 6A - PlayState.swift in Sources */,
 				D47386362442BA830022E760 /* AppDelegate.swift in Sources */,
 				D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */,

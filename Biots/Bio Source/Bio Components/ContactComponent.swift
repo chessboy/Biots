@@ -54,14 +54,14 @@ final class ContactComponent: PhysicsContactComponent {
 	
 	func cellsCollided(cellA: CellComponent, cellB: CellComponent) {
 		let impact = Constants.Cell.collisionDamage
-		cellA.incurDamageChange(impact/2, showEffect: true)
-		cellB.incurDamageChange(impact/2, showEffect: true)
+		cellA.incurStaminaChange(impact/2, showEffect: true)
+		cellB.incurStaminaChange(impact/2, showEffect: true)
 	}
 			
 	func cellAndWallCollided(cell: CellComponent, wall: BoundaryComponent) {
 		//print("cell hit wall")
 		//cell.collidedWithWall()
-		cell.incurDamageChange(Constants.Cell.collisionDamage, showEffect: true)
+		cell.incurStaminaChange(Constants.Cell.collisionDamage, showEffect: true)
 	}
 }
 

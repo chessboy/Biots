@@ -10,14 +10,51 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
+struct ZonedVision {
+	
+	var right: ColorVector = .zero
+	var center: ColorVector = .zero
+	var left: ColorVector = .zero
+	var rear: ColorVector = .zero
+	var idAtCenter: String?
+
+	static func fromAngleVisions(_ angleVisions: [AngleVision]) -> ZonedVision {
+		// [  right center left rear  ]
+		// [-π/2, -π/4, 0, π/4, π/2, π]
+
+		var right = ColorVector.zero
+		if let rightAngleVision = angleVisions.filter({ $0.angle == -π/2 }).first, let rightCenterAngleVision = angleVisions.filter({ $0.angle == -π/4 }).first {
+			right = (rightAngleVision.colorVector + rightCenterAngleVision.colorVector) / 2
+		}
+		
+		var left = ColorVector.zero
+		if let leftAngleVision = angleVisions.filter({ $0.angle == π/2 }).first, let leftCenterAngleVision = angleVisions.filter({ $0.angle == π/4 }).first {
+			left = (leftAngleVision.colorVector + leftCenterAngleVision.colorVector) / 2
+		}
+		
+		let center = angleVisions.filter({ $0.angle == 0 }).first?.colorVector ?? .zero
+		let rear = angleVisions.filter({ $0.angle == π }).first?.colorVector ?? .zero
+
+		let idAtCenter = angleVisions.filter({ $0.angle == 0 && $0.id != nil }).first?.id
+		
+//		if let id = idAtCenter {
+//			print("saw \(id)")
+//		}
+		
+		return ZonedVision(right: right, center: center, left: left, rear: rear, idAtCenter: idAtCenter)
+	}
+}
+
 struct AngleVision {
 	
 	var angle: CGFloat = 0
 	var colorVector: ColorVector = .zero
+	var id: String?
 	
-	init(angle: CGFloat, colorVector: ColorVector) {
+	init(angle: CGFloat, colorVector: ColorVector, id: String? = nil) {
 		self.angle = angle
 		self.colorVector = colorVector
+		self.id = id
 	}
 }
 
@@ -51,6 +88,7 @@ final class VisionComponent: OKComponent {
 			var blueTotal: CGFloat = 0
 			var pings: CGFloat = 0
 			var bodiesSeenAtAngle: [SKPhysicsBody] = []
+			var idSeenAtAngle: String?
 			
 			for offset in Constants.EyeVector.refinerAngles {
 
@@ -58,20 +96,20 @@ final class VisionComponent: OKComponent {
 				let rayDistance = Constants.EyeVector.rayDistance
 				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
-
+				
 				var blockerSeenAtSubAngle = false
 				physicsWorld.enumerateBodies(alongRayStart: rayStart, end: rayEnd) { (body, hitPoint, normal, stop) in
 					if body != physicsBody, body.categoryBitMask & Constants.DetectionBitMasks.cell > 0 {
 						
 						let distance = rayStart.distance(to: hitPoint)
 						let proximity = 1 - distance/rayDistance
-						var color: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
+						var detectedColor: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
 						
 						if !blockerSeenAtSubAngle, !bodiesSeenAtAngle.contains(body), let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
 
 							// wall
 							if let _ = object.component(ofType: BoundaryComponent.self) {
-								color = Constants.VisionColors.wall
+								detectedColor = Constants.VisionColors.wall
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								if showTracer {
@@ -80,16 +118,17 @@ final class VisionComponent: OKComponent {
 							}
 							else if !blockerSeenAtSubAngle, let otherCellComponent = object.component(ofType: CellComponent.self) {
 								// cell
-								color = otherCellComponent.skColor.withAlpha(proximity)
+								detectedColor = otherCellComponent.skColor
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
+								idSeenAtAngle = otherCellComponent.genome.id
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: color.withAlpha(proximity))
+									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity))
 								}
 							}
 							else if !blockerSeenAtSubAngle, let algae = object.component(ofType: AlgaeComponent.self) {
 								// algae
-								color = Constants.VisionColors.algae
+								detectedColor = Constants.VisionColors.algae
 								bodiesSeenAtAngle.append(body)
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.Colors.algae.withAlpha(proximity))
@@ -100,9 +139,9 @@ final class VisionComponent: OKComponent {
 							}
 						}
 						
-						redTotal += color.redComponent * proximity
-						greenTotal += color.greenComponent * proximity
-						blueTotal += color.blueComponent * proximity
+						redTotal += detectedColor.redComponent * proximity
+						greenTotal += detectedColor.greenComponent * proximity
+						blueTotal += detectedColor.blueComponent * proximity
 						pings += 1
 
 						if bodiesSeenAtAngle.count == maxObjectsPerAngle || blockerSeenAtSubAngle {
@@ -114,7 +153,7 @@ final class VisionComponent: OKComponent {
 			
 			if pings > 0 {
 				let colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
-				let angleVision = AngleVision(angle: angle, colorVector: colorVector)
+				let angleVision = AngleVision(angle: angle, colorVector: colorVector, id: idSeenAtAngle)
 				angleVisions.append(angleVision)
 			}
 		}

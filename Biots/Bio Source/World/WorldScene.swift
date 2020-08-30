@@ -306,8 +306,8 @@ final class WorldScene: OKScene {
 						}
 					}
 					cellComponent.mated(otherGenome: cellComponent.genome)
-					cellComponent.energy = cellComponent.maximumEnergy
 					cellComponent.spawnChildren(selfReplication: true)
+					cellComponent.energy = cellComponent.maximumEnergy
 				}
 			}
 		}

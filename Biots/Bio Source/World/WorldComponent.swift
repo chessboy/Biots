@@ -36,7 +36,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		scene.addEntity(boundary)
 		
 		if Constants.Environment.addWalls {
-			let dim1 = Constants.Environment.worldRadius * 0.25
+			let dim1 = Constants.Environment.worldRadius * 0.35
 			let dim2 = Constants.Environment.worldRadius * 0.2
 
 			let line1 = BoundaryComponent.createVerticalWall(y1: dim1, y2: dim2, x: 0)
@@ -114,7 +114,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			//let physicsWorldSpeed = coComponent(PhysicsWorldComponent.self)?.physicsWorld?.speed ?? 0
 
 			let cellStats = currentCellStats
-			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Environment.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | e: \(cellStats.avgEnergy.formattedToPercent) | d: \(cellStats.avgDamage.formattedToPercent) | h: \(cellStats.avgHealth.formattedToPercent) | mate: \(cellStats.canMateCount) | preg: \(cellStats.pregnantCount), spawned: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
+			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Environment.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | e: \(cellStats.avgEnergy.formattedToPercent) | s: \(cellStats.avgStamina.formattedToPercent) | h: \(cellStats.avgHealth.formattedToPercent) | mate: \(cellStats.canMateCount) | preg: \(cellStats.pregnantCount), spawned: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
 
 			statsComponent.updateStats(statsText)
 			
@@ -140,7 +140,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			else if GenomeFactory.shared.genomes.count > 0, scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Environment.minimumCells {
 				let genomeIndex = genomeDispenseIndex % GenomeFactory.shared.genomes.count
 				var genome = GenomeFactory.shared.genomes[genomeIndex]
-				//genome.gender = Gender.allCases.randomElement() ?? .female
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
 				print("dispensing genome: \(genome.id) - \(genomeIndex): \(genome.description)")
 				let _ = addNewCell(genome: genome, in: scene)
@@ -171,7 +170,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		var minGen: Int
 		var maxGen: Int
 		var avgEnergy: CGFloat
-		var avgDamage: CGFloat
+		var avgStamina: CGFloat
 		var avgHealth: CGFloat
 		
 		var canMateCount: Int
@@ -181,7 +180,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		var resourceStats: ResourceStats
 
 		static var zero: CellStats {
-			return CellStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgDamage: 0, avgHealth: 0, canMateCount: 0, pregnantCount: 0, spawnAverage: 0, resourceStats: .zero)
+			return CellStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgStamina: 0, avgHealth: 0, canMateCount: 0, pregnantCount: 0, spawnAverage: 0, resourceStats: .zero)
 		}
 	}
 	
@@ -197,14 +196,14 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let maxGen = cells.map({$0.genome.generation}).max() ?? 0
 
 		let averageEnergy = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.energy/$1.maximumEnergy } / cells.count.cgFloat
-		let averageDamage = cells.count == 0 ? 0 : cells.reduce(0) { $0 + (1-$1.damage) } / cells.count.cgFloat
+		let averageStamina = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.stamina } / cells.count.cgFloat
 		let averageHealth = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.health } / cells.count.cgFloat
 
 		let canMateCount = cells.reduce(0) { $0 + ($1.canMate ? 1 : 0) }
 		let pregnantCount = cells.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }
-		let spawnAverage: CGFloat = CGFloat(cells.reduce(0) { $0 + $1.spawnCount }) / cells.count.cgFloat
+		let spawnAverage = cells.count == 0 ? 0 : CGFloat(cells.reduce(0) { $0 + $1.spawnCount }) / cells.count.cgFloat
 
-		return CellStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgDamage: averageDamage, avgHealth: averageHealth, canMateCount: canMateCount, pregnantCount: pregnantCount, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
+		return CellStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgStamina: averageStamina, avgHealth: averageHealth, canMateCount: canMateCount, pregnantCount: pregnantCount, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
 	}
 
 	var currentResourceStats: ResourceStats {

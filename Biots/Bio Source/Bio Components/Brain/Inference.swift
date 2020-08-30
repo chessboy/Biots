@@ -11,43 +11,37 @@ import OctopusKit
 import SpriteKit
 
 struct Inference {
-	var outputs: [Float]
-	var thrust: CGVector = .zero
-	var color: ColorVector = .zero
+	var thrust = RunningCGVector(memory: 2)
+	var color = RunningColorVector(memory: 10)
+	var speedBoost = RunningValue(memory: 10)
 
-	static var outputCount: Int {
-		return 5
-	}
+	/**
+ 	|     0    |     1    |    2    |    3    |    4    |      5      |
+	| L thrust | R thrust | color R | color G | color B | speed boost |
+	*/
 	
-	static var zero: Inference {
-		let outputs = Array(repeating: Float.zero, count: outputCount)
-		return Inference(outputs: outputs)
+	static var outputCount: Int {
+		return 6
 	}
+			
+	func infer(outputs: [Float]) {
 		
-	init(outputs: [Float]) {
-		
-		self.outputs = outputs
-
 		let count = Inference.outputCount
 		guard outputs.count == count else {
 			OctopusKit.logForSim.add("outputs count != \(count), count given: \(outputs.count)")
 			return
 		}
 		
-		thrust = CGVector(dx: outputs[0].cgFloat, dy: outputs[1].cgFloat)
+		// thrust (-1..1, -1..1) x xy
+		thrust.addValue(CGVector(dx: outputs[0].cgFloat, dy: outputs[1].cgFloat))
+		
+		// color (-1..1 --> 0..1) x rgb
 		let red = (outputs[2].cgFloat + 1)/2
 		let green = (outputs[3].cgFloat + 1)/2
 		let blue = (outputs[4].cgFloat + 1)/2
+		color.addValue(ColorVector(red: red, green: green, blue: blue))
 		
-		color = ColorVector(red: red, green: green, blue: blue)
-	}
-	
-	func indexOfMax(of outputs: [Float]) -> Int {
-		if let max = outputs.max(), let index = outputs.firstIndex(of: max) {
-			return index
-		}
-		
-		OctopusKit.logForErrors.add("cannot parse action outputs: \(outputs) for maximum")
-		return -1
+		// speed boost (-1..1 --> 0|1)
+		speedBoost.addValue(outputs[5] > 0 ? 1 : 0)
 	}
 }

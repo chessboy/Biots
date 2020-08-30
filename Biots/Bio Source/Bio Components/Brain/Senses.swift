@@ -10,11 +10,12 @@ import Foundation
 import OctopusKit
 
 struct Senses {
-	static let senseInputCount = 11
+	static let inputCount = 12
 	
+	var marker1: Float = .zero
 	var health: Float = .zero
 	var energy: Float = .zero
-	var damage: Float = .zero
+	var stamina: Float = .zero
 	var canMate: Float = .zero
 	var pregnant: Float = .zero
 	var onTopOfFood: Float = .zero
@@ -25,9 +26,10 @@ struct Senses {
 	var age: Float = .zero
 
 	mutating func setSenses(
+		marker1: Float,
 		health: Float,
 		energy: Float,
-		damage: Float,
+		stamina: Float,
 		canMate: Float,
 		pregnant: Float,
 		onTopOfFood: Float,
@@ -38,9 +40,10 @@ struct Senses {
 		age: Float
 		) {
 		
+		self.marker1 = marker1
 		self.health = health
 		self.energy = energy
-		self.damage = damage
+		self.stamina = stamina
 		self.canMate = canMate
 		self.pregnant = pregnant
 		self.onTopOfFood = onTopOfFood
@@ -54,9 +57,10 @@ struct Senses {
 	var toArray: [Float] {
 				
 		return [
+			marker1,
 			health,
 			energy,
-			damage,
+			stamina,
 			canMate,
 			pregnant,
 			proximityToCenter,

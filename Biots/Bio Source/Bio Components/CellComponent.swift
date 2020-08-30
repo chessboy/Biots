@@ -16,7 +16,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var expired = false
 	
 	var energy: CGFloat
-	var damage: CGFloat = 0
+	var stamina: CGFloat = 1
 	var age: CGFloat = 0
 	var lastSpawnedAge: CGFloat = 0
 	var lastPregnantAge: CGFloat = 0
@@ -26,6 +26,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var matedCount = 0
 
 	var healthNode: SKShapeNode!
+	var speedNode: SKShapeNode!
 	var eyeNodes: [SKShapeNode] = []
 	
 	var matingGenome: Genome?
@@ -48,7 +49,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 
 	var health: CGFloat {
 		let energyRatio = energy/maximumEnergy
-		return energyRatio - damage
+		return energyRatio - (1-stamina)
 	}
 	
 	var frame = Int.random(100)
@@ -81,7 +82,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	override func didAddToEntity() {
 		if let node = entityNode as? SKShapeNode {
-			//node.fillColor = genome.gender.skColor
 			node.setScale(0.2)
 			node.run(SKAction.scale(to: 1, duration: 10))
 		}
@@ -96,9 +96,9 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
-	func incurDamageChange(_ delta: CGFloat, showEffect: Bool = false) {
-		damage += delta
-		damage = damage.clamped(to: 0...1)
+	func incurStaminaChange(_ delta: CGFloat, showEffect: Bool = false) {
+		stamina -= delta
+		stamina = stamina.clamped(to: 0...1)
 		if showEffect {
 			updateHealthNode()
 			contactEffect(impact: delta)
@@ -107,7 +107,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 	func kill() {
 		energy = 0
-		damage = 1
+		stamina = 0
 	}
 	
 	func cellAndAlgaeCollided(algae: AlgaeComponent) {
@@ -175,12 +175,12 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard !expired else { return }
 		age += 1
 		
+		if frame.isMultiple(of: 4) {
+			let eyeColor = canMate ? Constants.Colors.algae : .black
+			eyeNodes.forEach({ $0.fillColor = eyeColor })
+		}
+
 		checkAlgaeContacts()
-		
-//		if frame.isMultiple(of: 4), let bodyNode = entityNode as? SKShapeNode {
-//			bodyNode.fillColor = bodyColor
-//		}
-		
 		showStats()
 		
 		// check old age or malnutrition
@@ -190,9 +190,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		// update visual indicators
 		updateHealthNode()
+		updateSpeedNode()
 
 		if Constants.Environment.selfReplication, frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, spawnCount < 3, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.oldAge * 0.5 {
+			if !isPregnant, canMate, spawnCount < 5, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.oldAge * 0.25 {
 				mated(otherGenome: genome)
 			}
 		}
@@ -252,6 +253,29 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
+	func updateSpeedNode() {
+		
+		guard Constants.Cell.showSpeed, frame.isMultiple(of: 2) else { return }
+		
+		let showingSpeed = !speedNode.isHidden
+		let showSpeed = coComponent(GlobalDataComponent.self)?.showCellHealth ?? false
+		
+		if !showingSpeed, showSpeed {
+			speedNode.alpha = 0
+			speedNode.isHidden = false
+		}
+		else if showingSpeed, !showSpeed {
+			speedNode.run(.fadeOut(withDuration: 0.1)) {
+				self.speedNode.isHidden = true
+				self.speedNode.alpha = 0
+			}
+		}
+
+		if showSpeed, let speedBoost = coComponent(BrainComponent.self)?.inference.speedBoost.average {
+			speedNode.alpha = speedBoost.cgFloat
+		}
+	}
+	
 	func showStats() {
 		
 		if  let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
@@ -273,15 +297,18 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					
 					let healthFormatted = health.formattedToPercentNoDecimal
 					let energyFormatted = (energy/maximumEnergy).formattedToPercentNoDecimal
-					let damageFormatted = damage.formattedToPercentNoDecimal
-					var thrustDescr = ""
-					
-					if let lastInference = coComponent(BrainComponent.self)?.runningInference.last {
-						thrustDescr = lastInference.thrust.description
+					let staminaFormatted = stamina.formattedToPercentNoDecimal
+					var thrustDescr = "-none-"
+					var speedBoostDescr = "-none-"
+
+					if let inference = coComponent(BrainComponent.self)?.inference {
+						thrustDescr = inference.thrust.average.description
+						speedBoostDescr = inference.speedBoost.average.formattedTo2Places
 					}
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), d: \(damageFormatted)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.oldAge).formattedToPercentNoDecimal)", for: .line2)
-					statsNode.setLineOfText("spw: \(spawnCount), mat: \(matedCount) | thr: \(thrustDescr)", for: .line3)
+					
+					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted)", for: .line1)
+					statsNode.setLineOfText("gen: \(genome.generation) | mkr1: \(genome.marker1 ? "1" : "0") | age: \((age/Constants.Cell.oldAge).formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("spw: \(spawnCount), mat: \(matedCount) | thr: \(thrustDescr) | spdB: \(speedBoostDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
@@ -303,8 +330,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
-		incurEnergyChange(-energy/2)
-		incurDamageChange(0.1)
+		energy = energy / 4
+		incurStaminaChange(0.1)
 		
 		spawnCount += 1
 		
@@ -413,6 +440,21 @@ extension CellComponent {
 		healthNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(healthNode)
 		
+		let speedNode = SKShapeNode()
+		let path = CGMutablePath()
+		path.addArc(center: .zero, radius: radius * 0.7, startAngle: π/4 + π/8, endAngle: -π/4 - π/8, clockwise: true)
+		speedNode.path = path
+		speedNode.fillColor = .clear
+		speedNode.lineWidth = radius * 0.15
+		speedNode.isHidden = true
+		speedNode.zRotation = π
+		
+		speedNode.lineCap = .round
+		speedNode.strokeColor = .white
+		speedNode.isAntialiased = false
+		speedNode.zPosition = Constants.ZeeOrder.cell + 0.1
+		node.addChild(speedNode)
+
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius)
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.cell
 		physicsBody.collisionBitMask = Constants.CollisionBitMasks.cell
@@ -430,6 +472,7 @@ extension CellComponent {
 
 		let cellComponent = CellComponent(genome: genome, initialEnergy: initialEnergy)
 		cellComponent.healthNode = healthNode
+		cellComponent.speedNode = speedNode
 		cellComponent.eyeNodes = eyeNodes
 
 		return OKEntity(components: [
