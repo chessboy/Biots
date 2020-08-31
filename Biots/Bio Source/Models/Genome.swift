@@ -16,7 +16,8 @@ struct Genome: CustomStringConvertible, Codable {
 	static let maxMutationIterations = 450
 
 	var id: String
-	var marker1: Bool
+	var marker1 = false
+	var marker2 = false
 	var generation: Int
 
 	// neural net
@@ -30,7 +31,11 @@ struct Genome: CustomStringConvertible, Codable {
 	init(inputCount: Int, hiddenCount: Int, outputCount: Int) {
 		self.id = UUID().uuidString
 		self.generation = 0
-		self.marker1 = Bool.random()
+		
+		if !Constants.Environment.fixedMarkers {
+			self.marker1 = Bool.random()
+			self.marker2 = Bool.random()
+		}
 
 		self.inputCount = inputCount
 		self.hiddenCount = hiddenCount
@@ -51,7 +56,11 @@ struct Genome: CustomStringConvertible, Codable {
 	init(parent: Genome) {
 		self.id = UUID().uuidString
 		self.generation = parent.generation + (Constants.Environment.mutationsOff ? 0 : 1)
-		self.marker1 = Bool.random()
+		
+		if !Constants.Environment.fixedMarkers {
+			self.marker1 = Bool.random()
+			self.marker2 = Bool.random()
+		}
 
 		self.inputCount = parent.inputCount
 		self.hiddenCount = parent.hiddenCount
@@ -69,7 +78,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), mrk1: \(marker1), gen: \(generation), inputCount: \(inputCount), hiddenCount: \(hiddenCount), outputCount: \(outputCount)}"
+		return "{id: \(idFormatted), markers: \(marker1)|\(marker2), gen: \(generation), inputCount: \(inputCount), hiddenCount: \(hiddenCount), outputCount: \(outputCount)}"
 	}
 
 	var jsonString: String {
@@ -77,6 +86,8 @@ struct Genome: CustomStringConvertible, Codable {
 		"""
 		{
 			"id": "\(id)",
+			"marker1": "\(marker1)",
+			"marker2": "\(marker2)",
 			"generation": \(generation),
 			"inputCount": \(inputCount),
 			"hiddenCount": \(hiddenCount),

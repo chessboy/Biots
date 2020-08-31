@@ -10,15 +10,17 @@ import Foundation
 import OctopusKit
 
 struct Senses {
-	static let inputCount = 12
+	static let inputCount = 14
 	
 	var marker1: Float = .zero
+	var marker2: Float = .zero
 	var health: Float = .zero
 	var energy: Float = .zero
 	var stamina: Float = .zero
-	var canMate: Float = .zero
-	var pregnant: Float = .zero
-	var onTopOfFood: Float = .zero
+	var canMate = RunningValue(memory: 9)
+	var pregnant = RunningValue(memory: 9)
+	var onTopOfFood = RunningValue(memory: 3)
+	var visibility: Float = .zero
 	var proximityToCenter: Float = .zero
 	var angleToCenter: Float = .zero
 	var clockShort: Float = .zero
@@ -27,12 +29,14 @@ struct Senses {
 
 	mutating func setSenses(
 		marker1: Float,
+		marker2: Float,
 		health: Float,
 		energy: Float,
 		stamina: Float,
 		canMate: Float,
 		pregnant: Float,
 		onTopOfFood: Float,
+		visibility: Float,
 		proximityToCenter: Float,
 		angleToCenter: Float,
 		clockShort: Float,
@@ -41,12 +45,14 @@ struct Senses {
 		) {
 		
 		self.marker1 = marker1
+		self.marker2 = marker2
 		self.health = health
 		self.energy = energy
 		self.stamina = stamina
-		self.canMate = canMate
-		self.pregnant = pregnant
-		self.onTopOfFood = onTopOfFood
+		self.canMate.addValue(canMate)
+		self.pregnant.addValue(pregnant)
+		self.onTopOfFood.addValue(onTopOfFood)
+		self.visibility = visibility
 		self.proximityToCenter = proximityToCenter
 		self.angleToCenter = angleToCenter
 		self.clockShort = clockShort
@@ -58,14 +64,16 @@ struct Senses {
 				
 		return [
 			marker1,
+			marker2,
 			health,
 			energy,
 			stamina,
-			canMate,
-			pregnant,
+			canMate.average,
+			pregnant.average,
 			proximityToCenter,
 			angleToCenter,
-			onTopOfFood,
+			onTopOfFood.average,
+			visibility,
 			clockShort,
 			clockLong,
 			age

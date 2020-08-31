@@ -90,7 +90,7 @@ class BiotsTests: XCTestCase {
 		
 		
         do {
-			let structure = try NeuralNet.Structure(nodes: [46, 33, 11], hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
+			let structure = try NeuralNet.Structure(nodes: [24, 16, 5], hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
 			
 			let neuralNet = try NeuralNet(structure: structure)
 			

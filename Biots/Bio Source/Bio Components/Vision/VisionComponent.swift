@@ -75,6 +75,7 @@ final class VisionComponent: OKComponent {
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
+			let visibility = coComponent(CellComponent.self)?.effectiveVisibility,
 			let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody else {
 			return []
 		}
@@ -93,7 +94,7 @@ final class VisionComponent: OKComponent {
 			for offset in Constants.EyeVector.refinerAngles {
 
 				let angleOffset = angle + offset
-				let rayDistance = Constants.EyeVector.rayDistance
+				let rayDistance = visibility * Constants.EyeVector.rayDistance
 				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				
@@ -102,7 +103,7 @@ final class VisionComponent: OKComponent {
 					if body != physicsBody, body.categoryBitMask & Constants.DetectionBitMasks.cell > 0 {
 						
 						let distance = rayStart.distance(to: hitPoint)
-						let proximity = 1 - distance/rayDistance
+						let proximity = 1 - distance/Constants.EyeVector.rayDistance
 						var detectedColor: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
 						
 						if !blockerSeenAtSubAngle, !bodiesSeenAtAngle.contains(body), let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {

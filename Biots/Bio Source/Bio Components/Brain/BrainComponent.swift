@@ -49,12 +49,14 @@ final class BrainComponent: OKComponent {
 
 		senses.setSenses(
 			marker1: Float(cell.genome.marker1 ? 1 : 0),
+			marker2: Float(cell.genome.marker2 ? 1 : 0),
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			stamina: Float(cell.stamina),
 			canMate: cell.canMate ? 1 : 0,
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
+			visibility: cell.visibility.float,
 			proximityToCenter: proximityToCenter,
 			angleToCenter: Float(angleToCenter/(2*π)),
 			clockShort: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate),
@@ -127,8 +129,8 @@ final class BrainComponent: OKComponent {
 		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
 		
 		if speedBoostAverage > 1 {
-			cell.incurEnergyChange(-Constants.Cell.perMovementEnergy)
-			cell.incurStaminaChange(Constants.Cell.perMovementRecovery/2)
+			cell.incurEnergyChange(-Constants.Cell.speedBoostEnergy)
+			cell.incurStaminaChange(Constants.Cell.speedBoostExertion)
 		}
 		
 		// healing
@@ -138,7 +140,22 @@ final class BrainComponent: OKComponent {
 			cell.incurStaminaChange(staminaRecovery)
 			cell.incurEnergyChange(-staminaRecovery/2)
 		}
+		
+		// blink
+		if inference.blink {
+			cell.blink()
+		}
 
 		node.fillColor = inference.color.average.skColor
+		let effectiveVisibility = cell.effectiveVisibility.clamped(0.1, 1)
+		
+		if effectiveVisibility <= 0.5 {
+			cell.eyeNodes.forEach({ eyeNode in
+				eyeNode.xScale = effectiveVisibility
+				eyeNode.yScale = 0.85
+				eyeNode.fillColor = effectiveVisibility <= 0.1 ? SKColor.white.withAlpha(0.5) : .black
+				eyeNode.strokeColor = effectiveVisibility <= 0.1 ? .clear : .white
+			})
+		}
 	}
 }

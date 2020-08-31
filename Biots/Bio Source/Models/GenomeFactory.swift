@@ -29,7 +29,7 @@ class GenomeFactory {
 	var newRandomGenome: Genome {
 		let inputCount = Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth + Senses.inputCount
 		let outputCount = Inference.outputCount
-		let hiddenCount = 16
+		let hiddenCount = 24
 
 		let genome = Genome(inputCount: inputCount, hiddenCount: hiddenCount, outputCount: outputCount)
 		//print(genome.description)

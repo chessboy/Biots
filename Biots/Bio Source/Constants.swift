@@ -13,20 +13,21 @@ import OctopusKit
 struct Constants {
 		
 	struct Environment {
-		static let showSpriteKitStats = true
 		
-		static let randomRun = true
+		static let randomRun = false
 		static let addWalls = true
 		static let mutationsOff = false
 		static let selfReplication = true
-		static let generationTrainingThreshold = 1000
-		static let filename = "lab4.json"
+		static let generationTrainingThreshold = 2000
+		static let fixedMarkers = true
+		static let filename = "lab5.json"
 
-		static let worldRadius: CGFloat = randomRun ? 3000 : 3500
+		static let worldRadius: CGFloat = randomRun ? 3000 : 3200
 		static let minimumCells = 20
-		static let maximumCells = 33
+		static let maximumCells = 32
 		static let startupDelay = randomRun ? 20 : 200
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
+		static let showSpriteKitStats = true
 	}
 	
 	static let noBitMask: UInt32 = 	0
@@ -88,17 +89,19 @@ struct Constants {
 		static let mateHealth: CGFloat = 0.75  // % of maximum health
 		static let spawnHealth: CGFloat = 0.65 // % of maximum health
 
-		static let maximumEnergy: CGFloat = Environment.randomRun ? 100 : 120
+		static let maximumEnergy: CGFloat = Environment.randomRun ? 120 : 150
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
-		static let perMovementEnergy: CGFloat = maximumEnergy * 0.0003
-		
-		static let attackEnergyCost = maximumEnergy * 0.2
-		static let speedBoostExertion = maximumEnergy * 0.0005
-		
-		static let oldAge: CGFloat = Environment.randomRun ? 2000 : 3200
+		static let perMovementEnergy: CGFloat = 0.03
+		static let speedBoostEnergy: CGFloat = 0.03
+		static let speedBoostExertion: CGFloat = 0.00075
+		static let blinkExertion: CGFloat = maximumEnergy * 0.02
+
+		static let oldAge: CGFloat = Environment.randomRun ? 2000 : 2800
 		static let matureAge: CGFloat = oldAge * 0.2 // % of old age
+		static let selfReplicationAge: CGFloat = oldAge * 0.33
 		static let gestationAge: CGFloat = oldAge * 0.1 // % of old age
 		static let interactionAge: CGFloat = oldAge * 0.1 // % of old age
+		static let blinkAge: CGFloat = oldAge * 0.1 // % of old age
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 15

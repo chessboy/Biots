@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		D4040D0C24F8BC6400A2C500 /* lab1.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D0B24F8BC6400A2C500 /* lab1.json */; };
 		D4040D1024F8BDFC00A2C500 /* RunningColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */; };
-		D4040D1A24FA4ECA00A2C500 /* lab2.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D1924FA4ECA00A2C500 /* lab2.json */; };
-		D4040D1C24FACF8100A2C500 /* lab3.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D1B24FACF8100A2C500 /* lab3.json */; };
-		D4040D1E24FB00D800A2C500 /* lab4.json in Resources */ = {isa = PBXBuildFile; fileRef = D4040D1D24FB00D800A2C500 /* lab4.json */; };
 		D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4040D1F24FB477400A2C500 /* RunningCGVector.swift */; };
 		D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */; };
 		D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */; };
@@ -69,6 +66,10 @@
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
+		D4BE802B24FC55F000208C6A /* lab2.json in Resources */ = {isa = PBXBuildFile; fileRef = D4BE802A24FC55F000208C6A /* lab2.json */; };
+		D4BE802D24FC809800208C6A /* lab3.json in Resources */ = {isa = PBXBuildFile; fileRef = D4BE802C24FC809800208C6A /* lab3.json */; };
+		D4BE802F24FC916800208C6A /* lab4.json in Resources */ = {isa = PBXBuildFile; fileRef = D4BE802E24FC916800208C6A /* lab4.json */; };
+		D4BE803124FCCD7300208C6A /* lab5.json in Resources */ = {isa = PBXBuildFile; fileRef = D4BE803024FCCD7300208C6A /* lab5.json */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
 		D4C2FC222483981C0076077A /* EntityStatsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC212483981C0076077A /* EntityStatsComponent.swift */; };
 		D4C2FC242483A4160076077A /* NoiseComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC232483A4160076077A /* NoiseComponent.swift */; };
@@ -96,9 +97,6 @@
 /* Begin PBXFileReference section */
 		D4040D0B24F8BC6400A2C500 /* lab1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab1.json; sourceTree = "<group>"; };
 		D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningColorVector.swift; sourceTree = "<group>"; };
-		D4040D1924FA4ECA00A2C500 /* lab2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab2.json; sourceTree = "<group>"; };
-		D4040D1B24FACF8100A2C500 /* lab3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab3.json; sourceTree = "<group>"; };
-		D4040D1D24FB00D800A2C500 /* lab4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab4.json; sourceTree = "<group>"; };
 		D4040D1F24FB477400A2C500 /* RunningCGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningCGVector.swift; sourceTree = "<group>"; };
 		D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceFountainInfluenceComponent.swift; sourceTree = "<group>"; };
 		D41D1F94244ACF8100A876F4 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -160,6 +158,10 @@
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
 		D4BE801C24FB6D2900208C6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4BE802A24FC55F000208C6A /* lab2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab2.json; sourceTree = "<group>"; };
+		D4BE802C24FC809800208C6A /* lab3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab3.json; sourceTree = "<group>"; };
+		D4BE802E24FC916800208C6A /* lab4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab4.json; sourceTree = "<group>"; };
+		D4BE803024FCCD7300208C6A /* lab5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab5.json; sourceTree = "<group>"; };
 		D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResourceFountainComponent.swift; sourceTree = "<group>"; };
 		D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlgaeComponent.swift; sourceTree = "<group>"; };
 		D4C2FC212483981C0076077A /* EntityStatsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityStatsComponent.swift; sourceTree = "<group>"; };
@@ -233,9 +235,10 @@
 			isa = PBXGroup;
 			children = (
 				D4040D0B24F8BC6400A2C500 /* lab1.json */,
-				D4040D1924FA4ECA00A2C500 /* lab2.json */,
-				D4040D1B24FACF8100A2C500 /* lab3.json */,
-				D4040D1D24FB00D800A2C500 /* lab4.json */,
+				D4BE802A24FC55F000208C6A /* lab2.json */,
+				D4BE802C24FC809800208C6A /* lab3.json */,
+				D4BE802E24FC916800208C6A /* lab4.json */,
+				D4BE803024FCCD7300208C6A /* lab5.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -577,12 +580,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
-				D4040D1E24FB00D800A2C500 /* lab4.json in Resources */,
+				D4BE802F24FC916800208C6A /* lab4.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D4040D0C24F8BC6400A2C500 /* lab1.json in Resources */,
-				D4040D1A24FA4ECA00A2C500 /* lab2.json in Resources */,
+				D4BE802B24FC55F000208C6A /* lab2.json in Resources */,
+				D4BE803124FCCD7300208C6A /* lab5.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
-				D4040D1C24FACF8100A2C500 /* lab3.json in Resources */,
+				D4BE802D24FC809800208C6A /* lab3.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

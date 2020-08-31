@@ -18,7 +18,7 @@ typealias OctopusKitQuickStartView = OKQuickStartView // In case you prefer the 
 
 struct OKQuickStartView: View {
     
-	let size: CGFloat = 2000
+	let size: CGFloat = 1600
 	
     var body: some View {
         

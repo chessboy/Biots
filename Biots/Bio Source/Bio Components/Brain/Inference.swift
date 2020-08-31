@@ -14,17 +14,19 @@ struct Inference {
 	var thrust = RunningCGVector(memory: 2)
 	var color = RunningColorVector(memory: 10)
 	var speedBoost = RunningValue(memory: 10)
+	var blink = false
+	var future: Float = .zero
 
 	/**
- 	|     0    |     1    |    2    |    3    |    4    |      5      |
-	| L thrust | R thrust | color R | color G | color B | speed boost |
+ 	|     0    |     1    |    2    |    3    |    4    |      5      |   6   |   7    |
+	| L thrust | R thrust | color R | color G | color B | speed boost | blink | future |
 	*/
 	
 	static var outputCount: Int {
-		return 6
+		return 8
 	}
 			
-	func infer(outputs: [Float]) {
+	mutating func infer(outputs: [Float]) {
 		
 		let count = Inference.outputCount
 		guard outputs.count == count else {
@@ -43,5 +45,9 @@ struct Inference {
 		
 		// speed boost (-1..1 --> 0|1)
 		speedBoost.addValue(outputs[5] > 0 ? 1 : 0)
+		
+		blink = outputs[6] > 0 ? true : false
+		
+		future = outputs[7]
 	}
 }

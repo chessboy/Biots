@@ -37,7 +37,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		if Constants.Environment.addWalls {
 			let dim1 = Constants.Environment.worldRadius * 0.35
-			let dim2 = Constants.Environment.worldRadius * 0.2
+			let dim2 = Constants.Environment.worldRadius * 0.25
 
 			let line1 = BoundaryComponent.createVerticalWall(y1: dim1, y2: dim2, x: 0)
 			scene.addEntity(line1)
@@ -63,10 +63,15 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.33, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
 		alageFountain.name = "mainFountain"
 
+//		let fountain = ResourceFountainComponent.createFountain(position: CGPoint(angle: 0) * worldRadius * 0.75, minRadius: 0, maxRadius: worldRadius * 0.15, targetAlgaeSupply: targetAlgaeSupply.cgFloat / 4)
+//		fountain.name = "fountain"
+
 		if showFountainInfluence {
 			alageFountain.addComponent(ResourceFountainInfluenceComponent())
+//			fountain.addComponent(ResourceFountainInfluenceComponent())
 		}
 		scene.addEntity(alageFountain)
+//		scene.addEntity(fountain)
  	}
 		
 	func addNewCell(genome: Genome, in scene: OKScene) -> OKEntity {

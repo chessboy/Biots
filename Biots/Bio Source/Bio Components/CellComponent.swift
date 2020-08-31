@@ -17,10 +17,13 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	var energy: CGFloat
 	var stamina: CGFloat = 1
+	
 	var age: CGFloat = 0
 	var lastSpawnedAge: CGFloat = 0
 	var lastPregnantAge: CGFloat = 0
 	var lastInteractedAge: CGFloat = 0
+	var lastBlinkAge: CGFloat = 0
+	
 	var spawnCount: Int = 0
 	var isInteracting = false
 	var matedCount = 0
@@ -50,6 +53,18 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var health: CGFloat {
 		let energyRatio = energy/maximumEnergy
 		return energyRatio - (1-stamina)
+	}
+	
+	var visibility: CGFloat {
+		let lastBlinkDelta = (age - lastBlinkAge).clamped(0, Constants.Cell.blinkAge)
+		let visibility = (1 - (lastBlinkDelta / Constants.Cell.blinkAge))
+//		print("age: \(age.formattedTo2Places), lastBlinkAge: \(lastBlinkAge.formattedTo2Places), lastBlinkDelta: \(lastBlinkDelta.formattedTo2Places), visibility: \(visibility.formattedTo2Places)")
+		return visibility
+	}
+	
+	var effectiveVisibility: CGFloat {
+		let actualVisibility = visibility
+		return actualVisibility > 0.5 ? 1 : actualVisibility
 	}
 	
 	var frame = Int.random(100)
@@ -170,16 +185,27 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
+	
+	func blink() {
+		
+		guard age - lastBlinkAge > 30 else { return }
+		
+		lastBlinkAge = age
+		incurEnergyChange(-Constants.Cell.blinkExertion)
+		eyeNodes.forEach({ eyeNode in
+			eyeNode.fillColor = .black
+			eyeNode.strokeColor = .white
+			eyeNode.run(SKAction.bulge(xScale: 0.05, yScale: 0.85, scalingDuration: 0.075, revertDuration: 0.125)) {
+				eyeNode.yScale = 0.85
+			}
+		})
+	}
+	
     override func update(deltaTime seconds: TimeInterval) {
 		
 		guard !expired else { return }
 		age += 1
-		
-		if frame.isMultiple(of: 4) {
-			let eyeColor = canMate ? Constants.Colors.algae : .black
-			eyeNodes.forEach({ $0.fillColor = eyeColor })
-		}
-
+				
 		checkAlgaeContacts()
 		showStats()
 		
@@ -193,7 +219,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		updateSpeedNode()
 
 		if Constants.Environment.selfReplication, frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, spawnCount < 5, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.oldAge * 0.25 {
+			if !isPregnant, canMate, spawnCount < 5, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.selfReplicationAge {
 				mated(otherGenome: genome)
 			}
 		}
@@ -306,8 +332,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 						speedBoostDescr = inference.speedBoost.average.formattedTo2Places
 					}
 					
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | mkr1: \(genome.marker1 ? "1" : "0") | age: \((age/Constants.Cell.oldAge).formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), v: \(visibility.formattedToPercentNoDecimal), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
+					statsNode.setLineOfText("gen: \(genome.generation) | mkrs: \(genome.marker1 ? "1" : "0")|\(genome.marker2 ? "1" : "0") | age: \((age/Constants.Cell.oldAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spw: \(spawnCount), mat: \(matedCount) | thr: \(thrustDescr) | spdB: \(speedBoostDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
@@ -419,13 +445,28 @@ extension CellComponent {
 		node.blendMode = .replace
 		node.isAntialiased = false
 		
+//		let visorNode = SKShapeNode()
+//		let visorPath = CGMutablePath()
+//		visorPath.addArc(center: .zero, radius: radius * 0.7, startAngle: π + π/4 + π/8, endAngle: π - π/4 - π/8, clockwise: true)
+//		visorNode.path = visorPath
+//		visorNode.fillColor = .clear
+//		visorNode.lineWidth = radius * 0.15
+//		visorNode.zRotation = π
+//
+//		visorNode.lineCap = .round
+//		visorNode.strokeColor = .black
+//		visorNode.isAntialiased = false
+//		visorNode.zPosition = Constants.ZeeOrder.cell + 0.1
+//		node.addChild(visorNode)
+		
 		var eyeNodes: [SKShapeNode] = []
-		for angle in [-π/4.9, π/4.9] {
+		for angle in [-π/4.5, π/4.5] {
 			let eyeNode = SKShapeNode(circleOfRadius: radius * 0.2)
 			eyeNode.fillColor = .black
 			eyeNode.strokeColor = .lightGray
-			eyeNode.lineWidth = Constants.Cell.radius * 0.08
-			eyeNode.position = CGPoint(angle: angle) * radius * 0.9
+			eyeNode.yScale = 0.75
+			eyeNode.lineWidth = Constants.Cell.radius * 0.1
+			eyeNode.position = CGPoint(angle: angle) * radius * 0.65
 			node.addChild(eyeNode)
 			eyeNode.zPosition = node.zPosition + 0.2
 			eyeNodes.append(eyeNode)
@@ -441,9 +482,9 @@ extension CellComponent {
 		node.addChild(healthNode)
 		
 		let speedNode = SKShapeNode()
-		let path = CGMutablePath()
-		path.addArc(center: .zero, radius: radius * 0.7, startAngle: π/4 + π/8, endAngle: -π/4 - π/8, clockwise: true)
-		speedNode.path = path
+		let speedPath = CGMutablePath()
+		speedPath.addArc(center: .zero, radius: radius * 0.7, startAngle: π/4 + π/8, endAngle: -π/4 - π/8, clockwise: true)
+		speedNode.path = speedPath
 		speedNode.fillColor = .clear
 		speedNode.lineWidth = radius * 0.15
 		speedNode.isHidden = true
