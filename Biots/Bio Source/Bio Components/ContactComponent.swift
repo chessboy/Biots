@@ -13,8 +13,8 @@ import OctopusKit
 final class ContactComponent: PhysicsContactComponent {
       
 	override func didBegin(_ contact: SKPhysicsContact, in scene: OKScene?) {
+				
 		var cellCandidateA, cellCandidateB: CellComponent?
-		var wallCandidateA, wallCandidateB: BoundaryComponent?
 
 		if contact.bodyA.categoryBitMask == Constants.CategoryBitMasks.cell {
 			cellCandidateA = scene?.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == contact.bodyA }).first?.component(ofType: CellComponent.self)
@@ -34,18 +34,14 @@ final class ContactComponent: PhysicsContactComponent {
 			return
 		}
 
-		// cell collided with something else, check wall
-
 		if contact.bodyA.categoryBitMask == Constants.CategoryBitMasks.wall {
-			wallCandidateA = scene?.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == contact.bodyA }).first?.component(ofType: BoundaryComponent.self)
-		}
-		
-		if contact.bodyB.categoryBitMask == Constants.CategoryBitMasks.wall {
-			wallCandidateB = scene?.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == contact.bodyB }).first?.component(ofType: BoundaryComponent.self)
-		}
-		
-		if let wall = wallCandidateA ?? wallCandidateB {
-			cellAndWallCollided(cell: cell, wall: wall)
+			
+			let armor = cell.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
+			let exposure = 1 - armor
+
+			if armor < 1 {
+				cell.incurStaminaChange(Constants.Cell.collisionDamage * exposure, showEffect: true)
+			}
 			return
 		}
 		
@@ -54,14 +50,14 @@ final class ContactComponent: PhysicsContactComponent {
 	
 	func cellsCollided(cellA: CellComponent, cellB: CellComponent) {
 		let impact = Constants.Cell.collisionDamage
-		cellA.incurStaminaChange(impact/2, showEffect: true)
-		cellB.incurStaminaChange(impact/2, showEffect: true)
-	}
-			
-	func cellAndWallCollided(cell: CellComponent, wall: BoundaryComponent) {
-		//print("cell hit wall")
-		//cell.collidedWithWall()
-		cell.incurStaminaChange(Constants.Cell.collisionDamage, showEffect: true)
+		
+		let armorA = cellA.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
+		let exposureA = 1 - armorA
+		let armorB = cellB.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
+		let exposureB = 1 - armorB
+
+		cellA.incurStaminaChange(impact/2 * exposureA, showEffect: true)
+		cellB.incurStaminaChange(impact/2 * exposureB, showEffect: true)
 	}
 }
 

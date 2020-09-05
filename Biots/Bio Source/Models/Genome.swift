@@ -12,8 +12,8 @@ import SpriteKit
 
 struct Genome: CustomStringConvertible, Codable {
 	
-	static let minMutationIterations = 250
-	static let maxMutationIterations = 450
+	static let minMutationIterations = 180
+	static let maxMutationIterations = 360
 
 	var id: String
 	var marker1 = false

@@ -15,19 +15,29 @@ struct Constants {
 	struct Environment {
 		
 		static let randomRun = false
-		static let addWalls = true
+		static let addWalls = false
 		static let mutationsOff = false
 		static let selfReplication = true
+		static let selfReplicationMaxSpawn = 2
 		static let generationTrainingThreshold = 2000
 		static let fixedMarkers = true
-		static let filename = "lab5.json"
+		static let filename = "lab19.json"
 
-		static let worldRadius: CGFloat = randomRun ? 3000 : 3200
+		//(2*π*4000)/(2*π*3000)*15k = 20k
+		static let worldRadius: CGFloat = 4000
 		static let minimumCells = 20
 		static let maximumCells = 32
-		static let startupDelay = randomRun ? 20 : 200
+		static let startupDelay = 20//randomRun ? 20 : 200
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
+	}
+	
+	struct Display {
+//		static let size: CGFloat = 1600
+//		static let statsY: CGFloat = -480
+		
+		static let size: CGFloat = 2000
+		static let statsY: CGFloat = -560
 	}
 	
 	static let noBitMask: UInt32 = 	0
@@ -57,18 +67,11 @@ struct Constants {
 	}
 	
 	struct Colors {
-		static let wall =  SKColor(red: 0.6, green: 0.1875, blue: 0.1875, alpha: 1)
+		static let background = SKColor(red: 22/255, green: 23/255, blue: 25/255, alpha: 1)
+		static let grid = SKColor(white: 0.06, alpha: 1)
+		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 0.8)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
-		static let background = SKColor(red: 17/255, green: 18/255, blue: 20/255, alpha: 1)
 		static let cell = SKColor(red: 0.63, green: 0.8, blue: 1, alpha: 0.5)
-		
-		static let maleCell = SKColor(red: 0.5, green: 0.5, blue: 0.8, alpha: 1)
-		static let maleMatingCell = SKColor(red: 0.7, green: 0.7, blue: 1, alpha: 1)
-		static let malePregnantCell = SKColor(red: 0.8, green: 0.8, blue: 1, alpha: 1)
-
-		static let femaleCell = SKColor(red: 0.8, green: 0.55, blue: 0.55, alpha: 1)
-		static let femaleMatingCell = SKColor(red: 1, green: 0.75, blue: 0.75, alpha: 1)
-		static let femalePregnantCell = SKColor(red: 1, green: 0.85, blue: 0.85, alpha: 1)
 	}
 	
 	struct VisionColors {
@@ -79,35 +82,36 @@ struct Constants {
 	struct Cell {
 							
 		static let radius: CGFloat = 40
-		static let stateDetectionProximity: CGFloat = 0.4 // 0..1
-		static let clockRate = 60 // Hz
+		static let clockRate = 60 // ticks per 1-way cycle
+
+		static let stateDetectionMaxProximity: CGFloat = 0.9 // 0..1
+		static let stateDetectionMinProximity: CGFloat = 0.5 // 0..1
 
 		static let collisionDamage: CGFloat = 0.125
-		static let attackDamage: CGFloat = 0.3
 		static let perMovementRecovery: CGFloat = 0.0015
 
 		static let mateHealth: CGFloat = 0.75  // % of maximum health
-		static let spawnHealth: CGFloat = 0.65 // % of maximum health
+		static let spawnHealth: CGFloat = 0.75 // % of maximum health
 
 		static let maximumEnergy: CGFloat = Environment.randomRun ? 120 : 150
-		static let initialEnergy: CGFloat = maximumEnergy * 0.5
+		static let initialEnergy: CGFloat = maximumEnergy * 0.75
 		static let perMovementEnergy: CGFloat = 0.03
 		static let speedBoostEnergy: CGFloat = 0.03
 		static let speedBoostExertion: CGFloat = 0.00075
 		static let blinkExertion: CGFloat = maximumEnergy * 0.02
+		static let armorEnergy: CGFloat = 0.03
 
-		static let oldAge: CGFloat = Environment.randomRun ? 2000 : 2800
-		static let matureAge: CGFloat = oldAge * 0.2 // % of old age
-		static let selfReplicationAge: CGFloat = oldAge * 0.33
-		static let gestationAge: CGFloat = oldAge * 0.1 // % of old age
-		static let interactionAge: CGFloat = oldAge * 0.1 // % of old age
-		static let blinkAge: CGFloat = oldAge * 0.1 // % of old age
+		static let maximumAge: CGFloat = Environment.randomRun ? 2000 : 3000
+		static let matureAge: CGFloat = maximumAge * 0.2
+		static let selfReplicationAge: CGFloat = maximumAge * 0.33
+		static let gestationAge: CGFloat = maximumAge * 0.1
+		static let interactionAge: CGFloat = maximumAge * 0.1
+		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degdrades vision
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 15
 
 		static let showSpeed = true
-		static let matingOutputThreshold: Float = 0.55
 	}
 	
 	struct Algae {
@@ -120,7 +124,7 @@ struct Constants {
 		static let refinerAngles = [0, -π/12, π/12]
 		static let inputZones = 4 // left|center|right|rear
 		static let colorDepth = 3 // r|g|b
-		static let rayDistance: CGFloat = Environment.worldRadius * 0.28
+		static let rayDistance: CGFloat = Cell.radius * 21
 	}
 	
 	enum StatsLine: Int { case line1, line2, line3 }
@@ -140,9 +144,10 @@ struct Constants {
 	}
 	
 	struct ZeeOrder {
+		static let grid: CGFloat = -3
 		static let wall: CGFloat = 0
 		static let algae: CGFloat = 1
-		static let cell: CGFloat = 2
+		static let cell: CGFloat = 5
 		static let stats: CGFloat = 100
 	}
 }

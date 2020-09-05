@@ -25,13 +25,15 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity(withNode node: SKNode) {
-		guard let scene = OctopusKit.shared?.currentScene else { return }
+		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae else { return }
+		
+		let gridNode = GridNode.nodeForGrid(blockSize: 400, rows: 20, cols: 20)
+		gridNode.isHidden = hideNode
+		scene.addChild(gridNode)
 		
 		let worldRadius = Constants.Environment.worldRadius
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
-		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
-			boundary.node?.isHidden = hideNode
-		}
+		boundary.node?.isHidden = hideNode
 		//boundary.addComponent(NoiseComponent())
 		scene.addEntity(boundary)
 		
@@ -48,19 +50,25 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			let line4 = BoundaryComponent.createHorizontalWall(x1: -dim2, x2: -dim1, y: 0)
 			scene.addEntity(line4)
 			
-			if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
-				line1.node?.isHidden = hideNode
-				line2.node?.isHidden = hideNode
-				line3.node?.isHidden = hideNode
-				line4.node?.isHidden = hideNode
-			}
+			line1.node?.isHidden = hideNode
+			line2.node?.isHidden = hideNode
+			line3.node?.isHidden = hideNode
+			line4.node?.isHidden = hideNode
 		}
 		
+		for _ in 1...8 {
+			let radius = CGFloat.random(in: worldRadius * 0.02...worldRadius * 0.1)
+			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
+			let zapper = ZapperComponent.createZapper(radius: radius, position: position)
+			zapper.node?.isHidden = hideNode
+			scene.addEntity(zapper)
+		}
+
 		let targetAlgaeSupply = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
 		// algae fountains
-		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.33, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
+		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.2, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
 		alageFountain.name = "mainFountain"
 
 //		let fountain = ResourceFountainComponent.createFountain(position: CGPoint(angle: 0) * worldRadius * 0.75, minRadius: 0, maxRadius: worldRadius * 0.15, targetAlgaeSupply: targetAlgaeSupply.cgFloat / 4)
@@ -100,19 +108,89 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		return cell
 	}
 	
-	override func update(deltaTime seconds: TimeInterval) {
+	struct IdPair: Equatable {
+		var id1: String
+		var id2: String
+		
+		static func == (lhs: Self, rhs: Self) -> Bool {
+			return (lhs.id1 == rhs.id1 && lhs.id2 == rhs.id2) || (lhs.id1 == rhs.id2 && lhs.id2 == rhs.id1)
+		}
+	}
+	
+	func animateInteraction(sourceCell: CellComponent, targetCell: CellComponent, scene: OKScene) {
+
+		sourceCell.startInteracting()
+		targetCell.startInteracting()
+		
+		for delay: TimeInterval in [0, 0.1, 0.2, 0.3, 0.4, 0.5] {
+			let tracerNode = SKShapeNode(circleOfRadius: Constants.Cell.radius * 0.18)
+			tracerNode.lineWidth = 0
+			tracerNode.fillColor = Int(delay * 10) % 2 == 0 ? .systemRed : .systemBlue
+			tracerNode.zPosition = Constants.ZeeOrder.cell - 0.1
+			tracerNode.position = sourceCell.entityNode?.position ?? .zero
+			let sequence = SKAction.sequence([
+				.wait(forDuration: delay),
+				.move(to: targetCell.entityNode?.position ?? .zero, duration: 0.5),
+				.fadeOutAndRemove(withDuration: 0.05, timingMode: .linear)
+			])
+			scene.addChild(tracerNode)
+			tracerNode.run(sequence)
+		}
+		
+		scene.run(SKAction.wait(forDuration: 0.5)) {
+			sourceCell.stopInteracting()
+			targetCell.stopInteracting()
+		}
+	}
+	
+	func checkMatingPairs() {
+		
+		guard let scene =  OctopusKit.shared?.currentScene else { return }
+
+		var pairs: [IdPair] = []
+		
+		let cellsSeeingOtherCells = currentCells.filter({ !$0.expired && $0.coComponent(BrainComponent.self)?.inference.seenId != nil })
+		for cell1 in cellsSeeingOtherCells {
+			for cell2 in cellsSeeingOtherCells {
+				if cell1 != cell2 {
+
+					let id1 = cell1.genome.id
+					let id2 = cell2.genome.id
+
+					if 	let seenId1 = cell1.coComponent(BrainComponent.self)?.inference.seenId,
+						let seenId2 = cell2.coComponent(BrainComponent.self)?.inference.seenId,
+						id1 == seenId2, id2 == seenId1 {
+						let pair = IdPair(id1: id1, id2: id2)
+						if !pairs.contains(pair) {
+							pairs.append(pair)
+						}
+					}
+				}
+			}
+		}
+
+		for pair in pairs {
+			//print("pair: \(pair.id1) and \(pair.id2) are looking at eachother")
+
+			if let cell1 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id1 }).first as? OKEntity)?.component(ofType: CellComponent.self),
+				let cell2 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id2 }).first as? OKEntity)?.component(ofType: CellComponent.self), cell1.canInteract, cell2.canInteract {
+				//if let position1 = cell2.entityNode?.position, let position2 = cell2.entityNode?.position, position1.distance(to: position2) >
+				animateInteraction(sourceCell: cell1, targetCell: cell2, scene: scene)
+				
+				[cell1, cell2].forEach { cell in
+					cell.energy = cell.maximumEnergy
+					cell.stamina = 1
+				}
+			}
+		}
+
+	}
+	
+	func displayStats() {
 		
 		guard let scene =  OctopusKit.shared?.currentScene else { return }
 		let frame = scene.currentFrameNumber
-				
-		// key event handling
-		if let keyTrackerComponent = coComponent(KeyTrackerComponent.self) {
-			for keyCode in keyTrackerComponent.keyCodesDown {
-				processWorldKeyDown(keyCode: keyCode, shiftDown: keyTrackerComponent.shiftDown, commandDown: keyTrackerComponent.commandDown)
-			}
-		}
-						
-		// stats
+
 		if frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
 			let cellCount = scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count
@@ -132,6 +210,23 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				}
 			}
 		}
+
+	}
+	
+	override func update(deltaTime seconds: TimeInterval) {
+		
+		guard let scene =  OctopusKit.shared?.currentScene else { return }
+		let frame = scene.currentFrameNumber
+				
+		// key event handling
+		if let keyTrackerComponent = coComponent(KeyTrackerComponent.self) {
+			for keyCode in keyTrackerComponent.keyCodesDown {
+				processWorldKeyDown(keyCode: keyCode, shiftDown: keyTrackerComponent.shiftDown, commandDown: keyTrackerComponent.commandDown)
+			}
+		}
+		
+		//checkMatingPairs()
+		displayStats()
 		
 		// cell creation
 		if !allGenomesFromFileDispensed, frame >= Constants.Environment.startupDelay && frame.isMultiple(of: Constants.Environment.dispenseInterval) {

@@ -75,7 +75,7 @@ final class VisionComponent: OKComponent {
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
-			let visibility = coComponent(CellComponent.self)?.effectiveVisibility,
+			let cell = coComponent(CellComponent.self),
 			let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody else {
 			return []
 		}
@@ -94,7 +94,7 @@ final class VisionComponent: OKComponent {
 			for offset in Constants.EyeVector.refinerAngles {
 
 				let angleOffset = angle + offset
-				let rayDistance = visibility * Constants.EyeVector.rayDistance
+				let rayDistance = cell.effectiveVisibility * Constants.EyeVector.rayDistance
 				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				
@@ -109,7 +109,7 @@ final class VisionComponent: OKComponent {
 						if !blockerSeenAtSubAngle, !bodiesSeenAtAngle.contains(body), let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
 
 							// wall
-							if let _ = object.component(ofType: BoundaryComponent.self) {
+							if body.categoryBitMask & Constants.CategoryBitMasks.wall > 0 {
 								detectedColor = Constants.VisionColors.wall
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
@@ -122,7 +122,9 @@ final class VisionComponent: OKComponent {
 								detectedColor = otherCellComponent.skColor
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
-								idSeenAtAngle = otherCellComponent.genome.id
+								if angle == 0, proximity >= Constants.Cell.stateDetectionMinProximity, proximity <= Constants.Cell.stateDetectionMaxProximity {
+									idSeenAtAngle = otherCellComponent.genome.id
+								}
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity))
 								}

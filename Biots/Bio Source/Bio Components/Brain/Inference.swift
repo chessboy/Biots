@@ -12,21 +12,22 @@ import SpriteKit
 
 struct Inference {
 	var thrust = RunningCGVector(memory: 2)
-	var color = RunningColorVector(memory: 10)
+	var color = RunningColorVector(memory: 4)
 	var speedBoost = RunningValue(memory: 10)
 	var blink = false
-	var future: Float = .zero
+	var armor = RunningValue(memory: 8)
+	var seenId: String?
 
 	/**
- 	|     0    |     1    |    2    |    3    |    4    |      5      |   6   |   7    |
-	| L thrust | R thrust | color R | color G | color B | speed boost | blink | future |
+ 	|     0    |     1    |    2    |    3    |    4    |      5      |   6   |   7   |
+	| L thrust | R thrust | color R | color G | color B | speed boost | blink | armor |
 	*/
 	
 	static var outputCount: Int {
 		return 8
 	}
 			
-	mutating func infer(outputs: [Float]) {
+	mutating func infer(outputs: [Float], seenId: String?) {
 		
 		let count = Inference.outputCount
 		guard outputs.count == count else {
@@ -34,6 +35,8 @@ struct Inference {
 			return
 		}
 		
+		self.seenId = seenId
+					
 		// thrust (-1..1, -1..1) x xy
 		thrust.addValue(CGVector(dx: outputs[0].cgFloat, dy: outputs[1].cgFloat))
 		
@@ -46,8 +49,10 @@ struct Inference {
 		// speed boost (-1..1 --> 0|1)
 		speedBoost.addValue(outputs[5] > 0 ? 1 : 0)
 		
+		// blink (-1..1 --> true|false)
 		blink = outputs[6] > 0 ? true : false
 		
-		future = outputs[7]
+		// armor (-1..1 --> 0|1)
+		armor.addValue(outputs[7] > 0 ? 1 : 0)
 	}
 }

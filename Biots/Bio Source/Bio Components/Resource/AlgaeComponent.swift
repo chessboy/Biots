@@ -95,12 +95,19 @@ extension AlgaeComponent {
 		node.fillColor = color
 		node.lineWidth = 0
 		node.zPosition = Constants.ZeeOrder.algae
-		node.blendMode = .replace
+		//node.blendMode = .replace
 		node.isAntialiased = false
 		node.isHidden = true
 		let range = SKRange(lowerLimit: 0, upperLimit: Constants.Environment.worldRadius * 0.9)
 		let keepInBounds = SKConstraint.distance(range, to: .zero)
 		node.constraints = [keepInBounds]
+
+		let shadowNode = SKShapeNode()
+		shadowNode.path = node.path
+		shadowNode.glowWidth = 6
+		shadowNode.zPosition = Constants.ZeeOrder.algae - 2
+		shadowNode.strokeColor = NSColor.black.withAlphaComponent(0.4)
+		node.addChild(shadowNode)
 
 		let bufferNode = SKShapeNode(circleOfRadius: Constants.Algae.radius * 1.25)
 		let physicsBody = SKPhysicsBody(polygonFrom: bufferNode.path!)

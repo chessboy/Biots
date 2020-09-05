@@ -40,16 +40,14 @@ final class BrainComponent: OKComponent {
 		
 		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth)
 
-		let position = cell.entityNode?.position ?? .zero
-		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
-		let distanceToCenter = position.distance(to: .zero)/Constants.Environment.worldRadius
-		let theta = atan2(position.y, position.x).normalizedAngle
-		let angleToCenter = (theta + angle + π).normalizedAngle
-		let proximityToCenter = Float(1 - distanceToCenter)
+//		let position = cell.entityNode?.position ?? .zero
+//		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
+//		let distanceToCenter = position.distance(to: .zero)/Constants.Environment.worldRadius
+//		let theta = atan2(position.y, position.x).normalizedAngle
+//		let angleToCenter = (theta + angle + π).normalizedAngle
+//		let proximityToCenter = Float(1 - distanceToCenter)
 
 		senses.setSenses(
-			marker1: Float(cell.genome.marker1 ? 1 : 0),
-			marker2: Float(cell.genome.marker2 ? 1 : 0),
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			stamina: Float(cell.stamina),
@@ -57,11 +55,9 @@ final class BrainComponent: OKComponent {
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			visibility: cell.visibility.float,
-			proximityToCenter: proximityToCenter,
-			angleToCenter: Float(angleToCenter/(2*π)),
 			clockShort: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate),
 			clockLong: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate*3),
-			age: Float(cell.age/Constants.Cell.oldAge)
+			age: Float(cell.age/Constants.Cell.maximumAge)
 		)
 		
 //		if let genome = GenomeFactory.shared.genomes.first, cell.genome.id.starts(with: genome.id) {
@@ -74,18 +70,19 @@ final class BrainComponent: OKComponent {
 			inputs[angleIndex * Constants.EyeVector.colorDepth + 0] = colorVector.red.float
 			inputs[angleIndex * Constants.EyeVector.colorDepth + 1] = colorVector.green.float
 			inputs[angleIndex * Constants.EyeVector.colorDepth + 2] = colorVector.blue.float
-			
-//			if angleIndex == 2, let id = angleVision.id {
-//				print("saw \(id)")
-//			}
-			
 			angleIndex += 1
 		}
 		
 		inputs += senses.toArray
 		
+		let seenId = angleVisions.filter({ $0.angle == 0 && $0.id != nil }).first?.id
+		
+//		if let seenId = seenId, let id = coComponent(CellComponent.self)?.genome.id {
+//			print("cell \(id) saw \(seenId)")
+//		}
+
 		let outputs = neuralNetComponent.infer(inputs)
-		inference.infer(outputs: outputs)
+		inference.infer(outputs: outputs, seenId: seenId)
 		action()
 	}
 	
@@ -100,9 +97,10 @@ final class BrainComponent: OKComponent {
 		let position = node.position
 		let zRotation = node.zRotation
 		
-		let speedBoostAverage: CGFloat = inference.speedBoost.average > 0 ? 2 : 1
-		let left = inference.thrust.average.dx * Constants.Cell.thrustForce * speedBoostAverage
-		let right = inference.thrust.average.dy * Constants.Cell.thrustForce * speedBoostAverage
+		let speedBoost: CGFloat = inference.speedBoost.average > 0 ? 2 : 1
+		let armor: CGFloat = inference.armor.average.cgFloat
+		let left = inference.thrust.average.dx * Constants.Cell.thrustForce * speedBoost
+		let right = inference.thrust.average.dy * Constants.Cell.thrustForce * speedBoost
 
 		if abs(left - right) < 0.001 {
 			// basically going straight
@@ -116,7 +114,7 @@ final class BrainComponent: OKComponent {
 
 			newX = position.x + R * sin(wd + zRotation) - R * sin(zRotation)
 			newY = position.y - R * cos(wd + zRotation) + R * cos(zRotation)
-			newHeading = (zRotation + wd/2).normalizedAngle // note: wd/2 limits rotation, maybe get rid of this
+			newHeading = (zRotation + wd/3).normalizedAngle // note: wd/2 limits rotation, maybe get rid of this
 		}
 
 		let newPosition = CGPoint(x: newX, y: newY)
@@ -128,9 +126,13 @@ final class BrainComponent: OKComponent {
 		let forceExerted = (inference.thrust.average.dx.unsigned + inference.thrust.average.dy.unsigned)
 		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
 		
-		if speedBoostAverage > 1 {
+		if speedBoost > 1 {
 			cell.incurEnergyChange(-Constants.Cell.speedBoostEnergy)
 			cell.incurStaminaChange(Constants.Cell.speedBoostExertion)
+		}
+		
+		if armor > 0 {
+			cell.incurEnergyChange(-Constants.Cell.armorEnergy * armor)
 		}
 		
 		// healing
@@ -138,24 +140,15 @@ final class BrainComponent: OKComponent {
 			let staminaRecovery = -Constants.Cell.perMovementRecovery * (1 - (forceExerted/2))
 			// print("cell.stamina: \(cell.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			cell.incurStaminaChange(staminaRecovery)
-			cell.incurEnergyChange(-staminaRecovery/2)
 		}
 		
 		// blink
 		if inference.blink {
 			cell.blink()
+		} else {
+			cell.checkEyeState()
 		}
 
 		node.fillColor = inference.color.average.skColor
-		let effectiveVisibility = cell.effectiveVisibility.clamped(0.1, 1)
-		
-		if effectiveVisibility <= 0.5 {
-			cell.eyeNodes.forEach({ eyeNode in
-				eyeNode.xScale = effectiveVisibility
-				eyeNode.yScale = 0.85
-				eyeNode.fillColor = effectiveVisibility <= 0.1 ? SKColor.white.withAlpha(0.5) : .black
-				eyeNode.strokeColor = effectiveVisibility <= 0.1 ? .clear : .white
-			})
-		}
 	}
 }

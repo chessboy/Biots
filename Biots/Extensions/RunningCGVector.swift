@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import OctopusKit
 
 class RunningCGVector {
 

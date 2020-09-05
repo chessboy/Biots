@@ -55,6 +55,10 @@ extension CGFloat {
 		return CGFloat(random(in: 0..<2*π))
 	}
 	
+	static var randomSign: CGFloat {
+		return Bool.random() ? 1 : -1
+	}
+	
 	var formattedNoDecimal: String { return
 		String(format: "%.0f", locale: Locale.current, self)
 	}

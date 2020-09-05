@@ -18,6 +18,9 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var energy: CGFloat
 	var stamina: CGFloat = 1
 	
+	var cumulativeDamage: CGFloat = 0
+	var cumulativeEnergy: CGFloat = 0
+	
 	var age: CGFloat = 0
 	var lastSpawnedAge: CGFloat = 0
 	var lastPregnantAge: CGFloat = 0
@@ -39,11 +42,11 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	var canInteract: Bool {
-		return !expired && age > Constants.Cell.matureAge && age - lastInteractedAge > Constants.Cell.interactionAge
+		return !expired && !isInteracting && age > Constants.Cell.matureAge && age - lastInteractedAge > Constants.Cell.interactionAge
 	}
 
 	var canMate: Bool {
-		return !expired && age > Constants.Cell.matureAge && !isPregnant && health > Constants.Cell.mateHealth
+		return !expired && spawnCount < Constants.Environment.selfReplicationMaxSpawn && age > Constants.Cell.matureAge && !isPregnant && health > Constants.Cell.mateHealth
 	}
 	
 	var maximumEnergy: CGFloat {
@@ -82,6 +85,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	func stopInteracting() {
 		isInteracting = false
+		lastInteractedAge = age
 	}
 
 	required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -102,21 +106,27 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
     	
-	func incurEnergyChange(_ delta: CGFloat, showEffect: Bool = false) {
-		energy += delta
+	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
+		if amount > 0 {
+			cumulativeEnergy += amount
+		}
+		energy += amount
 		energy = energy.clamped(to: 0...maximumEnergy)
 		if showEffect {
 			updateHealthNode()
-			contactEffect(impact: delta)
+			contactEffect(impact: amount)
 		}
 	}
 	
-	func incurStaminaChange(_ delta: CGFloat, showEffect: Bool = false) {
-		stamina -= delta
+	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
+		if amount > 0 {
+			cumulativeDamage += amount
+		}
+		stamina -= amount
 		stamina = stamina.clamped(to: 0...1)
 		if showEffect {
 			updateHealthNode()
-			contactEffect(impact: delta)
+			contactEffect(impact: amount)
 		}
 	}
 		
@@ -185,6 +195,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
+	var animatingEyes = false
 	
 	func blink() {
 		
@@ -192,14 +203,42 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		lastBlinkAge = age
 		incurEnergyChange(-Constants.Cell.blinkExertion)
+		animatingEyes = true
 		eyeNodes.forEach({ eyeNode in
 			eyeNode.fillColor = .black
 			eyeNode.strokeColor = .white
 			eyeNode.run(SKAction.bulge(xScale: 0.05, yScale: 0.85, scalingDuration: 0.075, revertDuration: 0.125)) {
 				eyeNode.yScale = 0.85
+				self.animatingEyes = false
 			}
 		})
 	}
+	
+	func checkEyeState() {
+			
+		guard !animatingEyes else { return }
+		
+		let effectiveVisibility = self.effectiveVisibility.clamped(0.1, 1)
+		let currentScale = eyeNodes.first?.xScale ?? 0.1
+		
+		let phases: [CGFloat] = [0.5, 0.25, 0.1]
+		
+		let animate = phases.filter({currentScale > $0 && effectiveVisibility <= $0}).count > 0
+		
+		if animate {
+			//print("closing eyes: \(effectiveVisibility.formattedTo3Places), scale: \(currentScale.formattedTo3Places)")
+			let fillColor: SKColor = effectiveVisibility <= 0.1 ? SKColor.white.withAlpha(0.5) : .black
+			let strokeColor: SKColor = effectiveVisibility <= 0.1 ? .clear : .white
+
+			animatingEyes = true
+			eyeNodes.forEach({ eyeNode in
+				eyeNode.fillColor = fillColor
+				eyeNode.strokeColor = strokeColor
+				eyeNode.run(SKAction.scaleX(to: effectiveVisibility, duration: 0.25)) {
+					self.animatingEyes = false
+				}
+			})
+		}}
 	
     override func update(deltaTime seconds: TimeInterval) {
 		
@@ -210,16 +249,20 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		showStats()
 		
 		// check old age or malnutrition
-		if age >= Constants.Cell.oldAge || health <= 0 {
+		if age >= Constants.Cell.maximumAge || health <= 0 {
 			expire()
 		}
 		
 		// update visual indicators
 		updateHealthNode()
 		updateSpeedNode()
+		
+		if let node = entityNode as? SKShapeNode, let armor = coComponent(BrainComponent.self)?.inference.armor.average {
+			node.strokeColor = SKColor.yellow.withAlpha(armor.cgFloat)
+		}
 
 		if Constants.Environment.selfReplication, frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, spawnCount < 5, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.selfReplicationAge {
+			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.selfReplicationAge {
 				mated(otherGenome: genome)
 			}
 		}
@@ -324,17 +367,19 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					let healthFormatted = health.formattedToPercentNoDecimal
 					let energyFormatted = (energy/maximumEnergy).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
-					var thrustDescr = "-none-"
-					var speedBoostDescr = "-none-"
-
+//					var thrustDescr = "-none-"
+//					var speedBoostDescr = "-none-"
+					var armorDescr = "-none-"
+					
 					if let inference = coComponent(BrainComponent.self)?.inference {
-						thrustDescr = inference.thrust.average.description
-						speedBoostDescr = inference.speedBoost.average.formattedTo2Places
+//						thrustDescr = inference.thrust.average.description
+//						speedBoostDescr = inference.speedBoost.average.formattedTo2Places
+						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), v: \(visibility.formattedToPercentNoDecimal), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | mkrs: \(genome.marker1 ? "1" : "0")|\(genome.marker2 ? "1" : "0") | age: \((age/Constants.Cell.oldAge).formattedToPercentNoDecimal)", for: .line2)
-					statsNode.setLineOfText("spw: \(spawnCount), mat: \(matedCount) | thr: \(thrustDescr) | spdB: \(speedBoostDescr)", for: .line3)
+					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), v: \(visibility.formattedToPercentNoDecimal)", for: .line1)
+					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("spawn: \(spawnCount), ce: \(cumulativeEnergy.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
@@ -438,26 +483,20 @@ extension CellComponent {
 		let node = SKShapeNode(circleOfRadius: radius)
 		node.name = "cell"
 		node.fillColor = SKColor.lightGray
-		node.lineWidth = 0
+		node.lineWidth = radius * 0.075
+		node.strokeColor = .clear
 		node.position = position
 		node.zPosition = Constants.ZeeOrder.cell
 		node.zRotation = CGFloat.randomAngle
-		node.blendMode = .replace
+		//node.blendMode = .replace
 		node.isAntialiased = false
-		
-//		let visorNode = SKShapeNode()
-//		let visorPath = CGMutablePath()
-//		visorPath.addArc(center: .zero, radius: radius * 0.7, startAngle: π + π/4 + π/8, endAngle: π - π/4 - π/8, clockwise: true)
-//		visorNode.path = visorPath
-//		visorNode.fillColor = .clear
-//		visorNode.lineWidth = radius * 0.15
-//		visorNode.zRotation = π
-//
-//		visorNode.lineCap = .round
-//		visorNode.strokeColor = .black
-//		visorNode.isAntialiased = false
-//		visorNode.zPosition = Constants.ZeeOrder.cell + 0.1
-//		node.addChild(visorNode)
+				
+		let shadowNode = SKShapeNode()
+		shadowNode.path = node.path
+		shadowNode.zPosition = Constants.ZeeOrder.cell - 6
+		shadowNode.glowWidth = radius * 0.4
+		shadowNode.strokeColor = SKColor.black.withAlphaComponent(0.5)
+		node.addChild(shadowNode)
 		
 		var eyeNodes: [SKShapeNode] = []
 		for angle in [-π/4.5, π/4.5] {
@@ -515,7 +554,7 @@ extension CellComponent {
 		cellComponent.healthNode = healthNode
 		cellComponent.speedNode = speedNode
 		cellComponent.eyeNodes = eyeNodes
-
+		
 		return OKEntity(components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),

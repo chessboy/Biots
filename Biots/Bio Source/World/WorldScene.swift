@@ -50,6 +50,7 @@ final class WorldScene: OKScene {
 			PhysicsEventComponent.self,
 			//NoiseComponent.self,
 			
+			ZapperComponent.self,
 			AlgaeComponent.self,
 			ResourceFountainComponent.self,
 			ResourceFountainInfluenceComponent.self,
@@ -153,6 +154,8 @@ final class WorldScene: OKScene {
 				entity.node?.isHidden = globalDataComponent.hideAlgae
 			})
 
+			scene?.children.filter({$0.name == "grid"}).first?.isHidden = globalDataComponent.hideAlgae
+			
 			break
 
 		case Keycode.e:
@@ -364,7 +367,7 @@ final class WorldScene: OKScene {
             if previousState is TitleState {
                 let colorFill = SKSpriteNode(color: .white, size: self.frame.size)
                 colorFill.alpha = 1
-                colorFill.blendMode = .replace
+               // colorFill.blendMode = .replace
                 self.addChild(colorFill)
                 let fadeOut = SKAction.fadeAlpha(to: 0, duration: 1.5).withTimingMode(.easeIn)
                 colorFill.run(.sequence([fadeOut, .removeFromParent()]))

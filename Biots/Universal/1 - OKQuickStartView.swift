@@ -18,8 +18,6 @@ typealias OctopusKitQuickStartView = OKQuickStartView // In case you prefer the 
 
 struct OKQuickStartView: View {
     
-	let size: CGFloat = 1600
-	
     var body: some View {
         
         #if os(iOS)
@@ -33,7 +31,7 @@ struct OKQuickStartView: View {
 
         return OKContainerView<MyGameCoordinator, MyGameViewController>()
             .environmentObject(MyGameCoordinator())
-            .frame(width: size, height: size/φ)
+			.frame(width: Constants.Display.size, height: Constants.Display.size/φ)
             .fixedSize()
         
         #elseif os(tvOS)
