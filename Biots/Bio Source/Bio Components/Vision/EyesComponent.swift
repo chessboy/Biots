@@ -46,7 +46,7 @@ final class EyesComponent: OKComponent {
 				node.position = .zero
 				node.lineCap = .round
 				node.strokeColor = SKColor(red: 0.0, green: 1.0, blue: 1.0, alpha: offset == 0 ? 0.5 : 0.25)
-				node.isAntialiased = Constants.Env.antialiased
+				node.isAntialiased = Constants.Display.antialiased
 				path.move(to: rayStart)
 				path.addLine(to: rayEnd)
 				node.path = path

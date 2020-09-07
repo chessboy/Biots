@@ -185,7 +185,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 							//print("added at \(now), ate algae energy: \(algae.energy.formattedTo2Places)")
 							contactedAlgaeComponents.append(BodyContact(when: now, body: body))
 							cellAndAlgaeCollided(algae: algae)
-						} else if now - contact!.when > Constants.Cell.timeBetweenBites {
+						}
+						else if now - contact!.when > Constants.Cell.timeBetweenBites {
 							//print("found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), ate algae energy: \(algae.energy.formattedTo2Places)")
 							contact!.updateWhen(when: now)
 							cellAndAlgaeCollided(algae: algae)
@@ -462,7 +463,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			let sequence = SKAction.sequence([pulseUp, .wait(forDuration: 0.1), pulseDown])
 			sequence.timingMode = .easeInEaseOut
 			healthNode.run(sequence)
-		} else {
+		}
+		else {
 			let pulseDown = SKAction.scale(to: 0.5, duration: 0.1)
 			let pulseUp = SKAction.scale(to: 1, duration: 0.2)
 			let sequence = SKAction.sequence([pulseDown, .wait(forDuration: 0.1), pulseUp])
@@ -486,7 +488,7 @@ extension CellComponent {
 		node.zPosition = Constants.ZeeOrder.cell
 		node.zRotation = CGFloat.randomAngle
 		//node.blendMode = .replace
-		node.isAntialiased = Constants.Env.antialiased
+		node.isAntialiased = Constants.Display.antialiased
 				
 		let shadowNode = SKShapeNode()
 		shadowNode.path = node.path
@@ -512,7 +514,7 @@ extension CellComponent {
 		healthNode.fillColor = .darkGray
 		healthNode.lineWidth = radius * 0.05
 		healthNode.strokeColor = Constants.Colors.background
-		healthNode.isAntialiased = Constants.Env.antialiased
+		healthNode.isAntialiased = Constants.Display.antialiased
 		healthNode.isHidden = true
 		healthNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(healthNode)
@@ -526,7 +528,7 @@ extension CellComponent {
 		speedNode.zRotation = π
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
-		speedNode.isAntialiased = Constants.Env.antialiased
+		speedNode.isAntialiased = Constants.Display.antialiased
 		speedNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(speedNode)
 
@@ -539,7 +541,7 @@ extension CellComponent {
 		armorNode.zRotation = π
 		armorNode.lineCap = .round
 		armorNode.strokeColor = .green
-		armorNode.isAntialiased = Constants.Env.antialiased
+		armorNode.isAntialiased = Constants.Display.antialiased
 		armorNode.zPosition = Constants.ZeeOrder.cell + 0.2
 		node.addChild(armorNode)
 

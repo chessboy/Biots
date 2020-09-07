@@ -123,17 +123,20 @@ extension Genome {
 				let mutatedWeight = mutateWeight(weights[2][randomIndex])
 				//print("--- mutating output weight of \(id) from: \(weights[2][randomIndex]) to \(mutatedWeight)")
 				weights[2][randomIndex] = mutatedWeight
-			} else {
+			}
+			else {
 				OctopusKit.logForSim.add("could not mutate output weights of \(id)")
 			}
-		} else {
+		}
+		else {
 			// mutate hidden layer weights
 			if weights.count > 1 && weights[1].count > 0 {
 				let randomIndex = Int.random(weights[1].count)
 				let mutatedWeight = mutateWeight(weights[1][randomIndex])
 				//print("--- mutating hidden weight of \(id) from: \(weights[1][randomIndex]) to \(mutatedWeight)")
 				weights[1][randomIndex] = mutatedWeight
-			} else {
+			}
+			else {
 				OctopusKit.logForSim.add("could not mutate hidden weights of \(id)")
 			}
 		}
@@ -149,17 +152,20 @@ extension Genome {
 				let mutatedWeight = mutateWeight(biases[2][randomIndex])
 				//print("--- mutating output bias of \(id) from: \(biases[2][randomIndex]) to \(mutatedWeight)")
 				biases[2][randomIndex] = mutatedWeight
-			} else {
+			}
+			else {
 				OctopusKit.logForSim.add("could not mutate output biases of \(id)")
 			}
-		} else {
+		}
+		else {
 			// mutate hidden biases
 			if biases.count > 1 && biases[1].count > 0 {
 				let randomIndex = Int.random(biases[1].count)
 				let mutatedWeight = mutateWeight(biases[1][randomIndex])
 				//print("--- mutating hidden bias of \(id) from: \(biases[1][randomIndex]) to \(mutatedWeight)")
 				biases[1][randomIndex] = mutatedWeight
-			} else {
+			}
+			else {
 				OctopusKit.logForSim.add("could not mutate hidden biases of \(id)")
 			}
 		}

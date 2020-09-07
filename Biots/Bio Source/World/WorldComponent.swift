@@ -61,7 +61,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		for _ in 1...Constants.Env.zapperCount {
 			let radius = CGFloat.random(in: worldRadius * 0.02...worldRadius * 0.05)
 			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
-			let zapper = ZapperComponent.createZapper(radius: radius, position: position)
+			let zapper = ZapperComponent.create(radius: radius, position: position)
 			zapper.node?.isHidden = hideNode
 			scene.addEntity(zapper)
 		}
@@ -70,7 +70,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
 		// algae fountains
-		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.2, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
+		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.1, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
 		alageFountain.name = "mainFountain"
 
 //		let fountain = ResourceFountainComponent.createFountain(position: CGPoint(angle: 0) * worldRadius * 0.75, minRadius: 0, maxRadius: worldRadius * 0.15, targetAlgaeSupply: targetAlgaeSupply.cgFloat / 4)

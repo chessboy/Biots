@@ -163,7 +163,8 @@ final class WorldScene: OKScene {
 			self.entities.filter { $0.component(ofType: CellComponent.self) != nil }.forEach({ cell in
 				if globalDataComponent.showCellEyeSpots {
 					cell.addComponent(EyesComponent())
-				} else {
+				}
+				else {
 					cell.removeComponent(ofType: EyesComponent.self)
 				}
 			})
@@ -183,7 +184,8 @@ final class WorldScene: OKScene {
 						if cell.component(ofType: EntityStatsComponent.self) == nil {
 							cell.addComponent(EntityStatsComponent())
 						}
-					} else {
+					}
+					else {
 						cell.removeComponent(ofType: EntityStatsComponent.self)
 					}
 				})
@@ -206,7 +208,8 @@ final class WorldScene: OKScene {
 				self.entities.filter { $0.component(ofType: ResourceFountainComponent.self) != nil }.forEach({ fountain in
 					if globalDataComponent.showAlgaeFountainInfluences {
 						fountain.addComponent(ResourceFountainInfluenceComponent())
-					} else {
+					}
+					else {
 						fountain.removeComponent(ofType: ResourceFountainInfluenceComponent.self)
 					}
 				})

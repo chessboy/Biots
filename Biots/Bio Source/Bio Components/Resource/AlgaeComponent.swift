@@ -96,7 +96,7 @@ extension AlgaeComponent {
 		node.lineWidth = 0
 		node.zPosition = Constants.ZeeOrder.algae
 		//node.blendMode = .replace
-		node.isAntialiased = Constants.Env.antialiased
+		node.isAntialiased = Constants.Display.antialiased
 		node.isHidden = true
 		let range = SKRange(lowerLimit: 0, upperLimit: Constants.Env.worldRadius * 0.9)
 		let keepInBounds = SKConstraint.distance(range, to: .zero)

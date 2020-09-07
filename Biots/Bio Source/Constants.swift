@@ -14,21 +14,20 @@ struct Constants {
 		
 	struct Env {
 		
+		static let filename = "lab32.json"
 		static let randomRun = false
+		static let worldRadius: CGFloat =  randomRun ? 3000 : 6000
+		static let gridBlockSize: CGFloat = 400
+		static let zapperCount = 15//randomRun ? 5 : 8
+
 		static let addWalls = false
-		static let zapperCount = 12//randomRun ? 5 : 8
 		static let mutationsOff = false
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let generationTrainingThreshold = 4000
 		static let fixedMarkers = true
-		static let filename = "lab32.json"
-		
-		static let antialiased = true
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
-		static let worldRadius: CGFloat =  randomRun ? 3000 : 6000
-		static let gridBlockSize: CGFloat = 400
 		static let minimumCells = 20
 		static let maximumCells = 32
 		static let startupDelay = randomRun ? 20 : 200
@@ -37,7 +36,6 @@ struct Constants {
 	}
 	
 	struct Cell {
-							
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
@@ -71,10 +69,19 @@ struct Constants {
 		static let showSpeed = true
 	}
 	
+	struct EyeVector {
+		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
+		static let refinerAngles = [0, -π/12, π/12]
+		static let inputZones = 4 // left|center|right|rear
+		static let colorDepth = 3 // r|g|b
+		static let rayDistance: CGFloat = Cell.radius * 21
+	}
+
 	struct Display {
 //		static let size: CGFloat = 1600
 //		static let statsY: CGFloat = -480
 		
+		static let antialiased = true
 		static let size: CGFloat = 2000
 		static let statsY: CGFloat = -560
 	}
@@ -122,15 +129,7 @@ struct Constants {
 		static let radius: CGFloat = 16
 		static let bite: CGFloat = 40
 	}
-		
-	struct EyeVector {
-		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
-		static let refinerAngles = [0, -π/12, π/12]
-		static let inputZones = 4 // left|center|right|rear
-		static let colorDepth = 3 // r|g|b
-		static let rayDistance: CGFloat = Cell.radius * 21
-	}
-	
+
 	enum StatsLine: Int { case line1, line2, line3 }
 
 	struct Stats {

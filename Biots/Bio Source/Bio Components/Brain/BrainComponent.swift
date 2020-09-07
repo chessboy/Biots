@@ -107,7 +107,8 @@ final class BrainComponent: OKComponent {
 			newX = position.x + left * cos(zRotation)
 			newY = position.y + right * sin(zRotation)
 			newHeading = zRotation
-		} else {
+		}
+		else {
 			let axisWidth = Constants.Cell.radius * 2
 			let R = axisWidth * (left + right) / (2 * (right - left))
 			let wd = (right - left) / axisWidth
@@ -145,10 +146,11 @@ final class BrainComponent: OKComponent {
 		// blink
 		if inference.blink {
 			cell.blink()
-		} else {
+		}
+		else {
 			cell.checkEyeState()
 		}
 
-		node.fillColor = inference.color.average.skColor
+		node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.5 : 1)
 	}
 }
