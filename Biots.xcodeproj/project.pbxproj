@@ -25,6 +25,13 @@
 		D44B33482503650700AAF342 /* lab23.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B33472503650700AAF342 /* lab23.json */; };
 		D44B334A2503E08600AAF342 /* lab24.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B33492503E08600AAF342 /* lab24.json */; };
 		D44B334C2503ECA200AAF342 /* GridNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B334B2503ECA200AAF342 /* GridNode.swift */; };
+		D44B334E250471E900AAF342 /* lab25.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B334D250471E900AAF342 /* lab25.json */; };
+		D44B33502504A7BB00AAF342 /* lab26.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B334F2504A7BB00AAF342 /* lab26.json */; };
+		D44B335225052E3A00AAF342 /* lab28.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B335125052E3A00AAF342 /* lab28.json */; };
+		D44B335425052E6300AAF342 /* lab27.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B335325052E6300AAF342 /* lab27.json */; };
+		D44B33562505A4B500AAF342 /* lab30.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B33552505A4B500AAF342 /* lab30.json */; };
+		D44B33582505F34A00AAF342 /* lab31.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B33572505F34A00AAF342 /* lab31.json */; };
+		D44B335A25061D0500AAF342 /* lab32.json in Resources */ = {isa = PBXBuildFile; fileRef = D44B335925061D0500AAF342 /* lab32.json */; };
 		D44E60612452298500694462 /* VisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E60602452298500694462 /* VisionComponent.swift */; };
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
@@ -133,6 +140,13 @@
 		D44B33472503650700AAF342 /* lab23.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab23.json; sourceTree = "<group>"; };
 		D44B33492503E08600AAF342 /* lab24.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab24.json; sourceTree = "<group>"; };
 		D44B334B2503ECA200AAF342 /* GridNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridNode.swift; sourceTree = "<group>"; };
+		D44B334D250471E900AAF342 /* lab25.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab25.json; sourceTree = "<group>"; };
+		D44B334F2504A7BB00AAF342 /* lab26.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab26.json; sourceTree = "<group>"; };
+		D44B335125052E3A00AAF342 /* lab28.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab28.json; sourceTree = "<group>"; };
+		D44B335325052E6300AAF342 /* lab27.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab27.json; sourceTree = "<group>"; };
+		D44B33552505A4B500AAF342 /* lab30.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab30.json; sourceTree = "<group>"; };
+		D44B33572505F34A00AAF342 /* lab31.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab31.json; sourceTree = "<group>"; };
+		D44B335925061D0500AAF342 /* lab32.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab32.json; sourceTree = "<group>"; };
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
@@ -300,6 +314,13 @@
 				D44B3345250352E300AAF342 /* lab22.json */,
 				D44B33472503650700AAF342 /* lab23.json */,
 				D44B33492503E08600AAF342 /* lab24.json */,
+				D44B334D250471E900AAF342 /* lab25.json */,
+				D44B334F2504A7BB00AAF342 /* lab26.json */,
+				D44B335325052E6300AAF342 /* lab27.json */,
+				D44B335125052E3A00AAF342 /* lab28.json */,
+				D44B33552505A4B500AAF342 /* lab30.json */,
+				D44B33572505F34A00AAF342 /* lab31.json */,
+				D44B335925061D0500AAF342 /* lab32.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -646,9 +667,13 @@
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D4E4BA5C24FFF8560044EC48 /* lab15.json in Resources */,
 				D4BE802F24FC916800208C6A /* lab4.json in Resources */,
+				D44B33562505A4B500AAF342 /* lab30.json in Resources */,
 				D4BE803324FD407B00208C6A /* lab6.json in Resources */,
 				D4BE803524FD644600208C6A /* lab7.json in Resources */,
+				D44B335425052E6300AAF342 /* lab27.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
+				D44B335225052E3A00AAF342 /* lab28.json in Resources */,
+				D44B33502504A7BB00AAF342 /* lab26.json in Resources */,
 				D4E4BA5A24FFE2860044EC48 /* lab14.json in Resources */,
 				D4BE804124FF546E00208C6A /* lab13.json in Resources */,
 				D4BE803D24FE930000208C6A /* lab11.json in Resources */,
@@ -659,6 +684,7 @@
 				D44B334425031AC100AAF342 /* lab21.json in Resources */,
 				D4040D0C24F8BC6400A2C500 /* lab1.json in Resources */,
 				D4BE803B24FE0E2700208C6A /* lab10.json in Resources */,
+				D44B33582505F34A00AAF342 /* lab31.json in Resources */,
 				D44B334025021DFC00AAF342 /* lab19.json in Resources */,
 				D4BE802B24FC55F000208C6A /* lab2.json in Resources */,
 				D4E4BA5E250088430044EC48 /* lab16.json in Resources */,
@@ -666,6 +692,8 @@
 				D44B334A2503E08600AAF342 /* lab24.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D4F00A842500B414003F6BB8 /* lab17.json in Resources */,
+				D44B334E250471E900AAF342 /* lab25.json in Resources */,
+				D44B335A25061D0500AAF342 /* lab32.json in Resources */,
 				D4BE803724FD755A00208C6A /* lab8.json in Resources */,
 				D44B333E2501487800AAF342 /* lab18.json in Resources */,
 				D4BE802D24FC809800208C6A /* lab3.json in Resources */,

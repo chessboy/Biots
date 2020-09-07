@@ -12,24 +12,63 @@ import OctopusKit
 
 struct Constants {
 		
-	struct Environment {
+	struct Env {
 		
 		static let randomRun = false
 		static let addWalls = false
+		static let zapperCount = 12//randomRun ? 5 : 8
 		static let mutationsOff = false
 		static let selfReplication = true
-		static let selfReplicationMaxSpawn = 2
-		static let generationTrainingThreshold = 2000
+		static let selfReplicationMaxSpawn = 3
+		static let generationTrainingThreshold = 4000
 		static let fixedMarkers = true
-		static let filename = "lab19.json"
+		static let filename = "lab32.json"
+		
+		static let antialiased = true
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
-		static let worldRadius: CGFloat = 4000
+		static let worldRadius: CGFloat =  randomRun ? 3000 : 6000
+		static let gridBlockSize: CGFloat = 400
 		static let minimumCells = 20
 		static let maximumCells = 32
-		static let startupDelay = 20//randomRun ? 20 : 200
+		static let startupDelay = randomRun ? 20 : 200
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
+	}
+	
+	struct Cell {
+							
+		static let radius: CGFloat = 40
+		static let clockRate = 60 // ticks per 1-way cycle
+
+		static let stateDetectionMaxProximity: CGFloat = 0.9 // 0..1
+		static let stateDetectionMinProximity: CGFloat = 0.5 // 0..1
+
+		static let collisionDamage: CGFloat = 0.125
+		static let perMovementRecovery: CGFloat = 0.0015
+
+		static let mateHealth: CGFloat = Env.randomRun ?  0.65 : 0.75 // % of maximum health
+		static let spawnHealth: CGFloat = Env.randomRun ?  0.65 : 0.75 // % of maximum health
+
+		static let maximumEnergy: CGFloat = Env.randomRun ? 120 : 150
+		static let initialEnergy: CGFloat = maximumEnergy * 0.5
+		static let perMovementEnergy: CGFloat = 0.0225
+		static let speedBoostEnergy: CGFloat = 0.0225
+		static let speedBoostExertion: CGFloat = 0.00075
+		static let blinkExertion: CGFloat = maximumEnergy * 0.02
+		static let armorEnergy: CGFloat = 0.06
+
+		static let maximumAge: CGFloat = Env.randomRun ? 2200 : 3200
+		static let matureAge: CGFloat = maximumAge * 0.25
+		static let selfReplicationAge: CGFloat = maximumAge * 0.25
+		static let gestationAge: CGFloat = maximumAge * 0.2
+		static let interactionAge: CGFloat = maximumAge * 0.1
+		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degdrades vision
+
+		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
+		static let thrustForce: CGFloat = 18
+
+		static let showSpeed = true
 	}
 	
 	struct Display {
@@ -78,41 +117,6 @@ struct Constants {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 	}
-
-	struct Cell {
-							
-		static let radius: CGFloat = 40
-		static let clockRate = 60 // ticks per 1-way cycle
-
-		static let stateDetectionMaxProximity: CGFloat = 0.9 // 0..1
-		static let stateDetectionMinProximity: CGFloat = 0.5 // 0..1
-
-		static let collisionDamage: CGFloat = 0.125
-		static let perMovementRecovery: CGFloat = 0.0015
-
-		static let mateHealth: CGFloat = 0.75  // % of maximum health
-		static let spawnHealth: CGFloat = 0.75 // % of maximum health
-
-		static let maximumEnergy: CGFloat = Environment.randomRun ? 120 : 150
-		static let initialEnergy: CGFloat = maximumEnergy * 0.75
-		static let perMovementEnergy: CGFloat = 0.03
-		static let speedBoostEnergy: CGFloat = 0.03
-		static let speedBoostExertion: CGFloat = 0.00075
-		static let blinkExertion: CGFloat = maximumEnergy * 0.02
-		static let armorEnergy: CGFloat = 0.03
-
-		static let maximumAge: CGFloat = Environment.randomRun ? 2000 : 3000
-		static let matureAge: CGFloat = maximumAge * 0.2
-		static let selfReplicationAge: CGFloat = maximumAge * 0.33
-		static let gestationAge: CGFloat = maximumAge * 0.1
-		static let interactionAge: CGFloat = maximumAge * 0.1
-		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degdrades vision
-
-		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
-		static let thrustForce: CGFloat = 15
-
-		static let showSpeed = true
-	}
 	
 	struct Algae {
 		static let radius: CGFloat = 16
@@ -137,7 +141,7 @@ struct Constants {
 	struct Camera {
 		static let initialScale: CGFloat = 3
 		static let zoomMin: CGFloat = 0.1
-		static let zoomMax: CGFloat = 0.005 * Constants.Environment.worldRadius
+		static let zoomMax: CGFloat = 0.005 * Constants.Env.worldRadius
 		static let scaleFactor: CGFloat = 1.25
 		static let panBoost: CGFloat = 100
 		static let animationDuration: TimeInterval = 0.25

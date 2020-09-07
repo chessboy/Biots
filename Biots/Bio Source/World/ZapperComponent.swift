@@ -48,7 +48,12 @@ final class ZapperComponent: OKComponent {
 		physicsBody.applyForce(driftForce, at: thrusterPoint)
 		
 		if frame % 500 == 0 {
-			setRandomCourse()
+			
+			if node.position.distance(to: .zero) > Constants.Env.worldRadius * 0.8 {
+				thrusterAngle += π
+			} else {
+				setRandomCourse()
+			}
 		}
     }
     
@@ -56,7 +61,7 @@ final class ZapperComponent: OKComponent {
 		
 		if !fixed {
 			thrusterAngle = CGFloat.randomAngle
-			let force: CGFloat = 100
+			let force: CGFloat = 50
 			driftForce = CGVector(angle: CGFloat.randomAngle) * force * CGFloat.randomSign
 			//print("driftForce: (\(driftForce.dx.formattedTo2Places), \(driftForce.dy.formattedTo2Places)) for radius: bodyComponent.sizeRadius")
 		}
@@ -74,7 +79,7 @@ extension ZapperComponent {
 		node.fillColor = Constants.Colors.wall
 		node.strokeColor = .clear
 		//node.blendMode = .replace
-		node.isAntialiased = false
+		node.isAntialiased = Constants.Env.antialiased
 		node.position = position
 
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius)

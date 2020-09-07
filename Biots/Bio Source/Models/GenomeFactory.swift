@@ -15,7 +15,7 @@ class GenomeFactory {
 	var genomes: [Genome] = []
 	
 	init() {
-		let filename = Constants.Environment.filename
+		let filename = Constants.Env.filename
 		genomes = loadJsonFromFile(filename)
 		genomes = genomes.filter({ $0.generation > 0 })
 		print("GenomeFactory: loaded \(genomes.count) genomes from \(filename):")

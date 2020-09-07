@@ -32,7 +32,7 @@ struct Genome: CustomStringConvertible, Codable {
 		self.id = UUID().uuidString
 		self.generation = 0
 		
-		if !Constants.Environment.fixedMarkers {
+		if !Constants.Env.fixedMarkers {
 			self.marker1 = Bool.random()
 			self.marker2 = Bool.random()
 		}
@@ -55,9 +55,9 @@ struct Genome: CustomStringConvertible, Codable {
 	// new genome from parent
 	init(parent: Genome) {
 		self.id = UUID().uuidString
-		self.generation = parent.generation + (Constants.Environment.mutationsOff ? 0 : 1)
+		self.generation = parent.generation + (Constants.Env.mutationsOff ? 0 : 1)
 		
-		if !Constants.Environment.fixedMarkers {
+		if !Constants.Env.fixedMarkers {
 			self.marker1 = Bool.random()
 			self.marker2 = Bool.random()
 		}
@@ -68,7 +68,7 @@ struct Genome: CustomStringConvertible, Codable {
 		self.weights = parent.weights
 		self.biases = parent.biases
 
-		if !Constants.Environment.mutationsOff {
+		if !Constants.Env.mutationsOff {
 			mutate()
 		}
 	}

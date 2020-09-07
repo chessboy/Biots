@@ -33,6 +33,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 
 	var healthNode: SKShapeNode!
 	var speedNode: SKShapeNode!
+	var armorNode: SKShapeNode!
 	var eyeNodes: [SKShapeNode] = []
 	
 	var matingGenome: Genome?
@@ -46,7 +47,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	var canMate: Bool {
-		return !expired && spawnCount < Constants.Environment.selfReplicationMaxSpawn && age > Constants.Cell.matureAge && !isPregnant && health > Constants.Cell.mateHealth
+		return !expired && spawnCount < Constants.Env.selfReplicationMaxSpawn && age > Constants.Cell.matureAge && !isPregnant && health > Constants.Cell.mateHealth
 	}
 	
 	var maximumEnergy: CGFloat {
@@ -256,13 +257,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		// update visual indicators
 		updateHealthNode()
 		updateSpeedNode()
+		updateArmorNode()
 		
-		if let node = entityNode as? SKShapeNode, let armor = coComponent(BrainComponent.self)?.inference.armor.average {
-			node.strokeColor = SKColor.yellow.withAlpha(armor.cgFloat)
-		}
+//		if let node = entityNode as? SKShapeNode, let armor = coComponent(BrainComponent.self)?.inference.armor.average {
+//			node.strokeColor = SKColor.yellow.withAlpha(armor.cgFloat)
+//		}
 
-		if Constants.Environment.selfReplication, frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Environment.generationTrainingThreshold, age > Constants.Cell.selfReplicationAge {
+		if Constants.Env.selfReplication, frame.isMultiple(of: 10) {
+			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Env.generationTrainingThreshold, age > Constants.Cell.selfReplicationAge {
 				mated(otherGenome: genome)
 			}
 		}
@@ -282,7 +284,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			node.run(.group([.fadeOut(withDuration: 0.2), SKAction.scale(to: 0.1, duration: 0.2)])) {
 				scene.removeEntityOnNextUpdate(entity)
 				
-				if node.position.distance(to: .zero) < Constants.Environment.worldRadius * 0.5, let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
+				if node.position.distance(to: .zero) < Constants.Env.worldRadius * 0.5, let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * 5)
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self) {
 						if let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node, let physicsBody = algaeNode.physicsBody {
@@ -324,24 +326,19 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	func updateSpeedNode() {
 		
-		guard Constants.Cell.showSpeed, frame.isMultiple(of: 2) else { return }
-		
-		let showingSpeed = !speedNode.isHidden
-		let showSpeed = coComponent(GlobalDataComponent.self)?.showCellHealth ?? false
-		
-		if !showingSpeed, showSpeed {
-			speedNode.alpha = 0
-			speedNode.isHidden = false
-		}
-		else if showingSpeed, !showSpeed {
-			speedNode.run(.fadeOut(withDuration: 0.1)) {
-				self.speedNode.isHidden = true
-				self.speedNode.alpha = 0
-			}
-		}
-
-		if showSpeed, let speedBoost = coComponent(BrainComponent.self)?.inference.speedBoost.average {
+		guard Constants.Cell.showSpeed/*, frame.isMultiple(of: 2)*/ else { return }
+	
+		if let speedBoost = coComponent(BrainComponent.self)?.inference.speedBoost.average {
 			speedNode.alpha = speedBoost.cgFloat
+		}
+	}
+	
+	func updateArmorNode() {
+		
+		//guard frame.isMultiple(of: 2) else { return }
+		
+		if let armor = coComponent(BrainComponent.self)?.inference.armor.average {
+			armorNode.alpha = armor.cgFloat
 		}
 	}
 	
@@ -394,7 +391,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 
-		if let worldScene = scene as? WorldScene, let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self), worldComponent.currentCells.count >= Constants.Environment.maximumCells {
+		if let worldScene = scene as? WorldScene, let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self), worldComponent.currentCells.count >= Constants.Env.maximumCells {
 			self.matingGenome = nil
 			self.lastPregnantAge = 0
 			node.run(SKAction.scale(to: 1, duration: 0.25))
@@ -489,7 +486,7 @@ extension CellComponent {
 		node.zPosition = Constants.ZeeOrder.cell
 		node.zRotation = CGFloat.randomAngle
 		//node.blendMode = .replace
-		node.isAntialiased = false
+		node.isAntialiased = Constants.Env.antialiased
 				
 		let shadowNode = SKShapeNode()
 		shadowNode.path = node.path
@@ -515,27 +512,38 @@ extension CellComponent {
 		healthNode.fillColor = .darkGray
 		healthNode.lineWidth = radius * 0.05
 		healthNode.strokeColor = Constants.Colors.background
-		healthNode.isAntialiased = false
+		healthNode.isAntialiased = Constants.Env.antialiased
 		healthNode.isHidden = true
 		healthNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(healthNode)
 		
 		let speedNode = SKShapeNode()
 		let speedPath = CGMutablePath()
-		speedPath.addArc(center: .zero, radius: radius * 0.7, startAngle: π/4 + π/8, endAngle: -π/4 - π/8, clockwise: true)
+		speedPath.addArc(center: .zero, radius: radius * 1.1, startAngle: π/6, endAngle: -π/6, clockwise: true)
 		speedNode.path = speedPath
 		speedNode.fillColor = .clear
-		speedNode.lineWidth = radius * 0.15
-		speedNode.isHidden = true
+		speedNode.lineWidth = radius * 0.1
 		speedNode.zRotation = π
-		
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
-		speedNode.isAntialiased = false
+		speedNode.isAntialiased = Constants.Env.antialiased
 		speedNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(speedNode)
 
-		let physicsBody = SKPhysicsBody(circleOfRadius: radius)
+		let armorNode = SKShapeNode()
+		let armorPath = CGMutablePath()
+		armorPath.addArc(center: .zero, radius: radius * 1.1, startAngle: -π/6 - π/24, endAngle: π/6 + π/24, clockwise: true)
+		armorNode.path = armorPath
+		armorNode.fillColor = .clear
+		armorNode.lineWidth = radius * 0.1
+		armorNode.zRotation = π
+		armorNode.lineCap = .round
+		armorNode.strokeColor = .green
+		armorNode.isAntialiased = Constants.Env.antialiased
+		armorNode.zPosition = Constants.ZeeOrder.cell + 0.2
+		node.addChild(armorNode)
+
+		let physicsBody = SKPhysicsBody(circleOfRadius: radius * 1.15)
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.cell
 		physicsBody.collisionBitMask = Constants.CollisionBitMasks.cell
 		physicsBody.contactTestBitMask = Constants.ContactBitMasks.cell
@@ -546,13 +554,14 @@ extension CellComponent {
 		physicsBody.linearDamping = 1
 		physicsBody.friction = 1
 		
-		let range = SKRange(lowerLimit: 0, upperLimit: Constants.Environment.worldRadius)
+		let range = SKRange(lowerLimit: 0, upperLimit: Constants.Env.worldRadius)
 		let keepInBounds = SKConstraint.distance(range, to: .zero)
 		node.constraints = [keepInBounds]
 
 		let cellComponent = CellComponent(genome: genome, initialEnergy: initialEnergy)
 		cellComponent.healthNode = healthNode
 		cellComponent.speedNode = speedNode
+		cellComponent.armorNode = armorNode
 		cellComponent.eyeNodes = eyeNodes
 		
 		return OKEntity(components: [

@@ -11,7 +11,7 @@ import SpriteKit
 
 class GridNode: SKNode {
 	
-	static func nodeForGrid(blockSize: CGFloat, rows: Int, cols: Int) -> SKNode {
+	static func create(blockSize: CGFloat, rows: Int, cols: Int) -> SKNode {
 		
 		let node = SKShapeNode()
 		node.name = "grid"

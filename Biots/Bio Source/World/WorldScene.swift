@@ -340,7 +340,7 @@ final class WorldScene: OKScene {
             self.backgroundColor = Constants.Colors.background
             self.entity?.addComponent(WorldComponent())
 						
-			self.view?.showsFPS = Constants.Environment.showSpriteKitStats
+			self.view?.showsFPS = Constants.Env.showSpriteKitStats
 //			self.view?.showsNodeCount = Constants.Environment.showSpriteKitStats
 //			self.view?.showsDrawCount = Constants.Environment.showSpriteKitStats
 			self.view?.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false

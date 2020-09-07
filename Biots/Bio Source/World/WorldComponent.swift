@@ -27,19 +27,21 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	override func didAddToEntity(withNode node: SKNode) {
 		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae else { return }
 		
-		let gridNode = GridNode.nodeForGrid(blockSize: 400, rows: 20, cols: 20)
+		let blockSize = Constants.Env.gridBlockSize
+		let gridSize = Int(Constants.Env.worldRadius / blockSize) * 2
+		let gridNode = GridNode.create(blockSize: 400, rows: gridSize, cols: gridSize)
 		gridNode.isHidden = hideNode
 		scene.addChild(gridNode)
 		
-		let worldRadius = Constants.Environment.worldRadius
+		let worldRadius = Constants.Env.worldRadius
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
 		boundary.node?.isHidden = hideNode
 		//boundary.addComponent(NoiseComponent())
 		scene.addEntity(boundary)
 		
-		if Constants.Environment.addWalls {
-			let dim1 = Constants.Environment.worldRadius * 0.35
-			let dim2 = Constants.Environment.worldRadius * 0.25
+		if Constants.Env.addWalls {
+			let dim1 = Constants.Env.worldRadius * 0.35
+			let dim2 = Constants.Env.worldRadius * 0.25
 
 			let line1 = BoundaryComponent.createVerticalWall(y1: dim1, y2: dim2, x: 0)
 			scene.addEntity(line1)
@@ -56,8 +58,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			line4.node?.isHidden = hideNode
 		}
 		
-		for _ in 1...8 {
-			let radius = CGFloat.random(in: worldRadius * 0.02...worldRadius * 0.1)
+		for _ in 1...Constants.Env.zapperCount {
+			let radius = CGFloat.random(in: worldRadius * 0.02...worldRadius * 0.05)
 			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
 			let zapper = ZapperComponent.createZapper(radius: radius, position: position)
 			zapper.node?.isHidden = hideNode
@@ -84,7 +86,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 	func addNewCell(genome: Genome, in scene: OKScene) -> OKEntity {
 		
-		let worldRadius = Constants.Environment.worldRadius
+		let worldRadius = Constants.Env.worldRadius
 		let distance = CGFloat.random(in: worldRadius * 0.05...worldRadius * 0.9)
 		let position = CGPoint.randomDistance(distance)
 
@@ -197,7 +199,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			//let physicsWorldSpeed = coComponent(PhysicsWorldComponent.self)?.physicsWorld?.speed ?? 0
 
 			let cellStats = currentCellStats
-			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Environment.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | e: \(cellStats.avgEnergy.formattedToPercent) | s: \(cellStats.avgStamina.formattedToPercent) | h: \(cellStats.avgHealth.formattedToPercent) | mate: \(cellStats.canMateCount) | preg: \(cellStats.pregnantCount), spawned: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
+			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Env.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | e: \(cellStats.avgEnergy.formattedToPercent) | s: \(cellStats.avgStamina.formattedToPercent) | h: \(cellStats.avgHealth.formattedToPercent) | mate: \(cellStats.canMateCount) | preg: \(cellStats.pregnantCount), spawned: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
 
 			statsComponent.updateStats(statsText)
 			
@@ -229,15 +231,15 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		displayStats()
 		
 		// cell creation
-		if !allGenomesFromFileDispensed, frame >= Constants.Environment.startupDelay && frame.isMultiple(of: Constants.Environment.dispenseInterval) {
+		if !allGenomesFromFileDispensed, frame >= Constants.Env.startupDelay && frame.isMultiple(of: Constants.Env.dispenseInterval) {
 			
-			if Constants.Environment.randomRun {
-				if scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Environment.minimumCells {
+			if Constants.Env.randomRun {
+				if scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
 					let genome = GenomeFactory.shared.newRandomGenome
 					let _ = addNewCell(genome: genome, in: scene)
 				}
 			}
-			else if GenomeFactory.shared.genomes.count > 0, scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Environment.minimumCells {
+			else if GenomeFactory.shared.genomes.count > 0, scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
 				let genomeIndex = genomeDispenseIndex % GenomeFactory.shared.genomes.count
 				var genome = GenomeFactory.shared.genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"

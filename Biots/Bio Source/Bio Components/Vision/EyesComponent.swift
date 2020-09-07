@@ -42,11 +42,11 @@ final class EyesComponent: OKComponent {
 
 				let path = CGMutablePath()
 				let node = SKShapeNode()
-				node.lineWidth = 0.001 * Constants.Environment.worldRadius
+				node.lineWidth = 0.001 * Constants.Env.worldRadius
 				node.position = .zero
 				node.lineCap = .round
 				node.strokeColor = SKColor(red: 0.0, green: 1.0, blue: 1.0, alpha: offset == 0 ? 0.5 : 0.25)
-				node.isAntialiased = false
+				node.isAntialiased = Constants.Env.antialiased
 				path.move(to: rayStart)
 				path.addLine(to: rayEnd)
 				node.path = path
