@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "lab32.json"
+		static let filename = "lab36.json"
 		static let randomRun = false
 		static let worldRadius: CGFloat =  randomRun ? 3000 : 6000
 		static let gridBlockSize: CGFloat = 400
@@ -113,8 +113,8 @@ struct Constants {
 	}
 	
 	struct Colors {
-		static let background = SKColor(red: 22/255, green: 23/255, blue: 25/255, alpha: 1)
-		static let grid = SKColor(white: 0.06, alpha: 1)
+		static let background = SKColor(white: 0.125, alpha: 1)//SKColor(red: 22/255, green: 23/255, blue: 25/255, alpha: 1)
+		static let grid = NSColor(white: 0.08125, alpha: 1)
 		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 0.8)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
 		static let cell = SKColor(red: 0.63, green: 0.8, blue: 1, alpha: 0.5)

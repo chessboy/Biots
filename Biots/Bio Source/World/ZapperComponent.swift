@@ -34,6 +34,13 @@ extension ZapperComponent {
 		node.isAntialiased = Constants.Display.antialiased
 		node.position = position
 
+		let shadowWidth: CGFloat = 10
+		let shadowNode = SKShapeNode.polygonOfRadius(radius + shadowWidth/2, sides: 8)
+		shadowNode.zPosition = Constants.ZeeOrder.wall - 0.1
+		shadowNode.glowWidth = shadowWidth
+		shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
+		node.addChild(shadowNode)
+
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
 
 		physicsBody.allowsRotation = false

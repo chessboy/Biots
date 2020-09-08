@@ -97,7 +97,7 @@ final class BrainComponent: OKComponent {
 		let position = node.position
 		let zRotation = node.zRotation
 		
-		let speedBoost: CGFloat = inference.speedBoost.average > 0 ? 2 : 1
+		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * 2, 1)
 		let armor: CGFloat = inference.armor.average.cgFloat
 		let left = inference.thrust.average.dx * Constants.Cell.thrustForce * speedBoost
 		let right = inference.thrust.average.dy * Constants.Cell.thrustForce * speedBoost
@@ -151,6 +151,6 @@ final class BrainComponent: OKComponent {
 			cell.checkEyeState()
 		}
 
-		node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.5 : 1)
+		node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
 	}
 }

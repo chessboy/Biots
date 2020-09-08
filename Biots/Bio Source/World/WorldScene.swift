@@ -19,7 +19,8 @@ import OctopusKit
 final class WorldScene: OKScene {
 
     // MARK: - Life Cycle
-    
+	var trackedEntity: OKEntity?
+	
     // MARK: 🔶 STEP 6B.1
     override func sceneDidLoad() {
         
@@ -116,6 +117,15 @@ final class WorldScene: OKScene {
 		}
 		
 		print("]\n")
+	}
+	
+	func trackEntity() {
+		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let node = trackedEntity?.node {
+			cameraComponent.nodeToTrack = nil
+			cameraComponent.camera.run(SKAction.move(to: node.position, duration: 0.5)) {
+				cameraComponent.nodeToTrack = node
+			}
+		}
 	}
 	
 	override func keyDown(with event: NSEvent) {
@@ -223,6 +233,23 @@ final class WorldScene: OKScene {
 				fountainComponent?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat / 4
 			})
 			
+		case Keycode.tab:
+			if let cells = entities(withName: "cell") {
+				if trackedEntity == nil {
+					trackedEntity = cells.first
+					trackEntity()
+				}
+				else if cells.count > 1 {
+					if let index = cells.firstIndex(of: trackedEntity!) {
+
+						let direction = shiftDown ? -1 : 1
+						let nextIndex = (index + direction + cells.count) % cells.count
+						trackedEntity = cells[nextIndex]
+						trackEntity()
+					}
+				}
+			}
+
 		case Keycode.space:
 			//scene!.isPaused = !scene!.isPaused
 			togglePauseByPlayer()

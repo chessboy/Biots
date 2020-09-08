@@ -280,9 +280,12 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
     }
 	
 	func expire() {
-		if let scene = OctopusKit.shared.currentScene, let entity = self.entity, let node = entityNode {
+		if let scene = OctopusKit.shared.currentScene as? WorldScene, let entity = self.entity, let node = entityNode {
 			expired = true
 			node.run(.group([.fadeOut(withDuration: 0.2), SKAction.scale(to: 0.1, duration: 0.2)])) {
+				if scene.trackedEntity == entity {
+					scene.trackedEntity = nil
+				}
 				scene.removeEntityOnNextUpdate(entity)
 				
 				if node.position.distance(to: .zero) < Constants.Env.worldRadius * 0.5, let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
@@ -494,7 +497,7 @@ extension CellComponent {
 		shadowNode.path = node.path
 		shadowNode.zPosition = Constants.ZeeOrder.cell - 6
 		shadowNode.glowWidth = radius * 0.4
-		shadowNode.strokeColor = SKColor.black.withAlphaComponent(0.5)
+		shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
 		node.addChild(shadowNode)
 		
 		var eyeNodes: [SKShapeNode] = []

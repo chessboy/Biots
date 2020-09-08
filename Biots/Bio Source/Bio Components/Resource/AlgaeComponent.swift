@@ -104,9 +104,9 @@ extension AlgaeComponent {
 
 		let shadowNode = SKShapeNode()
 		shadowNode.path = node.path
-		shadowNode.glowWidth = 6
-		shadowNode.zPosition = Constants.ZeeOrder.algae - 2
-		shadowNode.strokeColor = NSColor.black.withAlphaComponent(0.4)
+		shadowNode.glowWidth = 5
+		shadowNode.zPosition = Constants.ZeeOrder.algae - 0.1
+		shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
 		node.addChild(shadowNode)
 
 		let bufferNode = SKShapeNode(circleOfRadius: Constants.Algae.radius * 1.25)

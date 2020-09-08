@@ -363,6 +363,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			 Keycode.upArrow:
 			
 			if let cameraComponent = entity?.component(ofType: CameraComponent.self) {
+				(OctopusKit.shared.currentScene as? WorldScene)?.trackedEntity = nil
 				cameraComponent.nodeToTrack = nil
 			}
 
