@@ -67,9 +67,11 @@ final class BrainComponent: OKComponent {
 		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth)
 
 		let zonedVision = ZonedVision.fromAngleVisions(angleVisions)
-//		visionComponent.addVisionInput(zonedVision: zonedVision)
+		
+		if Constants.Cell.debugVision {
+			visionComponent.addVisionInput(zonedVision: zonedVision)
+		}
 				
-//		cell.zonedAngleDescription = zonedVision.description
 		var angleIndex = 0
 		for colorVector in [zonedVision.right, zonedVision.center, zonedVision.left, zonedVision.rear] {
 			inputs[angleIndex * Constants.EyeVector.colorDepth + 0] = colorVector.red.float

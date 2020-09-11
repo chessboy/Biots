@@ -16,6 +16,9 @@
 		D4229EDB250A75FC00DE29CE /* lab40.json in Resources */ = {isa = PBXBuildFile; fileRef = D4229EDA250A75FC00DE29CE /* lab40.json */; };
 		D4229EDD250A763100DE29CE /* lab41.json in Resources */ = {isa = PBXBuildFile; fileRef = D4229EDC250A763100DE29CE /* lab41.json */; };
 		D4229EDF250A7CE600DE29CE /* RetinaNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4229EDE250A7CE600DE29CE /* RetinaNode.swift */; };
+		D4229EE2250B3AFD00DE29CE /* zoo1.json in Resources */ = {isa = PBXBuildFile; fileRef = D4229EE1250B3AFD00DE29CE /* zoo1.json */; };
+		D4229EE4250B551800DE29CE /* zoo2.json in Resources */ = {isa = PBXBuildFile; fileRef = D4229EE3250B551800DE29CE /* zoo2.json */; };
+		D4229EE6250BC62700DE29CE /* zoo3.json in Resources */ = {isa = PBXBuildFile; fileRef = D4229EE5250BC62700DE29CE /* zoo3.json */; };
 		D42CE72E2443FF820049854C /* KeyTrackerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */; };
 		D42CE73224440EC20049854C /* GlobalStatsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE73124440EC20049854C /* GlobalStatsComponent.swift */; };
 		D42CE738244430CE0049854C /* RulerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE737244430CE0049854C /* RulerComponent.swift */; };
@@ -141,6 +144,9 @@
 		D4229EDA250A75FC00DE29CE /* lab40.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab40.json; sourceTree = "<group>"; };
 		D4229EDC250A763100DE29CE /* lab41.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab41.json; sourceTree = "<group>"; };
 		D4229EDE250A7CE600DE29CE /* RetinaNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetinaNode.swift; sourceTree = "<group>"; };
+		D4229EE1250B3AFD00DE29CE /* zoo1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo1.json; sourceTree = "<group>"; };
+		D4229EE3250B551800DE29CE /* zoo2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo2.json; sourceTree = "<group>"; };
+		D4229EE5250BC62700DE29CE /* zoo3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo3.json; sourceTree = "<group>"; };
 		D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTrackerComponent.swift; sourceTree = "<group>"; };
 		D42CE73124440EC20049854C /* GlobalStatsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStatsComponent.swift; sourceTree = "<group>"; };
 		D42CE737244430CE0049854C /* RulerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerComponent.swift; sourceTree = "<group>"; };
@@ -281,6 +287,16 @@
 				D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		D4229EE0250B3ADA00DE29CE /* New Zoo */ = {
+			isa = PBXGroup;
+			children = (
+				D4229EE1250B3AFD00DE29CE /* zoo1.json */,
+				D4229EE3250B551800DE29CE /* zoo2.json */,
+				D4229EE5250BC62700DE29CE /* zoo3.json */,
+			);
+			path = "New Zoo";
 			sourceTree = "<group>";
 		};
 		D42CE73324442DFE0049854C /* UI Components */ = {
@@ -601,6 +617,7 @@
 				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D47D719524489C450079D2F1 /* GenomeFactory.swift */,
+				D4229EE0250B3ADA00DE29CE /* New Zoo */,
 				D446080F244CE3410046ECC5 /* Zoo */,
 			);
 			path = Models;
@@ -697,6 +714,7 @@
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D4E4BA5C24FFF8560044EC48 /* lab15.json in Resources */,
 				D4BE802F24FC916800208C6A /* lab4.json in Resources */,
+				D4229EE6250BC62700DE29CE /* zoo3.json in Resources */,
 				D44B33562505A4B500AAF342 /* lab30.json in Resources */,
 				D4BE803324FD407B00208C6A /* lab6.json in Resources */,
 				D4229EDD250A763100DE29CE /* lab41.json in Resources */,
@@ -727,6 +745,7 @@
 				D4BE802B24FC55F000208C6A /* lab2.json in Resources */,
 				D4E4BA5E250088430044EC48 /* lab16.json in Resources */,
 				D4BE803124FCCD7300208C6A /* lab5.json in Resources */,
+				D4229EE2250B3AFD00DE29CE /* zoo1.json in Resources */,
 				D44B33682509AC9300AAF342 /* lab39.json in Resources */,
 				D44B334A2503E08600AAF342 /* lab24.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
@@ -735,6 +754,7 @@
 				D44B335A25061D0500AAF342 /* lab32.json in Resources */,
 				D4BE803724FD755A00208C6A /* lab8.json in Resources */,
 				D44B333E2501487800AAF342 /* lab18.json in Resources */,
+				D4229EE4250B551800DE29CE /* zoo2.json in Resources */,
 				D4BE802D24FC809800208C6A /* lab3.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

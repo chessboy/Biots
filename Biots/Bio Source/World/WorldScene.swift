@@ -299,15 +299,16 @@ final class WorldScene: OKScene {
 //		let theta = atan2(point.y, point.x)
 //		print(theta.degrees.formattedTo2Places)
 
+		guard let mainFountain = entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self) else {
+			return
+		}
 		
-		if shiftDown {
-			if let algaeFountainComponent = self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self) {
-				for _ in 1...3 + Int.random(3) {
-					let algae = algaeFountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
-					if let node = algae.component(ofType: SpriteKitComponent.self)?.node {
-						node.position = point + CGPoint.randomAngle * CGFloat.random(in: 50..<200)
-						addEntity(algae)
-					}
+		if shiftDown, !commandDown {
+			for _ in 1...3 + Int.random(3) {
+				let algae = mainFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
+				if let node = algae.component(ofType: SpriteKitComponent.self)?.node {
+					node.position = point + CGPoint.randomAngle * CGFloat.random(in: 50..<200)
+					addEntity(algae)
 				}
 			}
 			return
@@ -319,7 +320,22 @@ final class WorldScene: OKScene {
 			if let selectedEntity = entities.filter({ $0.node == cellNode }).first as? OKEntity,
 				let cellComponent = selectedEntity.component(ofType: CellComponent.self) {
 				
-				if commandDown, let cameraComponent = entity?.component(ofType: CameraComponent.self) {
+				if shiftDown, commandDown, Constants.Env.randomRun {
+					entities(withName: "cell")?.forEach({ cellEntity in
+						removeEntity(cellEntity)
+					})
+					
+					let worldRadius = Constants.Env.worldRadius
+
+					for _ in 1...Constants.Env.minimumCells {
+						let distance = CGFloat.random(in: Constants.Env.worldRadius * 0.05...worldRadius * 0.9)
+						let position = CGPoint.randomDistance(distance)
+						let clonedGenome = Genome(parent: cellComponent.genome)
+						let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialEnergy: Constants.Cell.initialEnergy, fountainComponent: RelayComponent(for: mainFountain))
+						addEntity(childCell)
+					}
+				}
+				else if commandDown, let cameraComponent = entity?.component(ofType: CameraComponent.self) {
 					
 					if cameraComponent.nodeToTrack == selectedEntity.node {
 						cameraComponent.nodeToTrack = nil

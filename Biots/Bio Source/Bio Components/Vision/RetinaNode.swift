@@ -16,25 +16,21 @@ class RetinaNode: SKShapeNode {
 	init(angle: CGFloat, radius: CGFloat, startRadius: CGFloat, width: CGFloat, forBackground: Bool = false) {
 		
 		super.init()
-		self.name = "RetinaNode"
+		self.name = "retina"
 
 		self.angle = angle
-		self.position = position
 		
 		let path = CGMutablePath()
 		path.addArc(center: .zero, radius: radius * startRadius, startAngle: angle - width, endAngle: angle + width, clockwise: false)
 
 		self.path = path
-		self.lineWidth = 6
+		self.lineWidth = 5
 		self.lineCap = .round
 		self.strokeColor = .black
-		self.isAntialiased = Constants.Display.antialiased
+		self.isAntialiased = true
 
 		if forBackground {
-			self.lineJoin = .round
-			self.strokeColor = .black
 			self.lineWidth = 8
-			self.fillColor = .black
 		}
 	}
 	

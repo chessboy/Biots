@@ -117,3 +117,10 @@ public func / (vector: ColorVector, scalar: CGFloat) -> ColorVector {
 public func /= (vector: inout ColorVector, scalar: CGFloat) {
 	vector = vector / scalar
 }
+
+//
+// divides the r, g and b fields of a ColorVector by the same scalar value
+//
+public func /= (vector: inout ColorVector, scalar: Int) {
+	vector = vector / scalar.cgFloat
+}

@@ -14,9 +14,9 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "lab33.json"
-		static let randomRun = true
-		static let worldRadius: CGFloat =  randomRun ? 3500 : 5000
+		static let filename = "lab26.json"
+		static let randomRun = false
+		static let worldRadius: CGFloat =  randomRun ? 5000 : 5000
 		static let gridBlockSize: CGFloat = 400
 		static let zapperCount = Int(worldRadius * 0.004)
 
@@ -65,6 +65,8 @@ struct Constants {
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 18
+		
+		static let debugVision = false
 	}
 	
 	struct EyeVector {
