@@ -27,7 +27,7 @@ struct Inference {
 		return 8
 	}
 			
-	mutating func infer(outputs: [Float], seenId: String?) {
+	mutating func infer(outputs: [Float], seenId: String? = nil) {
 		
 		let count = Inference.outputCount
 		guard outputs.count == count else {

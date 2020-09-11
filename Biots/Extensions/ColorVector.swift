@@ -10,7 +10,11 @@ import Foundation
 import OctopusKit
 import SpriteKit
 
-public struct ColorVector {
+public struct ColorVector: Comparable {
+	
+	public static func < (lhs: ColorVector, rhs: ColorVector) -> Bool {
+		return lhs.red + lhs.green + lhs.blue < rhs.red + rhs.green + rhs.blue
+	}
 	
 	public static var zero: ColorVector { return ColorVector() }
 
@@ -23,11 +27,10 @@ public struct ColorVector {
 	}
 	
 	var skColor: SKColor {
-		guard red >= 0, red <= 1, green >= 0, green <= 1, blue >= 0, blue <= 1 else {
-			OctopusKit.logForSim.add("invalid color vector: \(description)")
-			return .black
-		}
-		return SKColor(red: red, green: green, blue: blue, alpha: 1)
+		let safeRed = red.clamped(0, 1)
+		let safeGreen = green.clamped(0, 1)
+		let safeBlue = blue.clamped(0, 1)
+		return SKColor(red: safeRed, green: safeGreen, blue: safeBlue, alpha: 1)
 	}
 }
 

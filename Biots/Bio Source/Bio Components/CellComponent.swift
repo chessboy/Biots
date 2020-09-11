@@ -36,8 +36,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var armorNode: SKShapeNode!
 	var eyeNodes: [SKShapeNode] = []
 	
-	var matingGenome: Genome?
+//	var visionNode: SKNode!
+//	var visionInputNode: SKNode!
+//	var retinaNodes: [RetinaNode] =  []
+//	var retinaInputNodes: [RetinaNode] =  []
 
+	var matingGenome: Genome?
+//	var zonedAngleDescription: String = ""
+	
 	var isPregnant: Bool {
 		return matingGenome != nil
 	}
@@ -204,7 +210,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard age - lastBlinkAge > 30 else { return }
 		
 		lastBlinkAge = age
-		incurEnergyChange(-Constants.Cell.blinkExertion)
+		incurEnergyChange(-Constants.Cell.blinkEnergy)
 		animatingEyes = true
 		eyeNodes.forEach({ eyeNode in
 			eyeNode.fillColor = .black
@@ -256,6 +262,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 		
 		// update visual indicators
+		//displayVision()
 		updateHealthNode()
 		updateSpeedNode()
 		updateArmorNode()
@@ -304,7 +311,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func updateHealthNode() {
-
 		guard frame.isMultiple(of: 5) else { return }
 		
 		let showingHealth = !healthNode.isHidden
@@ -329,8 +335,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func updateSpeedNode() {
-		
-		guard Constants.Cell.showSpeed/*, frame.isMultiple(of: 2)*/ else { return }
+		guard frame.isMultiple(of: 2) else { return }
 	
 		if let speedBoost = coComponent(BrainComponent.self)?.inference.speedBoost.average {
 			speedNode.alpha = speedBoost.cgFloat
@@ -338,20 +343,51 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func updateArmorNode() {
-		
-		//guard frame.isMultiple(of: 2) else { return }
+		guard frame.isMultiple(of: 2) else { return }
 		
 		if let armor = coComponent(BrainComponent.self)?.inference.armor.average {
 			armorNode.alpha = armor.cgFloat
 		}
 	}
 	
+	/*
+	// display visual sensors
+	func displayVision() {
+				
+		guard let visionComponent = coComponent(VisionComponent.self) else {
+			return
+		}
+		
+		for angle in Constants.EyeVector.eyeAngles {
+			if let retinaNode = retinaNodes.filter({ $0.angle == angle }).first {
+				var color: SKColor = .black
+				if let angleVision = visionComponent.visionMemory.filter({ $0.angle == angle }).first {
+					color = angleVision.runningColorVector.average.skColor
+					retinaNode.zPosition = Constants.ZeeOrder.cell + color.brightnessComponent
+				}
+				retinaNode.strokeColor = color
+			}
+		}
+		
+		for angle in [-π/2, 0, π/2, π] {
+			if let retinaInputNode = retinaInputNodes.filter({ $0.angle == angle }).first {
+				var color: SKColor = .black
+				if let angleVision = visionComponent.visionInputMemory.filter({ $0.angle == angle }).first {
+					color = angleVision.runningColorVector.average.skColor
+					retinaInputNode.zPosition = Constants.ZeeOrder.cell + color.brightnessComponent
+				}
+				retinaInputNode.strokeColor = color
+			}
+		}
+	}
+	*/
+	
 	func showStats() {
 		
 		if  let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
 			
 			if frame.isMultiple(of: 10) {
-				if coComponent(GlobalDataComponent.self)?.showCellStats == true {
+ 				if coComponent(GlobalDataComponent.self)?.showCellStats == true {
 					
 					if let cameraScale = OctopusKit.shared.currentScene?.camera?.xScale {
 						let scale = (0.2 * cameraScale).clamped(0.3, 0.75)
@@ -381,6 +417,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), v: \(visibility.formattedToPercentNoDecimal)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), ce: \(cumulativeEnergy.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
+//					statsNode.setLineOfText(zonedAngleDescription, for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
@@ -490,15 +527,17 @@ extension CellComponent {
 		node.position = position
 		node.zPosition = Constants.ZeeOrder.cell
 		node.zRotation = CGFloat.randomAngle
-		//node.blendMode = .replace
+		node.blendMode = Constants.Display.blendMode
 		node.isAntialiased = Constants.Display.antialiased
-				
-		let shadowNode = SKShapeNode()
-		shadowNode.path = node.path
-		shadowNode.zPosition = Constants.ZeeOrder.cell - 6
-		shadowNode.glowWidth = radius * 0.4
-		shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
-		node.addChild(shadowNode)
+		
+		if Constants.Display.shadows {
+			let shadowNode = SKShapeNode()
+			shadowNode.path = node.path
+			shadowNode.zPosition = Constants.ZeeOrder.cell - 6
+			shadowNode.glowWidth = radius * 0.4
+			shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
+			node.addChild(shadowNode)
+		}
 		
 		var eyeNodes: [SKShapeNode] = []
 		for angle in [-π/4.5, π/4.5] {
@@ -510,6 +549,7 @@ extension CellComponent {
 			eyeNode.position = CGPoint(angle: angle) * radius * 0.65
 			node.addChild(eyeNode)
 			eyeNode.zPosition = node.zPosition + 0.2
+			//eyeNode.isHidden = true
 			eyeNodes.append(eyeNode)
 		}
 		
@@ -548,6 +588,44 @@ extension CellComponent {
 		armorNode.zPosition = Constants.ZeeOrder.cell + 0.2
 		node.addChild(armorNode)
 
+		/*
+		// vision
+		let visionNode = SKNode()
+		visionNode.zPosition = Constants.ZeeOrder.cell + 0.2
+		node.addChild(visionNode)
+		
+		for angle in Constants.EyeVector.eyeAngles {
+			let node = RetinaNode(angle: angle, radius: radius, startRadius: 0.75, width: π/12, forBackground: true)
+			visionNode.addChild(node)
+		}
+		
+		var retinaNodes: [RetinaNode] = []
+		
+		for angle in Constants.EyeVector.eyeAngles {
+			let node = RetinaNode(angle: angle, radius: radius, startRadius: 0.75, width: π/12)
+			retinaNodes.append(node)
+			visionNode.addChild(node)
+		}
+		
+		// vision input
+		let visionInputNode = SKNode()
+		visionInputNode.zPosition = Constants.ZeeOrder.cell + 0.2
+		node.addChild(visionInputNode)
+		
+		for angle in [-π/2, 0, π/2, π] {
+			let node = RetinaNode(angle: angle, radius: radius, startRadius: 0.45, width: π/6, forBackground: true)
+			visionNode.addChild(node)
+		}
+		
+		var retinaInputNodes: [RetinaNode] = []
+		
+		for angle in [-π/2, 0, π/2, π] {
+			let node = RetinaNode(angle: angle, radius: radius, startRadius: 0.45, width: π/6)
+			retinaInputNodes.append(node)
+			visionInputNode.addChild(node)
+		}
+		*/
+		
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius * 1.15)
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.cell
 		physicsBody.collisionBitMask = Constants.CollisionBitMasks.cell
@@ -568,7 +646,11 @@ extension CellComponent {
 		cellComponent.speedNode = speedNode
 		cellComponent.armorNode = armorNode
 		cellComponent.eyeNodes = eyeNodes
-		
+//		cellComponent.visionNode = visionNode
+//		cellComponent.retinaNodes = retinaNodes
+//		cellComponent.visionInputNode = visionInputNode
+//		cellComponent.retinaInputNodes = retinaInputNodes
+
 		return OKEntity(components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),

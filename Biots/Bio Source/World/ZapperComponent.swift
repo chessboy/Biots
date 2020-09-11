@@ -27,19 +27,21 @@ extension ZapperComponent {
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 8)
 		node.name = "wall"
 		node.zPosition = Constants.ZeeOrder.wall
-		node.lineWidth = 0
+		node.lineWidth = 4
 		node.fillColor = Constants.Colors.wall
-		node.strokeColor = .clear
-		//node.blendMode = .replace
+		node.strokeColor = Constants.Colors.grid
+		node.blendMode = Constants.Display.blendMode
 		node.isAntialiased = Constants.Display.antialiased
 		node.position = position
 
-		let shadowWidth: CGFloat = 10
-		let shadowNode = SKShapeNode.polygonOfRadius(radius + shadowWidth/2, sides: 8)
-		shadowNode.zPosition = Constants.ZeeOrder.wall - 0.1
-		shadowNode.glowWidth = shadowWidth
-		shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
-		node.addChild(shadowNode)
+		if Constants.Display.shadows {
+			let shadowWidth: CGFloat = 10
+			let shadowNode = SKShapeNode.polygonOfRadius(radius + shadowWidth/2, sides: 8)
+			shadowNode.zPosition = Constants.ZeeOrder.wall - 0.1
+			shadowNode.glowWidth = shadowWidth
+			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
+			node.addChild(shadowNode)
+		}
 
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
 

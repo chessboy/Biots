@@ -51,7 +51,6 @@ final class WorldScene: OKScene {
 			PhysicsEventComponent.self,
 			//NoiseComponent.self,
 			
-			ZapperComponent.self,
 			AlgaeComponent.self,
 			ResourceFountainComponent.self,
 			ResourceFountainInfluenceComponent.self,
@@ -395,12 +394,12 @@ final class WorldScene: OKScene {
 
             // Add a fade-in effect if the previous state and scene was the title screen.
             if previousState is TitleState {
-                let colorFill = SKSpriteNode(color: .white, size: self.frame.size)
-                colorFill.alpha = 1
-               // colorFill.blendMode = .replace
-                self.addChild(colorFill)
-                let fadeOut = SKAction.fadeAlpha(to: 0, duration: 1.5).withTimingMode(.easeIn)
-                colorFill.run(.sequence([fadeOut, .removeFromParent()]))
+				let colorFill = SKSpriteNode(color: .white, size: self.frame.size)
+				colorFill.alpha = 1
+				colorFill.blendMode = .replace
+				self.addChild(colorFill)
+				let fadeOut = SKAction.fadeAlpha(to: 0, duration: 1.5).withTimingMode(.easeIn)
+				colorFill.run(.sequence([fadeOut, .removeFromParent()]))
             }
             
         case is PausedState.Type: // Entering `PausedState`

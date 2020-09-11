@@ -59,7 +59,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		}
 		
 		for _ in 1...Constants.Env.zapperCount {
-			let radius = CGFloat.random(in: worldRadius * 0.02...worldRadius * 0.05)
+			let radius = CGFloat.random(in: 100...250)
 			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
 			let zapper = ZapperComponent.create(radius: radius, position: position)
 			zapper.node?.isHidden = hideNode

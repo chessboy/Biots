@@ -14,11 +14,11 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "lab36.json"
-		static let randomRun = false
-		static let worldRadius: CGFloat =  randomRun ? 3000 : 6000
+		static let filename = "lab33.json"
+		static let randomRun = true
+		static let worldRadius: CGFloat =  randomRun ? 3500 : 5000
 		static let gridBlockSize: CGFloat = 400
-		static let zapperCount = 15//randomRun ? 5 : 8
+		static let zapperCount = Int(worldRadius * 0.004)
 
 		static let addWalls = false
 		static let mutationsOff = false
@@ -28,9 +28,9 @@ struct Constants {
 		static let fixedMarkers = true
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
-		static let minimumCells = 20
-		static let maximumCells = 32
-		static let startupDelay = randomRun ? 20 : 200
+		static let minimumCells = 12
+		static let maximumCells = 24
+		static let startupDelay = 0// randomRun ? 20 : 200
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 	}
@@ -48,13 +48,13 @@ struct Constants {
 		static let mateHealth: CGFloat = Env.randomRun ?  0.65 : 0.75 // % of maximum health
 		static let spawnHealth: CGFloat = Env.randomRun ?  0.65 : 0.75 // % of maximum health
 
-		static let maximumEnergy: CGFloat = Env.randomRun ? 120 : 150
+		static let maximumEnergy: CGFloat = 150
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
+		static let blinkEnergy: CGFloat = maximumEnergy * 0.02
 		static let perMovementEnergy: CGFloat = 0.0225
 		static let speedBoostEnergy: CGFloat = 0.0225
+		static let armorEnergy: CGFloat = 0.08
 		static let speedBoostExertion: CGFloat = 0.00075
-		static let blinkExertion: CGFloat = maximumEnergy * 0.02
-		static let armorEnergy: CGFloat = 0.06
 
 		static let maximumAge: CGFloat = Env.randomRun ? 2200 : 3200
 		static let matureAge: CGFloat = maximumAge * 0.25
@@ -65,13 +65,11 @@ struct Constants {
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 18
-
-		static let showSpeed = true
 	}
 	
 	struct EyeVector {
-		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
-		static let refinerAngles = [0, -π/12, π/12]
+		static let eyeAngles = [-π/2, -π/3, -π/6, 0, π/6, π/3, π/2, π]
+		static let refinerAngles = [0, -π/18, π/18]
 		static let inputZones = 4 // left|center|right|rear
 		static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Cell.radius * 21
@@ -81,7 +79,14 @@ struct Constants {
 //		static let size: CGFloat = 1600
 //		static let statsY: CGFloat = -480
 		
-		static let antialiased = true
+//		static let antialiased = true
+//		static let blendMode = SKBlendMode.alpha
+//		static let shadows = true
+		
+		static let antialiased = false
+		static let blendMode = SKBlendMode.replace
+		static let shadows = false
+		
 		static let size: CGFloat = 2000
 		static let statsY: CGFloat = -560
 	}

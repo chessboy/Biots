@@ -35,11 +35,11 @@ final class BrainComponent: OKComponent {
 		guard
 			let cell = coComponent(CellComponent.self),
 			let neuralNetComponent = coComponent(NeuralNetComponent.self),
-			let angleVisions = coComponent(VisionComponent.self)?.detect()
+			let visionComponent = coComponent(VisionComponent.self)
 			else { return }
 		
-		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth)
-
+		let angleVisions = visionComponent.detect()
+		
 //		let position = cell.entityNode?.position ?? .zero
 //		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
 //		let distanceToCenter = position.distance(to: .zero)/Constants.Environment.worldRadius
@@ -64,7 +64,12 @@ final class BrainComponent: OKComponent {
 //			print(senses)
 //		}
 
+		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth)
+
 		let zonedVision = ZonedVision.fromAngleVisions(angleVisions)
+//		visionComponent.addVisionInput(zonedVision: zonedVision)
+				
+//		cell.zonedAngleDescription = zonedVision.description
 		var angleIndex = 0
 		for colorVector in [zonedVision.right, zonedVision.center, zonedVision.left, zonedVision.rear] {
 			inputs[angleIndex * Constants.EyeVector.colorDepth + 0] = colorVector.red.float
@@ -72,17 +77,17 @@ final class BrainComponent: OKComponent {
 			inputs[angleIndex * Constants.EyeVector.colorDepth + 2] = colorVector.blue.float
 			angleIndex += 1
 		}
-		
+				
 		inputs += senses.toArray
 		
-		let seenId = angleVisions.filter({ $0.angle == 0 && $0.id != nil }).first?.id
+//		let seenId = angleVisions.filter({ $0.angle == 0 && $0.id != nil }).first?.id
 		
 //		if let seenId = seenId, let id = coComponent(CellComponent.self)?.genome.id {
 //			print("cell \(id) saw \(seenId)")
 //		}
 
 		let outputs = neuralNetComponent.infer(inputs)
-		inference.infer(outputs: outputs, seenId: seenId)
+		inference.infer(outputs: outputs)
 		action()
 	}
 	
@@ -151,6 +156,6 @@ final class BrainComponent: OKComponent {
 			cell.checkEyeState()
 		}
 
-		node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
+		node.fillColor = inference.color.average.skColor//.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
 	}
 }
