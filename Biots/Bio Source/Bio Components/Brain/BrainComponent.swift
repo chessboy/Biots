@@ -68,7 +68,7 @@ final class BrainComponent: OKComponent {
 
 		let zonedVision = ZonedVision.fromAngleVisions(angleVisions)
 		
-		if Constants.Cell.debugVision {
+		if Constants.Env.debugVision {
 			visionComponent.addVisionInput(zonedVision: zonedVision)
 		}
 				

@@ -345,7 +345,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard frame.isMultiple(of: 2) else { return }
 		
 		if let armor = coComponent(BrainComponent.self)?.inference.armor.average {
-			armorNode.alpha = armor.cgFloat
+			if armor <= 0.1 {
+				armorNode.strokeColor = Constants.Colors.grid
+				armorNode.alpha = 1
+			}
+			else {
+				armorNode.strokeColor = .green
+				armorNode.alpha = armor.cgFloat
+			}
 		}
 	}
 	
@@ -607,24 +614,23 @@ extension CellComponent {
 		*/
 		
 		// vision input
-		if Constants.Cell.debugVision {
+		if Constants.Env.debugVision {
 			let visionInputNode = SKNode()
 			visionInputNode.zPosition = Constants.ZeeOrder.cell + 0.2
 			node.addChild(visionInputNode)
 			
 			let retinaRadius: CGFloat = 0.8
-			
+			let retinaWidth = π/12
+
 			for angle in [-π/2, 0, π/2, π] {
-				let width = angle == π ? π/12 : π/6
-				let node = RetinaNode(angle: angle, radius: radius, startRadius: retinaRadius, width: width, forBackground: true)
+				let node = RetinaNode(angle: angle, radius: radius, startRadius: retinaRadius, width: retinaWidth, forBackground: true)
 				visionInputNode.addChild(node)
 			}
 			
 			var retinaInputNodes: [RetinaNode] = []
 			
 			for angle in [-π/2, 0, π/2, π] {
-				let width = angle == π ? π/12 : π/6
-				let node = RetinaNode(angle: angle, radius: radius, startRadius: retinaRadius, width: width)
+				let node = RetinaNode(angle: angle, radius: radius, startRadius: retinaRadius, width: retinaWidth)
 				retinaInputNodes.append(node)
 				visionInputNode.addChild(node)
 			}

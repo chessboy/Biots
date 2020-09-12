@@ -34,45 +34,33 @@ struct ZonedVision: CustomStringConvertible {
 		var leftColorVector: ColorVector = .zero
 		var centerColorVector: ColorVector = .zero
 		var rightColorVector: ColorVector = .zero
-		
-		var rightPings = 0
-		var centerPings = 0
-		var leftPings = 0
-
+				
 		// get colors from right-third eyes
 		for angle in [-π/2, -π/3, -π/6] {
-			if let angleVision = angleVisions.filter({ $0.angle == angle }).first {
-				rightColorVector += angleVision.colorVector
-				rightPings += 1
-			}
+			rightColorVector += angleVisions.filter({ $0.angle == angle }).first?.colorVector ?? .zero
 		}
 
 		// get colors from center-third eyes
 		for angle in [-π/6, 0, π/6] {
-			if let angleVision = angleVisions.filter({ $0.angle == angle }).first {
-				centerColorVector += angleVision.colorVector
-				centerPings += 1
-			}
+			centerColorVector += angleVisions.filter({ $0.angle == angle }).first?.colorVector ?? .zero
 		}
 		
 		// get colors from left-third eyes
 		for angle in [π/6, π/3, π/2] {
-			if let angleVision = angleVisions.filter({ $0.angle == angle }).first {
-				leftColorVector += angleVision.colorVector
-				leftPings += 1
-			}
+			leftColorVector += angleVisions.filter({ $0.angle == angle }).first?.colorVector ?? .zero
 		}
 
 		// normalize the eye-third totals down to [0..1]
-		rightColorVector /= (rightPings == 0 ? 1 : rightPings)
-		centerColorVector /= (centerPings == 0 ? 1 : centerPings)
-		leftColorVector /= (leftPings == 0 ? 1 : leftPings)
+		rightColorVector /= 3
+		centerColorVector /= 3
+		leftColorVector /= 3
 		
 		// get color for rear eye
 		let rearColorVector = angleVisions.filter({ $0.angle == π }).first?.colorVector ?? .zero
 		
 		return ZonedVision(right: rightColorVector, center: centerColorVector, left: leftColorVector, rear: rearColorVector, idAtCenter: nil)
 	}
+
 		
 	var description: String {
 		return "rt: \(right.description), cn: \(center.description), lf: \(left.description), r: \(rear.description)"
@@ -95,7 +83,7 @@ struct AngleVision {
 struct VisionMemory {
 	
 	var angle: CGFloat
-	var runningColorVector: RunningColorVector = RunningColorVector(memory: 10)
+	var runningColorVector: RunningColorVector = RunningColorVector(memory: 4)
 	
 	init(angle: CGFloat) {
 		self.angle = angle

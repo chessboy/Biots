@@ -27,11 +27,11 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	override func didAddToEntity(withNode node: SKNode) {
 		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae else { return }
 		
-		let blockSize = Constants.Env.gridBlockSize
-		let gridSize = Int(Constants.Env.worldRadius / blockSize) * 2
-		let gridNode = GridNode.create(blockSize: 400, rows: gridSize, cols: gridSize)
-		gridNode.isHidden = hideNode
-		scene.addChild(gridNode)
+//		let blockSize = Constants.Env.gridBlockSize
+//		let gridSize = Int(Constants.Env.worldRadius / blockSize) * 2
+//		let gridNode = GridNode.create(blockSize: 400, rows: gridSize, cols: gridSize)
+//		gridNode.isHidden = hideNode
+//		scene.addChild(gridNode)
 		
 		let worldRadius = Constants.Env.worldRadius
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
@@ -70,7 +70,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
 		// algae fountains
-		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.1, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
+		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.25, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
 		alageFountain.name = "mainFountain"
 
 //		let fountain = ResourceFountainComponent.createFountain(position: CGPoint(angle: 0) * worldRadius * 0.75, minRadius: 0, maxRadius: worldRadius * 0.15, targetAlgaeSupply: targetAlgaeSupply.cgFloat / 4)

@@ -142,6 +142,14 @@ final class WorldScene: OKScene {
 				
 		switch event.keyCode {
 				
+		case Keycode.r:
+			if shiftDown, commandDown, Constants.Env.randomRun {
+				entities(withName: "cell")?.forEach({ cellEntity in
+					removeEntity(cellEntity)
+				})
+			}
+			break
+						
 		case Keycode.h:
 			globalDataComponent.showCellHealth.toggle()
 			break
@@ -149,22 +157,29 @@ final class WorldScene: OKScene {
 		case Keycode.a:
 			if commandDown {
 				globalDataComponent.hideAlgae.toggle()
+				entities(withName: "algae")?.forEach({ entity in
+					entity.node?.isHidden = globalDataComponent.hideAlgae
+				})
+				
+				entities(withName: "cell")?.forEach({ entity in
+					entity.node?.isHidden = globalDataComponent.hideAlgae
+				})
+				
+				entities(withName: "wall")?.forEach({ entity in
+					entity.node?.isHidden = globalDataComponent.hideAlgae
+				})
+
+				scene?.children.filter({$0.name == "grid"}).first?.isHidden = globalDataComponent.hideAlgae
+				return
 			}
 			
-			entities(withName: "algae")?.forEach({ entity in
-				entity.node?.isHidden = globalDataComponent.hideAlgae
-			})
-			
-			entities(withName: "cell")?.forEach({ entity in
-				entity.node?.isHidden = globalDataComponent.hideAlgae
-			})
-			
-			entities(withName: "wall")?.forEach({ entity in
-				entity.node?.isHidden = globalDataComponent.hideAlgae
-			})
-
-			scene?.children.filter({$0.name == "grid"}).first?.isHidden = globalDataComponent.hideAlgae
-			
+			if let cameraComponent = entity?.component(ofType: CameraComponent.self), let cellComponents = entities(withName: "cell")?.map({$0.component(ofType: CellComponent.self)}) as? [CellComponent] {
+				if let mostFit = cellComponents.sorted(by: { (cell1, cell2) -> Bool in
+					return cell1.health > cell2.health
+				}).first {
+					cameraComponent.nodeToTrack = mostFit.entityNode
+				}
+			}
 			break
 
 		case Keycode.e:
@@ -209,9 +224,9 @@ final class WorldScene: OKScene {
 			
 		case Keycode.t:
 			globalDataComponent.showTracer.toggle()
-
-		case Keycode.f:
 			
+		case Keycode.f:
+						
 			if commandDown {
 				globalDataComponent.showAlgaeFountainInfluences.toggle()
 				self.entities.filter { $0.component(ofType: ResourceFountainComponent.self) != nil }.forEach({ fountain in

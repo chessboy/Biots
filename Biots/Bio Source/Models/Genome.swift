@@ -103,9 +103,9 @@ struct Genome: CustomStringConvertible, Codable {
 extension Genome {
 
 	mutating func mutate() {
-		let mutationRate = 4
+		let mutationRate = generation > 50 ? (generation > 200 ? 2 : 3) : 4
 		let weightsChances = Int.random(mutationRate)
-		let biasesChances = Int.oneChanceIn(2) ? 0 : Int.random(mutationRate/2)
+		let biasesChances = Bool.random() ? 0 : 1
 		
 		if weightsChances + biasesChances > 0 {
 			for _ in 0..<weightsChances { mutateWeights() }

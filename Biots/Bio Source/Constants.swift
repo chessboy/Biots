@@ -14,11 +14,11 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "lab26.json"
-		static let randomRun = false
-		static let worldRadius: CGFloat =  randomRun ? 5000 : 5000
+		static let filename = "zoo5.json"
+		static let randomRun = true
+		static let worldRadius: CGFloat =  randomRun ? 4000 : 5000
 		static let gridBlockSize: CGFloat = 400
-		static let zapperCount = Int(worldRadius * 0.004)
+		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.004))
 
 		static let addWalls = false
 		static let mutationsOff = false
@@ -28,11 +28,12 @@ struct Constants {
 		static let fixedMarkers = true
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
-		static let minimumCells = 12
-		static let maximumCells = 24
-		static let startupDelay = 0// randomRun ? 20 : 200
+		static let minimumCells = 15
+		static let maximumCells = 30
+		static let startupDelay = randomRun ? 20 : 200
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
+		static let debugVision = true
 	}
 	
 	struct Cell {
@@ -45,15 +46,15 @@ struct Constants {
 		static let collisionDamage: CGFloat = 0.125
 		static let perMovementRecovery: CGFloat = 0.0015
 
-		static let mateHealth: CGFloat = Env.randomRun ?  0.65 : 0.75 // % of maximum health
-		static let spawnHealth: CGFloat = Env.randomRun ?  0.65 : 0.75 // % of maximum health
+		static let mateHealth: CGFloat = Env.randomRun ? 0.65 : 0.75 // % of maximum health
+		static let spawnHealth: CGFloat = Env.randomRun ? 0.65 : 0.75 // % of maximum health
 
-		static let maximumEnergy: CGFloat = 150
+		static let maximumEnergy: CGFloat = Env.randomRun ? 150 : 200
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
 		static let blinkEnergy: CGFloat = maximumEnergy * 0.02
 		static let perMovementEnergy: CGFloat = 0.0225
-		static let speedBoostEnergy: CGFloat = 0.0225
-		static let armorEnergy: CGFloat = 0.08
+		static let speedBoostEnergy: CGFloat = 0.03
+		static let armorEnergy: CGFloat = 0.06
 		static let speedBoostExertion: CGFloat = 0.00075
 
 		static let maximumAge: CGFloat = Env.randomRun ? 2200 : 3200
@@ -65,13 +66,11 @@ struct Constants {
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 18
-		
-		static let debugVision = false
 	}
 	
 	struct EyeVector {
-		static let eyeAngles = [-π/2, -π/3, -π/6, 0, π/6, π/3, π/2, π]
-		static let refinerAngles = [0, -π/18, π/18]
+		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
+		static let refinerAngles = [0, -π/12, π/12]
 		static let inputZones = 4 // left|center|right|rear
 		static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Cell.radius * 21
