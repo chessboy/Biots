@@ -10,80 +10,21 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-struct ZonedVision: CustomStringConvertible {
-	
-	var right: ColorVector = .zero
-	var center: ColorVector = .zero
-	var left: ColorVector = .zero
-	var rear: ColorVector = .zero
-	var idAtCenter: String?
-
-	func valueAtAngle(angle: CGFloat) -> ColorVector {
-		switch angle {
-		case -π/2: return right
-		case 0: return center
-		case π/2: return left
-		case π: return rear
-		default: return .zero
-		}
-	}
-	
-	//[-π/2, -π/3, -π/6, 0, π/6, π/3, π/2, π]
-	static func fromAngleVisions(_ angleVisions: [AngleVision]) -> ZonedVision {
-		// set up left, center and right colors to average from the 7 eyes (by thirds)
-		var leftColorVector: ColorVector = .zero
-		var centerColorVector: ColorVector = .zero
-		var rightColorVector: ColorVector = .zero
-				
-		// get colors from right-third eyes
-		for angle in [-π/2, -π/3, -π/6] {
-			rightColorVector += angleVisions.filter({ $0.angle == angle }).first?.colorVector ?? .zero
-		}
-
-		// get colors from center-third eyes
-		for angle in [-π/6, 0, π/6] {
-			centerColorVector += angleVisions.filter({ $0.angle == angle }).first?.colorVector ?? .zero
-		}
-		
-		// get colors from left-third eyes
-		for angle in [π/6, π/3, π/2] {
-			leftColorVector += angleVisions.filter({ $0.angle == angle }).first?.colorVector ?? .zero
-		}
-
-		// normalize the eye-third totals down to [0..1]
-		rightColorVector /= 3
-		centerColorVector /= 3
-		leftColorVector /= 3
-		
-		// get color for rear eye
-		let rearColorVector = angleVisions.filter({ $0.angle == π }).first?.colorVector ?? .zero
-		
-		return ZonedVision(right: rightColorVector, center: centerColorVector, left: leftColorVector, rear: rearColorVector, idAtCenter: nil)
-	}
-
-		
-	var description: String {
-		return "rt: \(right.description), cn: \(center.description), lf: \(left.description), r: \(rear.description)"
-	}
-}
-
 struct AngleVision {
 	
 	var angle: CGFloat = 0
 	var colorVector: ColorVector = .zero
-	var id: String?
 	
 	init(angle: CGFloat, colorVector: ColorVector, id: String? = nil) {
 		self.angle = angle
 		self.colorVector = colorVector
-		self.id = id
 	}
 }
 
 struct VisionMemory {
 	
 	var angle: CGFloat
-	var runningColorVector: RunningColorVector = RunningColorVector(memory: 4)
+	var runningColorVector: RunningColorVector = RunningColorVector(memory: Constants.Vision.memory)
 	
 	init(angle: CGFloat) {
 		self.angle = angle
@@ -94,15 +35,10 @@ struct VisionMemory {
 final class VisionComponent: OKComponent {
 
 	var visionMemory: [VisionMemory] = []
-	var visionInputMemory: [VisionMemory] = []
 
 	override init() {
-//		for angle in Constants.EyeVector.eyeAngles {
-//			visionMemory.append(VisionMemory(angle: angle))
-//		}
-//
-		for angle in [-π/2, 0, π/2, π] {
-			visionInputMemory.append(VisionMemory(angle: angle))
+		for angle in Constants.Vision.eyeAngles {
+			visionMemory.append(VisionMemory(angle: angle))
 		}
 
 		super.init()
@@ -116,14 +52,6 @@ final class VisionComponent: OKComponent {
 		SpriteKitComponent.self,
 		GlobalDataComponent.self
 	]}
-	
-	func addVisionInput(zonedVision: ZonedVision) {
-		for angle in [-π/2, 0, π/2, π] {
-			if let visionMemory = visionInputMemory.filter({ $0.angle == angle }).first {
-				visionMemory.runningColorVector.addValue(zonedVision.valueAtAngle(angle: angle))
-			}
-		}
-	}
 
 	func detect() -> [AngleVision] {
 		
@@ -142,19 +70,18 @@ final class VisionComponent: OKComponent {
 
 		let maxObjectsPerAngle = 2
 		
-		for angle in Constants.EyeVector.eyeAngles {
+		for angle in Constants.Vision.eyeAngles {
 
 			var redTotal: CGFloat = 0
 			var greenTotal: CGFloat = 0
 			var blueTotal: CGFloat = 0
 			var pings: CGFloat = 0
 			var bodiesSeenAtAngle: [SKPhysicsBody] = []
-			let idSeenAtAngle: String? = nil // unused for now
 			
-			for offset in Constants.EyeVector.refinerAngles {
+			for offset in Constants.Vision.refinerAngles {
 
 				let angleOffset = angle + offset
-				let rayDistance = cell.effectiveVisibility * Constants.EyeVector.rayDistance
+				let rayDistance = cell.effectiveVisibility * Constants.Vision.rayDistance
 				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				
@@ -163,7 +90,7 @@ final class VisionComponent: OKComponent {
 					if body != physicsBody, body.categoryBitMask & Constants.DetectionBitMasks.cell > 0 {
 						
 						let distance = rayStart.distance(to: hitPoint)
-						let proximity = 1 - distance/Constants.EyeVector.rayDistance
+						let proximity = 1 - distance/Constants.Vision.rayDistance
 						var detectedColor: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
 						
 						if !blockerSeenAtSubAngle, !bodiesSeenAtAngle.contains(body), let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
@@ -182,9 +109,6 @@ final class VisionComponent: OKComponent {
 								detectedColor = otherCellComponent.skColor
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
-								// if angle == 0, idSeenAtAngle == nil, proximity >= Constants.Cell.stateDetectionMinProximity, proximity <= Constants.Cell.stateDetectionMaxProximity {
-								//	idSeenAtAngle = otherCellComponent.genome.id
-								//}
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity))
 								}
@@ -214,18 +138,16 @@ final class VisionComponent: OKComponent {
 				}
 			}
 			
+			var colorVector = ColorVector.zero
+			
 			if pings > 0 {
-				let colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
-				let angleVision = AngleVision(angle: angle, colorVector: colorVector, id: idSeenAtAngle)
+				colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
+				let angleVision = AngleVision(angle: angle, colorVector: colorVector)
 				angleVisions.append(angleVision)
-				
-//				if let visionMemory = visionMemory.filter({ $0.angle == angle }).first {
-//					visionMemory.runningColorVector.addValue(colorVector)
-//				}
-			} else {
-//				if let visionMemory = visionMemory.filter({ $0.angle == angle }).first {
-//					visionMemory.runningColorVector.addValue(.zero)
-//				}
+			}
+			
+			if let visionMemory = visionMemory.filter({ $0.angle == angle }).first {
+				visionMemory.runningColorVector.addValue(colorVector)
 			}
 		}
 		

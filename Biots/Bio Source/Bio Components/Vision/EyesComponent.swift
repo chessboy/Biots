@@ -32,13 +32,13 @@ final class EyesComponent: OKComponent {
 	
 	override init() {
 						
-		for angle in Constants.EyeVector.eyeAngles {
-			for offset in Constants.EyeVector.refinerAngles {
+		for angle in Constants.Vision.eyeAngles {
+			for offset in Constants.Vision.refinerAngles {
 
 //				print("angle: \(angle.degrees.formattedTo2Places), offset: \(offset.degrees.formattedTo2Places), eye angle: \((angle + offset).degrees.formattedTo2Places)")
 				
 				let rayStart = CGPoint.zero
-				let rayEnd = rayStart + CGPoint(angle: angle + offset) * Constants.EyeVector.rayDistance
+				let rayEnd = rayStart + CGPoint(angle: angle + offset) * Constants.Vision.rayDistance
 
 				let path = CGMutablePath()
 				let node = SKShapeNode()

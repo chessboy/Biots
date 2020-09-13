@@ -27,16 +27,17 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	override func didAddToEntity(withNode node: SKNode) {
 		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae else { return }
 		
-//		let blockSize = Constants.Env.gridBlockSize
-//		let gridSize = Int(Constants.Env.worldRadius / blockSize) * 2
-//		let gridNode = GridNode.create(blockSize: 400, rows: gridSize, cols: gridSize)
-//		gridNode.isHidden = hideNode
-//		scene.addChild(gridNode)
+		if Constants.Env.showGrid {
+			let blockSize = Constants.Env.gridBlockSize
+			let gridSize = Int(Constants.Env.worldRadius / blockSize) * 2
+			let gridNode = GridNode.create(blockSize: 400, rows: gridSize, cols: gridSize)
+			gridNode.isHidden = hideNode
+			scene.addChild(gridNode)
+		}
 		
 		let worldRadius = Constants.Env.worldRadius
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
 		boundary.node?.isHidden = hideNode
-		//boundary.addComponent(NoiseComponent())
 		scene.addEntity(boundary)
 		
 		if Constants.Env.addWalls {
@@ -144,50 +145,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			targetCell.stopInteracting()
 		}
 	}
-	
-	func checkMatingPairs() {
 		
-		guard let scene =  OctopusKit.shared?.currentScene else { return }
-
-		var pairs: [IdPair] = []
-		
-		let cellsSeeingOtherCells = currentCells.filter({ !$0.expired && $0.coComponent(BrainComponent.self)?.inference.seenId != nil })
-		for cell1 in cellsSeeingOtherCells {
-			for cell2 in cellsSeeingOtherCells {
-				if cell1 != cell2 {
-
-					let id1 = cell1.genome.id
-					let id2 = cell2.genome.id
-
-					if 	let seenId1 = cell1.coComponent(BrainComponent.self)?.inference.seenId,
-						let seenId2 = cell2.coComponent(BrainComponent.self)?.inference.seenId,
-						id1 == seenId2, id2 == seenId1 {
-						let pair = IdPair(id1: id1, id2: id2)
-						if !pairs.contains(pair) {
-							pairs.append(pair)
-						}
-					}
-				}
-			}
-		}
-
-		for pair in pairs {
-			//print("pair: \(pair.id1) and \(pair.id2) are looking at eachother")
-
-			if let cell1 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id1 }).first as? OKEntity)?.component(ofType: CellComponent.self),
-				let cell2 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id2 }).first as? OKEntity)?.component(ofType: CellComponent.self), cell1.canInteract, cell2.canInteract {
-				//if let position1 = cell2.entityNode?.position, let position2 = cell2.entityNode?.position, position1.distance(to: position2) >
-				animateInteraction(sourceCell: cell1, targetCell: cell2, scene: scene)
-				
-				[cell1, cell2].forEach { cell in
-					cell.energy = cell.maximumEnergy
-					cell.stamina = 1
-				}
-			}
-		}
-
-	}
-	
 	func displayStats() {
 		
 		guard let scene =  OctopusKit.shared?.currentScene else { return }

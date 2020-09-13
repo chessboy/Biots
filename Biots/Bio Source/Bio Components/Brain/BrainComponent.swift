@@ -38,7 +38,7 @@ final class BrainComponent: OKComponent {
 			let visionComponent = coComponent(VisionComponent.self)
 			else { return }
 		
-		let angleVisions = visionComponent.detect()
+		let _ = visionComponent.detect()
 		
 //		let position = cell.entityNode?.position ?? .zero
 //		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
@@ -64,30 +64,22 @@ final class BrainComponent: OKComponent {
 //			print(senses)
 //		}
 
-		var inputs = Array(repeating: Float.zero, count: Constants.EyeVector.inputZones * Constants.EyeVector.colorDepth)
-
-		let zonedVision = ZonedVision.fromAngleVisions(angleVisions)
-		
-		if Constants.Env.debugVision {
-			visionComponent.addVisionInput(zonedVision: zonedVision)
-		}
-				
+		var inputs = Array(repeating: Float.zero, count: Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth)
+						
 		var angleIndex = 0
-		for colorVector in [zonedVision.right, zonedVision.center, zonedVision.left, zonedVision.rear] {
-			inputs[angleIndex * Constants.EyeVector.colorDepth + 0] = colorVector.red.float
-			inputs[angleIndex * Constants.EyeVector.colorDepth + 1] = colorVector.green.float
-			inputs[angleIndex * Constants.EyeVector.colorDepth + 2] = colorVector.blue.float
+		for angle in Constants.Vision.eyeAngles {
+			
+			if let angleVision = visionComponent.visionMemory.filter({ $0.angle == angle }).first {
+				let color = angleVision.runningColorVector.average.skColor
+				inputs[angleIndex * Constants.Vision.colorDepth] = color.redComponent.float
+				inputs[angleIndex * Constants.Vision.colorDepth + 1] = color.greenComponent.float
+				inputs[angleIndex * Constants.Vision.colorDepth + 2] = color.blueComponent.float
+			}
 			angleIndex += 1
 		}
-				
+
 		inputs += senses.toArray
 		
-//		let seenId = angleVisions.filter({ $0.angle == 0 && $0.id != nil }).first?.id
-		
-//		if let seenId = seenId, let id = coComponent(CellComponent.self)?.genome.id {
-//			print("cell \(id) saw \(seenId)")
-//		}
-
 		let outputs = neuralNetComponent.infer(inputs)
 		inference.infer(outputs: outputs)
 		action()
@@ -122,7 +114,7 @@ final class BrainComponent: OKComponent {
 
 			newX = position.x + R * sin(wd + zRotation) - R * sin(zRotation)
 			newY = position.y - R * cos(wd + zRotation) + R * cos(zRotation)
-			newHeading = (zRotation + wd/3).normalizedAngle // note: wd/2 limits rotation, maybe get rid of this
+			newHeading = (zRotation + wd/2).normalizedAngle // note: wd/2 limits rotation, maybe get rid of this
 		}
 
 		let newPosition = CGPoint(x: newX, y: newY)
@@ -158,6 +150,10 @@ final class BrainComponent: OKComponent {
 			cell.checkEyeState()
 		}
 
-		node.fillColor = inference.color.average.skColor//.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
+		if Constants.Display.blendMode != .replace {
+			node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
+		} else {
+			node.fillColor = inference.color.average.skColor
+		}
 	}
 }

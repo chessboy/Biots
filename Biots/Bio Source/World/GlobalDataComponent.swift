@@ -24,5 +24,6 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 	@OKUserDefault(key: "algaeTarget", defaultValue: 10000) public var algaeTarget: Int
 	@OKUserDefault(key: "hideAlgae", defaultValue: false) public var hideAlgae: Bool
 	@OKUserDefault(key: "showCellHealth", defaultValue: false) public var showCellHealth: Bool
+	@OKUserDefault(key: "showCellVision", defaultValue: false) public var showCellVision: Bool
 }
 

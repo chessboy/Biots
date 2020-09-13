@@ -13,7 +13,7 @@ class RetinaNode: SKShapeNode {
 	
 	var angle: CGFloat = 0
 	
-	init(angle: CGFloat, radius: CGFloat, startRadius: CGFloat, width: CGFloat, forBackground: Bool = false) {
+	init(angle: CGFloat, radius: CGFloat, width: CGFloat, forBackground: Bool = false) {
 		
 		super.init()
 		self.name = "retina"
@@ -21,7 +21,7 @@ class RetinaNode: SKShapeNode {
 		self.angle = angle
 		
 		let path = CGMutablePath()
-		path.addArc(center: .zero, radius: radius * startRadius, startAngle: angle - width, endAngle: angle + width, clockwise: false)
+		path.addArc(center: .zero, radius: radius, startAngle: angle - width, endAngle: angle + width, clockwise: false)
 
 		self.path = path
 		self.lineWidth = 5

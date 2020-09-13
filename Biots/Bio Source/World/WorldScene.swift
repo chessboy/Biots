@@ -153,6 +153,10 @@ final class WorldScene: OKScene {
 		case Keycode.h:
 			globalDataComponent.showCellHealth.toggle()
 			break
+			
+		case Keycode.v:
+			globalDataComponent.showCellVision.toggle()
+			break
 
 		case Keycode.a:
 			if commandDown {
