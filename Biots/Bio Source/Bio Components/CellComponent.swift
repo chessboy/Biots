@@ -578,7 +578,7 @@ extension CellComponent {
 			eyeNodes.append(eyeNode)
 		}
 		
-		let healthNode = SKShapeNode(circleOfRadius: radius * 0.3)
+		let healthNode = SKShapeNode(circleOfRadius: radius * 0.25)
 		healthNode.fillColor = .darkGray
 		healthNode.lineWidth = radius * 0.05
 		healthNode.strokeColor = Constants.Colors.background

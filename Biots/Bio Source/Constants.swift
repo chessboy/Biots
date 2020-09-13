@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "zoo3.json"
+		static let filename = "zoo4.json"
 		static let randomRun = false
 		static let worldRadius: CGFloat =  randomRun ? 4000 : 5000
 		static let showGrid = true
@@ -31,7 +31,7 @@ struct Constants {
 		//(2*π*4000)/(2*π*3000)*15k = 20k
 		static let minimumCells = 13
 		static let maximumCells = 26
-		static let startupDelay = 0// randomRun ? 20 : 200
+		static let startupDelay = randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 	}
@@ -72,8 +72,18 @@ struct Constants {
 		static let refinerAngles = [0, -π/12, π/12]
 		static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Cell.radius * 21
-		static let memory = 5
+		static let memory = 8
 	}
+	
+//	struct Thrust {
+//		static let thrusterOffset: CGFloat = 0 //-π/6
+//		static let thrusterWidth = π/60
+//		static let leftThrustPositive = π/2 + thrusterWidth - thrusterOffset
+//		static let leftThrustNegative = π/2 - thrusterWidth - thrusterOffset
+//		static let rightThrustNegative = -π/2 + thrusterWidth + thrusterOffset
+//		static let rightThrustPositive = -π/2 - thrusterWidth + thrusterOffset
+//		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
+//	}
 
 	struct Display {
 		
