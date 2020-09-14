@@ -49,7 +49,7 @@ class RunningValue {
 		var sum: Float = 0
 		memoryValues.forEach({ sum += $0 })
 		
-		return memoryValues.count == 0 ? 0 : sum / Float(memoryValues.count)
+		return sum / Float(memoryValues.count)
 	}
 
 	func decay(by amount: Float = 0.9) {

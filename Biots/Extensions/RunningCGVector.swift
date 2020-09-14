@@ -50,7 +50,7 @@ class RunningCGVector {
 		var sum: CGVector = .zero
 		memoryValues.forEach({ sum += $0 })
 		
-		return memoryValues.count == 0 ? .zero : sum / CGFloat(memoryValues.count)
+		return sum / CGFloat(memoryValues.count)
 	}
 
 	func decay(by amount: CGFloat = 0.9) {

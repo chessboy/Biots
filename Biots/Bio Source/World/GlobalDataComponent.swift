@@ -25,5 +25,6 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 	@OKUserDefault(key: "hideAlgae", defaultValue: false) public var hideAlgae: Bool
 	@OKUserDefault(key: "showCellHealth", defaultValue: false) public var showCellHealth: Bool
 	@OKUserDefault(key: "showCellVision", defaultValue: false) public var showCellVision: Bool
+	@OKUserDefault(key: "showCellThrust", defaultValue: false) public var showCellThrust: Bool
 }
 

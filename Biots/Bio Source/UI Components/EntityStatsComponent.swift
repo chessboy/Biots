@@ -20,7 +20,7 @@ final class EntityStatsComponent: OKComponent {
 	
 	override init() {
 		statsNode = StatsNode(bodyRadius: Constants.Cell.radius, fontSize: 70)
-		statsNode.zPosition = Constants.ZeeOrder.cell + 1
+		statsNode.zPosition = Constants.ZeeOrder.cell + 10
 		super.init()
 	}
 	

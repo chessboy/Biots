@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "zoo6.json"
+		static let filename = "zoo7.json"
 		static let randomRun = false
 		static let worldRadius: CGFloat =  randomRun ? 4000 : 5200 // multiple of gridBlockSize works best
 		static let showGrid = true
@@ -90,13 +90,13 @@ struct Constants {
 
 	struct Display {
 		
-//		static let antialiased = true
-//		static let blendMode = SKBlendMode.alpha
-//		static let shadows = true
+		static let antialiased = true
+		static let blendMode = SKBlendMode.alpha
+		static let shadows = true
 		
-		static let antialiased = false
-		static let blendMode = SKBlendMode.replace
-		static let shadows = false
+//		static let antialiased = false
+//		static let blendMode = SKBlendMode.replace
+//		static let shadows = false
 		
 		//static let size: CGFloat = 1600
 		//static let statsY: CGFloat = -480

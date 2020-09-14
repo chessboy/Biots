@@ -103,8 +103,17 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	override func didAddToEntity() {
 		if let node = entityNode as? SKShapeNode {
+			let scales = 5
 			node.setScale(0.2)
-			node.run(SKAction.scale(to: 1, duration: 10))
+			var actions: [SKAction] = []
+			for growth in 2...scales {
+				let scale: CGFloat = growth.cgFloat/scales.cgFloat
+				actions.append(.wait(forDuration: 1))
+				actions.append(.scale(to: scale, duration: 0.25))
+			}
+			
+			let sequence = SKAction.sequence(actions)
+			node.run(sequence)
 		}
 		
 		let showVision = coComponent(GlobalDataComponent.self)?.showCellVision ?? false
@@ -389,6 +398,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		if showingVision {
+			visionNode.alpha = effectiveVisibility
 			for angle in Constants.Vision.eyeAngles {
 				if let retinaNode = retinaNodes.filter({ $0.angle == angle }).first {
 					var color: SKColor = .black
@@ -411,7 +421,22 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		guard frame.isMultiple(of: 2) else { return }
 		
-		if let thrust = coComponent(BrainComponent.self)?.inference.thrust.average {
+		let showingThrust = !thrusterNode.isHidden
+		let showThrust = coComponent(GlobalDataComponent.self)?.showCellThrust ?? false
+		
+		if !showingThrust, showThrust {
+			thrusterNode.alpha = 0
+			thrusterNode.isHidden = false
+			thrusterNode.run(.fadeIn(withDuration: 0.2))
+		}
+		else if showingThrust, !showThrust {
+			thrusterNode.run(.fadeOut(withDuration: 0.1)) {
+				self.thrusterNode.isHidden = true
+				self.thrusterNode.alpha = 0
+			}
+		}
+
+		if showThrust, let thrust = coComponent(BrainComponent.self)?.inference.thrust.average {
 			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
 		}
 	}
@@ -444,7 +469,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), v: \(visibility.formattedToPercentNoDecimal)", for: .line1)
+					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), v: \(visibility.formattedToPercentNoDecimal), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), ce: \(cumulativeEnergy.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
@@ -651,6 +676,7 @@ extension CellComponent {
 
 		// thrusters
 		let thrusterNode = ThrusterNode(radius: radius)
+		thrusterNode.isHidden = true
 		cellComponent.thrusterNode = thrusterNode
 		node.addChild(thrusterNode)
 

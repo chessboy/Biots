@@ -155,7 +155,15 @@ final class WorldScene: OKScene {
 			break
 			
 		case Keycode.v:
-			globalDataComponent.showCellVision.toggle()
+			if shiftDown {
+				globalDataComponent.showTracer.toggle()
+			} else {
+				globalDataComponent.showCellVision.toggle()
+			}
+			break
+
+		case Keycode.t:
+			globalDataComponent.showCellThrust.toggle()
 			break
 
 		case Keycode.a:
@@ -218,17 +226,11 @@ final class WorldScene: OKScene {
 					}
 				})
 			}
-
-		case Keycode.t:
-			globalDataComponent.showTracer.toggle()
 			
 		case Keycode.p:
 			globalDataComponent.showPhysics.toggle()
 			self.view?.showsPhysics = globalDataComponent.showPhysics
-			
-		case Keycode.t:
-			globalDataComponent.showTracer.toggle()
-			
+						
 		case Keycode.f:
 						
 			if commandDown {
