@@ -39,6 +39,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var visionNode: SKNode!
 	var retinaNodes: [RetinaNode] = []
 	var onTopOfFoodRetinaNode: RetinaNode!
+	var thrusterNode: ThrusterNode!
 
 	var matingGenome: Genome?
 	
@@ -270,6 +271,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		updateHealthNode()
 		updateSpeedNode()
 		updateArmorNode()
+		updateThrusterNode()
 		
 		if Constants.Env.selfReplication, frame.isMultiple(of: 10) {
 			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Env.generationTrainingThreshold, age > Constants.Cell.selfReplicationAge {
@@ -405,6 +407,15 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
+	func updateThrusterNode() {
+		
+		guard frame.isMultiple(of: 2) else { return }
+		
+		if let thrust = coComponent(BrainComponent.self)?.inference.thrust.average {
+			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
+		}
+	}
+	
 	func showStats() {
 		
 		if  let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
@@ -427,13 +438,9 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					let healthFormatted = health.formattedToPercentNoDecimal
 					let energyFormatted = (energy/maximumEnergy).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
-//					var thrustDescr = "-none-"
-//					var speedBoostDescr = "-none-"
 					var armorDescr = "-none-"
 					
 					if let inference = coComponent(BrainComponent.self)?.inference {
-//						thrustDescr = inference.thrust.average.description
-//						speedBoostDescr = inference.speedBoost.average.formattedTo2Places
 						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
@@ -620,7 +627,7 @@ extension CellComponent {
 		node.addChild(visionNode)
 		
 		let retinaRadius: CGFloat = radius * 0.85
-		let retinaWidth = π/9
+		let retinaWidth = π/8
 
 		for angle in Constants.Vision.eyeAngles {
 			let node = RetinaNode(angle: angle, radius: retinaRadius, width: retinaWidth, forBackground: true)
@@ -641,6 +648,11 @@ extension CellComponent {
 		cellComponent.visionNode = visionNode
 		cellComponent.retinaNodes = retinaNodes
 		cellComponent.onTopOfFoodRetinaNode = onTopOfFoodRetinaNode
+
+		// thrusters
+		let thrusterNode = ThrusterNode(radius: radius)
+		cellComponent.thrusterNode = thrusterNode
+		node.addChild(thrusterNode)
 
 		// physics
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius * 1.15)

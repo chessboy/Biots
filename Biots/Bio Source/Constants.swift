@@ -14,9 +14,9 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "zoo4.json"
+		static let filename = "zoo6.json"
 		static let randomRun = false
-		static let worldRadius: CGFloat =  randomRun ? 4000 : 5000
+		static let worldRadius: CGFloat =  randomRun ? 4000 : 5200 // multiple of gridBlockSize works best
 		static let showGrid = true
 		static let gridBlockSize: CGFloat = 400
 		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.004))
@@ -29,9 +29,9 @@ struct Constants {
 		static let fixedMarkers = true
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
-		static let minimumCells = 13
-		static let maximumCells = 26
-		static let startupDelay = randomRun ? 20 : 250
+		static let minimumCells = 12
+		static let maximumCells = 24
+		static let startupDelay = 0// randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 	}
@@ -49,22 +49,23 @@ struct Constants {
 		static let mateHealth: CGFloat = Env.randomRun ? 0.65 : 0.75 // % of maximum health
 		static let spawnHealth: CGFloat = Env.randomRun ? 0.65 : 0.75 // % of maximum health
 
-		static let maximumEnergy: CGFloat = Env.randomRun ? 100 : 150
+		static let maximumEnergy: CGFloat = Env.randomRun ? 100 : 200
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
 		static let blinkEnergy: CGFloat = maximumEnergy * 0.02
 		static let perMovementEnergy: CGFloat = 0.0225
 		static let speedBoostEnergy: CGFloat = 0.0225
 		static let armorEnergy: CGFloat = 0.06
 		static let speedBoostExertion: CGFloat = 0.00075
+		static let maxSpeedBoost: CGFloat = 1.5
 
 		static let maximumAge: CGFloat = Env.randomRun ? 2000 : 3000
-		static let matureAge: CGFloat = maximumAge * 0.2
-		static let selfReplicationAge: CGFloat = maximumAge * 0.2
+		static let matureAge: CGFloat = maximumAge * 0.25
+		static let selfReplicationAge: CGFloat = maximumAge * 0.25
 		static let gestationAge: CGFloat = maximumAge * 0.15
 		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degdrades vision
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
-		static let thrustForce: CGFloat = 18
+		static let thrustForce: CGFloat = 15
 	}
 	
 	struct Vision {
@@ -73,17 +74,19 @@ struct Constants {
 		static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Cell.radius * 21
 		static let memory = 8
+		static let actionMemory = 3
 	}
 	
-//	struct Thrust {
-//		static let thrusterOffset: CGFloat = 0 //-π/6
-//		static let thrusterWidth = π/60
-//		static let leftThrustPositive = π/2 + thrusterWidth - thrusterOffset
-//		static let leftThrustNegative = π/2 - thrusterWidth - thrusterOffset
-//		static let rightThrustNegative = -π/2 + thrusterWidth + thrusterOffset
-//		static let rightThrustPositive = -π/2 - thrusterWidth + thrusterOffset
-//		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
-//	}
+	struct Thrust {
+		static let thrusterOffset: CGFloat = 0
+		static let thrusterWidth = π/40
+		static let leftThrustPositive = π/2 + thrusterWidth - thrusterOffset
+		static let leftThrustNegative = π/2 - thrusterWidth - thrusterOffset
+		static let rightThrustNegative = -π/2 + thrusterWidth + thrusterOffset
+		static let rightThrustPositive = -π/2 - thrusterWidth + thrusterOffset
+		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
+		static let actionMemory = 3
+	}
 
 	struct Display {
 		

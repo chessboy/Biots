@@ -21,6 +21,9 @@
 		D4465B95250DCF2A0074D864 /* zoo2.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465B94250DCF2A0074D864 /* zoo2.json */; };
 		D4465B97250DE6B10074D864 /* zoo3.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465B96250DE6B10074D864 /* zoo3.json */; };
 		D4465B99250E19AD0074D864 /* zoo4.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465B98250E19AD0074D864 /* zoo4.json */; };
+		D4465B9B250EC2ED0074D864 /* zoo5.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465B9A250EC2ED0074D864 /* zoo5.json */; };
+		D4465B9D250F105E0074D864 /* zoo6.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465B9C250F105E0074D864 /* zoo6.json */; };
+		D4465B9F250F20250074D864 /* ThrusterNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4465B9E250F20250074D864 /* ThrusterNode.swift */; };
 		D44B334C2503ECA200AAF342 /* GridNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B334B2503ECA200AAF342 /* GridNode.swift */; };
 		D44E60612452298500694462 /* VisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E60602452298500694462 /* VisionComponent.swift */; };
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
@@ -110,6 +113,9 @@
 		D4465B94250DCF2A0074D864 /* zoo2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = zoo2.json; sourceTree = "<group>"; };
 		D4465B96250DE6B10074D864 /* zoo3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo3.json; sourceTree = "<group>"; };
 		D4465B98250E19AD0074D864 /* zoo4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo4.json; sourceTree = "<group>"; };
+		D4465B9A250EC2ED0074D864 /* zoo5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo5.json; sourceTree = "<group>"; };
+		D4465B9C250F105E0074D864 /* zoo6.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo6.json; sourceTree = "<group>"; };
+		D4465B9E250F20250074D864 /* ThrusterNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrusterNode.swift; sourceTree = "<group>"; };
 		D44B334B2503ECA200AAF342 /* GridNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridNode.swift; sourceTree = "<group>"; };
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
@@ -218,6 +224,8 @@
 				D4465B94250DCF2A0074D864 /* zoo2.json */,
 				D4465B96250DE6B10074D864 /* zoo3.json */,
 				D4465B98250E19AD0074D864 /* zoo4.json */,
+				D4465B9A250EC2ED0074D864 /* zoo5.json */,
+				D4465B9C250F105E0074D864 /* zoo6.json */,
 			);
 			path = "New Zoo";
 			sourceTree = "<group>";
@@ -242,6 +250,7 @@
 				D44E6066245272C500694462 /* Vision */,
 				D4C6FB9724529D8500A0614F /* Brain */,
 				D4D18D9C2447ADBB00BF92FA /* StatsNode.swift */,
+				D4465B9E250F20250074D864 /* ThrusterNode.swift */,
 			);
 			path = "Bio Components";
 			sourceTree = "<group>";
@@ -430,16 +439,16 @@
 				D4C2FC2724842C910076077A /* CGRectMath.swift */,
 				D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */,
 				D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */,
-				D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */,
 				D44EE9B624439592006A2083 /* IntMath.swift */,
 				D4B2EE37244EC434007D615E /* KeyCodes.swift */,
 				D4E573AD244D515E006C2767 /* NoiseGenerator.swift */,
 				D4F5055224ED282900EAA52E /* RunningFloatArray.swift */,
 				D47D71932447F5950079D2F1 /* RunningValue.swift */,
+				D4040D1F24FB477400A2C500 /* RunningCGVector.swift */,
+				D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */,
 				D42CE73924449A670049854C /* SpriteKitExtensions.swift */,
 				D41D1F94244ACF8100A876F4 /* StringExtensions.swift */,
 				D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */,
-				D4040D1F24FB477400A2C500 /* RunningCGVector.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -591,6 +600,8 @@
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D4465B99250E19AD0074D864 /* zoo4.json in Resources */,
 				D4229EE2250B3AFD00DE29CE /* zoo1.json in Resources */,
+				D4465B9B250EC2ED0074D864 /* zoo5.json in Resources */,
+				D4465B9D250F105E0074D864 /* zoo6.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -669,6 +680,7 @@
 				D47386D12442BEDB0022E760 /* 6C - PlayUI.swift in Sources */,
 				D47386902442BD6C0022E760 /* Structure.swift in Sources */,
 				D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */,
+				D4465B9F250F20250074D864 /* ThrusterNode.swift in Sources */,
 				D473868F2442BD6C0022E760 /* Activation.swift in Sources */,
 				D47386EA2442CA0F0022E760 /* CGPointMath.swift in Sources */,
 				D44B334C2503ECA200AAF342 /* GridNode.swift in Sources */,

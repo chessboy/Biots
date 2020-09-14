@@ -41,9 +41,10 @@ class RunningValue {
 		
 		guard values.count > 0 else { return 0 }
 		guard values.count > 1 else { return values[0] }
-		
-		// there are at least 2 values
-		let suffix = max(values.count - memory, values.count - 1)
+		guard values.count > memory else { return average }
+
+		// there are more than `memory` values
+		let suffix = values.count - memory
 		let memoryValues = values.suffix(from: suffix)
 		var sum: Float = 0
 		memoryValues.forEach({ sum += $0 })

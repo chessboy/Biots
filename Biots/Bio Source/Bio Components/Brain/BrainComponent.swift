@@ -66,11 +66,12 @@ final class BrainComponent: OKComponent {
 
 		var inputs = Array(repeating: Float.zero, count: Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth)
 						
+		let actionMemory = Constants.Vision.actionMemory
 		var angleIndex = 0
 		for angle in Constants.Vision.eyeAngles {
 			
 			if let angleVision = visionComponent.visionMemory.filter({ $0.angle == angle }).first {
-				let color = angleVision.runningColorVector.average.skColor
+				let color = angleVision.runningColorVector.averageOfMostRecent(memory: actionMemory).skColor
 				inputs[angleIndex * Constants.Vision.colorDepth] = color.redComponent.float
 				inputs[angleIndex * Constants.Vision.colorDepth + 1] = color.greenComponent.float
 				inputs[angleIndex * Constants.Vision.colorDepth + 2] = color.blueComponent.float
@@ -85,22 +86,16 @@ final class BrainComponent: OKComponent {
 		action()
 	}
 	
-	func action() {
-		
-		guard let cell = coComponent(CellComponent.self), let node = entityNode as? SKShapeNode, !cell.isInteracting else { return }
-	
+	func newPositionAndHeading(node: SKNode, thrust: CGVector) -> (position: CGPoint, heading: CGFloat) {
 		var newX: CGFloat = 0
 		var newY: CGFloat = 0
 		var newHeading: CGFloat = 0
 		
 		let position = node.position
 		let zRotation = node.zRotation
+		let left = thrust.dx
+		let right = thrust.dy
 		
-		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * 2, 1)
-		let armor: CGFloat = inference.armor.average.cgFloat
-		let left = inference.thrust.average.dx * Constants.Cell.thrustForce * speedBoost
-		let right = inference.thrust.average.dy * Constants.Cell.thrustForce * speedBoost
-
 		if abs(left - right) < 0.001 {
 			// basically going straight
 			newX = position.x + left * cos(zRotation)
@@ -114,16 +109,31 @@ final class BrainComponent: OKComponent {
 
 			newX = position.x + R * sin(wd + zRotation) - R * sin(zRotation)
 			newY = position.y - R * cos(wd + zRotation) + R * cos(zRotation)
-			newHeading = (zRotation + wd/2).normalizedAngle // note: wd/2 limits rotation, maybe get rid of this
+			newHeading = (zRotation + wd/π).normalizedAngle // note: shrinking `w` limits rotation
 		}
 
-		let newPosition = CGPoint(x: newX, y: newY)
-		node.run(SKAction.move(to: newPosition, duration: 0.1))
+		return (position: CGPoint(x: newX, y: newY), heading: newHeading)
+	}
+	
+	func action() {
 		
+		guard
+			let cell = coComponent(CellComponent.self),
+			let node = entityNode as? SKShapeNode, !cell.isInteracting else { return }
+	
+		let thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.actionMemory)
+		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * Constants.Cell.maxSpeedBoost, 1)
+		let armor: CGFloat = inference.armor.average.cgFloat
+		let left = thrustAverage.dx * Constants.Cell.thrustForce * speedBoost
+		let right = thrustAverage.dy * Constants.Cell.thrustForce * speedBoost
+
+		// determine new position and heading
+		let (newPosition, newHeading) = newPositionAndHeading(node: node, thrust: CGVector(dx: left, dy: right))
+		node.run(SKAction.move(to: newPosition, duration: 0.05))
 		node.zRotation = newHeading
 		
 		// movement energy expenditure
-		let forceExerted = (inference.thrust.average.dx.unsigned + inference.thrust.average.dy.unsigned)
+		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
 		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
 		
 		if speedBoost > 1 {

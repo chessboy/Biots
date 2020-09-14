@@ -42,9 +42,10 @@ class RunningCGVector {
 		
 		guard values.count > 0 else { return .zero }
 		guard values.count > 1 else { return values[0] }
+		guard values.count > memory else { return average }
 
-		// there are at least 2 values
-		let suffix = max(values.count - memory, values.count - 1)
+		// there are more than `memory` values
+		let suffix = values.count - memory
 		let memoryValues = values.suffix(from: suffix)
 		var sum: CGVector = .zero
 		memoryValues.forEach({ sum += $0 })

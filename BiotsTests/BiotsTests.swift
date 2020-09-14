@@ -177,6 +177,15 @@ class BiotsTests: XCTestCase {
 		}
 	}
 	
+	func testRunningValue() {
+		let rv = RunningValue(memory: 10)
+	
+		for value in 1...10 {
+			rv.addValue(Float(value))
+			print("vals: \(rv.values.map({$0.formattedTo2Places})), avg: \(rv.average), last3: \(rv.averageOfMostRecent(memory: 3))")
+		}
+	}
+	
 	func testNoise() {
 		
 //		var angleIndex = 0
