@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 		
-		static let filename = "zoo7.json"
+		static let filename = "zoo10.json"
 		static let randomRun = false
 		static let worldRadius: CGFloat =  randomRun ? 4000 : 5200 // multiple of gridBlockSize works best
 		static let showGrid = true
@@ -29,9 +29,9 @@ struct Constants {
 		static let fixedMarkers = true
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
-		static let minimumCells = 12
-		static let maximumCells = 24
-		static let startupDelay = 0// randomRun ? 20 : 250
+		static let minimumCells = 13
+		static let maximumCells = 26
+		static let startupDelay = randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 	}
@@ -78,25 +78,24 @@ struct Constants {
 	}
 	
 	struct Thrust {
-		static let thrusterOffset: CGFloat = 0
-		static let thrusterWidth = π/40
-		static let leftThrustPositive = π/2 + thrusterWidth - thrusterOffset
-		static let leftThrustNegative = π/2 - thrusterWidth - thrusterOffset
-		static let rightThrustNegative = -π/2 + thrusterWidth + thrusterOffset
-		static let rightThrustPositive = -π/2 - thrusterWidth + thrusterOffset
+		static let thrusterWidth = π/36
+		static let leftThrustPositive = π/2 + thrusterWidth
+		static let leftThrustNegative = π/2 - thrusterWidth
+		static let rightThrustNegative = -π/2 + thrusterWidth
+		static let rightThrustPositive = -π/2 - thrusterWidth
 		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
 		static let actionMemory = 3
 	}
 
 	struct Display {
 		
-		static let antialiased = true
-		static let blendMode = SKBlendMode.alpha
-		static let shadows = true
+//		static let antialiased = true
+//		static let blendMode = SKBlendMode.alpha
+//		static let shadows = true
 		
-//		static let antialiased = false
-//		static let blendMode = SKBlendMode.replace
-//		static let shadows = false
+		static let antialiased = false
+		static let blendMode = SKBlendMode.replace
+		static let shadows = false
 		
 		//static let size: CGFloat = 1600
 		//static let statsY: CGFloat = -480

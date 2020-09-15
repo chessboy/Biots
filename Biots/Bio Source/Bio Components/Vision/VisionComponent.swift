@@ -34,7 +34,12 @@ struct VisionMemory {
 
 final class VisionComponent: OKComponent {
 
+	var angleVisions: [AngleVision] = []
 	var visionMemory: [VisionMemory] = []
+
+	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
+	lazy var cellComponent = coComponent(CellComponent.self)
+	lazy var physicsComponent = coComponent(PhysicsComponent.self)
 
 	override init() {
 		for angle in Constants.Vision.eyeAngles {
@@ -53,19 +58,17 @@ final class VisionComponent: OKComponent {
 		GlobalDataComponent.self
 	]}
 
-	func detect() -> [AngleVision] {
+	func detect() {
 		
-		// 0 (nothing visible) ... 1 (object touching)
-		var angleVisions: [AngleVision] = []
-
-		let showTracer = coComponent(GlobalDataComponent.self)?.showTracer ?? false
+		angleVisions.removeAll()
+		let showTracer = globalDataComponent?.showTracer ?? false
 
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
-			let cell = coComponent(CellComponent.self),
-			let physicsBody = coComponent(PhysicsComponent.self)?.physicsBody else {
-			return []
+			let cell = cellComponent,
+			let physicsBody = physicsComponent?.physicsBody else {
+			return
 		}
 
 		let maxObjectsPerAngle = 2
@@ -150,8 +153,6 @@ final class VisionComponent: OKComponent {
 				visionMemory.runningColorVector.addValue(colorVector)
 			}
 		}
-		
-		return angleVisions
 	}
 
 	func showTracer(rayStart: CGPoint, rayEnd: CGPoint, color: SKColor) {

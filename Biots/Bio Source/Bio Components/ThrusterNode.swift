@@ -17,16 +17,19 @@ class ThrusterNode: SKNode {
     
     init(radius: CGFloat) {
         
-		let thrusterRadius = radius * 0.6
-		leftThrustPostitiveNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[0], radius: thrusterRadius, width: Constants.Thrust.thrusterWidth)
-        leftThrustNegativeNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[1], radius: thrusterRadius, width: Constants.Thrust.thrusterWidth)
-        rightThrustPositiveNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[2], radius: thrusterRadius, width: Constants.Thrust.thrusterWidth)
-        rightThrustNegativeNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[3], radius: thrusterRadius, width: Constants.Thrust.thrusterWidth)
+		let thrusterRadius = radius * 0.5
+		let arcLength = Constants.Thrust.thrusterWidth
+		let thickness = radius/8
+		
+		leftThrustPostitiveNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[0], radius: thrusterRadius, thickness: thickness, arcLength: arcLength)
+        leftThrustNegativeNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[1], radius: thrusterRadius, thickness: thickness, arcLength: arcLength)
+        rightThrustPositiveNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[2], radius: thrusterRadius, thickness: thickness, arcLength: arcLength)
+        rightThrustNegativeNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[3], radius: thrusterRadius, thickness: thickness, arcLength: arcLength)
 
         super.init()
 
         for angleOffset: CGFloat in Constants.Thrust.thrusterSpots.reversed() {
-            let node = RetinaNode(angle: angleOffset, radius: thrusterRadius, width: Constants.Thrust.thrusterWidth, forBackground: true)
+            let node = RetinaNode(angle: angleOffset, radius: thrusterRadius, thickness: thickness, arcLength: arcLength, forBackground: true)
             addChild(node)
         }
         

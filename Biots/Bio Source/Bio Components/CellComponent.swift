@@ -74,6 +74,11 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	var frame = Int.random(100)
 
+	lazy var brainComponent = coComponent(BrainComponent.self)
+	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
+	lazy var visionComponent = coComponent(VisionComponent.self)
+	lazy var entityStatsComponent = coComponent(EntityStatsComponent.self)
+
 	init(genome: Genome, initialEnergy: CGFloat) {
 		self.genome = genome
 		self.energy = initialEnergy
@@ -116,7 +121,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			node.run(sequence)
 		}
 		
-		let showVision = coComponent(GlobalDataComponent.self)?.showCellVision ?? false
+		let showVision = globalDataComponent?.showCellVision ?? false
 		
 		if !showVision {
 			eyeNodes.forEach({ eyeNode in
@@ -325,7 +330,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard frame.isMultiple(of: 5) else { return }
 		
 		let showingHealth = !healthNode.isHidden
-		let showHealth = coComponent(GlobalDataComponent.self)?.showCellHealth ?? false
+		let showHealth = globalDataComponent?.showCellHealth ?? false
 		
 		if !showingHealth, showHealth {
 			healthNode.alpha = 0
@@ -348,7 +353,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	func updateSpeedNode() {
 		guard frame.isMultiple(of: 2) else { return }
 	
-		if let speedBoost = coComponent(BrainComponent.self)?.inference.speedBoost.average {
+		if let speedBoost = brainComponent?.inference.speedBoost.average {
 			speedNode.alpha = speedBoost.cgFloat
 		}
 	}
@@ -356,7 +361,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	func updateArmorNode() {
 		guard frame.isMultiple(of: 2) else { return }
 		
-		if let armor = coComponent(BrainComponent.self)?.inference.armor.average {
+		if let armor = brainComponent?.inference.armor.average {
 			armorNode.strokeColor = .green
 			armorNode.alpha = armor.cgFloat
 		}
@@ -364,13 +369,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	// display visual sensors
 	func updateVisionNode() {
-				
-		guard frame.isMultiple(of: 2), let visionComponent = coComponent(VisionComponent.self) else {
-			return
-		}
+		guard frame.isMultiple(of: 2) else { return }
 				
 		let showingVision = !visionNode.isHidden
-		let showVision = coComponent(GlobalDataComponent.self)?.showCellVision ?? false
+		let showVision = globalDataComponent?.showCellVision ?? false
 		
 		if !showingVision, showVision {
 			eyeNodes.forEach({ eyeNode in
@@ -398,11 +400,13 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		if showingVision {
-			visionNode.alpha = effectiveVisibility
+			if Constants.Display.blendMode != .replace {
+				visionNode.alpha = effectiveVisibility
+			}
 			for angle in Constants.Vision.eyeAngles {
 				if let retinaNode = retinaNodes.filter({ $0.angle == angle }).first {
 					var color: SKColor = .black
-					if let angleVision = visionComponent.visionMemory.filter({ $0.angle == angle }).first {
+					if let angleVision = visionComponent?.visionMemory.filter({ $0.angle == angle }).first {
 						color = angleVision.runningColorVector.average.skColor
 						retinaNode.zPosition = Constants.ZeeOrder.cell + color.brightnessComponent
 					}
@@ -410,7 +414,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				}
 			}
 			
-			if let onTopOfFoodAverage = coComponent(BrainComponent.self)?.senses.onTopOfFood.average {
+			if let onTopOfFoodAverage = brainComponent?.senses.onTopOfFood.average {
 				let color = SKColor(red: 0, green: onTopOfFoodAverage.cgFloat, blue: 0, alpha: 1)
 				onTopOfFoodRetinaNode.strokeColor = color
 			}
@@ -422,7 +426,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard frame.isMultiple(of: 2) else { return }
 		
 		let showingThrust = !thrusterNode.isHidden
-		let showThrust = coComponent(GlobalDataComponent.self)?.showCellThrust ?? false
+		let showThrust = globalDataComponent?.showCellThrust ?? false
 		
 		if !showingThrust, showThrust {
 			thrusterNode.alpha = 0
@@ -436,17 +440,17 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 
-		if showThrust, let thrust = coComponent(BrainComponent.self)?.inference.thrust.average {
+		if showThrust, let thrust = brainComponent?.inference.thrust.average {
 			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
 		}
 	}
 	
 	func showStats() {
 		
-		if  let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
+		if  let statsNode = entityStatsComponent?.statsNode {
 			
 			if frame.isMultiple(of: 10) {
- 				if coComponent(GlobalDataComponent.self)?.showCellStats == true {
+ 				if globalDataComponent?.showCellStats == true {
 					
 					if let cameraScale = OctopusKit.shared.currentScene?.camera?.xScale {
 						let scale = (0.2 * cameraScale).clamped(0.3, 0.75)
@@ -465,7 +469,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					var armorDescr = "-none-"
 					
-					if let inference = coComponent(BrainComponent.self)?.inference {
+					if let inference = brainComponent?.inference {
 						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
@@ -510,10 +514,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialEnergy: Constants.Cell.initialEnergy, fountainComponent: RelayComponent(for: coComponent(ResourceFountainComponent.self)))
 			childCell.node?.zRotation = node.zRotation + angle + π
 			
-			if coComponent(GlobalDataComponent.self)?.showCellStats ?? false {
+			if globalDataComponent?.showCellStats ?? false {
 				childCell.addComponent(EntityStatsComponent())
 			}
-			if coComponent(GlobalDataComponent.self)?.showCellEyeSpots ?? false {
+			if globalDataComponent?.showCellEyeSpots ?? false {
 				childCell.addComponent(EyesComponent())
 			}
 			//print("\(currentColor)-🥚 id: \(clonedGenome.id), gen: \(clonedGenome.generation)")
@@ -613,7 +617,7 @@ extension CellComponent {
 		let healthNode = SKShapeNode(circleOfRadius: radius * 0.25)
 		healthNode.fillColor = .darkGray
 		healthNode.lineWidth = radius * 0.05
-		healthNode.strokeColor = Constants.Colors.background
+		healthNode.strokeColor = .black//Constants.Colors.background
 		healthNode.isAntialiased = Constants.Display.antialiased
 		healthNode.isHidden = true
 		healthNode.zPosition = Constants.ZeeOrder.cell + 0.1
@@ -652,22 +656,23 @@ extension CellComponent {
 		node.addChild(visionNode)
 		
 		let retinaRadius: CGFloat = radius * 0.85
-		let retinaWidth = π/8
+		let thickness: CGFloat = retinaRadius / 8
+		let arcLength = π/8
 
 		for angle in Constants.Vision.eyeAngles {
-			let node = RetinaNode(angle: angle, radius: retinaRadius, width: retinaWidth, forBackground: true)
+			let node = RetinaNode(angle: angle, radius: retinaRadius, thickness: thickness, arcLength: arcLength, forBackground: true)
 			visionNode.addChild(node)
 		}
 		
 		var retinaNodes: [RetinaNode] = []
 		
 		for angle in Constants.Vision.eyeAngles {
-			let node = RetinaNode(angle: angle, radius: retinaRadius, width: retinaWidth)
+			let node = RetinaNode(angle: angle, radius: retinaRadius, thickness: thickness, arcLength: arcLength)
 			retinaNodes.append(node)
 			visionNode.addChild(node)
 		}
 		
-		let onTopOfFoodRetinaNode = RetinaNode(angle: π, radius: radius * 0.65, width: retinaWidth/2)
+		let onTopOfFoodRetinaNode = RetinaNode(angle: π, radius: radius * 0.65, thickness: thickness, arcLength: arcLength/2)
 		visionNode.addChild(onTopOfFoodRetinaNode)
 
 		cellComponent.visionNode = visionNode

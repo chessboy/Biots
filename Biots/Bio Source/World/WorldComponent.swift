@@ -16,6 +16,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	var genomeDispenseIndex = 0
 	var allGenomesFromFileDispensed = false
 
+	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
+	
     override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
 		PointerEventComponent.self,
@@ -154,7 +156,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		if frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
 			let cellCount = scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count
-			//let physicsWorldSpeed = coComponent(PhysicsWorldComponent.self)?.physicsWorld?.speed ?? 0
 
 			let cellStats = currentCellStats
 			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Env.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | e: \(cellStats.avgEnergy.formattedToPercent) | s: \(cellStats.avgStamina.formattedToPercent) | h: \(cellStats.avgHealth.formattedToPercent) | mate: \(cellStats.canMateCount) | preg: \(cellStats.pregnantCount), spawned: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
@@ -179,9 +180,9 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let frame = scene.currentFrameNumber
 				
 		// key event handling
-		if let keyTrackerComponent = coComponent(KeyTrackerComponent.self) {
-			for keyCode in keyTrackerComponent.keyCodesDown {
-				processWorldKeyDown(keyCode: keyCode, shiftDown: keyTrackerComponent.shiftDown, commandDown: keyTrackerComponent.commandDown)
+		if let keyTracker = keyTrackerComponent {
+			for keyCode in keyTracker.keyCodesDown {
+				processWorldKeyDown(keyCode: keyCode, shiftDown: keyTracker.shiftDown, commandDown: keyTracker.commandDown)
 			}
 		}
 		

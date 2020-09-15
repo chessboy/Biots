@@ -16,6 +16,10 @@ final class BrainComponent: OKComponent {
 	var frame = Int.random(100)
 	var senses = Senses()
 	
+	lazy var cellComponent = coComponent(CellComponent.self)
+	lazy var neuralNetComponent = coComponent(NeuralNetComponent.self)
+	lazy var visionComponent = coComponent(VisionComponent.self)
+
     override var requiredComponents: [GKComponent.Type]? { return [
 		SpriteKitComponent.self,
 		PhysicsComponent.self,
@@ -33,12 +37,12 @@ final class BrainComponent: OKComponent {
 		}
 		
 		guard
-			let cell = coComponent(CellComponent.self),
-			let neuralNetComponent = coComponent(NeuralNetComponent.self),
-			let visionComponent = coComponent(VisionComponent.self)
+			let cell = cellComponent,
+			let neuralNet = neuralNetComponent,
+			let vision = visionComponent
 			else { return }
 		
-		let _ = visionComponent.detect()
+		vision.detect()
 		
 //		let position = cell.entityNode?.position ?? .zero
 //		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
@@ -70,7 +74,7 @@ final class BrainComponent: OKComponent {
 		var angleIndex = 0
 		for angle in Constants.Vision.eyeAngles {
 			
-			if let angleVision = visionComponent.visionMemory.filter({ $0.angle == angle }).first {
+			if let angleVision = vision.visionMemory.filter({ $0.angle == angle }).first {
 				let color = angleVision.runningColorVector.averageOfMostRecent(memory: actionMemory).skColor
 				inputs[angleIndex * Constants.Vision.colorDepth] = color.redComponent.float
 				inputs[angleIndex * Constants.Vision.colorDepth + 1] = color.greenComponent.float
@@ -81,7 +85,7 @@ final class BrainComponent: OKComponent {
 
 		inputs += senses.toArray
 		
-		let outputs = neuralNetComponent.infer(inputs)
+		let outputs = neuralNet.infer(inputs)
 		inference.infer(outputs: outputs)
 		action()
 	}
@@ -118,7 +122,7 @@ final class BrainComponent: OKComponent {
 	func action() {
 		
 		guard
-			let cell = coComponent(CellComponent.self),
+			let cell = cellComponent,
 			let node = entityNode as? SKShapeNode, !cell.isInteracting else { return }
 	
 		let thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.actionMemory)
