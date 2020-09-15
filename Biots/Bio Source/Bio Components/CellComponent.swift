@@ -77,7 +77,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	lazy var brainComponent = coComponent(BrainComponent.self)
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
-	lazy var entityStatsComponent = coComponent(EntityStatsComponent.self)
 
 	init(genome: Genome, initialEnergy: CGFloat) {
 		self.genome = genome
@@ -447,7 +446,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	func showStats() {
 		
-		if  let statsNode = entityStatsComponent?.statsNode {
+		if  let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
 			
 			if frame.isMultiple(of: 10) {
  				if globalDataComponent?.showCellStats == true {
