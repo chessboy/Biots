@@ -25,7 +25,7 @@ final class BoundaryComponent: OKComponent {
 		node.name = "wall"
 		node.lineWidth = 0
 		node.fillColor = .black
-		node.isAntialiased = Constants.Display.antialiased
+		node.isAntialiased = Constants.Env.graphics.antialiased
 
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius)
 		physicsBody.allowsRotation = false
@@ -48,7 +48,7 @@ final class BoundaryComponent: OKComponent {
 		node.lineWidth = strokeWidth
 		node.strokeColor = Constants.Colors.wall
 		//node.fillColor = Constants.Colors.background//Constants.Colors.world
-		node.blendMode = Constants.Display.blendMode
+		node.blendMode = Constants.Env.graphics.blendMode
 		node.isAntialiased = false
 		
 		let physicsBody = SKPhysicsBody(edgeLoopFrom: SKShapeNode(circleOfRadius: radius).path!)
@@ -72,8 +72,8 @@ final class BoundaryComponent: OKComponent {
 		node.lineWidth = 0
 		node.fillColor = Constants.Colors.wall
 		node.strokeColor = .clear
-		node.blendMode = Constants.Display.blendMode
-		node.isAntialiased = Constants.Display.antialiased
+		node.blendMode = Constants.Env.graphics.blendMode
+		node.isAntialiased = Constants.Env.graphics.antialiased
 		
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
 		physicsBody.isDynamic = false

@@ -29,7 +29,7 @@ class StatsNode: SKNode {
 		self.addChild(backgroundNode)
 
 		let padding: CGFloat = fontSize + 20
-		for i in 0..<Constants.Stats.maxLinesOfText {
+		for i in 0..<Constants.Cell.Stats.maxLinesOfText {
 			
 			let node = SKLabelNode(fontNamed: "Consolas")
 			node.position = CGPoint(x: 0, y: (-padding * CGFloat(i)) - bodyRadius - padding)
@@ -46,11 +46,11 @@ class StatsNode: SKNode {
 		labelNodes.forEach({ $0.text = "" })
 	}
 	
-	func setLineOfText(_ text: String, for line: Constants.StatsLine) {
+	func setLineOfText(_ text: String, for line: Constants.Cell.StatsLine) {
 		
 		let index = line.rawValue
 		
-		guard index < Constants.Stats.maxLinesOfText else { return }
+		guard index < Constants.Cell.Stats.maxLinesOfText else { return }
 		
 		let labelNode = labelNodes[index]
 		labelNode.text = text
@@ -94,7 +94,7 @@ class StatsBuilder {
 	var text: String = ""
 	
 	func addEntry(label: String = "", value: String) {
-		self.text = "\(text)\(text == "" ? "" : Constants.Stats.delimiter)\(label)\(label == "" ? "" : ":")\(value)"
+		self.text = "\(text)\(text == "" ? "" : Constants.Cell.Stats.delimiter)\(label)\(label == "" ? "" : ":")\(value)"
 	}
 	
 	func addEntry(label: String = "", value: CGFloat) {

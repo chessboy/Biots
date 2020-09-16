@@ -30,11 +30,11 @@ extension ZapperComponent {
 		node.lineWidth = 4
 		node.fillColor = Constants.Colors.wall
 		node.strokeColor = Constants.Colors.grid
-		node.blendMode = Constants.Display.blendMode
-		node.isAntialiased = Constants.Display.antialiased
+		node.blendMode = Constants.Env.graphics.blendMode
+		node.isAntialiased = Constants.Env.graphics.antialiased
 		node.position = position
 
-		if Constants.Display.shadows {
+		if Constants.Env.graphics.shadows {
 			let shadowWidth: CGFloat = 10
 			let shadowNode = SKShapeNode.polygonOfRadius(radius + shadowWidth/2, sides: 8)
 			shadowNode.zPosition = Constants.ZeeOrder.wall - 0.1

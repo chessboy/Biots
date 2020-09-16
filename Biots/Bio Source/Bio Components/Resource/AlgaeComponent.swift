@@ -95,14 +95,14 @@ extension AlgaeComponent {
 		node.fillColor = color
 		node.lineWidth = 0
 		node.zPosition = Constants.ZeeOrder.algae
-		node.blendMode = Constants.Display.blendMode
-		node.isAntialiased = Constants.Display.antialiased
+		node.blendMode = Constants.Env.graphics.blendMode
+		node.isAntialiased = Constants.Env.graphics.antialiased
 		node.isHidden = true
 		let range = SKRange(lowerLimit: 0, upperLimit: Constants.Env.worldRadius * 0.9)
 		let keepInBounds = SKConstraint.distance(range, to: .zero)
 		node.constraints = [keepInBounds]
 		
-		if Constants.Display.shadows {
+		if Constants.Env.graphics.shadows {
 			let shadowNode = SKShapeNode()
 			shadowNode.path = node.path
 			shadowNode.glowWidth = 5

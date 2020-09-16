@@ -164,7 +164,7 @@ final class BrainComponent: OKComponent {
 			cell.checkEyeState()
 		}
 
-		if Constants.Display.blendMode != .replace {
+		if Constants.Env.graphics.blendMode != .replace {
 			node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
 		} else {
 			node.fillColor = inference.color.average.skColor

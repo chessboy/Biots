@@ -12,9 +12,10 @@ import OctopusKit
 
 struct Constants {
 		
+
 	struct Env {
 		
-		static let filename = "zoo10.json"
+		static let filename = "zoo11.json"
 		static let randomRun = false
 		static let worldRadius: CGFloat =  randomRun ? 4000 : 5200 // multiple of gridBlockSize works best
 		static let showGrid = true
@@ -26,14 +27,18 @@ struct Constants {
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let generationTrainingThreshold = 4000
-		static let fixedMarkers = true
+		static let fixedMarkers = false
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
-		static let minimumCells = 13
-		static let maximumCells = 26
+		static let minimumCells = 12
+		static let maximumCells = 24
 		static let startupDelay = randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
+		
+		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false)
+		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true)
+		static let graphics = simpleGraphics
 	}
 	
 	struct Cell {
@@ -54,7 +59,7 @@ struct Constants {
 		static let blinkEnergy: CGFloat = maximumEnergy * 0.02
 		static let perMovementEnergy: CGFloat = 0.0225
 		static let speedBoostEnergy: CGFloat = 0.0225
-		static let armorEnergy: CGFloat = 0.06
+		static let armorEnergy: CGFloat = 0.08
 		static let speedBoostExertion: CGFloat = 0.00075
 		static let maxSpeedBoost: CGFloat = 1.5
 
@@ -66,6 +71,13 @@ struct Constants {
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 15
+		
+		enum StatsLine: Int { case line1, line2, line3 }
+
+		struct Stats {
+			static let maxLinesOfText = 3
+			static let delimiter = "   "
+		}
 	}
 	
 	struct Vision {
@@ -86,17 +98,14 @@ struct Constants {
 		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
 		static let actionMemory = 3
 	}
-
-	struct Display {
+	
+	struct Graphics {
+		var antialiased: Bool
+		var blendMode: SKBlendMode
+		var shadows: Bool
+	}
 		
-//		static let antialiased = true
-//		static let blendMode = SKBlendMode.alpha
-//		static let shadows = true
-		
-		static let antialiased = false
-		static let blendMode = SKBlendMode.replace
-		static let shadows = false
-		
+	struct Window {
 		//static let size: CGFloat = 1600
 		//static let statsY: CGFloat = -480
 		static let size: CGFloat = 2000
@@ -145,13 +154,6 @@ struct Constants {
 	struct Algae {
 		static let radius: CGFloat = 16
 		static let bite: CGFloat = 40
-	}
-
-	enum StatsLine: Int { case line1, line2, line3 }
-
-	struct Stats {
-		static let maxLinesOfText = 3
-		static let delimiter = "   "
 	}
 	
 	struct Camera {

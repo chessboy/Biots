@@ -399,7 +399,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		if showingVision {
-			if Constants.Display.blendMode != .replace {
+			if Constants.Env.graphics.blendMode != .replace {
 				visionNode.alpha = effectiveVisibility
 			}
 			for angle in Constants.Vision.eyeAngles {
@@ -472,7 +472,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), v: \(visibility.formattedToPercentNoDecimal), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
+					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), ce: \(cumulativeEnergy.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
@@ -584,12 +584,12 @@ extension CellComponent {
 		node.position = position
 		node.zPosition = Constants.ZeeOrder.cell
 		node.zRotation = CGFloat.randomAngle
-		node.blendMode = Constants.Display.blendMode
-		node.isAntialiased = Constants.Display.antialiased
+		node.blendMode = Constants.Env.graphics.blendMode
+		node.isAntialiased = Constants.Env.graphics.antialiased
 		
 		let cellComponent = CellComponent(genome: genome, initialEnergy: initialEnergy)
 
-		if Constants.Display.shadows {
+		if Constants.Env.graphics.shadows {
 			let shadowNode = SKShapeNode()
 			shadowNode.path = node.path
 			shadowNode.zPosition = Constants.ZeeOrder.cell - 6
@@ -617,7 +617,7 @@ extension CellComponent {
 		healthNode.fillColor = .darkGray
 		healthNode.lineWidth = radius * 0.05
 		healthNode.strokeColor = .black//Constants.Colors.background
-		healthNode.isAntialiased = Constants.Display.antialiased
+		healthNode.isAntialiased = Constants.Env.graphics.antialiased
 		healthNode.isHidden = true
 		healthNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(healthNode)
@@ -631,7 +631,7 @@ extension CellComponent {
 		speedNode.zRotation = π
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
-		speedNode.isAntialiased = Constants.Display.antialiased
+		speedNode.isAntialiased = Constants.Env.graphics.antialiased
 		speedNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(speedNode)
 
@@ -644,7 +644,7 @@ extension CellComponent {
 		armorNode.zRotation = π
 		armorNode.lineCap = .round
 		armorNode.strokeColor = .green
-		armorNode.isAntialiased = Constants.Display.antialiased
+		armorNode.isAntialiased = Constants.Env.graphics.antialiased
 		armorNode.zPosition = Constants.ZeeOrder.cell + 0.2
 		node.addChild(armorNode)
 

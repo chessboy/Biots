@@ -27,8 +27,8 @@ class RetinaNode: SKShapeNode {
 		self.lineWidth = thickness
 		self.lineCap = .round
 		self.strokeColor = .black //SKColor(white: 0.125, alpha: 1)
-		self.blendMode = Constants.Display.blendMode
-		self.isAntialiased = Constants.Display.antialiased
+		self.blendMode = Constants.Env.graphics.blendMode
+		self.isAntialiased = Constants.Env.graphics.antialiased
 
 		if forBackground {
 			self.lineWidth = thickness * 1.6

@@ -28,6 +28,7 @@
 		D4465BA5250FCB9E0074D864 /* zoo9.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465BA4250FCB9E0074D864 /* zoo9.json */; };
 		D4465BA72510729E0074D864 /* zoo10.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465BA62510729E0074D864 /* zoo10.json */; };
 		D4465BA925107BF40074D864 /* zoo8.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465BA825107BF40074D864 /* zoo8.json */; };
+		D4465BAB2510B03F0074D864 /* zoo11.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465BAA2510B03F0074D864 /* zoo11.json */; };
 		D44B334C2503ECA200AAF342 /* GridNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B334B2503ECA200AAF342 /* GridNode.swift */; };
 		D44E60612452298500694462 /* VisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E60602452298500694462 /* VisionComponent.swift */; };
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
@@ -124,6 +125,7 @@
 		D4465BA4250FCB9E0074D864 /* zoo9.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo9.json; sourceTree = "<group>"; };
 		D4465BA62510729E0074D864 /* zoo10.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo10.json; sourceTree = "<group>"; };
 		D4465BA825107BF40074D864 /* zoo8.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo8.json; sourceTree = "<group>"; };
+		D4465BAA2510B03F0074D864 /* zoo11.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo11.json; sourceTree = "<group>"; };
 		D44B334B2503ECA200AAF342 /* GridNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridNode.swift; sourceTree = "<group>"; };
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 				D4465BA825107BF40074D864 /* zoo8.json */,
 				D4465BA4250FCB9E0074D864 /* zoo9.json */,
 				D4465BA62510729E0074D864 /* zoo10.json */,
+				D4465BAA2510B03F0074D864 /* zoo11.json */,
 			);
 			path = "New Zoo";
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4465BAB2510B03F0074D864 /* zoo11.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D4465B95250DCF2A0074D864 /* zoo2.json in Resources */,
 				D4465B97250DE6B10074D864 /* zoo3.json in Resources */,
