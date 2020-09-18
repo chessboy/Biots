@@ -16,6 +16,8 @@ struct Constants {
 	struct Env {
 		
 		static let filename = "zoo11.json"
+		static let markersInEffect = 0
+
 		static let randomRun = false
 		static let worldRadius: CGFloat =  randomRun ? 4000 : 5200 // multiple of gridBlockSize works best
 		static let showGrid = true
@@ -27,7 +29,6 @@ struct Constants {
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let generationTrainingThreshold = 4000
-		static let fixedMarkers = false
 
 		//(2*π*4000)/(2*π*3000)*15k = 20k
 		static let minimumCells = 12
@@ -45,9 +46,6 @@ struct Constants {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let stateDetectionMaxProximity: CGFloat = 0.9 // 0..1
-		static let stateDetectionMinProximity: CGFloat = 0.5 // 0..1
-
 		static let collisionDamage: CGFloat = 0.125
 		static let perMovementRecovery: CGFloat = 0.0015
 
@@ -56,11 +54,11 @@ struct Constants {
 
 		static let maximumEnergy: CGFloat = Env.randomRun ? 100 : 200
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
-		static let blinkEnergy: CGFloat = maximumEnergy * 0.02
+		static let blinkEnergy: CGFloat = maximumEnergy * 0.015
 		static let perMovementEnergy: CGFloat = 0.0225
 		static let speedBoostEnergy: CGFloat = 0.0225
 		static let armorEnergy: CGFloat = 0.08
-		static let speedBoostExertion: CGFloat = 0.00075
+		static let speedBoostExertion: CGFloat = 0.0005
 		static let maxSpeedBoost: CGFloat = 1.5
 
 		static let maximumAge: CGFloat = Env.randomRun ? 2000 : 3000
@@ -144,6 +142,7 @@ struct Constants {
 		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 0.8)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
 		static let cell = SKColor(red: 0.63, green: 0.8, blue: 1, alpha: 0.5)
+		static let brownEyes = SKColor(red: 92/255, green: 64/255, blue: 61/255, alpha: 1)
 	}
 	
 	struct VisionColors {

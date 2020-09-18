@@ -302,7 +302,8 @@ public extension NeuralNet {
                     // TODO
                     break
                 case .sigmoid:
-                    result = zip(real, target).map{(-$0 * (1 - $0) * ($1 - $0))}
+                    //result = zip(real, target).map{(-$0 * (1 - $0) * ($1 - $0))}
+                    break
                 case .softmax:
                     vDSP_vsub(target, 1,
                               real, 1,

@@ -43,6 +43,21 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 
 	var matingGenome: Genome?
 	
+	var markerDescription: String {
+		var descr = ""
+		if Constants.Env.markersInEffect > 0 {
+			descr += genome.marker1 ? "1": "0"
+		}
+		if Constants.Env.markersInEffect > 1 {
+			descr += "-" + (genome.marker2 ? "1": "0")
+		}
+		return descr
+	}
+	
+	var eyeColor: SKColor {
+		return genome.marker1 ? .systemBlue : Constants.Colors.brownEyes
+	}	
+	
 	var isPregnant: Bool {
 		return matingGenome != nil
 	}
@@ -122,11 +137,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		let showVision = globalDataComponent?.showCellVision ?? false
 		
-		if !showVision {
-			eyeNodes.forEach({ eyeNode in
-				eyeNode.isHidden = false
-			})
-		}
+		eyeNodes.forEach({ eyeNode in
+			eyeNode.fillColor = eyeColor
+			eyeNode.isHidden = showVision
+		})
 	}
     	
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
@@ -231,7 +245,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		incurEnergyChange(-Constants.Cell.blinkEnergy)
 		animatingEyes = true
 		eyeNodes.forEach({ eyeNode in
-			eyeNode.fillColor = .black
+			eyeNode.fillColor = eyeColor
 			eyeNode.strokeColor = .white
 			eyeNode.run(SKAction.bulge(xScale: 0.05, yScale: 0.85, scalingDuration: 0.075, revertDuration: 0.125)) {
 				eyeNode.yScale = 0.85
@@ -253,7 +267,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		if animate {
 			//print("closing eyes: \(effectiveVisibility.formattedTo3Places), scale: \(currentScale.formattedTo3Places)")
-			let fillColor: SKColor = effectiveVisibility <= 0.1 ? SKColor.white.withAlpha(0.5) : .black
+			let fillColor: SKColor = effectiveVisibility <= 0.1 ? eyeColor.withAlpha(0.5) : eyeColor
 			let strokeColor: SKColor = effectiveVisibility <= 0.1 ? .clear : .white
 
 			animatingEyes = true
@@ -467,13 +481,12 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					let energyFormatted = (energy/maximumEnergy).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					var armorDescr = "-none-"
-					
 					if let inference = brainComponent?.inference {
 						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("gen: \(genome.generation) | mrk: \(markerDescription) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), ce: \(cumulativeEnergy.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}

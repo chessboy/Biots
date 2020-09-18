@@ -14,7 +14,7 @@ final class BrainComponent: OKComponent {
     
 	var inference = Inference()
 	var frame = Int.random(100)
-	var senses = Senses()
+	var senses: Senses!
 	
 	lazy var cellComponent = coComponent(CellComponent.self)
 	lazy var neuralNetComponent = coComponent(NeuralNetComponent.self)
@@ -25,9 +25,13 @@ final class BrainComponent: OKComponent {
 		PhysicsComponent.self,
 		NeuralNetComponent.self,
 	]}
-			
+	
 	override func update(deltaTime seconds: TimeInterval) {
-        				
+        			
+		if senses == nil, let cell = cellComponent {
+			senses = Senses(inputCount: cell.genome.inputCount)
+		}
+		
 		frame += 1
 		
 		if !frame.isMultiple(of: 2) {
@@ -44,14 +48,16 @@ final class BrainComponent: OKComponent {
 		
 		vision.detect()
 		
-//		let position = cell.entityNode?.position ?? .zero
-//		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
-//		let distanceToCenter = position.distance(to: .zero)/Constants.Environment.worldRadius
-//		let theta = atan2(position.y, position.x).normalizedAngle
-//		let angleToCenter = (theta + angle + π).normalizedAngle
-//		let proximityToCenter = Float(1 - distanceToCenter)
+		let position = cell.entityNode?.position ?? .zero
+		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
+		let distanceToCenter = position.distance(to: .zero)/Constants.Env.worldRadius
+		let theta = atan2(position.y, position.x).normalizedAngle
+		let angleToCenter = (theta + angle + π).normalizedAngle
+		let proximityToCenter = Float(1 - distanceToCenter)
 
 		senses.setSenses(
+			marker1: Float(cell.genome.marker1 ? 1 : 0),
+			marker2: Float(cell.genome.marker2 ? 1 : 0),
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			stamina: Float(cell.stamina),
@@ -59,6 +65,8 @@ final class BrainComponent: OKComponent {
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			visibility: cell.visibility.float,
+			proximityToCenter: proximityToCenter,
+			angleToCenter: Float(angleToCenter/(2*π)),
 			clockShort: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate),
 			clockLong: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate*3),
 			age: Float(cell.age/Constants.Cell.maximumAge)

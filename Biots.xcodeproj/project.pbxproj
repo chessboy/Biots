@@ -77,6 +77,11 @@
 		D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */; };
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
+		D49504332512EB3100F12CD9 /* lab1.json in Resources */ = {isa = PBXBuildFile; fileRef = D49504322512EB3100F12CD9 /* lab1.json */; };
+		D495043525130D0900F12CD9 /* lab2.json in Resources */ = {isa = PBXBuildFile; fileRef = D495043425130D0900F12CD9 /* lab2.json */; };
+		D49504372513316B00F12CD9 /* lab3.json in Resources */ = {isa = PBXBuildFile; fileRef = D49504362513316B00F12CD9 /* lab3.json */; };
+		D49504452513C20000F12CD9 /* lab4.json in Resources */ = {isa = PBXBuildFile; fileRef = D49504442513C20000F12CD9 /* lab4.json */; };
+		D4950447251430B300F12CD9 /* lab5.json in Resources */ = {isa = PBXBuildFile; fileRef = D4950446251430B300F12CD9 /* lab5.json */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
@@ -177,6 +182,11 @@
 		D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVectorMath.swift; sourceTree = "<group>"; };
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
+		D49504322512EB3100F12CD9 /* lab1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab1.json; sourceTree = "<group>"; };
+		D495043425130D0900F12CD9 /* lab2.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab2.json; sourceTree = "<group>"; };
+		D49504362513316B00F12CD9 /* lab3.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab3.json; sourceTree = "<group>"; };
+		D49504442513C20000F12CD9 /* lab4.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab4.json; sourceTree = "<group>"; };
+		D4950446251430B300F12CD9 /* lab5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = lab5.json; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -227,7 +237,7 @@
 			path = Resource;
 			sourceTree = "<group>";
 		};
-		D4229EE0250B3ADA00DE29CE /* New Zoo */ = {
+		D4229EE0250B3ADA00DE29CE /* 28-24-8 */ = {
 			isa = PBXGroup;
 			children = (
 				D4229EE1250B3AFD00DE29CE /* zoo1.json */,
@@ -242,7 +252,7 @@
 				D4465BA62510729E0074D864 /* zoo10.json */,
 				D4465BAA2510B03F0074D864 /* zoo11.json */,
 			);
-			path = "New Zoo";
+			path = "28-24-8";
 			sourceTree = "<group>";
 		};
 		D42CE73324442DFE0049854C /* UI Components */ = {
@@ -468,6 +478,18 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		D49504312512EB2100F12CD9 /* 32-24-8 */ = {
+			isa = PBXGroup;
+			children = (
+				D49504322512EB3100F12CD9 /* lab1.json */,
+				D495043425130D0900F12CD9 /* lab2.json */,
+				D49504362513316B00F12CD9 /* lab3.json */,
+				D49504442513C20000F12CD9 /* lab4.json */,
+				D4950446251430B300F12CD9 /* lab5.json */,
+			);
+			path = "32-24-8";
+			sourceTree = "<group>";
+		};
 		D4BE801924FB6D2900208C6A /* BiotsTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,10 +536,11 @@
 		D4D18D97244799F500BF92FA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D49504312512EB2100F12CD9 /* 32-24-8 */,
 				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D47D719524489C450079D2F1 /* GenomeFactory.swift */,
-				D4229EE0250B3ADA00DE29CE /* New Zoo */,
+				D4229EE0250B3ADA00DE29CE /* 28-24-8 */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -570,7 +593,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1160;
-				LastUpgradeCheck = 1150;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Rob Silverman";
 				TargetAttributes = {
 					D47386312442BA830022E760 = {
@@ -611,12 +634,17 @@
 			files = (
 				D4465BAB2510B03F0074D864 /* zoo11.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
+				D49504452513C20000F12CD9 /* lab4.json in Resources */,
+				D495043525130D0900F12CD9 /* lab2.json in Resources */,
+				D4950447251430B300F12CD9 /* lab5.json in Resources */,
 				D4465B95250DCF2A0074D864 /* zoo2.json in Resources */,
 				D4465B97250DE6B10074D864 /* zoo3.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D4465B99250E19AD0074D864 /* zoo4.json in Resources */,
 				D4229EE2250B3AFD00DE29CE /* zoo1.json in Resources */,
+				D49504372513316B00F12CD9 /* lab3.json in Resources */,
 				D4465B9B250EC2ED0074D864 /* zoo5.json in Resources */,
+				D49504332512EB3100F12CD9 /* lab1.json in Resources */,
 				D4465BA72510729E0074D864 /* zoo10.json in Resources */,
 				D4465B9D250F105E0074D864 /* zoo6.json in Resources */,
 				D4465BA925107BF40074D864 /* zoo8.json in Resources */,
@@ -768,6 +796,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -828,6 +857,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
