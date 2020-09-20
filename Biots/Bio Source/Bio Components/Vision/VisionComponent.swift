@@ -59,6 +59,7 @@ final class VisionComponent: OKComponent {
 		GlobalDataComponent.self
 	]}
 
+	// test for push
 	func detect() {
 		
 		angleVisions.removeAll()
