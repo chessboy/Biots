@@ -18,7 +18,7 @@
 		D42CE738244430CE0049854C /* RulerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE737244430CE0049854C /* RulerComponent.swift */; };
 		D42CE73A24449A670049854C /* SpriteKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE73924449A670049854C /* SpriteKitExtensions.swift */; };
 		D4465B9F250F20250074D864 /* ThrusterNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4465B9E250F20250074D864 /* ThrusterNode.swift */; };
-		D4465BAB2510B03F0074D864 /* zoo11.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465BAA2510B03F0074D864 /* zoo11.json */; };
+		D4465BAB2510B03F0074D864 /* zoo-28-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D4465BAA2510B03F0074D864 /* zoo-28-01.json */; };
 		D44B334C2503ECA200AAF342 /* GridNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44B334B2503ECA200AAF342 /* GridNode.swift */; };
 		D44E60612452298500694462 /* VisionComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E60602452298500694462 /* VisionComponent.swift */; };
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
@@ -67,7 +67,7 @@
 		D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */; };
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
-		D498803B2517CC3900015724 /* labtest.json in Resources */ = {isa = PBXBuildFile; fileRef = D498803A2517CC3900015724 /* labtest.json */; };
+		D498803B2517CC3900015724 /* zoo-32-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D498803A2517CC3900015724 /* zoo-32-01.json */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
@@ -106,7 +106,7 @@
 		D42CE737244430CE0049854C /* RulerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerComponent.swift; sourceTree = "<group>"; };
 		D42CE73924449A670049854C /* SpriteKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteKitExtensions.swift; sourceTree = "<group>"; };
 		D4465B9E250F20250074D864 /* ThrusterNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThrusterNode.swift; sourceTree = "<group>"; };
-		D4465BAA2510B03F0074D864 /* zoo11.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo11.json; sourceTree = "<group>"; };
+		D4465BAA2510B03F0074D864 /* zoo-28-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-28-01.json"; sourceTree = "<group>"; };
 		D44B334B2503ECA200AAF342 /* GridNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridNode.swift; sourceTree = "<group>"; };
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
@@ -158,7 +158,7 @@
 		D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVectorMath.swift; sourceTree = "<group>"; };
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
-		D498803A2517CC3900015724 /* labtest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = labtest.json; sourceTree = "<group>"; };
+		D498803A2517CC3900015724 /* zoo-32-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-01.json"; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -207,14 +207,6 @@
 				D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */,
 			);
 			path = Resource;
-			sourceTree = "<group>";
-		};
-		D4229EE0250B3ADA00DE29CE /* 28-24-8 */ = {
-			isa = PBXGroup;
-			children = (
-				D4465BAA2510B03F0074D864 /* zoo11.json */,
-			);
-			path = "28-24-8";
 			sourceTree = "<group>";
 		};
 		D42CE73324442DFE0049854C /* UI Components */ = {
@@ -440,12 +432,13 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		D49504312512EB2100F12CD9 /* 32-24-8 */ = {
+		D49880422517D0AB00015724 /* Zoo */ = {
 			isa = PBXGroup;
 			children = (
-				D498803A2517CC3900015724 /* labtest.json */,
+				D4465BAA2510B03F0074D864 /* zoo-28-01.json */,
+				D498803A2517CC3900015724 /* zoo-32-01.json */,
 			);
-			path = "32-24-8";
+			path = Zoo;
 			sourceTree = "<group>";
 		};
 		D4BE801924FB6D2900208C6A /* BiotsTests */ = {
@@ -494,11 +487,10 @@
 		D4D18D97244799F500BF92FA /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D49504312512EB2100F12CD9 /* 32-24-8 */,
+				D49880422517D0AB00015724 /* Zoo */,
 				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D47D719524489C450079D2F1 /* GenomeFactory.swift */,
-				D4229EE0250B3ADA00DE29CE /* 28-24-8 */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -590,9 +582,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4465BAB2510B03F0074D864 /* zoo11.json in Resources */,
+				D4465BAB2510B03F0074D864 /* zoo-28-01.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
-				D498803B2517CC3900015724 /* labtest.json in Resources */,
+				D498803B2517CC3900015724 /* zoo-32-01.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 			);

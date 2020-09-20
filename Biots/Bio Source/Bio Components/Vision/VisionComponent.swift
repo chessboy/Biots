@@ -61,20 +61,19 @@ final class VisionComponent: OKComponent {
 
 	func detect() {
 		
-		let cameraScale = camera?.xScale ?? 1
-		let tracerScale = (0.2 * cameraScale).clamped(0.3, 0.75)
-
 		angleVisions.removeAll()
-		let showTracer = globalDataComponent?.showTracer ?? false
 
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
+			let showTracer = globalDataComponent?.showTracer,
+			let cameraScale = camera?.xScale,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
 			let cell = cellComponent,
 			let physicsBody = physicsComponent?.physicsBody else {
 			return
 		}
-
+		
+		let tracerScale = (0.2 * cameraScale).clamped(0.3, 1)
 		let maxObjectsPerAngle = 2
 		
 		for angle in Constants.Vision.eyeAngles {
