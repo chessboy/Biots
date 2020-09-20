@@ -35,7 +35,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var speedNode: SKShapeNode!
 	var armorNode: SKShapeNode!
 	var eyeNodes: [SKShapeNode] = []
-	
+	var markerNodes: [SKShapeNode] = []
+
 	var visionNode: SKNode!
 	var retinaNodes: [RetinaNode] = []
 	var onTopOfFoodRetinaNode: RetinaNode!
@@ -56,14 +57,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	var eyeColor: SKColor {
 		return genome.marker1 ? .systemBlue : Constants.Colors.brownEyes
-	}	
+	}
 	
 	var isPregnant: Bool {
 		return matingGenome != nil
 	}
 	
 	var canMate: Bool {
-		return !expired && spawnCount < Constants.Env.selfReplicationMaxSpawn && age > Constants.Cell.matureAge && !isPregnant && health > Constants.Cell.mateHealth
+		return !expired && !isPregnant && spawnCount < Constants.Env.selfReplicationMaxSpawn && age >= Constants.Cell.matureAge && health >= Constants.Cell.mateHealth
 	}
 	
 	var maximumEnergy: CGFloat {
@@ -73,6 +74,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var health: CGFloat {
 		let energyRatio = energy/maximumEnergy
 		return energyRatio - (1-stamina)
+	}
+	
+	var bodyColor: SKColor {
+		return brainComponent?.inference.color.average.skColor ?? .black
 	}
 	
 	var visibility: CGFloat {
@@ -127,12 +132,16 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			var actions: [SKAction] = []
 			for growth in 2...scales {
 				let scale: CGFloat = growth.cgFloat/scales.cgFloat
-				actions.append(.wait(forDuration: 1))
-				actions.append(.scale(to: scale, duration: 0.25))
+				actions.append(.wait(forDuration: 0.5))
+				actions.append(.scale(to: scale, duration: 0.15))
 			}
 			
 			let sequence = SKAction.sequence(actions)
 			node.run(sequence)
+			
+			for index in 0..<Constants.Env.markersInEffect {
+				markerNodes[index].fillColor = genome.markerValue(index: index) ? .yellow : .black
+			}
 		}
 		
 		let showVision = globalDataComponent?.showCellVision ?? false
@@ -301,7 +310,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		updateThrusterNode()
 		
 		if Constants.Env.selfReplication, frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Cell.gestationAge, genome.generation <= Constants.Env.generationTrainingThreshold, age > Constants.Cell.selfReplicationAge {
+			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Cell.gestationAge, age > Constants.Cell.selfReplicationAge {
 				mated(otherGenome: genome)
 			}
 		}
@@ -687,10 +696,22 @@ extension CellComponent {
 		let onTopOfFoodRetinaNode = RetinaNode(angle: π, radius: radius * 0.65, thickness: thickness, arcLength: arcLength/2)
 		visionNode.addChild(onTopOfFoodRetinaNode)
 
+		var markerNodes: [SKShapeNode] = []
+		let markerAngles = Constants.Env.markersInEffect == 2 ? [-π/15, π/15] : [0]
+		for angle in markerAngles {
+			let node = SKShapeNode(circleOfRadius: radius * 0.075)
+			node.lineWidth = 0
+			node.fillColor = .yellow
+			node.position = CGPoint(angle: angle) * radius * 0.52
+			visionNode.addChild(node)
+			markerNodes.append(node)
+		}
+		
 		cellComponent.visionNode = visionNode
 		cellComponent.retinaNodes = retinaNodes
 		cellComponent.onTopOfFoodRetinaNode = onTopOfFoodRetinaNode
-
+		cellComponent.markerNodes = markerNodes
+		
 		// thrusters
 		let thrusterNode = ThrusterNode(radius: radius)
 		thrusterNode.isHidden = true

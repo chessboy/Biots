@@ -40,7 +40,8 @@ final class VisionComponent: OKComponent {
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
 	lazy var cellComponent = coComponent(CellComponent.self)
 	lazy var physicsComponent = coComponent(PhysicsComponent.self)
-
+	lazy var camera = OctopusKit.shared.currentScene?.camera
+	
 	override init() {
 		for angle in Constants.Vision.eyeAngles {
 			visionMemory.append(VisionMemory(angle: angle))
@@ -60,6 +61,9 @@ final class VisionComponent: OKComponent {
 
 	func detect() {
 		
+		let cameraScale = camera?.xScale ?? 1
+		let tracerScale = (0.2 * cameraScale).clamped(0.3, 0.75)
+
 		angleVisions.removeAll()
 		let showTracer = globalDataComponent?.showTracer ?? false
 
@@ -104,16 +108,16 @@ final class VisionComponent: OKComponent {
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.wall.withAlpha(proximity))
+									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.wall.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else if !blockerSeenAtSubAngle, let otherCellComponent = object.component(ofType: CellComponent.self) {
 								// cell
-								detectedColor = otherCellComponent.skColor
+								detectedColor = otherCellComponent.bodyColor
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity))
+									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else if !blockerSeenAtSubAngle, let algae = object.component(ofType: AlgaeComponent.self) {
@@ -121,7 +125,7 @@ final class VisionComponent: OKComponent {
 								detectedColor = Constants.VisionColors.algae
 								bodiesSeenAtAngle.append(body)
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.Colors.algae.withAlpha(proximity))
+									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.Colors.algae.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else {
@@ -155,10 +159,10 @@ final class VisionComponent: OKComponent {
 		}
 	}
 
-	func showTracer(rayStart: CGPoint, rayEnd: CGPoint, color: SKColor) {
+	func showTracer(rayStart: CGPoint, rayEnd: CGPoint, color: SKColor, scale: CGFloat) {
 		let path = CGMutablePath()
 		let tracerNode = SKShapeNode()
-		tracerNode.lineWidth = 0.0015 * Constants.Env.worldRadius
+		tracerNode.lineWidth = 0.0015 * Constants.Env.worldRadius * scale
 		tracerNode.strokeColor = color
 		tracerNode.zPosition = Constants.ZeeOrder.cell - 0.1
 		path.move(to: rayStart)

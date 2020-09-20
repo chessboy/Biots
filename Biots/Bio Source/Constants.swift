@@ -16,52 +16,51 @@ struct Constants {
 	struct Env {
 		
 		static let filename = "zoo11.json"
-		static let markersInEffect = 0
+		static let markersInEffect = 1
 
 		static let randomRun = false
-		static let worldRadius: CGFloat =  randomRun ? 4000 : 5200 // multiple of gridBlockSize works best
-		static let showGrid = true
 		static let gridBlockSize: CGFloat = 400
-		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.004))
+		static let worldRadius: CGFloat = gridBlockSize * (randomRun ? 10 : 12)
+		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.003))
 
-		static let addWalls = false
-		static let mutationsOff = false
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
-		static let generationTrainingThreshold = 4000
 
-		//(2*π*4000)/(2*π*3000)*15k = 20k
 		static let minimumCells = 12
 		static let maximumCells = 24
 		static let startupDelay = randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 		
-		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false)
-		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true)
+		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
+		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
 		static let graphics = simpleGraphics
+	}
+	
+	struct Algae {
+		static let radius: CGFloat = 16
+		static let bite: CGFloat = Cell.maximumEnergy * 0.2
 	}
 	
 	struct Cell {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let collisionDamage: CGFloat = 0.125
-		static let perMovementRecovery: CGFloat = 0.0015
+		static let collisionDamage: CGFloat = 0.125 * 2
+		static let perMovementRecovery: CGFloat = 0.001
 
-		static let mateHealth: CGFloat = Env.randomRun ? 0.65 : 0.75 // % of maximum health
-		static let spawnHealth: CGFloat = Env.randomRun ? 0.65 : 0.75 // % of maximum health
+		static let mateHealth: CGFloat = Env.randomRun ? 0.7 : 0.85 // % of maximum health
+		static let spawnHealth: CGFloat = Env.randomRun ? 0.6 : 0.8 // % of maximum health
 
-		static let maximumEnergy: CGFloat = Env.randomRun ? 100 : 200
+		static let maximumEnergy: CGFloat = Env.randomRun ? 100 : 150
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
-		static let blinkEnergy: CGFloat = maximumEnergy * 0.015
-		static let perMovementEnergy: CGFloat = 0.0225
-		static let speedBoostEnergy: CGFloat = 0.0225
-		static let armorEnergy: CGFloat = 0.08
+		static let blinkEnergy: CGFloat = maximumEnergy * 0.005
+		static let perMovementEnergy: CGFloat = 0.011
+		static let armorEnergy: CGFloat = 0.06
 		static let speedBoostExertion: CGFloat = 0.0005
 		static let maxSpeedBoost: CGFloat = 1.5
 
-		static let maximumAge: CGFloat = Env.randomRun ? 2000 : 3000
+		static let maximumAge: CGFloat = Env.randomRun ? 2000 : 2400
 		static let matureAge: CGFloat = maximumAge * 0.25
 		static let selfReplicationAge: CGFloat = maximumAge * 0.25
 		static let gestationAge: CGFloat = maximumAge * 0.15
@@ -69,6 +68,8 @@ struct Constants {
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let thrustForce: CGFloat = 15
+		
+		static let adjustBodyColor = false
 		
 		enum StatsLine: Int { case line1, line2, line3 }
 
@@ -101,6 +102,7 @@ struct Constants {
 		var antialiased: Bool
 		var blendMode: SKBlendMode
 		var shadows: Bool
+		var showGrid: Bool
 	}
 		
 	struct Window {
@@ -149,12 +151,7 @@ struct Constants {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 	}
-	
-	struct Algae {
-		static let radius: CGFloat = 16
-		static let bite: CGFloat = 40
-	}
-	
+		
 	struct Camera {
 		static let initialScale: CGFloat = 3
 		static let zoomMin: CGFloat = 0.1

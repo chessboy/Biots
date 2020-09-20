@@ -27,10 +27,22 @@ struct Genome: CustomStringConvertible, Codable {
 	var weights: [[Float]] = [[]]
 	var biases: [[Float]] = [[]]
 	
+	func markerValue(index: Int) -> Bool {
+		switch index {
+		case 0: return marker1
+		case 1: return marker2
+		default: return false
+		}
+	}
+	
 	// new genome
 	init(inputCount: Int, hiddenCount: Int, outputCount: Int) {
-		self.id = UUID().uuidString
-		self.generation = 0
+		self.inputCount = inputCount
+		self.hiddenCount = hiddenCount
+		self.outputCount = outputCount
+
+		id = UUID().uuidString
+		generation = 0
 		
 		if Constants.Env.markersInEffect > 0 {
 			self.marker1 = Bool.random()
@@ -40,10 +52,6 @@ struct Genome: CustomStringConvertible, Codable {
 			self.marker2 = Bool.random()
 		}
 
-		self.inputCount = inputCount
-		self.hiddenCount = hiddenCount
-		self.outputCount = outputCount
-		
 		let randomized = initialWeightsAndBiases(random: false, initialValue: 0)
 		weights = randomized.weights
 		biases = randomized.biases
@@ -57,26 +65,23 @@ struct Genome: CustomStringConvertible, Codable {
 	
 	// new genome from parent
 	init(parent: Genome) {
-		self.id = UUID().uuidString
-		self.generation = parent.generation + (Constants.Env.mutationsOff ? 0 : 1)
-		
-		if Constants.Env.markersInEffect > 0 {
-			self.marker1 = Bool.random()
+		id = UUID().uuidString
+		generation = parent.generation + 1
+			
+		if Constants.Env.markersInEffect > 0, Int.oneChanceIn(3) {
+			marker1.toggle()
 		}
-		
-		if Constants.Env.markersInEffect > 1 {
-			self.marker2 = Bool.random()
+		if Constants.Env.markersInEffect > 1, Int.oneChanceIn(3) {
+			marker2.toggle()
 		}
 
-		self.inputCount = parent.inputCount
-		self.hiddenCount = parent.hiddenCount
-		self.outputCount = parent.outputCount
-		self.weights = parent.weights
-		self.biases = parent.biases
+		inputCount = parent.inputCount
+		hiddenCount = parent.hiddenCount
+		outputCount = parent.outputCount
+		weights = parent.weights
+		biases = parent.biases
 
-		if !Constants.Env.mutationsOff {
-			mutate()
-		}
+		mutate()
 	}
 	
 	var idFormatted: String {

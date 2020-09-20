@@ -29,7 +29,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	override func didAddToEntity(withNode node: SKNode) {
 		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae else { return }
 		
-		if Constants.Env.showGrid {
+		if Constants.Env.graphics.showGrid {
 			let blockSize = Constants.Env.gridBlockSize
 			let gridSize = Int(Constants.Env.worldRadius / blockSize) * 2
 			let gridNode = GridNode.create(blockSize: 400, rows: gridSize, cols: gridSize)
@@ -41,26 +41,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
 		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
-		
-		if Constants.Env.addWalls {
-			let dim1 = Constants.Env.worldRadius * 0.35
-			let dim2 = Constants.Env.worldRadius * 0.25
-
-			let line1 = BoundaryComponent.createVerticalWall(y1: dim1, y2: dim2, x: 0)
-			scene.addEntity(line1)
-			let line2 = BoundaryComponent.createVerticalWall(y1: -dim2, y2: -dim1, x: 0)
-			scene.addEntity(line2)
-			let line3 = BoundaryComponent.createHorizontalWall(x1: dim1, x2: dim2, y: 0)
-			scene.addEntity(line3)
-			let line4 = BoundaryComponent.createHorizontalWall(x1: -dim2, x2: -dim1, y: 0)
-			scene.addEntity(line4)
-			
-			line1.node?.isHidden = hideNode
-			line2.node?.isHidden = hideNode
-			line3.node?.isHidden = hideNode
-			line4.node?.isHidden = hideNode
-		}
-		
+				
 		for _ in 1...Constants.Env.zapperCount {
 			let radius = CGFloat.random(in: 100...250)
 			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)

@@ -149,7 +149,7 @@ final class BrainComponent: OKComponent {
 		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
 		
 		if speedBoost > 1 {
-			cell.incurEnergyChange(-Constants.Cell.speedBoostEnergy)
+			cell.incurEnergyChange(-Constants.Cell.perMovementEnergy)
 			cell.incurStaminaChange(Constants.Cell.speedBoostExertion)
 		}
 		
@@ -172,10 +172,22 @@ final class BrainComponent: OKComponent {
 			cell.checkEyeState()
 		}
 
-		if Constants.Env.graphics.blendMode != .replace {
-			node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
-		} else {
-			node.fillColor = inference.color.average.skColor
+		if Constants.Cell.adjustBodyColor {
+			let minRGB: CGFloat = 0.25
+			let skColor = inference.color.average.skColor
+			let adjustedRed = skColor.redComponent.clamped(minRGB, 1)
+			let adjustedGreen = skColor.greenComponent.clamped(minRGB, 1)
+			let adjustedBlue = skColor.blueComponent.clamped(minRGB, 1)
+			let alpha: CGFloat = Constants.Env.graphics.blendMode != .replace ? (cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667) : 1
+			let adjustedColor = SKColor(red: adjustedRed, green: adjustedGreen, blue: adjustedBlue, alpha: alpha)
+			node.fillColor = adjustedColor
+		}
+		else {
+			if Constants.Env.graphics.blendMode != .replace {
+				node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
+			} else {
+				node.fillColor = inference.color.average.skColor
+			}
 		}
 	}
 }
