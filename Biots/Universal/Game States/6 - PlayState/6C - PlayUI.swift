@@ -14,32 +14,32 @@ import SwiftUI
 import OctopusKit
 
 struct PlayUI: View {
-    
-    @EnvironmentObject var gameCoordinator:  MyGameCoordinator
-    
-    private var globalDataComponent: GlobalDataComponent? {
-        gameCoordinator.entity.component(ofType: GlobalDataComponent.self)
-    }
-        
-    var body: some View {
+	
+	@EnvironmentObject var gameCoordinator:  MyGameCoordinator
+	
+	private var globalDataComponent: GlobalDataComponent? {
+    	gameCoordinator.entity.component(ofType: GlobalDataComponent.self)
+	}
+    	
+	var body: some View {
 		EmptyView()
-    }
+	}
 }
 
 // MARK: - Preview
 
 struct PlayUI_Previews: PreviewProvider {
-    
-    static let gameCoordinator = MyGameCoordinator()
-    
-    static var previews: some View {
-        gameCoordinator.entity.addComponent(GlobalDataComponent())
-        
-        return PlayUI()
-            .environmentObject(gameCoordinator)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .foregroundColor(.red)
-            .background(Color(red: 0.1, green: 0.2, blue: 0.2))
-            .edgesIgnoringSafeArea(.all)
-    }
+	
+	static let gameCoordinator = MyGameCoordinator()
+	
+	static var previews: some View {
+    	gameCoordinator.entity.addComponent(GlobalDataComponent())
+    	
+    	return PlayUI()
+	    	.environmentObject(gameCoordinator)
+	    	.frame(maxWidth: .infinity, maxHeight: .infinity)
+	    	.foregroundColor(.red)
+	    	.background(Color(red: 0.1, green: 0.2, blue: 0.2))
+	    	.edgesIgnoringSafeArea(.all)
+	}
 }

@@ -11,13 +11,13 @@ import GameplayKit
 import OctopusKit
 
 final class ZapperComponent: OKComponent {
-    
-    override var requiredComponents: [GKComponent.Type]? {
+	
+	override var requiredComponents: [GKComponent.Type]? {
 		[
 			SpriteKitComponent.self,
 			PhysicsComponent.self
 		]
-    }
+	}
 }
 
 extension ZapperComponent {

@@ -15,29 +15,29 @@ import OctopusKit
 import SwiftUI
 
 final class LogoState: OKGameState {
-    
-    init() {
-        
-        // 🔶 STEP 4.1: Associates a scene with this state.
-        // Each state may have only one scene, but a scene may represent multiple states (such as playing and paused.)
-        //
-        // Note that the LogoState has no associated SwiftUI overlay, which we will see in the upcoming TitleState.
-        
-        super.init(associatedSceneClass: OKLogoScene.self)
-    }
-    
-    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
-        
-        // 🔶 STEP 4.2: This method will be called by the OKLogoScene after it finishes animating.
-        
-        return stateMachine?.enter(TitleState.self) ?? false
-    }
-    
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        
-        // 🔶 STEP 4.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
-        
-        return stateClass == TitleState.self
-    }
-    
+	
+	init() {
+    	
+    	// 🔶 STEP 4.1: Associates a scene with this state.
+    	// Each state may have only one scene, but a scene may represent multiple states (such as playing and paused.)
+    	//
+    	// Note that the LogoState has no associated SwiftUI overlay, which we will see in the upcoming TitleState.
+    	
+    	super.init(associatedSceneClass: OKLogoScene.self)
+	}
+	
+	@discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
+    	
+    	// 🔶 STEP 4.2: This method will be called by the OKLogoScene after it finishes animating.
+    	
+    	return stateMachine?.enter(TitleState.self) ?? false
+	}
+	
+	override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+    	
+    	// 🔶 STEP 4.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
+    	
+    	return stateClass == TitleState.self
+	}
+	
 }

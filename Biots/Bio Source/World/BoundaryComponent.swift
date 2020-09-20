@@ -11,10 +11,10 @@ import GameplayKit
 import OctopusKit
 
 final class BoundaryComponent: OKComponent {
-    
+	
 	static let strokeWidth = Constants.Cell.radius * 2
 
-    override var requiredComponents: [GKComponent.Type]? {[
+	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
 		PhysicsComponent.self
 	]}

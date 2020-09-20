@@ -18,7 +18,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
 	
-    override var requiredComponents: [GKComponent.Type]? {[
+	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
 		PointerEventComponent.self,
 		CameraComponent.self,

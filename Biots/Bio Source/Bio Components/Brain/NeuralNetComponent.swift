@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 final class NeuralNetComponent: OKComponent, OKUpdatableComponent {
-    	
+		
 	var id: String = ""
 	var neuralNet: NeuralNet!
 	var neuralNetBlewUp = false

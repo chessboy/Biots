@@ -17,31 +17,31 @@ import OctopusKit
 import SwiftUI
 
 final class GameOverState: OKGameState {
-    
-    init() {
-        
-        // 🔶 STEP 8.1: Associates a scene and UI with this state.
-        // The PlayScene and PlayUI are also associated with the PlayState and PausedState.
-        
-        super.init(associatedSceneClass:  WorldScene.self,
-                   associatedSwiftUIView: PlayUI())
-    }
-    
-    @discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
-        
-        // 🔶 STEP 8.2: This method will be called by the PlayScene when the "Cycle Game States" button is tapped.
-        
-        return stateMachine?.enter(TitleState.self) ?? false
-    }
-    
-    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
-        
-        // 🔶 STEP 8.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
-        //
-        // The GameOverState can cycle back to either the TitleState or the PlayState.
-        
-        return stateClass == TitleState.self
-            || stateClass == PlayState.self
-    }
-    
+	
+	init() {
+    	
+    	// 🔶 STEP 8.1: Associates a scene and UI with this state.
+    	// The PlayScene and PlayUI are also associated with the PlayState and PausedState.
+    	
+    	super.init(associatedSceneClass:  WorldScene.self,
+    	    	   associatedSwiftUIView: PlayUI())
+	}
+	
+	@discardableResult override func octopusSceneDidChooseNextGameState(_ scene: OKScene) -> Bool {
+    	
+    	// 🔶 STEP 8.2: This method will be called by the PlayScene when the "Cycle Game States" button is tapped.
+    	
+    	return stateMachine?.enter(TitleState.self) ?? false
+	}
+	
+	override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+    	
+    	// 🔶 STEP 8.3: The OKGameCoordinator's superclass GKStateMachine calls this method to ask if the current state can transition to the requested state.
+    	//
+    	// The GameOverState can cycle back to either the TitleState or the PlayState.
+    	
+    	return stateClass == TitleState.self
+	    	|| stateClass == PlayState.self
+	}
+	
 }

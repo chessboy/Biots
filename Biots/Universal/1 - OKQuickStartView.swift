@@ -17,37 +17,37 @@ import Combine
 typealias OctopusKitQuickStartView = OKQuickStartView // In case you prefer the longer prefix :)
 
 struct OKQuickStartView: View {
-    
-    var body: some View {
-        
-        #if os(iOS)
+	
+	var body: some View {
+    	
+    	#if os(iOS)
 
-        return OKContainerView<MyGameCoordinator, MyGameViewController>()
-            .environmentObject(MyGameCoordinator())
-            .edgesIgnoringSafeArea(.all)
-            .statusBar(hidden: true)
+    	return OKContainerView<MyGameCoordinator, MyGameViewController>()
+	    	.environmentObject(MyGameCoordinator())
+	    	.edgesIgnoringSafeArea(.all)
+	    	.statusBar(hidden: true)
 
-        #elseif os(macOS)
+    	#elseif os(macOS)
 
-        return OKContainerView<MyGameCoordinator, MyGameViewController>()
-            .environmentObject(MyGameCoordinator())
+    	return OKContainerView<MyGameCoordinator, MyGameViewController>()
+	    	.environmentObject(MyGameCoordinator())
 			.frame(width: Constants.Window.size, height: Constants.Window.size/φ)
-            .fixedSize()
-        
-        #elseif os(tvOS)
-        
-        return OKContainerView<MyGameCoordinator, MyGameViewController>()
-            .environmentObject(MyGameCoordinator())
-            .edgesIgnoringSafeArea(.all)
-        
-        #endif
-        
-    }
-    
+	    	.fixedSize()
+    	
+    	#elseif os(tvOS)
+    	
+    	return OKContainerView<MyGameCoordinator, MyGameViewController>()
+	    	.environmentObject(MyGameCoordinator())
+	    	.edgesIgnoringSafeArea(.all)
+    	
+    	#endif
+    	
+	}
+	
 }
 
 struct OKQuickStartView_Previews: PreviewProvider {
-    static var previews: some View {
-        Text("See the TitleUI preview.")
-    }
+	static var previews: some View {
+    	Text("See the TitleUI preview.")
+	}
 }

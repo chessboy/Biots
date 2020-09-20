@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 final class ContactComponent: PhysicsContactComponent {
-      
+	  
 	override func didBegin(_ contact: SKPhysicsContact, in scene: OKScene?) {
 				
 		var cellCandidateA, cellCandidateB: CellComponent?

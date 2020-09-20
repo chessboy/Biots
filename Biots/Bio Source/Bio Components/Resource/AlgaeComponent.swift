@@ -20,7 +20,7 @@ class AlgaeComponent: OKComponent {
 		super.init()
 	}
 	
-    override var requiredComponents: [GKComponent.Type]? {[
+	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self
 	]}
 

@@ -11,11 +11,11 @@ import GameplayKit
 import OctopusKit
 
 final class ResourceFountainInfluenceComponent: OKComponent {
-    
+	
 	let rootNode = SKNode()
 	var labelNode: SKLabelNode!
 
-    override var requiredComponents: [GKComponent.Type]? {[
+	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
 		ResourceFountainInfluenceComponent.self
 	]}

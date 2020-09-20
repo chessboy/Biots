@@ -65,13 +65,13 @@ extension SKShapeNode {
 }
 
 extension GKEntity {
-    func component<P>(conformingTo protocol: P.Type) -> P? {
-        for component in components {
-            if let p = component as? P {
-                return p
-            }
-        }
+	func component<P>(conformingTo protocol: P.Type) -> P? {
+    	for component in components {
+	    	if let p = component as? P {
+    	    	return p
+	    	}
+    	}
 
-        return nil
-    }
+    	return nil
+	}
 }

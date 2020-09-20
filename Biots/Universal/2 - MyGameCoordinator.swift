@@ -23,7 +23,7 @@
 import OctopusKit
 
 final class MyGameCoordinator: OKGameCoordinator {
-    
+	
 //	init() {
 //		super.init(states: [LogoState(),
 //							TitleState(),

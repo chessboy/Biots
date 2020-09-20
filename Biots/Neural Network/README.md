@@ -31,8 +31,8 @@ This isn't as elegant as using a package manager, but we anticipate SPM support 
  
  ```swift
  let structure = try NeuralNet.Structure(nodes: [784, 500, 10],
-                                         hiddenActivation: .rectifiedLinear, outputActivation: .softmax,
-                                         batchSize: 100, learningRate: 0.8, momentum: 0.9)
+    	    	    	    	    	 hiddenActivation: .rectifiedLinear, outputActivation: .softmax,
+    	    	    	    	    	 batchSize: 100, learningRate: 0.8, momentum: 0.9)
  ```
 
 Once you've defined the structure, you're ready to create your `NeuralNet`:
@@ -73,8 +73,8 @@ For convenience, the `infer` method may also accept a 2D array `[[Float]]` for m
 
 ```swift
 let inputBatch: [[Float]] = [
-    [1, 2, 3, 4],
-    [4, 3, 2, 1]
+	[1, 2, 3, 4],
+	[4, 3, 2, 1]
 ]
 let outputs = try nn.infer(inputBatch)
 ```
@@ -98,10 +98,10 @@ Note: The validation data will NOT be used to train the network, but will be use
 
 ```swift
 let dataset = try NeuralNet.Dataset(trainInputs: myTrainingData,
-                                    trainLabels: myTrainingLabels,
-                                    validationInputs: myValidationData,
-                                    validationLabels: myValidationLabels,
-                                    structure: structure)
+	    	    	    	    	trainLabels: myTrainingLabels,
+	    	    	    	    	validationInputs: myValidationData,
+	    	    	    	    	validationLabels: myValidationLabels,
+	    	    	    	    	structure: structure)
 ```
 
 One you have a dataset, you're ready to train the network. One more parameter is required to kick off the training process:
@@ -134,24 +134,24 @@ let validationLabels: [[Float]] = [[/* Validation labels here */]]
 
 // Loop forever until desired network accuracy is met
 while true {
-    // Perform one training epoch on training data
-    for (inputs, labels) in zip(trainInputs, trainLabels) {
-        try nn.infer(inputs)
-        try nn.backpropagate(labels)
-    }
-    // After each epoch, check progress on validation data
-    var error: Float = 0
-    for (inputs, labels) in zip(validationInputs, validationLabels) {
-        let outputs = try nn.infer(inputs)
-        // Sum the error of each output node
-        error += nn.costFunction.cost(real: outputs, target: labels)
-    }
-    // Calculate average error
-    error /= Float(validationInputs.count)
-    if error < DESIRED_ERROR {
-        // SUCCESS
-        break
-    }
+	// Perform one training epoch on training data
+	for (inputs, labels) in zip(trainInputs, trainLabels) {
+    	try nn.infer(inputs)
+    	try nn.backpropagate(labels)
+	}
+	// After each epoch, check progress on validation data
+	var error: Float = 0
+	for (inputs, labels) in zip(validationInputs, validationLabels) {
+    	let outputs = try nn.infer(inputs)
+    	// Sum the error of each output node
+    	error += nn.costFunction.cost(real: outputs, target: labels)
+	}
+	// Calculate average error
+	error /= Float(validationInputs.count)
+	if error < DESIRED_ERROR {
+    	// SUCCESS
+    	break
+	}
 }
 ```
 

@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 final class KeyTrackerComponent: OKComponent {
-    
+	
 	var keyCodesDown = [UInt16]()
 	var shiftDown: Bool = false
 	var commandDown: Bool = false

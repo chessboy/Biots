@@ -12,7 +12,7 @@ import OctopusKit
 
 /// A custom component for the QuickStart project that holds some simple data to be shared across multiple game states and scenes.
 final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableObject {
-            
+	    	
 	@OKUserDefault(key: "showTracer", defaultValue: false) public var showTracer: Bool
 	@OKUserDefault(key: "showPhysics", defaultValue: false) public var showPhysics: Bool
 	@OKUserDefault(key: "showCellStats", defaultValue: false) public var showCellStats: Bool

@@ -11,12 +11,12 @@ import GameplayKit
 import OctopusKit
 
 final class EyesComponent: OKComponent {
-    
+	
 	let rootNode = SKNode()
 
-    override var requiredComponents: [GKComponent.Type]? {
+	override var requiredComponents: [GKComponent.Type]? {
 		[SpriteKitComponent.self]
-    }
+	}
 	
 	override func didAddToEntity() {
 		rootNode.alpha = 0

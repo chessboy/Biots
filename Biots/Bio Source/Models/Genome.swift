@@ -23,7 +23,7 @@ struct Genome: CustomStringConvertible, Codable {
 	// neural net
 	var inputCount: Int
 	var hiddenCount: Int
-    var outputCount: Int
+	var outputCount: Int
 	var weights: [[Float]] = [[]]
 	var biases: [[Float]] = [[]]
 	

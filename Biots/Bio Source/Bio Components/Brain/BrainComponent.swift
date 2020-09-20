@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 final class BrainComponent: OKComponent {
-    
+	
 	var inference = Inference()
 	var frame = Int.random(100)
 	var senses: Senses!
@@ -20,14 +20,14 @@ final class BrainComponent: OKComponent {
 	lazy var neuralNetComponent = coComponent(NeuralNetComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
 
-    override var requiredComponents: [GKComponent.Type]? { return [
+	override var requiredComponents: [GKComponent.Type]? { return [
 		SpriteKitComponent.self,
 		PhysicsComponent.self,
 		NeuralNetComponent.self,
 	]}
 	
 	override func update(deltaTime seconds: TimeInterval) {
-        			
+    				
 		if senses == nil, let cell = cellComponent {
 			senses = Senses(inputCount: cell.genome.inputCount)
 		}

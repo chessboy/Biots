@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 final class CellComponent: OKComponent, OKUpdatableComponent {
-    			
+				
 	var genome: Genome
 	var expired = false
 	
@@ -116,7 +116,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 
 	required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-    override var requiredComponents: [GKComponent.Type]? {[
+	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
 		PhysicsComponent.self,
 		ContactComponent.self,
@@ -151,7 +151,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			eyeNode.isHidden = showVision
 		})
 	}
-    	
+		
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
 		if amount > 0 {
 			cumulativeEnergy += amount
@@ -289,7 +289,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			})
 		}}
 	
-    override func update(deltaTime seconds: TimeInterval) {
+	override func update(deltaTime seconds: TimeInterval) {
 		
 		guard !expired else { return }
 		age += 1
@@ -322,7 +322,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		frame += 1
-    }
+	}
 	
 	func expire() {
 		if let scene = OctopusKit.shared.currentScene as? WorldScene, let entity = self.entity, let node = entityNode {

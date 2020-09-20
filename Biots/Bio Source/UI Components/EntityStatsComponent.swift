@@ -11,10 +11,10 @@ import GameplayKit
 import OctopusKit
 
 final class EntityStatsComponent: OKComponent {
-    
+	
 	var statsNode: StatsNode!
 	
-    override var requiredComponents: [GKComponent.Type]? {[
+	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self
 	]}
 	

@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
-    
+	
 	var textNode: SKLabelNode!
 	var maskNode: SKShapeNode!
 
@@ -23,11 +23,11 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		maskNode.fillColor = paused ? SKColor(red: 0.5, green: 0, blue: 0, alpha: 0.5) : SKColor(white: 0, alpha: 0.75)
 	}
 	
-    override var requiredComponents: [GKComponent.Type]? {
+	override var requiredComponents: [GKComponent.Type]? {
 		[SpriteKitComponent.self, CameraComponent.self]
-    }
-    
-    override func didAddToEntity(withNode node: SKNode) {
+	}
+	
+	override func didAddToEntity(withNode node: SKNode) {
 		let rect = CGRect(x: -750, y: 0, width: 1500, height: 36)
 		maskNode = SKShapeNode(rect: rect, cornerRadius: 18)
 		maskNode.lineWidth = 0
@@ -37,7 +37,7 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 
 		let font = OKFont(name: "Consolas", size: 20, color: .white)
 		
-        textNode = SKLabelNode()
+    	textNode = SKLabelNode()
 		textNode.text = "Starting up..."
 		textNode.font = font
 		textNode.position = CGPoint(x: 0, y: 12)
@@ -47,6 +47,6 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		if let camera = coComponent(CameraComponent.self)?.camera {
 			camera.addChild(maskNode)
 		}
-    }
+	}
 }
 

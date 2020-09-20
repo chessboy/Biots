@@ -19,7 +19,7 @@ struct Inference {
 	var armor = RunningValue(memory: 8)
 
 	/**
- 	|     0    |     1    |    2    |    3    |    4    |      5      |   6   |   7   |
+ 	|	 0	|	 1	|	2	|	3	|	4	|	  5	  |   6   |   7   |
 	| L thrust | R thrust | color R | color G | color B | speed boost | blink | armor |
 	*/
 	
