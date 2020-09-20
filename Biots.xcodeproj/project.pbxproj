@@ -163,6 +163,7 @@
 		D498803A2517CC3900015724 /* zoo-32-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-01.json"; sourceTree = "<group>"; };
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D49880492518024200015724 /* zoo-32-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-02.json"; sourceTree = "<group>"; };
+		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -252,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				D49880452517D69400015724 /* README.md */,
+				D498804D2518050A00015724 /* Biots.png */,
 				D47386342442BA830022E760 /* Biots */,
 				D4BE801924FB6D2900208C6A /* BiotsTests */,
 				D47386332442BA830022E760 /* Products */,
