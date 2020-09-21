@@ -15,13 +15,13 @@ struct Constants {
 
 	struct Env {
 		
-		static let filename = "zoo-28-01.json"
+		static let filename = "zoo-32-04.json"
 		static let markersInEffect = 1
 
 		static let randomRun = false
 		static let gridBlockSize: CGFloat = 400
 		static let worldRadius: CGFloat = gridBlockSize * (randomRun ? 10 : 12)
-		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.003))
+		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.004))
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -37,11 +37,6 @@ struct Constants {
 		static let graphics = simpleGraphics
 	}
 	
-	struct Algae {
-		static let radius: CGFloat = 16
-		static let bite: CGFloat = Cell.maximumEnergy * 0.2
-	}
-	
 	struct Cell {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
@@ -55,8 +50,8 @@ struct Constants {
 		static let maximumEnergy: CGFloat = Env.randomRun ? 100 : 150
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
 		static let blinkEnergy: CGFloat = maximumEnergy * 0.005
-		static let perMovementEnergy: CGFloat = 0.011
-		static let armorEnergy: CGFloat = 0.06
+		static let perMovementEnergy: CGFloat = 0.01
+		static let armorEnergy: CGFloat = 0.04
 		static let speedBoostExertion: CGFloat = 0.0005
 		static let maxSpeedBoost: CGFloat = 1.5
 
@@ -67,8 +62,9 @@ struct Constants {
 		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degdrades vision
 
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
+		static let spinLimiter: CGFloat = 1/π
 		static let thrustForce: CGFloat = 15
-		
+
 		static let adjustBodyColor = false
 		
 		enum StatsLine: Int { case line1, line2, line3 }
@@ -77,6 +73,11 @@ struct Constants {
 			static let maxLinesOfText = 3
 			static let delimiter = "   "
 		}
+	}
+	
+	struct Algae {
+		static let radius: CGFloat = 16
+		static let bite: CGFloat = Cell.maximumEnergy * 0.2
 	}
 	
 	struct Vision {
@@ -89,11 +90,11 @@ struct Constants {
 	}
 	
 	struct Thrust {
-		static let thrusterWidth = π/36
-		static let leftThrustPositive = π/2 + thrusterWidth
-		static let leftThrustNegative = π/2 - thrusterWidth
-		static let rightThrustNegative = -π/2 + thrusterWidth
-		static let rightThrustPositive = -π/2 - thrusterWidth
+		static let thrusterArc = π/36
+		static let leftThrustPositive = π/2 + thrusterArc
+		static let leftThrustNegative = π/2 - thrusterArc
+		static let rightThrustNegative = -π/2 + thrusterArc
+		static let rightThrustPositive = -π/2 - thrusterArc
 		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
 		static let actionMemory = 3
 	}

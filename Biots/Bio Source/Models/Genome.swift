@@ -27,6 +27,10 @@ struct Genome: CustomStringConvertible, Codable {
 	var weights: [[Float]] = [[]]
 	var biases: [[Float]] = [[]]
 	
+	var markerSum: Int {
+		return marker1 && !marker2 ? 1 : !marker1 && marker2 ? 2 : marker1 && marker2 ? 3 : 0
+	}
+	
 	func markerValue(index: Int) -> Bool {
 		switch index {
 		case 0: return marker1

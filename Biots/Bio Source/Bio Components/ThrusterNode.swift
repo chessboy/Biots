@@ -18,7 +18,7 @@ class ThrusterNode: SKNode {
 	init(radius: CGFloat) {
 		
 		let thrusterRadius = radius * 0.5
-		let arcLength = Constants.Thrust.thrusterWidth
+		let arcLength = Constants.Thrust.thrusterArc
 		let thickness = radius/8
 		
 		leftThrustPostitiveNode = RetinaNode(angle: Constants.Thrust.thrusterSpots[0], radius: thrusterRadius, thickness: thickness, arcLength: arcLength)

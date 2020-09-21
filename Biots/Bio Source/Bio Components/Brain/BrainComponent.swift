@@ -11,7 +11,7 @@ import GameplayKit
 import OctopusKit
 
 final class BrainComponent: OKComponent {
-	
+
 	var inference = Inference()
 	var frame = Int.random(100)
 	var senses: Senses!
@@ -121,7 +121,7 @@ final class BrainComponent: OKComponent {
 
 			newX = position.x + R * sin(wd + zRotation) - R * sin(zRotation)
 			newY = position.y - R * cos(wd + zRotation) + R * cos(zRotation)
-			newHeading = (zRotation + wd/π).normalizedAngle // note: shrinking `w` limits rotation
+			newHeading = (zRotation + (wd * Constants.Cell.spinLimiter)).normalizedAngle // note: shrinking `w` limits rotation
 		}
 
 		return (position: CGPoint(x: newX, y: newY), heading: newHeading)

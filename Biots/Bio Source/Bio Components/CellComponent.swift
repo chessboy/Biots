@@ -55,9 +55,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		return descr
 	}
 	
-	var eyeColor: SKColor {
-		return genome.marker1 ? .systemBlue : Constants.Colors.brownEyes
-	}
+	var eyeColor = Constants.Colors.brownEyes
 	
 	var isPregnant: Bool {
 		return matingGenome != nil
@@ -126,6 +124,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity() {
+		
+		switch genome.markerSum {
+		case 1: eyeColor = .systemBlue
+		case 2: eyeColor = .systemGreen
+		case 3: eyeColor = .systemRed
+		default: break
+		}
+		
 		if let node = entityNode as? SKShapeNode {
 			let scales = 5
 			node.setScale(0.2)
@@ -697,7 +703,7 @@ extension CellComponent {
 		visionNode.addChild(onTopOfFoodRetinaNode)
 
 		var markerNodes: [SKShapeNode] = []
-		let markerAngles = Constants.Env.markersInEffect == 2 ? [-π/15, π/15] : [0]
+		let markerAngles = Constants.Env.markersInEffect == 2 ? [π/15, -π/15] : [0]
 		for angle in markerAngles {
 			let node = SKShapeNode(circleOfRadius: radius * 0.075)
 			node.lineWidth = 0

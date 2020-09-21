@@ -147,9 +147,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				print()
 				print(statsText)
 				print()
-				if let worldScene = scene as? WorldScene {
-					worldScene.dumpGenomes()
-				}
+				(scene as? WorldScene)?.dumpGenomes()
 			}
 		}
 
@@ -179,14 +177,14 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 					let _ = addNewCell(genome: genome, in: scene)
 				}
 			}
-			else if GenomeFactory.shared.genomes.count > 0, scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
-				let genomeIndex = genomeDispenseIndex % GenomeFactory.shared.genomes.count
-				var genome = GenomeFactory.shared.genomes[genomeIndex]
+			else if let genomes = GenomeFactory.shared.population?.genomes, genomes.count > 0, scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
+				let genomeIndex = genomeDispenseIndex % genomes.count
+				var genome = genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
 				print("dispensing genome: \(genome.id) - \(genomeIndex): \(genome.description)")
 				let _ = addNewCell(genome: genome, in: scene)
 				genomeDispenseIndex += 1
-				if genomeDispenseIndex >= GenomeFactory.shared.genomes.count {
+				if genomeDispenseIndex >= genomes.count {
 					//allGenomesFromFileDispensed = true
 				}
 			}
@@ -225,6 +223,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			return CellStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgStamina: 0, avgHealth: 0, canMateCount: 0, pregnantCount: 0, spawnAverage: 0, resourceStats: .zero)
 		}
 	}
+	
 	
 	var currentCells: [CellComponent] {
 		return OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: CellComponent.self) }) ?? []

@@ -100,22 +100,16 @@ final class WorldScene: OKScene {
 	}
 	
 	func dumpGenomes() {
-		print("\n[")
-		let genomes = self.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).map({$0.component(ofType: CellComponent.self)}).map({$0?.genome})
-
-		var index = 0
-		for genome in genomes {
-			
-			if let jsonData = try? genome.encodedToJSON() {
-				if let jsonString = String(data: jsonData, encoding: .utf8) {
-					let delim = index == genomes.count-1 ? "" : ","
-					print("\(jsonString)\(delim)")
-				}
-			}
-			index += 1
-		}
 		
-		print("]\n")
+		guard let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) else { return }
+		
+		let genomes = self.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).map({$0.component(ofType: CellComponent.self)}).map({$0!.genome})
+		let population = Population(genomes: genomes, algaeTarget: globalDataComponent.algaeTarget)
+		if let jsonData = try? population.encodedToJSON() {
+			if let jsonString = String(data: jsonData, encoding: .utf8) {
+				print(jsonString)
+			}
+		}
 	}
 	
 	func trackEntity() {
