@@ -13,6 +13,7 @@
 		D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */; };
 		D41D1F95244ACF8100A876F4 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D1F94244ACF8100A876F4 /* StringExtensions.swift */; };
 		D4229EDF250A7CE600DE29CE /* RetinaNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4229EDE250A7CE600DE29CE /* RetinaNode.swift */; };
+		D423D6A425192BC400F49CD7 /* zoo-32-05.json in Resources */ = {isa = PBXBuildFile; fileRef = D423D6A325192BC400F49CD7 /* zoo-32-05.json */; };
 		D42CE72E2443FF820049854C /* KeyTrackerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */; };
 		D42CE73224440EC20049854C /* GlobalStatsComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE73124440EC20049854C /* GlobalStatsComponent.swift */; };
 		D42CE738244430CE0049854C /* RulerComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42CE737244430CE0049854C /* RulerComponent.swift */; };
@@ -60,10 +61,13 @@
 		D47387052442DEA50022E760 /* CellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387042442DEA50022E760 /* CellComponent.swift */; };
 		D47387332443748B0022E760 /* NeuralNetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387322443748B0022E760 /* NeuralNetComponent.swift */; };
 		D4738757244389C60022E760 /* CGFloatMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4738756244389C60022E760 /* CGFloatMath.swift */; };
+		D47517BD251E14C3002F4872 /* zoo-32-07.json in Resources */ = {isa = PBXBuildFile; fileRef = D47517BC251E14C2002F4872 /* zoo-32-07.json */; };
 		D47D71942447F5950079D2F1 /* RunningValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D71932447F5950079D2F1 /* RunningValue.swift */; };
 		D47D719624489C450079D2F1 /* GenomeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D719524489C450079D2F1 /* GenomeFactory.swift */; };
 		D47D719924493E590079D2F1 /* JsonLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D719824493E590079D2F1 /* JsonLoad.swift */; };
 		D484F18424CAA9290079CFD3 /* OctopusKit in Frameworks */ = {isa = PBXBuildFile; productRef = D484F18324CAA9290079CFD3 /* OctopusKit */; };
+		D485AB5D2519B76D000D97EA /* zoo-32-06.json in Resources */ = {isa = PBXBuildFile; fileRef = D485AB5C2519B76D000D97EA /* zoo-32-06.json */; };
+		D485AB612519C96C000D97EA /* zoo-32-new-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D485AB602519C96C000D97EA /* zoo-32-new-01.json */; };
 		D48793DC2518FF9A00C8EFC5 /* zoo-32-04.json in Resources */ = {isa = PBXBuildFile; fileRef = D48793DB2518FF9A00C8EFC5 /* zoo-32-04.json */; };
 		D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */; };
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
@@ -73,7 +77,6 @@
 		D498804A2518024200015724 /* zoo-28-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D49880492518024200015724 /* zoo-28-02.json */; };
 		D498805325181BAF00015724 /* zoo-32-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D498805225181BAF00015724 /* zoo-32-02.json */; };
 		D498805725184DC400015724 /* zoo-32-03.json in Resources */ = {isa = PBXBuildFile; fileRef = D498805625184DC400015724 /* zoo-32-03.json */; };
-		D498805B251872E100015724 /* Population.swift in Sources */ = {isa = PBXBuildFile; fileRef = D498805A251872E100015724 /* Population.swift */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
@@ -107,6 +110,7 @@
 		D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceFountainInfluenceComponent.swift; sourceTree = "<group>"; };
 		D41D1F94244ACF8100A876F4 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D4229EDE250A7CE600DE29CE /* RetinaNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetinaNode.swift; sourceTree = "<group>"; };
+		D423D6A325192BC400F49CD7 /* zoo-32-05.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-05.json"; sourceTree = "<group>"; };
 		D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyTrackerComponent.swift; sourceTree = "<group>"; };
 		D42CE73124440EC20049854C /* GlobalStatsComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalStatsComponent.swift; sourceTree = "<group>"; };
 		D42CE737244430CE0049854C /* RulerComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulerComponent.swift; sourceTree = "<group>"; };
@@ -158,9 +162,12 @@
 		D47387042442DEA50022E760 /* CellComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellComponent.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		D47387322443748B0022E760 /* NeuralNetComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeuralNetComponent.swift; sourceTree = "<group>"; };
 		D4738756244389C60022E760 /* CGFloatMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatMath.swift; sourceTree = "<group>"; };
+		D47517BC251E14C2002F4872 /* zoo-32-07.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "zoo-32-07.json"; sourceTree = "<group>"; };
 		D47D71932447F5950079D2F1 /* RunningValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningValue.swift; sourceTree = "<group>"; };
 		D47D719524489C450079D2F1 /* GenomeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeFactory.swift; sourceTree = "<group>"; };
 		D47D719824493E590079D2F1 /* JsonLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoad.swift; sourceTree = "<group>"; };
+		D485AB5C2519B76D000D97EA /* zoo-32-06.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "zoo-32-06.json"; sourceTree = "<group>"; };
+		D485AB602519C96C000D97EA /* zoo-32-new-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-new-01.json"; sourceTree = "<group>"; };
 		D48793DB2518FF9A00C8EFC5 /* zoo-32-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-04.json"; sourceTree = "<group>"; };
 		D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVectorMath.swift; sourceTree = "<group>"; };
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
@@ -171,7 +178,6 @@
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
 		D498805225181BAF00015724 /* zoo-32-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-02.json"; sourceTree = "<group>"; };
 		D498805625184DC400015724 /* zoo-32-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-03.json"; sourceTree = "<group>"; };
-		D498805A251872E100015724 /* Population.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Population.swift; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -456,6 +462,10 @@
 				D498805225181BAF00015724 /* zoo-32-02.json */,
 				D498805625184DC400015724 /* zoo-32-03.json */,
 				D48793DB2518FF9A00C8EFC5 /* zoo-32-04.json */,
+				D423D6A325192BC400F49CD7 /* zoo-32-05.json */,
+				D485AB5C2519B76D000D97EA /* zoo-32-06.json */,
+				D47517BC251E14C2002F4872 /* zoo-32-07.json */,
+				D485AB602519C96C000D97EA /* zoo-32-new-01.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -510,7 +520,6 @@
 				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D47D719524489C450079D2F1 /* GenomeFactory.swift */,
-				D498805A251872E100015724 /* Population.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -610,8 +619,12 @@
 				D498805725184DC400015724 /* zoo-32-03.json in Resources */,
 				D498804A2518024200015724 /* zoo-28-02.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
+				D485AB612519C96C000D97EA /* zoo-32-new-01.json in Resources */,
 				D498805325181BAF00015724 /* zoo-32-02.json in Resources */,
+				D47517BD251E14C3002F4872 /* zoo-32-07.json in Resources */,
 				D48793DC2518FF9A00C8EFC5 /* zoo-32-04.json in Resources */,
+				D423D6A425192BC400F49CD7 /* zoo-32-05.json in Resources */,
+				D485AB5D2519B76D000D97EA /* zoo-32-06.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,7 +666,6 @@
 				D47386F22442CB9E0022E760 /* Constants.swift in Sources */,
 				D47386D62442BEDB0022E760 /* 4 - LogoState.swift in Sources */,
 				D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */,
-				D498805B251872E100015724 /* Population.swift in Sources */,
 				D473868E2442BD6C0022E760 /* Error.swift in Sources */,
 				D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */,
 				D47386922442BD6C0022E760 /* Cache.swift in Sources */,

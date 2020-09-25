@@ -311,7 +311,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		// update visual indicators
 		updateVisionNode()
 		updateHealthNode()
-		updateSpeedNode()
 		updateArmorNode()
 		updateThrusterNode()
 		
@@ -377,15 +376,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			healthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
 		}
 	}
-	
-	func updateSpeedNode() {
-		guard frame.isMultiple(of: 2) else { return }
-	
-		if let speedBoost = brainComponent?.inference.speedBoost.average {
-			speedNode.alpha = speedBoost.cgFloat
-		}
-	}
-	
+		
 	func updateArmorNode() {
 		guard frame.isMultiple(of: 2) else { return }
 		
@@ -460,16 +451,23 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			thrusterNode.alpha = 0
 			thrusterNode.isHidden = false
 			thrusterNode.run(.fadeIn(withDuration: 0.2))
+			speedNode.alpha = 0
+			speedNode.isHidden = false
 		}
 		else if showingThrust, !showThrust {
 			thrusterNode.run(.fadeOut(withDuration: 0.1)) {
 				self.thrusterNode.isHidden = true
 				self.thrusterNode.alpha = 0
 			}
+			speedNode.run(.fadeOut(withDuration: 0.1)) {
+				self.speedNode.alpha = 0
+				self.speedNode.isHidden = false
+			}
 		}
 
-		if showThrust, let thrust = brainComponent?.inference.thrust.average {
+		if showThrust, let thrust = brainComponent?.inference.thrust.average, let speedBoost = brainComponent?.inference.speedBoost.average {
 			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
+			speedNode.alpha = speedBoost.cgFloat
 		}
 	}
 	
@@ -657,6 +655,8 @@ extension CellComponent {
 		speedNode.fillColor = .clear
 		speedNode.lineWidth = radius * 0.1
 		speedNode.zRotation = π
+		speedNode.alpha = 0
+		speedNode.isHidden = true
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
 		speedNode.isAntialiased = Constants.Env.graphics.antialiased

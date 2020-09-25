@@ -12,22 +12,18 @@ import SpriteKit
 class GenomeFactory {
 	
 	static let shared = GenomeFactory()
-	var population: Population?
+	var genomes: [Genome] = []
 	
 	init() {
 		let filename = Constants.Env.filename
-		
-		if let filePopulation: Population = loadJsonFromFile(filename) {
-			population = filePopulation
-			print("GenomeFactory: loaded \(filePopulation) from \(filename)")
-		}
-		
+		genomes = loadJsonFromFile(filename)
+		genomes = genomes.filter({ $0.generation > 0 })
+		print("GenomeFactory: loaded \(genomes.count) genomes from \(filename):")
+		//genomes.forEach { print($0.description) }
 	}
 	
 	func genome(named: String) -> Genome? {
-		guard let population = population else { return nil }
-		
-		return population.genomes.filter({ $0.id == named }).first
+		return genomes.filter({ $0.id == named }).first
 	}
 	
 	var newRandomGenome: Genome {

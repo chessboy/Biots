@@ -15,12 +15,12 @@ struct Constants {
 
 	struct Env {
 		
-		static let filename = "zoo-32-04.json"
+		static let filename = "zoo-32-07.json"
 		static let markersInEffect = 1
 
 		static let randomRun = false
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (randomRun ? 10 : 12)
+		static let worldRadius: CGFloat = gridBlockSize * 12
 		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.004))
 
 		static let selfReplication = true
