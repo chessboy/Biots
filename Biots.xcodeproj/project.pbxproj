@@ -25,6 +25,13 @@
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
+		D458861B251F29BF0025A061 /* zoo-32-08.json in Resources */ = {isa = PBXBuildFile; fileRef = D458861A251F29BF0025A061 /* zoo-32-08.json */; };
+		D4588621251FF2570025A061 /* zoo-32-09.json in Resources */ = {isa = PBXBuildFile; fileRef = D4588620251FF2570025A061 /* zoo-32-09.json */; };
+		D458862525204FB60025A061 /* zoo-32-10.json in Resources */ = {isa = PBXBuildFile; fileRef = D458862425204FB60025A061 /* zoo-32-10.json */; };
+		D4588629252175350025A061 /* zoo-32-11.json in Resources */ = {isa = PBXBuildFile; fileRef = D4588628252175350025A061 /* zoo-32-11.json */; };
+		D458862D252234A50025A061 /* zoo-28-03.json in Resources */ = {isa = PBXBuildFile; fileRef = D458862C252234A50025A061 /* zoo-28-03.json */; };
+		D45886312523DD630025A061 /* zoo-28-04.json in Resources */ = {isa = PBXBuildFile; fileRef = D45886302523DD630025A061 /* zoo-28-04.json */; };
+		D458863525240B130025A061 /* zoo-28-05.json in Resources */ = {isa = PBXBuildFile; fileRef = D458863425240B130025A061 /* zoo-28-05.json */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -67,16 +74,15 @@
 		D47D719924493E590079D2F1 /* JsonLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D719824493E590079D2F1 /* JsonLoad.swift */; };
 		D484F18424CAA9290079CFD3 /* OctopusKit in Frameworks */ = {isa = PBXBuildFile; productRef = D484F18324CAA9290079CFD3 /* OctopusKit */; };
 		D485AB5D2519B76D000D97EA /* zoo-32-06.json in Resources */ = {isa = PBXBuildFile; fileRef = D485AB5C2519B76D000D97EA /* zoo-32-06.json */; };
-		D485AB612519C96C000D97EA /* zoo-32-new-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D485AB602519C96C000D97EA /* zoo-32-new-01.json */; };
-		D48793DC2518FF9A00C8EFC5 /* zoo-32-04.json in Resources */ = {isa = PBXBuildFile; fileRef = D48793DB2518FF9A00C8EFC5 /* zoo-32-04.json */; };
+		D48793DC2518FF9A00C8EFC5 /* zoo-32-04-m1.json in Resources */ = {isa = PBXBuildFile; fileRef = D48793DB2518FF9A00C8EFC5 /* zoo-32-04-m1.json */; };
 		D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */; };
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
-		D498803B2517CC3900015724 /* zoo-32-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D498803A2517CC3900015724 /* zoo-32-01.json */; };
+		D498803B2517CC3900015724 /* zoo-32-01-m1.json in Resources */ = {isa = PBXBuildFile; fileRef = D498803A2517CC3900015724 /* zoo-32-01-m1.json */; };
 		D49880462517D69400015724 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D49880452517D69400015724 /* README.md */; };
 		D498804A2518024200015724 /* zoo-28-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D49880492518024200015724 /* zoo-28-02.json */; };
-		D498805325181BAF00015724 /* zoo-32-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D498805225181BAF00015724 /* zoo-32-02.json */; };
-		D498805725184DC400015724 /* zoo-32-03.json in Resources */ = {isa = PBXBuildFile; fileRef = D498805625184DC400015724 /* zoo-32-03.json */; };
+		D498805325181BAF00015724 /* zoo-32-02-m1.json in Resources */ = {isa = PBXBuildFile; fileRef = D498805225181BAF00015724 /* zoo-32-02-m1.json */; };
+		D498805725184DC400015724 /* zoo-32-03-m1.json in Resources */ = {isa = PBXBuildFile; fileRef = D498805625184DC400015724 /* zoo-32-03-m1.json */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
@@ -121,6 +127,13 @@
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
+		D458861A251F29BF0025A061 /* zoo-32-08.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-08.json"; sourceTree = "<group>"; };
+		D4588620251FF2570025A061 /* zoo-32-09.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-09.json"; sourceTree = "<group>"; };
+		D458862425204FB60025A061 /* zoo-32-10.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-10.json"; sourceTree = "<group>"; };
+		D4588628252175350025A061 /* zoo-32-11.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-11.json"; sourceTree = "<group>"; };
+		D458862C252234A50025A061 /* zoo-28-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-28-03.json"; sourceTree = "<group>"; };
+		D45886302523DD630025A061 /* zoo-28-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-28-04.json"; sourceTree = "<group>"; };
+		D458863425240B130025A061 /* zoo-28-05.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-28-05.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -167,17 +180,16 @@
 		D47D719524489C450079D2F1 /* GenomeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeFactory.swift; sourceTree = "<group>"; };
 		D47D719824493E590079D2F1 /* JsonLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoad.swift; sourceTree = "<group>"; };
 		D485AB5C2519B76D000D97EA /* zoo-32-06.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "zoo-32-06.json"; sourceTree = "<group>"; };
-		D485AB602519C96C000D97EA /* zoo-32-new-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-new-01.json"; sourceTree = "<group>"; };
-		D48793DB2518FF9A00C8EFC5 /* zoo-32-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-04.json"; sourceTree = "<group>"; };
+		D48793DB2518FF9A00C8EFC5 /* zoo-32-04-m1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-04-m1.json"; sourceTree = "<group>"; };
 		D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVectorMath.swift; sourceTree = "<group>"; };
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
-		D498803A2517CC3900015724 /* zoo-32-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-01.json"; sourceTree = "<group>"; };
+		D498803A2517CC3900015724 /* zoo-32-01-m1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-01-m1.json"; sourceTree = "<group>"; };
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D49880492518024200015724 /* zoo-28-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-28-02.json"; sourceTree = "<group>"; };
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
-		D498805225181BAF00015724 /* zoo-32-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-02.json"; sourceTree = "<group>"; };
-		D498805625184DC400015724 /* zoo-32-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-03.json"; sourceTree = "<group>"; };
+		D498805225181BAF00015724 /* zoo-32-02-m1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-02-m1.json"; sourceTree = "<group>"; };
+		D498805625184DC400015724 /* zoo-32-03-m1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32-03-m1.json"; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -458,14 +470,20 @@
 			children = (
 				D4465BAA2510B03F0074D864 /* zoo-28-01.json */,
 				D49880492518024200015724 /* zoo-28-02.json */,
-				D498803A2517CC3900015724 /* zoo-32-01.json */,
-				D498805225181BAF00015724 /* zoo-32-02.json */,
-				D498805625184DC400015724 /* zoo-32-03.json */,
-				D48793DB2518FF9A00C8EFC5 /* zoo-32-04.json */,
+				D458862C252234A50025A061 /* zoo-28-03.json */,
+				D45886302523DD630025A061 /* zoo-28-04.json */,
+				D458863425240B130025A061 /* zoo-28-05.json */,
+				D498803A2517CC3900015724 /* zoo-32-01-m1.json */,
+				D498805225181BAF00015724 /* zoo-32-02-m1.json */,
+				D498805625184DC400015724 /* zoo-32-03-m1.json */,
+				D48793DB2518FF9A00C8EFC5 /* zoo-32-04-m1.json */,
 				D423D6A325192BC400F49CD7 /* zoo-32-05.json */,
 				D485AB5C2519B76D000D97EA /* zoo-32-06.json */,
 				D47517BC251E14C2002F4872 /* zoo-32-07.json */,
-				D485AB602519C96C000D97EA /* zoo-32-new-01.json */,
+				D458861A251F29BF0025A061 /* zoo-32-08.json */,
+				D4588620251FF2570025A061 /* zoo-32-09.json */,
+				D458862425204FB60025A061 /* zoo-32-10.json */,
+				D4588628252175350025A061 /* zoo-32-11.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -612,19 +630,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				D49880462517D69400015724 /* README.md in Resources */,
+				D4588629252175350025A061 /* zoo-32-11.json in Resources */,
 				D4465BAB2510B03F0074D864 /* zoo-28-01.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
-				D498803B2517CC3900015724 /* zoo-32-01.json in Resources */,
+				D498803B2517CC3900015724 /* zoo-32-01-m1.json in Resources */,
+				D458861B251F29BF0025A061 /* zoo-32-08.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
-				D498805725184DC400015724 /* zoo-32-03.json in Resources */,
+				D458863525240B130025A061 /* zoo-28-05.json in Resources */,
+				D498805725184DC400015724 /* zoo-32-03-m1.json in Resources */,
+				D45886312523DD630025A061 /* zoo-28-04.json in Resources */,
 				D498804A2518024200015724 /* zoo-28-02.json in Resources */,
+				D458862D252234A50025A061 /* zoo-28-03.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
-				D485AB612519C96C000D97EA /* zoo-32-new-01.json in Resources */,
-				D498805325181BAF00015724 /* zoo-32-02.json in Resources */,
+				D498805325181BAF00015724 /* zoo-32-02-m1.json in Resources */,
 				D47517BD251E14C3002F4872 /* zoo-32-07.json in Resources */,
-				D48793DC2518FF9A00C8EFC5 /* zoo-32-04.json in Resources */,
+				D48793DC2518FF9A00C8EFC5 /* zoo-32-04-m1.json in Resources */,
 				D423D6A425192BC400F49CD7 /* zoo-32-05.json in Resources */,
 				D485AB5D2519B76D000D97EA /* zoo-32-06.json in Resources */,
+				D458862525204FB60025A061 /* zoo-32-10.json in Resources */,
+				D4588621251FF2570025A061 /* zoo-32-09.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -86,24 +86,24 @@ class BiotsTests: XCTestCase {
 
 	}
 	
-	func testCrossover() throws {
-		
+	func testMutation() throws {
 		
         do {
-			let structure = try NeuralNet.Structure(nodes: [26, 24, 8], hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
+			let structure = try NeuralNet.Structure(nodes: [4, 2, 2, 1], hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
 			
 			let neuralNet = try NeuralNet(structure: structure)
 			
 			let weights = neuralNet.allWeights()
-			print("layers: \(weights.count)")
+			print("weights layers: \(weights.count)")
 			var layerIndex = 0
 			for layer in weights {
 				print("layer \(layerIndex): \(layer.count)")
 				layerIndex += 1
 			}
 			
+			print()
 			let biases = neuralNet.allBiases()
-			print("layers: \(biases.count)")
+			print("biases layers: \(biases.count)")
 			layerIndex = 0
 			for layer in biases {
 				print("layer \(layerIndex): \(layer.count)")
@@ -114,7 +114,6 @@ class BiotsTests: XCTestCase {
         }
 		
 		// pick a random number between 1..hidden-1
-
 	}
 
 	func testBitMasks() throws {

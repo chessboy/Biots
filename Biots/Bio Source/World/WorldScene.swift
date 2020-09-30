@@ -127,6 +127,17 @@ final class WorldScene: OKScene {
 		}
 	}
 	
+	func selectMostFit() {
+		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let cellComponents = entities(withName: "cell")?.map({$0.component(ofType: CellComponent.self)}) as? [CellComponent] {
+			if let mostFit = cellComponents.sorted(by: { (cell1, cell2) -> Bool in
+				return cell1.health > cell2.health
+			}).first {
+				cameraComponent.nodeToTrack = mostFit.entityNode
+				trackedEntity = mostFit.entity as? OKEntity
+			}
+		}
+	}
+	
 	override func keyDown(with event: NSEvent) {
 		
 		guard let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) else {
@@ -185,13 +196,7 @@ final class WorldScene: OKScene {
 				return
 			}
 			
-			if let cameraComponent = entity?.component(ofType: CameraComponent.self), let cellComponents = entities(withName: "cell")?.map({$0.component(ofType: CellComponent.self)}) as? [CellComponent] {
-				if let mostFit = cellComponents.sorted(by: { (cell1, cell2) -> Bool in
-					return cell1.health > cell2.health
-				}).first {
-					cameraComponent.nodeToTrack = mostFit.entityNode
-				}
-			}
+			selectMostFit()
 			break
 
 		case Keycode.e:
@@ -281,6 +286,16 @@ final class WorldScene: OKScene {
 				var cells = OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: CellComponent.self) }) ?? []
 				cells = cells.filter({ $0.health < 0.25 })
 				cells.forEach({ $0.kill() })
+				return
+			}
+			
+			if trackedEntity != nil, let cell = trackedEntity?.component(ofType: CellComponent.self) {
+				cell.kill()
+				trackedEntity = nil
+				
+				if shiftDown {
+					selectMostFit()
+				}
 			}
 			
 		default:

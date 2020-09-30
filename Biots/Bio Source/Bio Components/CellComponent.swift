@@ -381,7 +381,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard frame.isMultiple(of: 2) else { return }
 		
 		if let armor = brainComponent?.inference.armor.average {
-			armorNode.strokeColor = .green
 			armorNode.alpha = armor.cgFloat
 		}
 	}
@@ -570,7 +569,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		lastPregnantAge = age
 		
 		if let node = entityNode as? SKShapeNode {
-			node.run(SKAction.scale(to: 1.33, duration: 0.25))
+			node.run(SKAction.scale(to: 1.25	, duration: 0.25))
 		}
 	}
 	
@@ -619,7 +618,7 @@ extension CellComponent {
 			let shadowNode = SKShapeNode()
 			shadowNode.path = node.path
 			shadowNode.zPosition = Constants.ZeeOrder.cell - 6
-			shadowNode.glowWidth = radius * 0.4
+			shadowNode.glowWidth = radius * 0.2
 			shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
 			node.addChild(shadowNode)
 		}
@@ -703,14 +702,16 @@ extension CellComponent {
 		visionNode.addChild(onTopOfFoodRetinaNode)
 
 		var markerNodes: [SKShapeNode] = []
-		let markerAngles = Constants.Env.markersInEffect == 2 ? [π/15, -π/15] : [0]
-		for angle in markerAngles {
-			let node = SKShapeNode(circleOfRadius: radius * 0.075)
-			node.lineWidth = 0
-			node.fillColor = .yellow
-			node.position = CGPoint(angle: angle) * radius * 0.52
-			visionNode.addChild(node)
-			markerNodes.append(node)
+		if Constants.Env.markersInEffect > 0 {
+			let markerAngles = Constants.Env.markersInEffect == 2 ? [π/15, -π/15] : [0]
+			for angle in markerAngles {
+				let node = SKShapeNode(circleOfRadius: radius * 0.075)
+				node.lineWidth = 0
+				node.fillColor = .yellow
+				node.position = CGPoint(angle: angle) * radius * 0.52
+				visionNode.addChild(node)
+				markerNodes.append(node)
+			}
 		}
 		
 		cellComponent.visionNode = visionNode

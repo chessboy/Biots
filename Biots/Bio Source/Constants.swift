@@ -16,25 +16,27 @@ struct Constants {
 	struct Env {
 		
 		static let filename = "zoo-32-07.json"
-		static let markersInEffect = 1
+		static let markersInEffect = 0
 
 		static let randomRun = false
+		static let easyMode =  false
+		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * 12
-		static let zapperCount = Int(worldRadius * (randomRun ? 0.002 : 0.004))
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 12 : 14)
+		static let zapperCount = Int(worldRadius * (easyMode ? 0.002 : 0.004))
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 
-		static let minimumCells = 12
-		static let maximumCells = 24
+		static let minimumCells = 10
+		static let maximumCells = 20
 		static let startupDelay = randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = simpleGraphics
+		static let graphics = niceGraphics
 	}
 	
 	struct Cell {
@@ -44,18 +46,18 @@ struct Constants {
 		static let collisionDamage: CGFloat = 0.125 * 2
 		static let perMovementRecovery: CGFloat = 0.001
 
-		static let mateHealth: CGFloat = Env.randomRun ? 0.7 : 0.85 // % of maximum health
-		static let spawnHealth: CGFloat = Env.randomRun ? 0.6 : 0.8 // % of maximum health
+		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.85 // % of maximum health
+		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.8 // % of maximum health
 
-		static let maximumEnergy: CGFloat = Env.randomRun ? 100 : 150
+		static let maximumEnergy: CGFloat = Env.easyMode ? 100 : 150
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
 		static let blinkEnergy: CGFloat = maximumEnergy * 0.005
 		static let perMovementEnergy: CGFloat = 0.01
-		static let armorEnergy: CGFloat = 0.04
-		static let speedBoostExertion: CGFloat = 0.0005
+		static let armorEnergy: CGFloat = 0.06
+		static let speedBoostExertion: CGFloat = 0.0006
 		static let maxSpeedBoost: CGFloat = 1.5
 
-		static let maximumAge: CGFloat = Env.randomRun ? 2000 : 2400
+		static let maximumAge: CGFloat = Env.easyMode ? 2000 : 2400
 		static let matureAge: CGFloat = maximumAge * 0.25
 		static let selfReplicationAge: CGFloat = maximumAge * 0.25
 		static let gestationAge: CGFloat = maximumAge * 0.15
