@@ -23,7 +23,7 @@ final class NeuralNetComponent: OKComponent, OKUpdatableComponent {
 		self.genome = genome
 		
 		do {
-			let structure = try NeuralNet.Structure(nodes: [genome.inputCount, genome.hiddenCount, genome.outputCount], hiddenActivation: .hyperbolicTangent, outputActivation: .hyperbolicTangent, batchSize: 1, learningRate: 0.1, momentum: 0.5)
+			let structure = try NeuralNet.Structure(nodes: genome.nodeCounts, hiddenActivation: .hyperbolicTangent, outputActivation: .hyperbolicTangent, batchSize: 1, learningRate: 0.1, momentum: 0.5)
 			
 			let neuralNet = try NeuralNet(structure: structure)
 			self.neuralNet = neuralNet

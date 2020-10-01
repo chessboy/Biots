@@ -56,8 +56,6 @@ final class BrainComponent: OKComponent {
 		let proximityToCenter = Float(1 - distanceToCenter)
 
 		senses.setSenses(
-			marker1: Float(cell.genome.marker1 ? 1 : 0),
-			marker2: Float(cell.genome.marker2 ? 1 : 0),
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			stamina: Float(cell.stamina),

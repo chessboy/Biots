@@ -17,7 +17,7 @@ class GenomeFactory {
 	init() {
 		let filename = Constants.Env.filename
 		genomes = loadJsonFromFile(filename)
-		genomes = genomes.filter({ $0.generation > 0 })
+		//genomes = genomes.filter({ $0.generation > 0 })
 		print("GenomeFactory: loaded \(genomes.count) genomes from \(filename):")
 		//genomes.forEach { print($0.description) }
 	}
@@ -29,9 +29,9 @@ class GenomeFactory {
 	var newRandomGenome: Genome {
 		let inputCount = Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth + Senses.newInputCount
 		let outputCount = Inference.outputCount
-		let hiddenCount = 24
+		let hiddenCounts = [24, 12]
 
-		let genome = Genome(inputCount: inputCount, hiddenCount: hiddenCount, outputCount: outputCount)
+		let genome = Genome(inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
 		//print(genome.description)
 		return genome
 	}

@@ -63,10 +63,16 @@ class BiotsTests: XCTestCase {
 	
 	func testOutputs() throws {
 		
-		let genome = Genome(inputCount: 8, hiddenCount: 4, outputCount: 2)
+		let genome = Genome(inputCount: 8, hiddenCounts: [4], outputCount: 2)
 		
         do {
-			let structure = try NeuralNet.Structure(nodes: [genome.inputCount, genome.hiddenCount, genome.outputCount], hiddenActivation: .hyperbolicTangent, outputActivation: .hyperbolicTangent, batchSize: 1, learningRate: 0.1, momentum: 0.1)
+			
+			var nodes: [Int] = []
+			nodes.append(genome.inputCount)
+			nodes.append(contentsOf: genome.hiddenCounts)
+			nodes.append(genome.outputCount)
+
+			let structure = try NeuralNet.Structure(nodes: nodes, hiddenActivation: .hyperbolicTangent, outputActivation: .hyperbolicTangent, batchSize: 1, learningRate: 0.1, momentum: 0.1)
 			let neuralNet = try NeuralNet(structure: structure)
 			try neuralNet.setWeights(genome.weights)
 			try neuralNet.setBiases(genome.biases)
@@ -87,33 +93,43 @@ class BiotsTests: XCTestCase {
 	}
 	
 	func testMutation() throws {
+				
+		let genome = Genome(inputCount: 5, hiddenCounts: [4, 3], outputCount: 2)
+
+		let weightCounts = genome.weightCounts
+		let biasCounts = genome.biasCounts
 		
-        do {
-			let structure = try NeuralNet.Structure(nodes: [4, 2, 2, 1], hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
-			
-			let neuralNet = try NeuralNet(structure: structure)
-			
-			let weights = neuralNet.allWeights()
-			print("weights layers: \(weights.count)")
-			var layerIndex = 0
-			for layer in weights {
-				print("layer \(layerIndex): \(layer.count)")
-				layerIndex += 1
+		var randomizedWeights: [[Float]] = []
+		var randomizedBiases: [[Float]] = []
+
+		for weightCount in 0..<weightCounts.count {
+			var randomizedLayer: [Float] = []
+			for _ in 0..<weightCounts[weightCount] {
+				randomizedLayer.append(0)
 			}
-			
-			print()
-			let biases = neuralNet.allBiases()
-			print("biases layers: \(biases.count)")
-			layerIndex = 0
-			for layer in biases {
-				print("layer \(layerIndex): \(layer.count)")
-				layerIndex += 1
-			}
-        } catch let error {
-			XCTFail(error.localizedDescription)
-        }
+			randomizedWeights.append(randomizedLayer)
+		}
 		
-		// pick a random number between 1..hidden-1
+		for biasCount in 0..<biasCounts.count {
+			var randomizedLayer: [Float] = []
+			for _ in 0..<biasCounts[biasCount] {
+				randomizedLayer.append(0)
+			}
+			randomizedBiases.append(randomizedLayer)
+		}
+					
+		// mutate
+		let randomWeightLayerIndex = Int.random(min: 1, max: weightCounts.count - 1)
+		let randomWeightIndex = Int.random(min: 0, max: randomizedWeights[randomWeightLayerIndex].count - 1)
+		randomizedWeights[randomWeightLayerIndex][randomWeightIndex] = 1
+		
+		let randomBiasLayerIndex = Int.random(min: 1, max: biasCounts.count - 1)
+		let randomBiasIndex = Int.random(min: 0, max: randomizedBiases[randomBiasLayerIndex].count - 1)
+		randomizedBiases[randomBiasLayerIndex][randomBiasIndex] = 1
+
+		print(randomizedWeights)
+		print()
+		print(randomizedBiases)
 	}
 
 	func testBitMasks() throws {
@@ -146,7 +162,12 @@ class BiotsTests: XCTestCase {
 		var neuralNet: NeuralNet!
 		
 		do {
-			let structure = try NeuralNet.Structure(nodes: [genome.inputCount, genome.hiddenCount, genome.outputCount], hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
+			var nodes: [Int] = []
+			nodes.append(genome.inputCount)
+			nodes.append(contentsOf: genome.hiddenCounts)
+			nodes.append(genome.outputCount)
+
+			let structure = try NeuralNet.Structure(nodes: nodes, hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
 			
 			neuralNet = try NeuralNet(structure: structure)
 			try neuralNet.setWeights(genome.weights)

@@ -12,57 +12,56 @@ import SpriteKit
 
 struct Genome: CustomStringConvertible, Codable {
 	
-	static let minMutationIterations = 180
-	static let maxMutationIterations = 360
-
 	var id: String
-	var marker1 = false
-	var marker2 = false
 	var generation: Int
 
 	// neural net
 	var inputCount: Int
-	var hiddenCount: Int
+	var hiddenCounts: [Int]
 	var outputCount: Int
 	var weights: [[Float]] = [[]]
 	var biases: [[Float]] = [[]]
 	
-	var markerSum: Int {
-		return marker1 && !marker2 ? 1 : !marker1 && marker2 ? 2 : marker1 && marker2 ? 3 : 0
+	var nodeCounts: [Int] {
+		var counts: [Int] = []
+		counts.append(inputCount)
+		counts.append(contentsOf: hiddenCounts)
+		counts.append(outputCount)
+		return counts
 	}
 	
-	func markerValue(index: Int) -> Bool {
-		switch index {
-		case 0: return marker1
-		case 1: return marker2
-		default: return false
+	var weightCounts: [Int] {
+		let nodeCounts = self.nodeCounts
+		var counts: [Int] = [0]
+		for layerIndex in 1..<nodeCounts.count {
+			let count = nodeCounts[layerIndex] * nodeCounts[layerIndex - 1]
+			counts.append(count)
 		}
+		return counts
 	}
 	
+	var biasCounts: [Int] {
+		let nodeCounts = self.nodeCounts
+		var counts: [Int] = [0]
+		for layerIndex in 1..<nodeCounts.count {
+			let count = nodeCounts[layerIndex]
+			counts.append(count)
+		}
+		return counts
+	}
+		
 	// new genome
-	init(inputCount: Int, hiddenCount: Int, outputCount: Int) {
+	init(inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
 		self.inputCount = inputCount
-		self.hiddenCount = hiddenCount
+		self.hiddenCounts = hiddenCounts
 		self.outputCount = outputCount
 
 		id = UUID().uuidString
 		generation = 0
 		
-		if Constants.Env.markersInEffect > 0 {
-			self.marker1 = Bool.random()
-		}
-		
-		if Constants.Env.markersInEffect > 1 {
-			self.marker2 = Bool.random()
-		}
-
-		let randomized = initialWeightsAndBiases(random: false, initialValue: 0)
+		let randomized = initialWeightsAndBiases(random: true)
 		weights = randomized.weights
 		biases = randomized.biases
-		let mutationIterations = Int.random(min: Genome.minMutationIterations, max: Genome.maxMutationIterations)
-		for _ in 0..<mutationIterations {
-			mutate()
-		}
 //		print("created genome:")
 //		print(jsonString)
 	}
@@ -71,16 +70,9 @@ struct Genome: CustomStringConvertible, Codable {
 	init(parent: Genome) {
 		id = UUID().uuidString
 		generation = parent.generation + 1
-			
-		if Constants.Env.markersInEffect > 0, Int.oneChanceIn(3) {
-			marker1.toggle()
-		}
-		if Constants.Env.markersInEffect > 1, Int.oneChanceIn(3) {
-			marker2.toggle()
-		}
-
+		
 		inputCount = parent.inputCount
-		hiddenCount = parent.hiddenCount
+		hiddenCounts = parent.hiddenCounts
 		outputCount = parent.outputCount
 		weights = parent.weights
 		biases = parent.biases
@@ -93,7 +85,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), markers: \(marker1)|\(marker2), gen: \(generation), inputCount: \(inputCount), hiddenCount: \(hiddenCount), outputCount: \(outputCount)}"
+		return "{id: \(idFormatted), gen: \(generation), inputCount: \(inputCount), hiddenCounts: \(hiddenCounts), outputCount: \(outputCount)}"
 	}
 
 	var jsonString: String {
@@ -101,11 +93,9 @@ struct Genome: CustomStringConvertible, Codable {
 		"""
 		{
 			"id": "\(id)",
-			"marker1": "\(marker1)",
-			"marker2": "\(marker2)",
 			"generation": \(generation),
 			"inputCount": \(inputCount),
-			"hiddenCount": \(hiddenCount),
+			"hiddenCounts": \(hiddenCounts),
 			"outputCount": \(outputCount),
 			"weights": \(weights),
 			"biases": \(biases)
@@ -118,7 +108,7 @@ struct Genome: CustomStringConvertible, Codable {
 extension Genome {
 
 	mutating func mutate() {
-		let mutationRate = generation > 50 ? (generation > 200 ? 2 : 3) : 4
+		let mutationRate = (generation > 50 ? (generation > 200 ? 2 : 3) : 4) * 2
 		let weightsChances = Int.random(mutationRate)
 		let biasesChances = Bool.random() ? 0 : 1
 		
@@ -129,61 +119,15 @@ extension Genome {
 	}
 		
 	mutating func mutateWeights() {
-		
-		//todo: this only handles 1 hidden layer
-		if Int.oneChanceIn(3) {
-			// mutate output layer weights
-			if weights.count > 2 && weights[2].count > 0 {
-				let randomIndex = Int.random(weights[2].count)
-				let mutatedWeight = mutateWeight(weights[2][randomIndex])
-				//print("--- mutating output weight of \(id) from: \(weights[2][randomIndex]) to \(mutatedWeight)")
-				weights[2][randomIndex] = mutatedWeight
-			}
-			else {
-				OctopusKit.logForSim.add("could not mutate output weights of \(id)")
-			}
-		}
-		else {
-			// mutate hidden layer weights
-			if weights.count > 1 && weights[1].count > 0 {
-				let randomIndex = Int.random(weights[1].count)
-				let mutatedWeight = mutateWeight(weights[1][randomIndex])
-				//print("--- mutating hidden weight of \(id) from: \(weights[1][randomIndex]) to \(mutatedWeight)")
-				weights[1][randomIndex] = mutatedWeight
-			}
-			else {
-				OctopusKit.logForSim.add("could not mutate hidden weights of \(id)")
-			}
-		}
+		let randomLayerIndex = Int.random(min: 1, max: weightCounts.count - 1)
+		let randomWeightIndex = Int.random(min: 0, max: weights[randomLayerIndex].count - 1)
+		weights[randomLayerIndex][randomWeightIndex] = mutateWeight(weights[randomLayerIndex][randomWeightIndex])
 	}
 	
 	mutating func mutateBiases() {
-
-		//todo: this only handles 1 hidden layer
-		if Int.oneChanceIn(3) {
-			// mutate output biases
-			if biases.count > 2 && biases[2].count > 0 {
-				let randomIndex = Int.random(biases[2].count)
-				let mutatedWeight = mutateWeight(biases[2][randomIndex])
-				//print("--- mutating output bias of \(id) from: \(biases[2][randomIndex]) to \(mutatedWeight)")
-				biases[2][randomIndex] = mutatedWeight
-			}
-			else {
-				OctopusKit.logForSim.add("could not mutate output biases of \(id)")
-			}
-		}
-		else {
-			// mutate hidden biases
-			if biases.count > 1 && biases[1].count > 0 {
-				let randomIndex = Int.random(biases[1].count)
-				let mutatedWeight = mutateWeight(biases[1][randomIndex])
-				//print("--- mutating hidden bias of \(id) from: \(biases[1][randomIndex]) to \(mutatedWeight)")
-				biases[1][randomIndex] = mutatedWeight
-			}
-			else {
-				OctopusKit.logForSim.add("could not mutate hidden biases of \(id)")
-			}
-		}
+		let randomLayerIndex = Int.random(min: 1, max: biasCounts.count - 1)
+		let randomBiasIndex = Int.random(min: 0, max: biases[randomLayerIndex].count - 1)
+		biases[randomLayerIndex][randomBiasIndex] = mutateWeight(biases[randomLayerIndex][randomBiasIndex])
 	}
 	
 	func mutateWeight(_ weight: Float) -> Float {
@@ -196,7 +140,7 @@ extension Genome {
 		
 		switch selector {
 		case 0: return weight / 2
-		case 1: return Float(CGFloat(weight * 2).clamped(-max, max))
+		case 1: return Float((weight + weight).cgFloat.clamped(-max, max))
 		case 2: return Float.random(in: -Float(max)...Float(max))
 		// 50% chance
 		default: return Float((CGFloat(weight) + (CGFloat.random(in: minMutationRate..<maxMutationRate) * Int.randomSign.cgFloat)).clamped(-max, max))
@@ -205,42 +149,32 @@ extension Genome {
 	
 	func initialWeightsAndBiases(random: Bool = false, initialValue: Float = 0) -> (weights: [[Float]], biases: [[Float]]) {
 		
-		//todo: this only handles 1 hidden layer
-		var randomizedHiddenLayer: [Float] = []
-		var randomizedLastLayer: [Float] = []
-		var randomizedHiddenBiases: [Float] = []
-		var randomizedOutputBiases: [Float] = []
-		
-		let min: Float = 0
+		var randomizedWeights: [[Float]] = []
+		var randomizedBiases: [[Float]] = []
+
 		let max: Float = 1
 		
-		let inputCount = self.inputCount
-		let hiddenCount = self.hiddenCount
-		let outputCount = self.outputCount
+		let weightCounts = self.weightCounts
+		let biasCounts = self.biasCounts
+		
+		for weightCount in 0..<weightCounts.count {
+			var randomizedLayer: [Float] = []
+			for _ in 0..<weightCounts[weightCount] {
+				let value = random ? Float.random(in: -max...max) : initialValue
+				randomizedLayer.append(value)
+			}
+			randomizedWeights.append(randomizedLayer)
+		}
+		
+		for biasCount in 0..<biasCounts.count {
+			var randomizedLayer: [Float] = []
+			for _ in 0..<biasCounts[biasCount] {
+				let value = random ? Float.random(in: -max...max) : initialValue
+				randomizedLayer.append(value)
+			}
+			randomizedBiases.append(randomizedLayer)
+		}
 
-		for _ in 1...inputCount * hiddenCount {
-			let value = random ? Float.random(in: min...max) : initialValue
-			randomizedHiddenLayer.append(value)
-		}
-		
-		for _ in 1...hiddenCount * outputCount {
-			let value = random ? Float.random(in: min...max) : initialValue
-			randomizedLastLayer.append(value)
-		}
-		
-		for _ in 1...hiddenCount {
-			let value = random ? Float.random(in: min...max) : initialValue
-			randomizedHiddenBiases.append(value)
-		}
-		
-		for _ in 1...outputCount {
-			let value = random ? Float.random(in: min...max) : initialValue
-			randomizedOutputBiases.append(value)
-		}
-		
-		let weights = [[], randomizedHiddenLayer, randomizedLastLayer]
-		let biases = [[], randomizedHiddenBiases, randomizedOutputBiases]
-		
-		return (weights: weights, biases: biases)
+		return (weights: randomizedWeights, biases: randomizedBiases)
 	}
 }

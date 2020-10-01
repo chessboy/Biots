@@ -13,7 +13,7 @@ import SpriteKit
 struct Inference {
 	
 	var thrust = RunningCGVector(memory: 8)
-	var color = RunningColorVector(memory: 4)
+	var color = RunningColorVector(memory: 8)
 	var speedBoost = RunningValue(memory: 5)
 	var blink = false
 	var armor = RunningValue(memory: 8)

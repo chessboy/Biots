@@ -35,26 +35,13 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var speedNode: SKShapeNode!
 	var armorNode: SKShapeNode!
 	var eyeNodes: [SKShapeNode] = []
-	var markerNodes: [SKShapeNode] = []
 
 	var visionNode: SKNode!
 	var retinaNodes: [RetinaNode] = []
 	var onTopOfFoodRetinaNode: RetinaNode!
 	var thrusterNode: ThrusterNode!
 
-	var matingGenome: Genome?
-	
-	var markerDescription: String {
-		var descr = ""
-		if Constants.Env.markersInEffect > 0 {
-			descr += genome.marker1 ? "1": "0"
-		}
-		if Constants.Env.markersInEffect > 1 {
-			descr += "-" + (genome.marker2 ? "1": "0")
-		}
-		return descr
-	}
-	
+	var matingGenome: Genome?	
 	var eyeColor = Constants.Colors.brownEyes
 	
 	var isPregnant: Bool {
@@ -124,14 +111,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity() {
-		
-		switch genome.markerSum {
-		case 1: eyeColor = .systemBlue
-		case 2: eyeColor = .systemGreen
-		case 3: eyeColor = .systemRed
-		default: break
-		}
-		
+				
 		if let node = entityNode as? SKShapeNode {
 			let scales = 5
 			node.setScale(0.2)
@@ -144,10 +124,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			
 			let sequence = SKAction.sequence(actions)
 			node.run(sequence)
-			
-			for index in 0..<Constants.Env.markersInEffect {
-				markerNodes[index].fillColor = genome.markerValue(index: index) ? .yellow : .black
-			}
 		}
 		
 		let showVision = globalDataComponent?.showCellVision ?? false
@@ -498,7 +474,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					}
 					
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | mrk: \(markerDescription) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), ce: \(cumulativeEnergy.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
@@ -701,23 +677,9 @@ extension CellComponent {
 		let onTopOfFoodRetinaNode = RetinaNode(angle: π, radius: radius * 0.65, thickness: thickness, arcLength: arcLength/2)
 		visionNode.addChild(onTopOfFoodRetinaNode)
 
-		var markerNodes: [SKShapeNode] = []
-		if Constants.Env.markersInEffect > 0 {
-			let markerAngles = Constants.Env.markersInEffect == 2 ? [π/15, -π/15] : [0]
-			for angle in markerAngles {
-				let node = SKShapeNode(circleOfRadius: radius * 0.075)
-				node.lineWidth = 0
-				node.fillColor = .yellow
-				node.position = CGPoint(angle: angle) * radius * 0.52
-				visionNode.addChild(node)
-				markerNodes.append(node)
-			}
-		}
-		
 		cellComponent.visionNode = visionNode
 		cellComponent.retinaNodes = retinaNodes
 		cellComponent.onTopOfFoodRetinaNode = onTopOfFoodRetinaNode
-		cellComponent.markerNodes = markerNodes
 		
 		// thrusters
 		let thrusterNode = ThrusterNode(radius: radius)

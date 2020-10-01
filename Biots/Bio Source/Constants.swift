@@ -15,11 +15,10 @@ struct Constants {
 
 	struct Env {
 		
-		static let filename = "zoo-32-07.json"
-		static let markersInEffect = 0
+		static let filename = "zoo-30-24-12-8-02.json"
 
 		static let randomRun = false
-		static let easyMode =  false
+		static let easyMode = true
 		
 		static let gridBlockSize: CGFloat = 400
 		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 12 : 14)
@@ -36,7 +35,7 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = niceGraphics
+		static let graphics = simpleGraphics
 	}
 	
 	struct Cell {
