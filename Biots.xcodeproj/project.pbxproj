@@ -67,8 +67,6 @@
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
 		D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */ = {isa = PBXBuildFile; fileRef = D490039F2524E6A6002DA67C /* empty-zoo.json */; };
-		D49003A425253CAA002DA67C /* zoo-30-24-12-8-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D49003A325253CAA002DA67C /* zoo-30-24-12-8-01.json */; };
-		D49003A825258557002DA67C /* zoo-30-24-12-8-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D49003A725258557002DA67C /* zoo-30-24-12-8-02.json */; };
 		D49880462517D69400015724 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D49880452517D69400015724 /* README.md */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
@@ -160,8 +158,6 @@
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
 		D490039F2524E6A6002DA67C /* empty-zoo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "empty-zoo.json"; sourceTree = "<group>"; };
-		D49003A325253CAA002DA67C /* zoo-30-24-12-8-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-30-24-12-8-01.json"; sourceTree = "<group>"; };
-		D49003A725258557002DA67C /* zoo-30-24-12-8-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-30-24-12-8-02.json"; sourceTree = "<group>"; };
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
@@ -443,8 +439,6 @@
 			isa = PBXGroup;
 			children = (
 				D490039F2524E6A6002DA67C /* empty-zoo.json */,
-				D49003A325253CAA002DA67C /* zoo-30-24-12-8-01.json */,
-				D49003A725258557002DA67C /* zoo-30-24-12-8-02.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -591,12 +585,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D49880462517D69400015724 /* README.md in Resources */,
-				D49003A425253CAA002DA67C /* zoo-30-24-12-8-01.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */,
-				D49003A825258557002DA67C /* zoo-30-24-12-8-02.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

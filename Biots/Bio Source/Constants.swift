@@ -15,14 +15,14 @@ struct Constants {
 
 	struct Env {
 		
-		static let filename = "zoo-30-24-12-8-02.json"
+		static let filename = "foo.json"
 
 		static let randomRun = false
 		static let easyMode = true
 		
 		static let gridBlockSize: CGFloat = 400
 		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 12 : 14)
-		static let zapperCount = Int(worldRadius * (easyMode ? 0.002 : 0.004))
+		static let zapperCount = Int(worldRadius * (easyMode ? 0.0025 : 0.004))
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -43,12 +43,12 @@ struct Constants {
 		static let clockRate = 60 // ticks per 1-way cycle
 
 		static let collisionDamage: CGFloat = 0.125 * 2
-		static let perMovementRecovery: CGFloat = 0.001
+		static let perMovementRecovery: CGFloat = 0.0015
 
 		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.85 // % of maximum health
 		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.8 // % of maximum health
 
-		static let maximumEnergy: CGFloat = Env.easyMode ? 100 : 150
+		static let maximumEnergy: CGFloat = Env.easyMode ? 120 : 150
 		static let initialEnergy: CGFloat = maximumEnergy * 0.5
 		static let blinkEnergy: CGFloat = maximumEnergy * 0.005
 		static let perMovementEnergy: CGFloat = 0.01
@@ -56,7 +56,7 @@ struct Constants {
 		static let speedBoostExertion: CGFloat = 0.0006
 		static let maxSpeedBoost: CGFloat = 1.5
 
-		static let maximumAge: CGFloat = Env.easyMode ? 2000 : 2400
+		static let maximumAge: CGFloat = Env.easyMode ? 2200 : 2500
 		static let matureAge: CGFloat = maximumAge * 0.25
 		static let selfReplicationAge: CGFloat = maximumAge * 0.25
 		static let gestationAge: CGFloat = maximumAge * 0.15
