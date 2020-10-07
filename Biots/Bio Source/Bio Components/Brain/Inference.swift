@@ -12,11 +12,12 @@ import SpriteKit
 
 struct Inference {
 	
-	var thrust = RunningCGVector(memory: 8)
-	var color = RunningColorVector(memory: 8)
+	var thrust = RunningCGVector(memory: Constants.Thrust.displayMemory)
+	var color = RunningColorVector(memory: Constants.Vision.displayMemory)
 	var speedBoost = RunningValue(memory: 5)
 	var blink = false
 	var armor = RunningValue(memory: 8)
+	var seenId: String?
 
 	/**
 	|    0     |     1    |    2    |    3    |    4    |      5      |   6   |   7   |
@@ -27,7 +28,7 @@ struct Inference {
 		return 8
 	}
 	
-	mutating func infer(outputs: [Float]) {
+	mutating func infer(outputs: [Float], seenId: String? = nil) {
 		
 		let minFiringValue: Float = 0.5
 
@@ -36,7 +37,9 @@ struct Inference {
 			OctopusKit.logForSim.add("outputs count != \(count), count given: \(outputs.count)")
 			return
 		}
-					
+				
+		self.seenId = seenId
+
 		// thrust (-1..1, -1..1) x xy
 		thrust.addValue(CGVector(dx: outputs[0].cgFloat, dy: outputs[1].cgFloat))
 		

@@ -32,6 +32,7 @@ final class ResourceFountainInfluenceComponent: OKComponent {
 			influenceNode.lineWidth = maxRadius - minRadius
 			influenceNode.strokeColor = SKColor.cyan.withAlpha(0.25)
 			influenceNode.fillColor = .clear
+			influenceNode.zPosition = 20
 			rootNode.addChild(influenceNode)
 			
 			let labelNode = SKLabelNode(fontNamed: "Consolas")

@@ -85,7 +85,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), gen: \(generation), inputCount: \(inputCount), hiddenCounts: \(hiddenCounts), outputCount: \(outputCount)}"
+		return "{id: \(idFormatted), gen: \(generation), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
 	}
 
 	var jsonString: String {
@@ -133,8 +133,8 @@ extension Genome {
 	func mutateWeight(_ weight: Float) -> Float {
 		
 		let selector = Int.random(6)
-		let max: CGFloat = 1
-		
+		let max = Constants.NeuralNet.maxWeightValue.cgFloat
+
 		let minMutationRate: CGFloat = 0.25
 		let maxMutationRate: CGFloat = 0.5
 		
@@ -152,7 +152,7 @@ extension Genome {
 		var randomizedWeights: [[Float]] = []
 		var randomizedBiases: [[Float]] = []
 
-		let max: Float = 1
+		let max: Float = Constants.NeuralNet.maxWeightValue
 		
 		let weightCounts = self.weightCounts
 		let biasCounts = self.biasCounts

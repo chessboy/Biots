@@ -14,8 +14,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 	var cameraZoom: CGFloat = Constants.Camera.initialScale
 	var genomeDispenseIndex = 0
-	var allGenomesFromFileDispensed = false
-
+	var unbornGenomes: [Genome] = []
+	
 	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
 	
 	override var requiredComponents: [GKComponent.Type]? {[
@@ -54,7 +54,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
 		// algae fountains
-		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.25, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
+		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.2, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
 		alageFountain.name = "mainFountain"
 
 //		let fountain = ResourceFountainComponent.createFountain(position: CGPoint(angle: 0) * worldRadius * 0.75, minRadius: 0, maxRadius: worldRadius * 0.15, targetAlgaeSupply: targetAlgaeSupply.cgFloat / 4)
@@ -67,6 +67,14 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		scene.addEntity(alageFountain)
 //		scene.addEntity(fountain)
  	}
+	
+	func addUnbornGenome(_ genome: Genome) {
+		if unbornGenomes.count == Constants.Env.unbornGenomeCacheCount {
+			unbornGenomes.remove(at: 0)
+		}
+		unbornGenomes.append(genome)
+		print("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
+	}
 		
 	func addNewCell(genome: Genome, in scene: OKScene) -> OKEntity {
 		
@@ -165,28 +173,33 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 		
-		//checkMatingPairs()
+		checkMatingPairs()
 		displayStats()
 		
 		// cell creation
-		if !allGenomesFromFileDispensed, frame >= Constants.Env.startupDelay && frame.isMultiple(of: Constants.Env.dispenseInterval) {
+		if frame >= Constants.Env.startupDelay && frame.isMultiple(of: Constants.Env.dispenseInterval), scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
 			
 			if Constants.Env.randomRun {
-				if scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
-					let genome = GenomeFactory.shared.newRandomGenome
-					let _ = addNewCell(genome: genome, in: scene)
+				let genome = GenomeFactory.shared.newRandomGenome
+				print("created random genome: \(genome.description)")
+				let _ = addNewCell(genome: genome, in: scene)
+			}
+			else if unbornGenomes.count > 0 {
+				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
+					genome1.generation > genome2.generation
+				}).first {
+					print("decanting unborn genome: \(highestGenGenome.description), cache size: \(unbornGenomes.count)")
+					let _ = addNewCell(genome: highestGenGenome, in: scene)
+					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
 				}
 			}
-			else if GenomeFactory.shared.genomes.count > 0, scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
+			else if GenomeFactory.shared.genomes.count > 0 {
 				let genomeIndex = genomeDispenseIndex % GenomeFactory.shared.genomes.count
 				var genome = GenomeFactory.shared.genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
-				print("dispensing genome: \(genome.id) - \(genomeIndex): \(genome.description)")
+				print("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
 				let _ = addNewCell(genome: genome, in: scene)
 				genomeDispenseIndex += 1
-				if genomeDispenseIndex >= GenomeFactory.shared.genomes.count {
-					//allGenomesFromFileDispensed = true
-				}
 			}
 		}
 	}
@@ -320,6 +333,50 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 		default: break
 		
+		}
+	}
+}
+
+extension WorldComponent {
+	func checkMatingPairs() {
+		
+		guard let scene =  OctopusKit.shared?.currentScene else { return }
+
+		var pairs: [IdPair] = []
+		
+		let cellsSeeingOtherCells = currentCells.filter({ !$0.expired && $0.coComponent(BrainComponent.self)?.inference.seenId != nil })
+		for cell1 in cellsSeeingOtherCells {
+			for cell2 in cellsSeeingOtherCells {
+				if cell1 != cell2 {
+
+					let id1 = cell1.genome.id
+					let id2 = cell2.genome.id
+
+					if 	let seenId1 = cell1.coComponent(BrainComponent.self)?.inference.seenId,
+						let seenId2 = cell2.coComponent(BrainComponent.self)?.inference.seenId,
+						id1 == seenId2, id2 == seenId1 {
+						let pair = IdPair(id1: id1, id2: id2)
+						if !pairs.contains(pair) {
+							pairs.append(pair)
+						}
+					}
+				}
+			}
+		}
+
+		for pair in pairs {
+			//print("pair: \(pair.id1) and \(pair.id2) are looking at eachother")
+
+			if let cell1 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id1 }).first as? OKEntity)?.component(ofType: CellComponent.self),
+				let cell2 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id2 }).first as? OKEntity)?.component(ofType: CellComponent.self), cell1.canInteract, cell2.canInteract {
+				//if let position1 = cell2.entityNode?.position, let position2 = cell2.entityNode?.position, position1.distance(to: position2) >
+				animateInteraction(sourceCell: cell1, targetCell: cell2, scene: scene)
+				
+//				[cell1, cell2].forEach { cell in
+//					cell.energy = cell.maximumEnergy
+//					cell.stamina = 1
+//				}
+			}
 		}
 	}
 }

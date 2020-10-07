@@ -23,6 +23,9 @@
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
+		D45170FD252D6D7500290A38 /* zoo-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D45170FC252D6D7500290A38 /* zoo-02.json */; };
+		D4517103252D946D00290A38 /* zoo-10.json in Resources */ = {isa = PBXBuildFile; fileRef = D4517102252D946D00290A38 /* zoo-10.json */; };
+		D4517107252DC06D00290A38 /* zoo-11.json in Resources */ = {isa = PBXBuildFile; fileRef = D4517106252DC06D00290A38 /* zoo-11.json */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -67,6 +70,7 @@
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
 		D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */ = {isa = PBXBuildFile; fileRef = D490039F2524E6A6002DA67C /* empty-zoo.json */; };
+		D49003EE252C229D002DA67C /* zoo-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D49003ED252C229D002DA67C /* zoo-01.json */; };
 		D49880462517D69400015724 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D49880452517D69400015724 /* README.md */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
@@ -110,6 +114,9 @@
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
+		D45170FC252D6D7500290A38 /* zoo-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-02.json"; sourceTree = "<group>"; };
+		D4517102252D946D00290A38 /* zoo-10.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-10.json"; sourceTree = "<group>"; };
+		D4517106252DC06D00290A38 /* zoo-11.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-11.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -158,6 +165,7 @@
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
 		D490039F2524E6A6002DA67C /* empty-zoo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "empty-zoo.json"; sourceTree = "<group>"; };
+		D49003ED252C229D002DA67C /* zoo-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-01.json"; sourceTree = "<group>"; };
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
@@ -439,6 +447,10 @@
 			isa = PBXGroup;
 			children = (
 				D490039F2524E6A6002DA67C /* empty-zoo.json */,
+				D4517106252DC06D00290A38 /* zoo-11.json */,
+				D49003ED252C229D002DA67C /* zoo-01.json */,
+				D45170FC252D6D7500290A38 /* zoo-02.json */,
+				D4517102252D946D00290A38 /* zoo-10.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -585,6 +597,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D49880462517D69400015724 /* README.md in Resources */,
+				D4517107252DC06D00290A38 /* zoo-11.json in Resources */,
+				D4517103252D946D00290A38 /* zoo-10.json in Resources */,
+				D49003EE252C229D002DA67C /* zoo-01.json in Resources */,
+				D45170FD252D6D7500290A38 /* zoo-02.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,

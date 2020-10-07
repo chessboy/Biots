@@ -52,19 +52,18 @@ final class NeuralNetComponent: OKComponent, OKUpdatableComponent {
 		do {
 			outputs = try neuralNet.infer(inputs)
 			
-			let min: Float = -1
 			let max: Float = 1
 			
 			var outputsSafe = true
 			for output in outputs {
-				if output < min || output > max {
+				if output < -max || output > max {
 					outputsSafe = false
 					break
 				}
 			}
 						
 			if !outputsSafe {
-				OctopusKit.logForWarnings.add("-•- outputs out of range for \(id) [\(min.formattedTo2Places), \(max.formattedTo2Places)]: \(outputs)")
+				OctopusKit.logForWarnings.add("-•- outputs out of range for \(id) [\((-max).formattedTo2Places), \(max.formattedTo2Places)]: \(outputs)")
 				neuralNetBlewUp = true
 				for i in 0..<outputs.count {
 					outputs[i] = 0

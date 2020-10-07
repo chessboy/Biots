@@ -94,7 +94,7 @@ class BiotsTests: XCTestCase {
 	
 	func testMutation() throws {
 				
-		let genome = Genome(inputCount: 5, hiddenCounts: [4, 3], outputCount: 2)
+		var genome = Genome(inputCount: 5, hiddenCounts: [4, 3], outputCount: 2)
 
 		let weightCounts = genome.weightCounts
 		let biasCounts = genome.biasCounts
@@ -119,17 +119,26 @@ class BiotsTests: XCTestCase {
 		}
 					
 		// mutate
-		let randomWeightLayerIndex = Int.random(min: 1, max: weightCounts.count - 1)
-		let randomWeightIndex = Int.random(min: 0, max: randomizedWeights[randomWeightLayerIndex].count - 1)
-		randomizedWeights[randomWeightLayerIndex][randomWeightIndex] = 1
-		
-		let randomBiasLayerIndex = Int.random(min: 1, max: biasCounts.count - 1)
-		let randomBiasIndex = Int.random(min: 0, max: randomizedBiases[randomBiasLayerIndex].count - 1)
-		randomizedBiases[randomBiasLayerIndex][randomBiasIndex] = 1
+//		let randomWeightLayerIndex = Int.random(min: 1, max: weightCounts.count - 1)
+//		let randomWeightIndex = Int.random(min: 0, max: randomizedWeights[randomWeightLayerIndex].count - 1)
+//		randomizedWeights[randomWeightLayerIndex][randomWeightIndex] = 1
+//
+//		let randomBiasLayerIndex = Int.random(min: 1, max: biasCounts.count - 1)
+//		let randomBiasIndex = Int.random(min: 0, max: randomizedBiases[randomBiasLayerIndex].count - 1)
+//		randomizedBiases[randomBiasLayerIndex][randomBiasIndex] = 1
 
 		print(randomizedWeights)
 		print()
 		print(randomizedBiases)
+		
+		genome.weights = randomizedWeights
+		genome.biases = randomizedBiases
+		
+		for _ in 1...10 {
+			genome.mutate()
+		}
+		
+		print(genome.jsonString)
 	}
 
 	func testBitMasks() throws {

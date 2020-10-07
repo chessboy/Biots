@@ -49,22 +49,17 @@ final class BrainComponent: OKComponent {
 		vision.detect()
 		
 		let position = cell.entityNode?.position ?? .zero
-		let angle = ((cell.entityNode?.zRotation ?? .zero) + π).normalizedAngle
 		let distanceToCenter = position.distance(to: .zero)/Constants.Env.worldRadius
-		let theta = atan2(position.y, position.x).normalizedAngle
-		let angleToCenter = (theta + angle + π).normalizedAngle
 		let proximityToCenter = Float(1 - distanceToCenter)
 
 		senses.setSenses(
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			stamina: Float(cell.stamina),
-			canMate: cell.canMate ? 1 : 0,
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			visibility: cell.visibility.float,
 			proximityToCenter: proximityToCenter,
-			angleToCenter: Float(angleToCenter/(2*π)),
 			clockShort: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate),
 			clockLong: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate*3),
 			age: Float(cell.age/Constants.Cell.maximumAge)
@@ -76,7 +71,7 @@ final class BrainComponent: OKComponent {
 
 		var inputs = Array(repeating: Float.zero, count: Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth)
 						
-		let actionMemory = Constants.Vision.actionMemory
+		let actionMemory = Constants.Vision.inferenceMemory
 		var angleIndex = 0
 		for angle in Constants.Vision.eyeAngles {
 			
@@ -91,8 +86,14 @@ final class BrainComponent: OKComponent {
 
 		inputs += senses.toArray
 		
+		let seenId = vision.angleVisions.filter({ $0.angle == 0 && $0.id != nil }).first?.id
+
+//		if let seenId = seenId, let id = coComponent(CellComponent.self)?.genome.id {
+//			print("cell \(id) saw \(seenId)")
+//		}
+
 		let outputs = neuralNet.infer(inputs)
-		inference.infer(outputs: outputs)
+		inference.infer(outputs: outputs, seenId: seenId)
 		action()
 	}
 	
@@ -131,7 +132,7 @@ final class BrainComponent: OKComponent {
 			let cell = cellComponent,
 			let node = entityNode as? SKShapeNode, !cell.isInteracting else { return }
 	
-		let thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.actionMemory)
+		let thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
 		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * Constants.Cell.maxSpeedBoost, 1)
 		let armor: CGFloat = inference.armor.average.cgFloat
 		let left = thrustAverage.dx * Constants.Cell.thrustForce * speedBoost

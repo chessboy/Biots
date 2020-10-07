@@ -29,11 +29,9 @@ class GenomeFactory {
 	var newRandomGenome: Genome {
 		let inputCount = Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth + Senses.newInputCount
 		let outputCount = Inference.outputCount
-		let hiddenCounts = [24, 12]
+		let hiddenCounts = Constants.NeuralNet.newGenomeHiddenCounts
 
-		let genome = Genome(inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
-		//print(genome.description)
-		return genome
+		return Genome(inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
 	}
 }
 

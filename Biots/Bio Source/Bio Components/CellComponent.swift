@@ -42,7 +42,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var thrusterNode: ThrusterNode!
 
 	var matingGenome: Genome?	
-	var eyeColor = Constants.Colors.brownEyes
 	
 	var isPregnant: Bool {
 		return matingGenome != nil
@@ -50,6 +49,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	var canMate: Bool {
 		return !expired && !isPregnant && spawnCount < Constants.Env.selfReplicationMaxSpawn && age >= Constants.Cell.matureAge && health >= Constants.Cell.mateHealth
+	}
+	
+	var canInteract: Bool {
+		return !expired && !isInteracting && age > Constants.Cell.matureAge && age - lastInteractedAge > Constants.Cell.interactionAge
 	}
 	
 	var maximumEnergy: CGFloat {
@@ -129,7 +132,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		let showVision = globalDataComponent?.showCellVision ?? false
 		
 		eyeNodes.forEach({ eyeNode in
-			eyeNode.fillColor = eyeColor
 			eyeNode.isHidden = showVision
 		})
 	}
@@ -236,7 +238,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		incurEnergyChange(-Constants.Cell.blinkEnergy)
 		animatingEyes = true
 		eyeNodes.forEach({ eyeNode in
-			eyeNode.fillColor = eyeColor
+			eyeNode.fillColor = .black
 			eyeNode.strokeColor = .white
 			eyeNode.run(SKAction.bulge(xScale: 0.05, yScale: 0.85, scalingDuration: 0.075, revertDuration: 0.125)) {
 				eyeNode.yScale = 0.85
@@ -258,7 +260,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		if animate {
 			//print("closing eyes: \(effectiveVisibility.formattedTo3Places), scale: \(currentScale.formattedTo3Places)")
-			let fillColor: SKColor = effectiveVisibility <= 0.1 ? eyeColor.withAlpha(0.5) : eyeColor
+			let fillColor: SKColor = effectiveVisibility <= 0.1 ? SKColor.black.withAlpha(0.5) : .black
 			let strokeColor: SKColor = effectiveVisibility <= 0.1 ? .clear : .white
 
 			animatingEyes = true
@@ -491,6 +493,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		if let worldScene = scene as? WorldScene, let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self), worldComponent.currentCells.count >= Constants.Env.maximumCells {
+			let clonedGenome = Genome(parent: matingGenome)
+			worldComponent.addUnbornGenome(clonedGenome)
 			self.matingGenome = nil
 			self.lastPregnantAge = 0
 			node.run(SKAction.scale(to: 1, duration: 0.25))
