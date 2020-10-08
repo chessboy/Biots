@@ -118,6 +118,10 @@ final class WorldScene: OKScene {
 		print("]\n")
 	}
 	
+	func cellEntityById(_ id: String) -> CellComponent? {
+		return (entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == id }).first as? OKEntity)?.component(ofType: CellComponent.self)
+	}
+	
 	func trackEntity() {
 		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let node = trackedEntity?.node {
 			cameraComponent.nodeToTrack = nil

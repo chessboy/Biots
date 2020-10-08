@@ -10,6 +10,20 @@ import Foundation
 import OctopusKit
 import SpriteKit
 
+enum Interaction: Int, CaseIterable, CustomStringConvertible {
+	case attemptToMate = 0
+	case attack
+	case doNothing
+	
+	static func fromOutputs(outputs: [Float]) -> Interaction {
+		return .doNothing
+	}
+	
+	var description: String {
+		return self == .attemptToMate ? "attemptToMate" : self == .attack ? "attack" : "doNothing"
+	}
+}
+
 struct Inference {
 	
 	var thrust = RunningCGVector(memory: Constants.Thrust.displayMemory)
@@ -18,19 +32,20 @@ struct Inference {
 	var blink = false
 	var armor = RunningValue(memory: 8)
 	var seenId: String?
+	var interaction: Interaction = .doNothing
 
+	static let minFiringValue: Float = 0.5
+	
 	/**
-	|    0     |     1    |    2    |    3    |    4    |      5      |   6   |   7   |
-	| L thrust | R thrust | color R | color G | color B | speed boost | blink | armor |
+	|    0     |     1    |    2    |    3    |    4    |      5      |   6   |   7   |   8  |    9   |
+	| L thrust | R thrust | color R | color G | color B | speed boost | blink | armor | mate | attack |
 	*/
 
 	static var outputCount: Int {
-		return 8
+		return 10
 	}
 	
 	mutating func infer(outputs: [Float], seenId: String? = nil) {
-		
-		let minFiringValue: Float = 0.5
 
 		let count = Inference.outputCount
 		guard outputs.count == count else {
@@ -50,12 +65,31 @@ struct Inference {
 		color.addValue(ColorVector(red: red, green: green, blue: blue))
 		
 		// speed boost (-1..1 --> 0|1 if > minFiringValue)
-		speedBoost.addValue(outputs[5] > minFiringValue ? 1 : 0)
+		speedBoost.addValue(outputs[5] > Inference.minFiringValue ? 1 : 0)
 		
 		// blink (-1..1 --> true|false if > minFiringValue)
-		blink = outputs[6] > minFiringValue ? true : false
+		blink = outputs[6] > Inference.minFiringValue ? true : false
 		
 		// armor (-1..1 --> 0|1 if > minFiringValue)
-		armor.addValue(outputs[7] > minFiringValue ? 1 : 0)
+		armor.addValue(outputs[7] > Inference.minFiringValue ? 1 : 0)
+				
+		if let interactionMax = indexOfMax(of: Array(outputs[8...9]), threshold: Inference.minFiringValue) {
+			interaction = Interaction(rawValue: interactionMax) ?? .doNothing
+		} else {
+			interaction = .doNothing
+		}
+		
+//		if interaction != .doNothing {
+//			print()
+//		}
 	}
+	
+	func indexOfMax(of outputs: [Float], threshold: Float) -> Int? {
+		if let max = outputs.max(), max >= threshold, let index = outputs.firstIndex(of: max) {
+			return index
+		}
+		
+		return nil
+	}
+
 }

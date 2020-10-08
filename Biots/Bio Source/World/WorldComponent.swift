@@ -110,33 +110,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			return (lhs.id1 == rhs.id1 && lhs.id2 == rhs.id2) || (lhs.id1 == rhs.id2 && lhs.id2 == rhs.id1)
 		}
 	}
-	
-	func animateInteraction(sourceCell: CellComponent, targetCell: CellComponent, scene: OKScene) {
-
-		sourceCell.startInteracting()
-		targetCell.startInteracting()
-		
-		for delay: TimeInterval in [0, 0.1, 0.2, 0.3, 0.4, 0.5] {
-			let tracerNode = SKShapeNode(circleOfRadius: Constants.Cell.radius * 0.18)
-			tracerNode.lineWidth = 0
-			tracerNode.fillColor = Int(delay * 10) % 2 == 0 ? .systemRed : .systemBlue
-			tracerNode.zPosition = Constants.ZeeOrder.cell - 0.1
-			tracerNode.position = sourceCell.entityNode?.position ?? .zero
-			let sequence = SKAction.sequence([
-				.wait(forDuration: delay),
-				.move(to: targetCell.entityNode?.position ?? .zero, duration: 0.5),
-				.fadeOutAndRemove(withDuration: 0.05, timingMode: .linear)
-			])
-			scene.addChild(tracerNode)
-			tracerNode.run(sequence)
-		}
-		
-		scene.run(SKAction.wait(forDuration: 0.5)) {
-			sourceCell.stopInteracting()
-			targetCell.stopInteracting()
-		}
-	}
-		
+			
 	func displayStats() {
 		
 		guard let scene =  OctopusKit.shared?.currentScene else { return }
@@ -173,7 +147,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 		
-		checkMatingPairs()
+		checkInteractions()
 		displayStats()
 		
 		// cell creation
@@ -338,9 +312,9 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 }
 
 extension WorldComponent {
-	func checkMatingPairs() {
+	func checkInteractions() {
 		
-		guard let scene =  OctopusKit.shared?.currentScene else { return }
+		guard let scene =  OctopusKit.shared?.currentScene as? WorldScene else { return }
 
 		var pairs: [IdPair] = []
 		
@@ -367,16 +341,53 @@ extension WorldComponent {
 		for pair in pairs {
 			//print("pair: \(pair.id1) and \(pair.id2) are looking at eachother")
 
-			if let cell1 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id1 }).first as? OKEntity)?.component(ofType: CellComponent.self),
-				let cell2 = (scene.entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == pair.id2 }).first as? OKEntity)?.component(ofType: CellComponent.self), cell1.canInteract, cell2.canInteract {
-				//if let position1 = cell2.entityNode?.position, let position2 = cell2.entityNode?.position, position1.distance(to: position2) >
-				animateInteraction(sourceCell: cell1, targetCell: cell2, scene: scene)
-				
-//				[cell1, cell2].forEach { cell in
-//					cell.energy = cell.maximumEnergy
-//					cell.stamina = 1
-//				}
+			if  let cell1 = scene.cellEntityById(pair.id1), cell1.canInteract,
+				let cell2 = scene.cellEntityById(pair.id2), cell2.canInteract {
+				if let interaction = cell1.brainComponent?.inference.interaction {
+					animateInteraction(interaction, sourceCell: cell1, targetCell: cell2, scene: scene)
+				}
+				if let interaction = cell2.brainComponent?.inference.interaction {
+					animateInteraction(interaction, sourceCell: cell2, targetCell: cell1, scene: scene)
+				}
 			}
+		}
+	}
+	
+	func animateInteraction(_ interaction: Interaction, sourceCell: CellComponent, targetCell: CellComponent, scene: OKScene) {
+
+		guard let sourceNode = sourceCell.entityNode, let targetNode = targetCell.entityNode else { return }
+		
+		sourceCell.startInteracting()
+		targetCell.startInteracting()
+		
+		let sourcePosition = sourceNode.position + (CGPoint(angle: sourceNode.zRotation + π/2) * Constants.Cell.radius * 0.5)
+		let targetPosition = targetNode.position + (CGPoint(angle: targetNode.zRotation - π/2) * Constants.Cell.radius * 0.5)
+		
+		for delay: TimeInterval in [0, 0.1, 0.2, 0.3, 0.4, 0.5] {
+			let tracerNode = SKShapeNode(circleOfRadius: Constants.Cell.radius * 0.18)
+			tracerNode.lineWidth = 0
+			
+			if interaction == .attemptToMate {
+				tracerNode.fillColor = Int(delay * 10) % 2 == 0 ? .systemRed : .systemBlue
+			}
+			else {
+				tracerNode.fillColor = Int(delay * 10) % 2 == 0 ? .systemRed : .systemYellow
+			}
+
+			tracerNode.zPosition = Constants.ZeeOrder.cell - 0.1
+			tracerNode.position = sourcePosition
+			let sequence = SKAction.sequence([
+				.wait(forDuration: delay),
+				.move(to: targetPosition, duration: 0.5),
+				.fadeOutAndRemove(withDuration: 0.05, timingMode: .linear)
+			])
+			scene.addChild(tracerNode)
+			tracerNode.run(sequence)
+		}
+		
+		scene.run(SKAction.wait(forDuration: 0.5)) {
+			sourceCell.stopInteracting()
+			targetCell.stopInteracting()
 		}
 	}
 }

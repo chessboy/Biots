@@ -19,10 +19,10 @@ struct Constants {
 	
 	struct Env {
 		
-		static let filename = "zoo-11.json"
+		static let filename = "zoo-12.json"
 
-		static let randomRun = false
-		static let easyMode = false
+		static let randomRun = true
+		static let easyMode = true
 		
 		static let gridBlockSize: CGFloat = 400
 		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 15) // 20k food works well here
@@ -71,6 +71,8 @@ struct Constants {
 		static let interactionAge: CGFloat = maximumAge * 0.1
 		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degrades vision
 
+		static let interactionDistance: CGFloat = radius * 10
+		
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let spinLimiter: CGFloat = 1/π
 		static let thrustForce: CGFloat = 15

@@ -56,6 +56,7 @@ final class BrainComponent: OKComponent {
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			stamina: Float(cell.stamina),
+			canMate: cell.canMate ? 1 : 0,
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			visibility: cell.visibility.float,
