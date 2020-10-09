@@ -13,26 +13,26 @@ import OctopusKit
 struct Constants {
 		
 	struct NeuralNet {
-		static let newGenomeHiddenCounts = [14, 10]
+		static let newGenomeHiddenCounts = [14, 8]
 		static let maxWeightValue: Float = 2
 	}
 	
 	struct Env {
 		
-		static let filename = "zoo-23.json"
+		static let filename = "zoo-12.json"
 
 		static let randomRun = false
 		static let easyMode = false
 		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * 10//(easyMode ? 13 : 15) // 20k food works well here
-		static let zapperCount = 4//Int(worldRadius * (easyMode ? 0.002 : 0.003))
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 15) // 20k food works well here
+		static let zapperCount = Int(worldRadius * (easyMode ? 0.002 : 0.003))
 
-		static let selfReplication = false
+		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80
 		
-		static let minimumCells = 16
+		static let minimumCells = 12
 		static let maximumCells = 24
 		static let startupDelay = randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
@@ -47,13 +47,10 @@ struct Constants {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let stateDetectionMaxProximity: CGFloat = 0.9 // 0..1
-		static let stateDetectionMinProximity: CGFloat = 0.5 // 0..1
-
 		static let collisionDamage: CGFloat = Env.easyMode ?  0.2 :  0.25
 		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.0015 :  0.00125
 
-		static let mateHealth: CGFloat = Env.easyMode ? 0.65 : 0.7 // % of maximum health
+		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.85 // % of maximum health
 		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.8 // % of maximum health
 
 		static let maximumEnergy: CGFloat = Env.easyMode ? 100 : 120
@@ -66,9 +63,8 @@ struct Constants {
 
 		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3200
 		static let matureAge: CGFloat = maximumAge * 0.2
-		static let selfReplicationAge: CGFloat = maximumAge * 0.5
-		static let gestationAge: CGFloat = maximumAge * 0.1
-		static let interactionAge: CGFloat = maximumAge * 0.05
+		static let selfReplicationAge: CGFloat = maximumAge * 0.25
+		static let gestationAge: CGFloat = maximumAge * 0.15
 		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degrades vision
 
 		static let interactionDistance: CGFloat = radius * 10

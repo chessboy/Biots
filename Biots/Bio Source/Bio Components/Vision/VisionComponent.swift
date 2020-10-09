@@ -14,12 +14,10 @@ struct AngleVision {
 	
 	var angle: CGFloat = 0
 	var colorVector: ColorVector = .zero
-	var id: String?
 
-	init(angle: CGFloat, colorVector: ColorVector, id: String? = nil) {
+	init(angle: CGFloat, colorVector: ColorVector) {
 		self.angle = angle
 		self.colorVector = colorVector
-		self.id = id
 	}
 }
 
@@ -86,7 +84,6 @@ final class VisionComponent: OKComponent {
 			var blueTotal: CGFloat = 0
 			var pings: CGFloat = 0
 			var bodiesSeenAtAngle: [SKPhysicsBody] = []
-			var idSeenAtAngle: String? = nil
 
 			for offset in Constants.Vision.refinerAngles {
 
@@ -122,10 +119,6 @@ final class VisionComponent: OKComponent {
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
 								}
-								
-								 if angle >= -π/4, angle <= π/4, idSeenAtAngle == nil, proximity >= Constants.Cell.stateDetectionMinProximity, proximity <= Constants.Cell.stateDetectionMaxProximity {
-									idSeenAtAngle = otherCellComponent.genome.id
-								}
 							}
 							else if !blockerSeenAtSubAngle, let algae = object.component(ofType: AlgaeComponent.self) {
 								// algae
@@ -156,7 +149,7 @@ final class VisionComponent: OKComponent {
 			
 			if pings > 0 {
 				colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
-				let angleVision = AngleVision(angle: angle, colorVector: colorVector, id: idSeenAtAngle)
+				let angleVision = AngleVision(angle: angle, colorVector: colorVector)
 				angleVisions.append(angleVision)
 			}
 			

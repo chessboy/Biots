@@ -56,7 +56,6 @@ final class BrainComponent: OKComponent {
 			health: Float(cell.health),
 			energy: Float(cell.energy / cell.maximumEnergy),
 			stamina: Float(cell.stamina),
-			canMate: cell.canMate ? 1 : 0,
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			visibility: cell.visibility.float,
@@ -87,14 +86,8 @@ final class BrainComponent: OKComponent {
 
 		inputs += senses.toArray
 		
-		let seenId = vision.angleVisions.filter({ $0.angle == 0 && $0.id != nil }).first?.id
-
-//		if let seenId = seenId, let id = coComponent(CellComponent.self)?.genome.id {
-//			print("cell \(id) saw \(seenId)")
-//		}
-
 		let outputs = neuralNet.infer(inputs)
-		inference.infer(outputs: outputs, seenId: seenId)
+		inference.infer(outputs: outputs)
 		action()
 	}
 	

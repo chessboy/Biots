@@ -31,30 +31,27 @@ struct Inference {
 	var speedBoost = RunningValue(memory: 5)
 	var blink = false
 	var armor = RunningValue(memory: 8)
-	var seenId: String?
 	var interaction: Interaction = .doNothing
 
 	static let minFiringValue: Float = 0.5
 	
 	/**
-	|    0     |     1    |    2    |    3    |    4    |      5      |   6   |   7   |   8  |    9   |
-	| L thrust | R thrust | color R | color G | color B | speed boost | blink | armor | mate | attack |
+	|    0     |     1    |    2    |    3    |    4    |      5      |   6   |   7   |
+	| L thrust | R thrust | color R | color G | color B | speed boost | blink | armor |
 	*/
 
 	static var outputCount: Int {
-		return 10
+		return 8
 	}
 	
-	mutating func infer(outputs: [Float], seenId: String? = nil) {
+	mutating func infer(outputs: [Float]) {
 
 		let count = Inference.outputCount
 		guard outputs.count == count else {
 			OctopusKit.logForSim.add("outputs count != \(count), count given: \(outputs.count)")
 			return
 		}
-				
-		self.seenId = seenId
-
+	
 		// thrust (-1..1, -1..1) x xy
 		thrust.addValue(CGVector(dx: outputs[0].cgFloat, dy: outputs[1].cgFloat))
 		
@@ -72,18 +69,6 @@ struct Inference {
 		
 		// armor (-1..1 --> 0|1 if > minFiringValue)
 		armor.addValue(outputs[7] > Inference.minFiringValue ? 1 : 0)
-				
-		if let interactionMax = indexOfMax(of: Array(outputs[8...9]), threshold: Inference.minFiringValue) {
-			interaction = Interaction(rawValue: interactionMax) ?? .doNothing
-			// todo: temporarily always force mating
-			interaction = .attemptToMate
-		} else {
-			interaction = .doNothing
-		}
-		
-//		if interaction != .doNothing {
-//			print()
-//		}
 	}
 	
 	func indexOfMax(of outputs: [Float], threshold: Float) -> Int? {

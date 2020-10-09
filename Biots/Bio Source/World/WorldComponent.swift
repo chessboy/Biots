@@ -138,7 +138,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 		
-		checkInteractions()
 		displayStats()
 		
 		// cell creation
@@ -298,107 +297,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 		default: break
 		
-		}
-	}
-}
-
-extension WorldComponent {
-	
-	func checkInteractions() {
-		
-		guard let scene =  OctopusKit.shared?.currentScene as? WorldScene else { return }
-
-		var interactionIds: [(String, String)] = []
-		
-		let cellsSeeingOtherCells = currentCells.filter({ !$0.expired && $0.coComponent(BrainComponent.self)?.inference.seenId != nil })
-		
-		for sourceCell in cellsSeeingOtherCells {
-
-			let sourceId = sourceCell.genome.id
-			if let targetId = sourceCell.coComponent(BrainComponent.self)?.inference.seenId {
-				interactionIds.append((sourceId, targetId))
-			}
-		}
-
-		for (sourceId, targetId) in interactionIds {
-
-			if  let sourceCell = scene.cellEntityById(sourceId), sourceCell.canInteract,
-				let targetCell = scene.cellEntityById(targetId), targetCell.canInteract {
-								
-				if let interaction = sourceCell.brainComponent?.inference.interaction, interaction != .doNothing {
-					
-					if interaction == .attack || (interaction == .attemptToMate && sourceCell.canMate) {
-						
-						sourceCell.startInteracting()
-						targetCell.startInteracting()
-
-						animateInteraction(interaction, sourceCell: sourceCell, targetCell: targetCell, scene: scene)
-						
-						scene.run(SKAction.wait(forDuration: 0.75)) {
-							sourceCell.stopInteracting()
-							targetCell.stopInteracting()
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	func animateInteraction(_ interaction: Interaction, sourceCell: CellComponent, targetCell: CellComponent, scene: OKScene) {
-
-		guard let sourceNode = sourceCell.entityNode, let targetNode = targetCell.entityNode else { return }
-		
-		let sourcePosition = sourceNode.position + (CGPoint(angle: sourceNode.zRotation + π/2) * Constants.Cell.radius * 0.5)
-		let targetPosition = targetNode.position + (CGPoint(angle: targetNode.zRotation - π/2) * Constants.Cell.radius * 0.5)
-		
-		for delay: TimeInterval in [0, 0.1, 0.2, 0.3, 0.4, 0.5] {
-			let tracerNode = SKShapeNode(circleOfRadius: Constants.Cell.radius * 0.18)
-			tracerNode.lineWidth = 0
-			
-			if interaction == .attemptToMate {
-				tracerNode.fillColor = Int(delay * 10) % 2 == 0 ? .systemRed : .systemBlue
-			}
-			else {
-				tracerNode.fillColor = Int(delay * 10) % 2 == 0 ? .systemRed : .systemYellow
-			}
-
-			tracerNode.zPosition = Constants.ZeeOrder.cell - 0.1
-			tracerNode.position = sourcePosition
-			let sequence = SKAction.sequence([
-				.wait(forDuration: delay),
-				.move(to: targetPosition, duration: 0.5),
-				.fadeOutAndRemove(withDuration: 0.05, timingMode: .linear)
-			])
-			scene.addChild(tracerNode)
-			tracerNode.run(sequence)
-		}
-		
-		scene.run(SKAction.wait(forDuration: 0.5)) {
-			self.processInteraction(interaction, sourceCell: sourceCell, targetCell: targetCell)
-		}
-	}
-	
-	func processInteraction(_ interaction: Interaction, sourceCell: CellComponent, targetCell: CellComponent) {
-		switch interaction {
-		case .attemptToMate:
-			print("\(sourceCell.genome.idFormatted) attempting to mate with \(targetCell.genome.idFormatted)")
-			if targetCell.canMate {
-				print("-> mating successful")
-				sourceCell.incurStaminaChange(0.2)
-				targetCell.incurStaminaChange(0.2)
-				sourceCell.mated(otherGenome: targetCell.genome)
-			} else {
-				// costs for failed mating attempt
-				sourceCell.incurEnergyChange(-Constants.Cell.maximumEnergy * 0.125, showEffect: true)
-				sourceCell.incurStaminaChange(0.1)
-			}
-			break
-		case .attack:
-			print("\(sourceCell.genome.idFormatted) attacking \(targetCell.genome.idFormatted)")
-			targetCell.incurStaminaChange(0.25)
-			break
-		default:
-			break
 		}
 	}
 }

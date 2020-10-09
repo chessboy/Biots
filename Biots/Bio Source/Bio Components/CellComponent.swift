@@ -50,11 +50,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var canMate: Bool {
 		return !expired && !isPregnant && age >= Constants.Cell.matureAge && health >= Constants.Cell.mateHealth
 	}
-		
-	var canInteract: Bool {
-		return !expired && !isInteracting && age > Constants.Cell.matureAge && age - lastInteractedAge > Constants.Cell.interactionAge
-	}
-	
+
 	var maximumEnergy: CGFloat {
 		return isPregnant ? Constants.Cell.maximumEnergy * 2 : Constants.Cell.maximumEnergy
 	}

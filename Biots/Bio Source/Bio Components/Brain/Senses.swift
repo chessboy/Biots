@@ -10,13 +10,12 @@ import Foundation
 import OctopusKit
 
 struct Senses {
-	static let newInputCount = 12
+	static let newInputCount = 10
 	
 	var inputCount: Int
 	var health: Float = .zero
 	var energy: Float = .zero
 	var stamina: Float = .zero
-	var canMate = RunningValue(memory: 5)
 	var pregnant = RunningValue(memory: 5)
 	var onTopOfFood = RunningValue(memory: 3)
 	var visibility: Float = .zero
@@ -33,7 +32,6 @@ struct Senses {
 		health: Float,
 		energy: Float,
 		stamina: Float,
-		canMate: Float,
 		pregnant: Float,
 		onTopOfFood: Float,
 		visibility: Float,
@@ -46,7 +44,6 @@ struct Senses {
 		self.health = health
 		self.energy = energy
 		self.stamina = stamina
-		self.canMate.addValue(canMate)
 		self.pregnant.addValue(pregnant)
 		self.onTopOfFood.addValue(onTopOfFood)
 		self.visibility = visibility
@@ -63,22 +60,6 @@ struct Senses {
 				health,
 				energy,
 				stamina,
-				pregnant.average,
-				proximityToCenter,
-				onTopOfFood.average,
-				visibility,
-				clockShort,
-				clockLong,
-				age
-			]
-		}
-		else if inputCount == 30 {
-			return [
-				0.5,
-				health,
-				energy,
-				stamina,
-				canMate.average,
 				pregnant.average,
 				proximityToCenter,
 				onTopOfFood.average,
