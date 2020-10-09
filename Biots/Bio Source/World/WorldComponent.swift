@@ -42,7 +42,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
 				
-		for _ in 1...Constants.Env.zapperCount {
+		for _ in 0..<Constants.Env.zapperCount {
 			let radius = CGFloat.random(in: 100...250)
 			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
 			let zapper = ZapperComponent.create(radius: radius, position: position)
@@ -101,16 +101,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		return cell
 	}
-	
-	struct IdPair: Equatable {
-		var id1: String
-		var id2: String
-		
-		static func == (lhs: Self, rhs: Self) -> Bool {
-			return (lhs.id1 == rhs.id1 && lhs.id2 == rhs.id2) || (lhs.id1 == rhs.id2 && lhs.id2 == rhs.id1)
-		}
-	}
-			
+				
 	func displayStats() {
 		
 		guard let scene =  OctopusKit.shared?.currentScene else { return }
@@ -125,7 +116,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 			statsComponent.updateStats(statsText)
 			
-			if frame > 0, frame.isMultiple(of: 10000) {
+			if frame > 0, frame.isMultiple(of: 20000) {
 				print()
 				print(statsText)
 				print()
@@ -312,42 +303,42 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 }
 
 extension WorldComponent {
+	
 	func checkInteractions() {
 		
 		guard let scene =  OctopusKit.shared?.currentScene as? WorldScene else { return }
 
-		var pairs: [IdPair] = []
+		var interactionIds: [(String, String)] = []
 		
 		let cellsSeeingOtherCells = currentCells.filter({ !$0.expired && $0.coComponent(BrainComponent.self)?.inference.seenId != nil })
-		for cell1 in cellsSeeingOtherCells {
-			for cell2 in cellsSeeingOtherCells {
-				if cell1 != cell2 {
+		
+		for sourceCell in cellsSeeingOtherCells {
 
-					let id1 = cell1.genome.id
-					let id2 = cell2.genome.id
-
-					if 	let seenId1 = cell1.coComponent(BrainComponent.self)?.inference.seenId,
-						let seenId2 = cell2.coComponent(BrainComponent.self)?.inference.seenId,
-						id1 == seenId2, id2 == seenId1 {
-						let pair = IdPair(id1: id1, id2: id2)
-						if !pairs.contains(pair) {
-							pairs.append(pair)
-						}
-					}
-				}
+			let sourceId = sourceCell.genome.id
+			if let targetId = sourceCell.coComponent(BrainComponent.self)?.inference.seenId {
+				interactionIds.append((sourceId, targetId))
 			}
 		}
 
-		for pair in pairs {
-			//print("pair: \(pair.id1) and \(pair.id2) are looking at eachother")
+		for (sourceId, targetId) in interactionIds {
 
-			if  let cell1 = scene.cellEntityById(pair.id1), cell1.canInteract,
-				let cell2 = scene.cellEntityById(pair.id2), cell2.canInteract {
-				if let interaction = cell1.brainComponent?.inference.interaction {
-					animateInteraction(interaction, sourceCell: cell1, targetCell: cell2, scene: scene)
-				}
-				if let interaction = cell2.brainComponent?.inference.interaction {
-					animateInteraction(interaction, sourceCell: cell2, targetCell: cell1, scene: scene)
+			if  let sourceCell = scene.cellEntityById(sourceId), sourceCell.canInteract,
+				let targetCell = scene.cellEntityById(targetId), targetCell.canInteract {
+								
+				if let interaction = sourceCell.brainComponent?.inference.interaction, interaction != .doNothing {
+					
+					if interaction == .attack || (interaction == .attemptToMate && sourceCell.canMate) {
+						
+						sourceCell.startInteracting()
+						targetCell.startInteracting()
+
+						animateInteraction(interaction, sourceCell: sourceCell, targetCell: targetCell, scene: scene)
+						
+						scene.run(SKAction.wait(forDuration: 0.75)) {
+							sourceCell.stopInteracting()
+							targetCell.stopInteracting()
+						}
+					}
 				}
 			}
 		}
@@ -356,9 +347,6 @@ extension WorldComponent {
 	func animateInteraction(_ interaction: Interaction, sourceCell: CellComponent, targetCell: CellComponent, scene: OKScene) {
 
 		guard let sourceNode = sourceCell.entityNode, let targetNode = targetCell.entityNode else { return }
-		
-		sourceCell.startInteracting()
-		targetCell.startInteracting()
 		
 		let sourcePosition = sourceNode.position + (CGPoint(angle: sourceNode.zRotation + π/2) * Constants.Cell.radius * 0.5)
 		let targetPosition = targetNode.position + (CGPoint(angle: targetNode.zRotation - π/2) * Constants.Cell.radius * 0.5)
@@ -386,8 +374,31 @@ extension WorldComponent {
 		}
 		
 		scene.run(SKAction.wait(forDuration: 0.5)) {
-			sourceCell.stopInteracting()
-			targetCell.stopInteracting()
+			self.processInteraction(interaction, sourceCell: sourceCell, targetCell: targetCell)
+		}
+	}
+	
+	func processInteraction(_ interaction: Interaction, sourceCell: CellComponent, targetCell: CellComponent) {
+		switch interaction {
+		case .attemptToMate:
+			print("\(sourceCell.genome.idFormatted) attempting to mate with \(targetCell.genome.idFormatted)")
+			if targetCell.canMate {
+				print("-> mating successful")
+				sourceCell.incurStaminaChange(0.2)
+				targetCell.incurStaminaChange(0.2)
+				sourceCell.mated(otherGenome: targetCell.genome)
+			} else {
+				// costs for failed mating attempt
+				sourceCell.incurEnergyChange(-Constants.Cell.maximumEnergy * 0.125, showEffect: true)
+				sourceCell.incurStaminaChange(0.1)
+			}
+			break
+		case .attack:
+			print("\(sourceCell.genome.idFormatted) attacking \(targetCell.genome.idFormatted)")
+			targetCell.incurStaminaChange(0.25)
+			break
+		default:
+			break
 		}
 	}
 }

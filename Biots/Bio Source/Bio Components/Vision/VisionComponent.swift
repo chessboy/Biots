@@ -123,7 +123,7 @@ final class VisionComponent: OKComponent {
 									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
 								}
 								
-								 if angle == 0, idSeenAtAngle == nil, proximity >= Constants.Cell.stateDetectionMinProximity, proximity <= Constants.Cell.stateDetectionMaxProximity {
+								 if angle >= -π/4, angle <= π/4, idSeenAtAngle == nil, proximity >= Constants.Cell.stateDetectionMinProximity, proximity <= Constants.Cell.stateDetectionMaxProximity {
 									idSeenAtAngle = otherCellComponent.genome.id
 								}
 							}

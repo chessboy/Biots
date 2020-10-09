@@ -48,9 +48,9 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	var canMate: Bool {
-		return !expired && !isPregnant && spawnCount < Constants.Env.selfReplicationMaxSpawn && age >= Constants.Cell.matureAge && health >= Constants.Cell.mateHealth
+		return !expired && !isPregnant && age >= Constants.Cell.matureAge && health >= Constants.Cell.mateHealth
 	}
-	
+		
 	var canInteract: Bool {
 		return !expired && !isInteracting && age > Constants.Cell.matureAge && age - lastInteractedAge > Constants.Cell.interactionAge
 	}
@@ -549,7 +549,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		lastPregnantAge = age
 		
 		if let node = entityNode as? SKShapeNode {
-			node.run(SKAction.scale(to: 1.25	, duration: 0.25))
+			node.run(SKAction.scale(to: 1.25, duration: 0.25))
 		}
 	}
 	

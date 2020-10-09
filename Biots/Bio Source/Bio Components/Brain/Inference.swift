@@ -75,6 +75,8 @@ struct Inference {
 				
 		if let interactionMax = indexOfMax(of: Array(outputs[8...9]), threshold: Inference.minFiringValue) {
 			interaction = Interaction(rawValue: interactionMax) ?? .doNothing
+			// todo: temporarily always force mating
+			interaction = .attemptToMate
 		} else {
 			interaction = .doNothing
 		}
