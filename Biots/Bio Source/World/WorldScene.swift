@@ -196,6 +196,10 @@ final class WorldScene: OKScene {
 					entity.node?.isHidden = globalDataComponent.hideAlgae
 				})
 
+				entities(withName: "water")?.forEach({ entity in
+					entity.node?.isHidden = globalDataComponent.hideAlgae
+				})
+
 				scene?.children.filter({$0.name == "grid"}).first?.isHidden = globalDataComponent.hideAlgae
 				return
 			}
@@ -371,7 +375,7 @@ final class WorldScene: OKScene {
 						let distance = CGFloat.random(in: Constants.Env.worldRadius * 0.05...worldRadius * 0.9)
 						let position = CGPoint.randomDistance(distance)
 						let clonedGenome = Genome(parent: cellComponent.genome)
-						let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialEnergy: Constants.Cell.initialEnergy, fountainComponent: RelayComponent(for: mainFountain))
+						let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialFoodEnergy: Constants.Cell.initialFoodEnergy, fountainComponent: RelayComponent(for: mainFountain))
 						addEntity(childCell)
 					}
 				}
@@ -395,7 +399,8 @@ final class WorldScene: OKScene {
 					}
 					cellComponent.mated(otherGenome: cellComponent.genome)
 					cellComponent.spawnChildren(selfReplication: true)
-					cellComponent.energy = cellComponent.maximumEnergy
+					cellComponent.foodEnergy = cellComponent.maximumEnergy
+					cellComponent.hydration = cellComponent.maximumEnergy
 				}
 			}
 		}

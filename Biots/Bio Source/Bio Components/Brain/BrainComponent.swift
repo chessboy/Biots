@@ -54,10 +54,12 @@ final class BrainComponent: OKComponent {
 
 		senses.setSenses(
 			health: Float(cell.health),
-			energy: Float(cell.energy / cell.maximumEnergy),
+			energy: Float(cell.foodEnergy / cell.maximumEnergy),
+			hydration: Float(cell.hydration / cell.maximumEnergy),
 			stamina: Float(cell.stamina),
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
+			onTopOfWater: cell.onTopOfWater ? 1 : 0,
 			visibility: cell.visibility.float,
 			proximityToCenter: proximityToCenter,
 			clockShort: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate),
@@ -140,9 +142,11 @@ final class BrainComponent: OKComponent {
 		// movement energy expenditure
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
 		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
-		
+		cell.incurHydrationChange(-Constants.Cell.perMovementHydration * forceExerted)
+
 		if speedBoost > 1 {
 			cell.incurEnergyChange(-Constants.Cell.perMovementEnergy)
+			cell.incurHydrationChange(-Constants.Cell.perMovementHydration)
 			cell.incurStaminaChange(Constants.Cell.speedBoostExertion)
 		}
 		

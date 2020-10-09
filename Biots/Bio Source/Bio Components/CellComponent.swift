@@ -15,12 +15,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var genome: Genome
 	var expired = false
 	
-	var energy: CGFloat
+	var foodEnergy: CGFloat
+	var hydration: CGFloat
 	var stamina: CGFloat = 1
 	
+	var cumulativeHydration: CGFloat = 0
 	var cumulativeDamage: CGFloat = 0
 	var cumulativeEnergy: CGFloat = 0
-	
+
 	var age: CGFloat = 0
 	var lastSpawnedAge: CGFloat = 0
 	var lastPregnantAge: CGFloat = 0
@@ -39,6 +41,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var visionNode: SKNode!
 	var retinaNodes: [RetinaNode] = []
 	var onTopOfFoodRetinaNode: RetinaNode!
+	var onTopOfWaterRetinaNode: RetinaNode!
 	var thrusterNode: ThrusterNode!
 
 	var matingGenome: Genome?	
@@ -56,8 +59,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	var health: CGFloat {
-		let energyRatio = energy/maximumEnergy
-		return energyRatio - (1-stamina)
+		let foodEnergyRatio = foodEnergy/maximumEnergy
+		let hydrationRatio = hydration/maximumEnergy
+		let health = min(foodEnergyRatio, hydrationRatio)
+		return health - (1-stamina)
 	}
 	
 	var bodyColor: SKColor {
@@ -82,9 +87,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
 
-	init(genome: Genome, initialEnergy: CGFloat) {
+	init(genome: Genome, initialFoodEnergy: CGFloat) {
 		self.genome = genome
-		self.energy = initialEnergy
+		self.foodEnergy = initialFoodEnergy
+		self.hydration = initialFoodEnergy
 		super.init()
 	}
 
@@ -136,12 +142,20 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		if amount > 0 {
 			cumulativeEnergy += amount
 		}
-		energy += amount
-		energy = energy.clamped(to: 0...maximumEnergy)
-		if showEffect {
+		foodEnergy += amount
+		foodEnergy = foodEnergy.clamped(to: 0...maximumEnergy)
+		if showEffect, !healthNode.isHidden {
 			updateHealthNode()
 			contactEffect(impact: amount)
 		}
+	}
+	
+	func incurHydrationChange(_ amount: CGFloat) {
+		if amount > 0 {
+			cumulativeHydration += amount
+		}
+		hydration += amount
+		hydration = hydration.clamped(to: 0...maximumEnergy)
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
@@ -159,14 +173,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 		
 	func kill() {
-		energy = 0
+		foodEnergy = 0
 		stamina = 0
 	}
 	
 	func cellAndAlgaeCollided(algae: AlgaeComponent) {
 				
 		let bite: CGFloat = Constants.Algae.bite
-		guard energy + bite/4 < maximumEnergy else { return }
+		guard foodEnergy + bite/4 < maximumEnergy else { return }
 		
 		incurEnergyChange(bite, showEffect: true)
 
@@ -175,6 +189,12 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			algae.energy = 0
 		}
 		algae.bitten()
+	}
+
+	func cellAndWaterCollided() {
+		let sip: CGFloat = Constants.Water.sip
+		guard hydration + sip/4 < maximumEnergy else { return }
+		incurHydrationChange(sip)
 	}
 
 	struct BodyContact {
@@ -188,17 +208,25 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	var contactedAlgaeComponents: [BodyContact] = []
 	var onTopOfFood = false
-	
-	func checkAlgaeContacts() {
+	var contactedWaterComponents: [BodyContact] = []
+	var onTopOfWater = false
+
+	func checkResourceContacts() {
 		let now = Date().timeIntervalSince1970
 
 		if frame.isMultiple(of: 30) {
-			//let count = contactedAlgaeComponents.count
+			//let countAlgae = contactedAlgaeComponents.count
 			contactedAlgaeComponents = contactedAlgaeComponents.filter({ now - $0.when <= Constants.Cell.timeBetweenBites })
-			//print("body purge: old count: \(count), new count: \(contactedAlgaeComponents.count)")
+			//print("algae body purge: old count: \(countAlgae), new count: \(contactedAlgaeComponents.count)")
+			
+			//let countWater = contactedWaterComponents.count
+			contactedWaterComponents = contactedWaterComponents.filter({ now - $0.when <= Constants.Cell.timeBetweenBites })
+			//print("water body purge: old count: \(countWater), new count: \(contactedWaterComponents.count)")
 		}
 		
 		onTopOfFood = false
+		onTopOfWater = false
+
 		if let scene = OctopusKit.shared.currentScene, let bodies = entityNode?.physicsBody?.allContactedBodies(), bodies.count > 0 {
 			for body in bodies {
 				
@@ -218,6 +246,22 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 							contact!.updateWhen(when: now)
 							cellAndAlgaeCollided(algae: algae)
 						}
+					}
+				}
+				else if body.categoryBitMask == Constants.CategoryBitMasks.water {
+					
+					onTopOfWater = true
+					var contact = contactedWaterComponents.filter({ $0.body == body }).first
+					
+					if contact == nil {
+						//print("added at \(now), drank water")
+						contactedWaterComponents.append(BodyContact(when: now, body: body))
+						cellAndWaterCollided()
+					}
+					else if now - contact!.when > Constants.Cell.timeBetweenBites {
+						//print("found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), drank water")
+						contact!.updateWhen(when: now)
+						cellAndWaterCollided()
 					}
 				}
 			}
@@ -274,7 +318,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard !expired else { return }
 		age += 1
 				
-		checkAlgaeContacts()
+		checkResourceContacts()
 		showStats()
 		
 		// check old age or malnutrition
@@ -285,7 +329,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		// update visual indicators
 		updateVisionNode()
 		updateHealthNode()
-		updateArmorNode()
 		updateThrusterNode()
 		
 		if Constants.Env.selfReplication, frame.isMultiple(of: 10) {
@@ -351,14 +394,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 		
-	func updateArmorNode() {
-		guard frame.isMultiple(of: 2) else { return }
-		
-		if let armor = brainComponent?.inference.armor.average {
-			armorNode.alpha = armor.cgFloat
-		}
-	}
-	
 	// display visual sensors
 	func updateVisionNode() {
 		guard frame.isMultiple(of: 2) else { return }
@@ -410,6 +445,11 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				let color = SKColor(red: 0, green: onTopOfFoodAverage.cgFloat, blue: 0, alpha: 1)
 				onTopOfFoodRetinaNode.strokeColor = color
 			}
+			
+			if let onTopOfFWaterAverage = brainComponent?.senses.onTopOfWater.average {
+				let color = SKColor(red: 0, green: onTopOfFWaterAverage.cgFloat, blue: onTopOfFWaterAverage.cgFloat, alpha: 1)
+				onTopOfWaterRetinaNode.strokeColor = color
+			}
 		}
 	}
 	
@@ -426,6 +466,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			thrusterNode.run(.fadeIn(withDuration: 0.2))
 			speedNode.alpha = 0
 			speedNode.isHidden = false
+			armorNode.alpha = 0
+			armorNode.isHidden = false
 		}
 		else if showingThrust, !showThrust {
 			thrusterNode.run(.fadeOut(withDuration: 0.1)) {
@@ -436,11 +478,19 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				self.speedNode.alpha = 0
 				self.speedNode.isHidden = false
 			}
+			armorNode.run(.fadeOut(withDuration: 0.1)) {
+				self.armorNode.alpha = 0
+				self.armorNode.isHidden = false
+			}
 		}
 
-		if showThrust, let thrust = brainComponent?.inference.thrust.average, let speedBoost = brainComponent?.inference.speedBoost.average {
+		if showThrust,
+		   let thrust = brainComponent?.inference.thrust.average,
+		   let speedBoost = brainComponent?.inference.speedBoost.average,
+		   let armor = brainComponent?.inference.armor.average {
 			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
 			speedNode.alpha = speedBoost.cgFloat
+			armorNode.alpha = armor.cgFloat
 		}
 	}
 	
@@ -464,14 +514,15 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 //					let angleToCenter = ((theta + angle + π).normalizedAngle / (2*π))
 					
 					let healthFormatted = health.formattedToPercentNoDecimal
-					let energyFormatted = (energy/maximumEnergy).formattedToPercentNoDecimal
+					let energyFormatted = (foodEnergy/maximumEnergy).formattedToPercentNoDecimal
+					let hydrationFormatted = (hydration/maximumEnergy).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					var armorDescr = "-none-"
 					if let inference = brainComponent?.inference {
 						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), s: \(staminaFormatted), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
+					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), ce: \(cumulativeEnergy.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
@@ -497,7 +548,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
-		energy = energy / 4
+		foodEnergy = foodEnergy / 4
+		hydration = hydration / 4
 		incurStaminaChange(0.1)
 		
 		spawnCount += 1
@@ -511,7 +563,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			
 			let position = node.position - CGPoint(angle: node.zRotation + angle) * Constants.Cell.radius * 2
 			let clonedGenome = Genome(parent: parentGenome)
-			let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialEnergy: Constants.Cell.initialEnergy, fountainComponent: RelayComponent(for: coComponent(ResourceFountainComponent.self)))
+			let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialFoodEnergy: Constants.Cell.initialFoodEnergy, fountainComponent: RelayComponent(for: coComponent(ResourceFountainComponent.self)))
 			childCell.node?.zRotation = node.zRotation + angle + π
 			
 			if globalDataComponent?.showCellStats ?? false {
@@ -574,7 +626,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 
 extension CellComponent {
 		
-	static func createCell(genome: Genome, at position: CGPoint, initialEnergy: CGFloat = Constants.Cell.initialEnergy, fountainComponent: RelayComponent<ResourceFountainComponent>) -> OKEntity {
+	static func createCell(genome: Genome, at position: CGPoint, initialFoodEnergy: CGFloat = Constants.Cell.initialFoodEnergy, fountainComponent: RelayComponent<ResourceFountainComponent>) -> OKEntity {
 
 		let radius = Constants.Cell.radius
 		let node = SKShapeNode(circleOfRadius: radius)
@@ -588,7 +640,7 @@ extension CellComponent {
 		node.blendMode = Constants.Env.graphics.blendMode
 		node.isAntialiased = Constants.Env.graphics.antialiased
 		
-		let cellComponent = CellComponent(genome: genome, initialEnergy: initialEnergy)
+		let cellComponent = CellComponent(genome: genome, initialFoodEnergy: initialFoodEnergy)
 
 		if Constants.Env.graphics.shadows {
 			let shadowNode = SKShapeNode()
@@ -645,6 +697,8 @@ extension CellComponent {
 		armorNode.fillColor = .clear
 		armorNode.lineWidth = radius * 0.1
 		armorNode.zRotation = π
+		armorNode.alpha = 0
+		armorNode.isHidden = true
 		armorNode.lineCap = .round
 		armorNode.strokeColor = .green
 		armorNode.isAntialiased = Constants.Env.graphics.antialiased
@@ -676,11 +730,15 @@ extension CellComponent {
 		
 		let onTopOfFoodRetinaNode = RetinaNode(angle: π, radius: radius * 0.65, thickness: thickness, arcLength: arcLength/2)
 		visionNode.addChild(onTopOfFoodRetinaNode)
+		
+		let onTopOfWaterRetinaNode = RetinaNode(angle: π, radius: radius * 0.5, thickness: thickness, arcLength: arcLength/2)
+		visionNode.addChild(onTopOfWaterRetinaNode)
 
 		cellComponent.visionNode = visionNode
 		cellComponent.retinaNodes = retinaNodes
 		cellComponent.onTopOfFoodRetinaNode = onTopOfFoodRetinaNode
-		
+		cellComponent.onTopOfWaterRetinaNode = onTopOfWaterRetinaNode
+
 		// thrusters
 		let thrusterNode = ThrusterNode(radius: radius)
 		thrusterNode.isHidden = true

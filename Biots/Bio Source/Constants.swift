@@ -19,21 +19,22 @@ struct Constants {
 	
 	struct Env {
 		
-		static let filename = "zoo-12.json"
+		static let filename = "water-03.json"
 
 		static let randomRun = false
-		static let easyMode = false
+		static let easyMode = true
 		
 		static let gridBlockSize: CGFloat = 400
 		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 15) // 20k food works well here
 		static let zapperCount = Int(worldRadius * (easyMode ? 0.002 : 0.003))
+		static let waterCount = Int(worldRadius * (easyMode ? 0.004 : 0.0025))
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80
 		
-		static let minimumCells = 12
-		static let maximumCells = 24
+		static let minimumCells = 10
+		static let maximumCells = 20
 		static let startupDelay = randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
@@ -54,9 +55,10 @@ struct Constants {
 		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.8 // % of maximum health
 
 		static let maximumEnergy: CGFloat = Env.easyMode ? 100 : 120
-		static let initialEnergy: CGFloat = maximumEnergy * 0.5
+		static let initialFoodEnergy: CGFloat = maximumEnergy * 0.5
 		static let blinkEnergy: CGFloat = maximumEnergy * 0.005
 		static let perMovementEnergy: CGFloat = 0.01
+		static let perMovementHydration: CGFloat = Env.easyMode ? 0.0075 : 0.01
 		static let armorEnergy: CGFloat = 0.06
 		static let speedBoostExertion: CGFloat = 0.0004
 		static let maxSpeedBoost: CGFloat = 1.375
@@ -88,11 +90,15 @@ struct Constants {
 		static let bite: CGFloat = Cell.maximumEnergy * 0.2
 	}
 	
+	struct Water {
+		static let sip: CGFloat = Cell.maximumEnergy * 0.3
+	}
+	
 	struct Vision {
 		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
 		static let refinerAngles = [0, -π/12, π/12]
 		static let colorDepth = 3 // r|g|b
-		static let rayDistance: CGFloat = Cell.radius * 21
+		static let rayDistance: CGFloat = Cell.radius * 24
 		static let displayMemory = 8
 		static let inferenceMemory = 3
 	}
@@ -127,37 +133,41 @@ struct Constants {
 	// should be exp of 2
 	struct CategoryBitMasks {
 		static let wall: UInt32 = 1
-		static let cell: UInt32 = 2
-		static let algae: UInt32 = 4
+		static let water: UInt32 = 2
+		static let cell: UInt32 = 4
+		static let algae: UInt32 = 8
 	}
 	
 	// when to "bounce" off another
 	struct CollisionBitMasks {
 		static let wall = CategoryBitMasks.wall
+		static let water = CategoryBitMasks.wall | CategoryBitMasks.water
 		static let cell = CategoryBitMasks.wall | CategoryBitMasks.cell
-		static let algae = CategoryBitMasks.wall | CategoryBitMasks.algae
+		static let algae = CategoryBitMasks.wall | CategoryBitMasks.water | CategoryBitMasks.algae
 	}
 	
 	// when to be notified of contact
 	struct ContactBitMasks {
-		static let cell = CategoryBitMasks.cell | CategoryBitMasks.wall | CategoryBitMasks.algae
+		static let cell = CategoryBitMasks.cell | CategoryBitMasks.wall | CategoryBitMasks.water | CategoryBitMasks.algae
 	}
 	
 	// used in detecting neighboring bodies
 	struct DetectionBitMasks {
-		static let cell = CategoryBitMasks.cell | CategoryBitMasks.algae | CategoryBitMasks.wall
+		static let cell = CategoryBitMasks.cell | CategoryBitMasks.water | CategoryBitMasks.algae | CategoryBitMasks.wall
 	}
 	
 	struct Colors {
 		static let background = SKColor(white: 0.125, alpha: 1)
 		static let grid = NSColor(white: 0.08125, alpha: 1)
 		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 0.8)
+		static let water =  SKColor(red: 0.1875/2, green: 0.3, blue: 0.3, alpha: 0.8)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
 		static let cell = SKColor(red: 0.63, green: 0.8, blue: 1, alpha: 0.5)
 	}
 	
 	struct VisionColors {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
+		static let water = SKColor(srgbRed: 0, green: 1, blue: 1, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 	}
 		
@@ -173,6 +183,7 @@ struct Constants {
 	struct ZeeOrder {
 		static let grid: CGFloat = -3
 		static let wall: CGFloat = 0
+		static let water: CGFloat = 1
 		static let algae: CGFloat = 1
 		static let cell: CGFloat = 5
 		static let stats: CGFloat = 100

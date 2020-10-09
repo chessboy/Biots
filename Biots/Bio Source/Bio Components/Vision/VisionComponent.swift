@@ -102,13 +102,22 @@ final class VisionComponent: OKComponent {
 						
 						if !blockerSeenAtSubAngle, !bodiesSeenAtAngle.contains(body), let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
 
-							// wall
 							if body.categoryBitMask & Constants.CategoryBitMasks.wall > 0 {
+								// wall
 								detectedColor = Constants.VisionColors.wall
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.wall.withAlpha(proximity), scale: tracerScale)
+								}
+							}
+							else if body.categoryBitMask & Constants.CategoryBitMasks.water > 0 {
+								// water
+								detectedColor = Constants.VisionColors.water
+								bodiesSeenAtAngle.append(body)
+								blockerSeenAtSubAngle = true
+								if showTracer {
+									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.water.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else if !blockerSeenAtSubAngle, let otherCellComponent = object.component(ofType: CellComponent.self) {
