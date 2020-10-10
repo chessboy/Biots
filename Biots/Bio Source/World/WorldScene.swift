@@ -171,7 +171,7 @@ final class WorldScene: OKScene {
 			
 		case Keycode.v:
 			if shiftDown {
-				globalDataComponent.showTracer.toggle()
+				globalDataComponent.showCellVisionTracer.toggle()
 			} else {
 				globalDataComponent.showCellVision.toggle()
 			}
@@ -183,24 +183,24 @@ final class WorldScene: OKScene {
 
 		case Keycode.a:
 			if commandDown {
-				globalDataComponent.hideAlgae.toggle()
+				globalDataComponent.hideSpriteNodes.toggle()
 				entities(withName: "algae")?.forEach({ entity in
-					entity.node?.isHidden = globalDataComponent.hideAlgae
+					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
 				entities(withName: "cell")?.forEach({ entity in
-					entity.node?.isHidden = globalDataComponent.hideAlgae
+					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
 				entities(withName: "wall")?.forEach({ entity in
-					entity.node?.isHidden = globalDataComponent.hideAlgae
+					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 
 				entities(withName: "water")?.forEach({ entity in
-					entity.node?.isHidden = globalDataComponent.hideAlgae
+					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 
-				scene?.children.filter({$0.name == "grid"}).first?.isHidden = globalDataComponent.hideAlgae
+				scene?.children.filter({$0.name == "grid"}).first?.isHidden = globalDataComponent.hideSpriteNodes
 				return
 			}
 			
@@ -222,9 +222,6 @@ final class WorldScene: OKScene {
 			if commandDown {
 				dumpGenomes()
 				return
-			}
-			else if shiftDown {
-				globalDataComponent.showCellSimpleStats.toggle()
 			}
 			else {
 				globalDataComponent.showCellStats.toggle()

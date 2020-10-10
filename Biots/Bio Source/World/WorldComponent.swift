@@ -27,7 +27,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity(withNode node: SKNode) {
-		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae else { return }
+		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes else { return }
 		
 		if Constants.Env.graphics.showGrid {
 			let blockSize = Constants.Env.gridBlockSize
@@ -90,7 +90,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		}
 		scene.addEntity(cell)
 
-		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
+		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
 			cell.node?.isHidden = hideNode
 		}
 		

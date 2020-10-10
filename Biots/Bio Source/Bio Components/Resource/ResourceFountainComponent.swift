@@ -35,7 +35,7 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 		let position = CGPoint.randomAngle * CGFloat.random(in: 0...Constants.Env.worldRadius * 0.8)
 		let water = WaterSourceComponent.create(radius: radius, position: position)
 		
-		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
+		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
 			water.node?.isHidden = hideNode
 		}
 		
@@ -49,7 +49,7 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 		
 		let algae = AlgaeComponent.create(position: position, energy: energy)
 		algae.addComponent(RelayComponent(for: self))
-		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
+		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
 			algae.node?.isHidden = hideNode
 		}
 		algaeEntities.append(algae)

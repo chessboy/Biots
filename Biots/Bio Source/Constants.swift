@@ -19,7 +19,7 @@ struct Constants {
 	
 	struct Env {
 		
-		static let filename = "30-15-8-8.02.json"
+		static let filename = "30-15-8-8.03.json"
 
 		static let randomRun = false
 		static let easyMode = true
@@ -69,7 +69,7 @@ struct Constants {
 		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3200
 		static let matureAge: CGFloat = maximumAge * 0.2
 		static let gestationAge: CGFloat = maximumAge * 0.15
-		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degrades vision
+		static let blinkAge: CGFloat = maximumAge * 0.1 // duration until not blinking degrades vision
 		
 		static let adjustBodyColor = false
 		

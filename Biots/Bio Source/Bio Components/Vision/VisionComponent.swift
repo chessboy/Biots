@@ -65,7 +65,7 @@ final class VisionComponent: OKComponent {
 		angleVisions.removeAll()
 
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
-			let showTracer = globalDataComponent?.showTracer,
+			let showTracer = globalDataComponent?.showCellVisionTracer,
 			let cameraScale = camera?.xScale,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,

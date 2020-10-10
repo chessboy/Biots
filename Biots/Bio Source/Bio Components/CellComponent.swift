@@ -579,7 +579,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			scene.run(SKAction.wait(forDuration: 0.1)) {
 				scene.addEntity(childCell)
 				
-				if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
+				if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
 					childCell.node?.isHidden = hideNode
 				}
 			}
