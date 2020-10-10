@@ -33,6 +33,8 @@
 |command-s |dump current genomes to console (as `json`)|
 
 ### Mouse Operations
+- command-click a biot → set it as the 'tracked` biot (camera will follow)
 - left-click a biot → spawn 2 clones (with chance random mutation)
 - right-click a biot → kill that biot
 - shift-click anywhere → add some algae in that area
+- command-shift-click a biot → clicked biot becomes seed of ALL biots in the dish (random mode only)

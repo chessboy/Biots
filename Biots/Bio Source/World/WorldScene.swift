@@ -358,7 +358,10 @@ final class WorldScene: OKScene {
 			return
 		}
 
-		if let cellNode = nodes(at: point).filter({$0.name == "cell"}).first {
+		if rightMouse, let waterNode = nodes(at: point).filter({$0.name == "water"}).first, let selectedEntity = entities.filter({ $0.node == waterNode }).first as? OKEntity {
+			removeEntity(selectedEntity)
+		}
+		else if let cellNode = nodes(at: point).filter({$0.name == "cell"}).first {
 			//print(cellNode.position)
 			
 			if let selectedEntity = entities.filter({ $0.node == cellNode }).first as? OKEntity,
@@ -375,7 +378,7 @@ final class WorldScene: OKScene {
 						let distance = CGFloat.random(in: Constants.Env.worldRadius * 0.05...worldRadius * 0.9)
 						let position = CGPoint.randomDistance(distance)
 						let clonedGenome = Genome(parent: cellComponent.genome)
-						let childCell = CellComponent.createCell(genome: clonedGenome, at: position, initialFoodEnergy: Constants.Cell.initialFoodEnergy, fountainComponent: RelayComponent(for: mainFountain))
+						let childCell = CellComponent.createCell(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: mainFountain))
 						addEntity(childCell)
 					}
 				}
@@ -400,7 +403,7 @@ final class WorldScene: OKScene {
 					cellComponent.mated(otherGenome: cellComponent.genome)
 					cellComponent.spawnChildren(selfReplication: true)
 					cellComponent.foodEnergy = cellComponent.maximumEnergy
-					cellComponent.hydration = cellComponent.maximumEnergy
+					cellComponent.hydration = Constants.Cell.maximumHydration
 				}
 			}
 		}

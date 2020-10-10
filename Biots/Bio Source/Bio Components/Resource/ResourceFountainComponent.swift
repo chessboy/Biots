@@ -31,7 +31,7 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 	
 	func createWaterEntity() -> OKEntity {
 
-		let radius = CGFloat.random(in: 80...150)
+		let radius = CGFloat.random(in: 40...200)
 		let position = CGPoint.randomAngle * CGFloat.random(in: 0...Constants.Env.worldRadius * 0.8)
 		let water = WaterSourceComponent.create(radius: radius, position: position)
 		
@@ -45,7 +45,7 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 	func createAlgaeEntity(energy: CGFloat) -> OKEntity {
 		
 		let position = algaeEntities.count > 0 && Int.oneChanceIn(3) ? pointNextToExistingAlgaeSource :
-			waterEntities.count > 0 && Int.oneChanceIn(3) ? pointNextToExistingWaterSource : randomPoint
+			waterEntities.count > 0 && Int.oneChanceIn(5) ? pointNextToExistingWaterSource : randomPoint
 		
 		let algae = AlgaeComponent.create(position: position, energy: energy)
 		algae.addComponent(RelayComponent(for: self))

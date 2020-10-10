@@ -80,14 +80,7 @@ extension AlgaeComponent {
 	
 	static func create(position: CGPoint, energy: CGFloat) -> OKEntity {
 
-		let colorType = Int.random(2)
-		var blendColor: SKColor = .black
-		switch colorType {
-			case 0: blendColor = .yellow
-			case 1: blendColor = .brown
-			default: break
-		}
-		
+		let blendColor: SKColor = Bool.random() ? .yellow : .brown		
 		let color = Constants.Colors.algae.blended(withFraction: CGFloat.random(in: 0..<0.5), of: blendColor) ?? Constants.Colors.algae
 
 		let node = SKShapeNode.polygonOfRadius(Constants.Algae.radius, sides: 8)

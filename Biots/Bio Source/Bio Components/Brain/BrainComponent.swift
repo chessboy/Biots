@@ -55,7 +55,7 @@ final class BrainComponent: OKComponent {
 		senses.setSenses(
 			health: Float(cell.health),
 			energy: Float(cell.foodEnergy / cell.maximumEnergy),
-			hydration: Float(cell.hydration / cell.maximumEnergy),
+			hydration: Float(cell.hydration / Constants.Cell.maximumHydration),
 			stamina: Float(cell.stamina),
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
@@ -116,7 +116,7 @@ final class BrainComponent: OKComponent {
 
 			newX = position.x + R * sin(wd + zRotation) - R * sin(zRotation)
 			newY = position.y - R * cos(wd + zRotation) + R * cos(zRotation)
-			newHeading = (zRotation + (wd * Constants.Cell.spinLimiter)).normalizedAngle // note: shrinking `w` limits rotation
+			newHeading = (zRotation + (wd * Constants.Thrust.spinLimiter)).normalizedAngle // note: shrinking `w` limits rotation
 		}
 
 		return (position: CGPoint(x: newX, y: newY), heading: newHeading)
@@ -131,8 +131,8 @@ final class BrainComponent: OKComponent {
 		let thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
 		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * Constants.Cell.maxSpeedBoost, 1)
 		let armor: CGFloat = inference.armor.average.cgFloat
-		let left = thrustAverage.dx * Constants.Cell.thrustForce * speedBoost
-		let right = thrustAverage.dy * Constants.Cell.thrustForce * speedBoost
+		let left = thrustAverage.dx * Constants.Thrust.thrustForce * speedBoost
+		let right = thrustAverage.dy * Constants.Thrust.thrustForce * speedBoost
 
 		// determine new position and heading
 		let (newPosition, newHeading) = newPositionAndHeading(node: node, thrust: CGVector(dx: left, dy: right))

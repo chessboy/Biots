@@ -13,21 +13,21 @@ import OctopusKit
 struct Constants {
 		
 	struct NeuralNet {
-		static let newGenomeHiddenCounts = [14, 8]
-		static let maxWeightValue: Float = 2
+		static let newGenomeHiddenCounts = [15, 8]
+		static let maxWeightValue: Float = 1
 	}
 	
 	struct Env {
 		
-		static let filename = "water-03.json"
+		static let filename = "30-15-8-8.02.json"
 
 		static let randomRun = false
 		static let easyMode = true
 		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 15) // 20k food works well here
-		static let zapperCount = Int(worldRadius * (easyMode ? 0.002 : 0.003))
-		static let waterCount = Int(worldRadius * (easyMode ? 0.004 : 0.0025))
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 13) // 20k food works well here
+		static let zapperCount = Int(worldRadius * (easyMode ? 0.003 : 0.004))
+		static let waterCount = Int(worldRadius * (easyMode ? 0.004 : 0.003))
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -49,14 +49,17 @@ struct Constants {
 		static let clockRate = 60 // ticks per 1-way cycle
 
 		static let collisionDamage: CGFloat = Env.easyMode ?  0.2 :  0.25
-		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.0015 :  0.00125
+		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.00125 :  0.001
 
 		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.85 // % of maximum health
 		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.8 // % of maximum health
 
-		static let maximumEnergy: CGFloat = Env.easyMode ? 100 : 120
-		static let initialFoodEnergy: CGFloat = maximumEnergy * 0.5
-		static let blinkEnergy: CGFloat = maximumEnergy * 0.005
+		static let maximumFoodEnergy: CGFloat = Env.easyMode ? 100 : 120
+		static let initialFoodEnergy: CGFloat = maximumFoodEnergy * 0.5
+		static let maximumHydration: CGFloat = Env.easyMode ? 75 : 100
+		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.5)
+
+		static let blinkEnergy: CGFloat = maximumFoodEnergy * 0.005
 		static let perMovementEnergy: CGFloat = 0.01
 		static let perMovementHydration: CGFloat = Env.easyMode ? 0.0075 : 0.01
 		static let armorEnergy: CGFloat = 0.06
@@ -65,16 +68,9 @@ struct Constants {
 
 		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3200
 		static let matureAge: CGFloat = maximumAge * 0.2
-		static let selfReplicationAge: CGFloat = maximumAge * 0.25
 		static let gestationAge: CGFloat = maximumAge * 0.15
 		static let blinkAge: CGFloat = maximumAge * 0.1 // how long until not blinking degrades vision
-
-		static let interactionDistance: CGFloat = radius * 10
 		
-		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
-		static let spinLimiter: CGFloat = 1/π
-		static let thrustForce: CGFloat = 7.5
-
 		static let adjustBodyColor = false
 		
 		enum StatsLine: Int { case line1, line2, line3 }
@@ -87,18 +83,20 @@ struct Constants {
 	
 	struct Algae {
 		static let radius: CGFloat = 16
-		static let bite: CGFloat = Cell.maximumEnergy * 0.2
+		static let bite: CGFloat = Cell.maximumFoodEnergy * 0.2
+		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 	}
 	
 	struct Water {
-		static let sip: CGFloat = Cell.maximumEnergy * 0.3
+		static let sip: CGFloat = Cell.maximumHydration * 0.25
+		static let timeBetweenSips: TimeInterval = 3 // seconds between drinking the same water
 	}
 	
 	struct Vision {
 		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
 		static let refinerAngles = [0, -π/12, π/12]
 		static let colorDepth = 3 // r|g|b
-		static let rayDistance: CGFloat = Cell.radius * 24
+		static let rayDistance: CGFloat = Cell.radius * 21
 		static let displayMemory = 8
 		static let inferenceMemory = 3
 	}
@@ -110,8 +108,12 @@ struct Constants {
 		static let rightThrustNegative = -π/2 + thrusterArc
 		static let rightThrustPositive = -π/2 - thrusterArc
 		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
+		
 		static let displayMemory = 8
-		static let inferenceMemory = 3
+		static let inferenceMemory = 5
+		
+		static let spinLimiter: CGFloat = 1/π
+		static let thrustForce: CGFloat = 7.5
 	}
 	
 	struct Graphics {
@@ -162,12 +164,11 @@ struct Constants {
 		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 0.8)
 		static let water =  SKColor(red: 0.1875/2, green: 0.3, blue: 0.3, alpha: 0.8)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
-		static let cell = SKColor(red: 0.63, green: 0.8, blue: 1, alpha: 0.5)
 	}
 	
 	struct VisionColors {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
-		static let water = SKColor(srgbRed: 0, green: 1, blue: 1, alpha: 1)
+		static let water = SKColor(srgbRed: 0, green: 0, blue: 1, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 	}
 		

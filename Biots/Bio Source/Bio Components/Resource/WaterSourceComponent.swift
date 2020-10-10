@@ -24,11 +24,13 @@ extension WaterSourceComponent {
 	
 	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
 		
+		let color = Constants.Colors.water.blended(withFraction: CGFloat.random(in: 0..<0.15), of: SKColor.blue) ?? Constants.Colors.water
+
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 12)
 		node.name = "water"
 		node.zPosition = Constants.ZeeOrder.water
 		node.lineWidth = 0
-		node.fillColor = Constants.Colors.water
+		node.fillColor = color
 		//node.strokeColor = Constants.Colors.grid
 		node.blendMode = Constants.Env.graphics.blendMode
 		node.isAntialiased = Constants.Env.graphics.antialiased
@@ -36,10 +38,10 @@ extension WaterSourceComponent {
 
 		if Constants.Env.graphics.shadows {
 			let shadowWidth: CGFloat = 10
-			let shadowNode = SKShapeNode.polygonOfRadius(radius + shadowWidth/2, sides: 12)
+			let shadowNode = SKShapeNode.polygonOfRadius(radius - shadowWidth, sides: 12)
 			shadowNode.zPosition = Constants.ZeeOrder.water - 0.1
 			shadowNode.glowWidth = shadowWidth
-			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
+			shadowNode.strokeColor = SKColor.white.withAlpha(0.167)
 			node.addChild(shadowNode)
 		}
 

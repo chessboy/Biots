@@ -43,7 +43,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		scene.addEntity(boundary)
 				
 		for _ in 0..<Constants.Env.zapperCount {
-			let radius = CGFloat.random(in: 100...250)
+			let radius = CGFloat.random(in: 80...300)
 			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
 			let zapper = ZapperComponent.create(radius: radius, position: position)
 			zapper.node?.isHidden = hideNode
@@ -53,19 +53,14 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let targetAlgaeSupply = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
-		// algae fountains
+		// algae fountain(s)
 		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.2, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
 		alageFountain.name = "mainFountain"
 
-//		let fountain = ResourceFountainComponent.createFountain(position: CGPoint(angle: 0) * worldRadius * 0.75, minRadius: 0, maxRadius: worldRadius * 0.15, targetAlgaeSupply: targetAlgaeSupply.cgFloat / 4)
-//		fountain.name = "fountain"
-
 		if showFountainInfluence {
 			alageFountain.addComponent(ResourceFountainInfluenceComponent())
-//			fountain.addComponent(ResourceFountainInfluenceComponent())
 		}
 		scene.addEntity(alageFountain)
-//		scene.addEntity(fountain)
  	}
 	
 	func addUnbornGenome(_ genome: Genome) {
@@ -215,7 +210,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let maxGen = cells.map({$0.genome.generation}).max() ?? 0
 
 		let averageEnergy = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.foodEnergy/$1.maximumEnergy } / cells.count.cgFloat
-		let averageHydration = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.hydration/$1.maximumEnergy } / cells.count.cgFloat
+		let averageHydration = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.hydration/Constants.Cell.maximumHydration } / cells.count.cgFloat
 		let averageStamina = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.stamina } / cells.count.cgFloat
 		let averageHealth = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.health } / cells.count.cgFloat
 

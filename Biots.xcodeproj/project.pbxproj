@@ -23,11 +23,9 @@
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
-		D451712B2530163E00290A38 /* water-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D451712A2530163E00290A38 /* water-01.json */; };
-		D451712F2530188B00290A38 /* water-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D451712E2530188B00290A38 /* water-02.json */; };
-		D45F0E3825303BBC0067912C /* water-03.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E3725303BBC0067912C /* water-03.json */; };
-		D45F0E3C25312B910067912C /* water-04.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E3B25312B910067912C /* water-04.json */; };
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
+		D45F0E5525317C240067912C /* 30-15-8-8.01.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E5425317C240067912C /* 30-15-8-8.01.json */; };
+		D45F0E5925318BBF0067912C /* 30-15-8-8.02.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E5825318BBF0067912C /* 30-15-8-8.02.json */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -116,10 +114,8 @@
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
-		D451712A2530163E00290A38 /* water-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-01.json"; sourceTree = "<group>"; };
-		D451712E2530188B00290A38 /* water-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-02.json"; sourceTree = "<group>"; };
-		D45F0E3725303BBC0067912C /* water-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-03.json"; sourceTree = "<group>"; };
-		D45F0E3B25312B910067912C /* water-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-04.json"; sourceTree = "<group>"; };
+		D45F0E5425317C240067912C /* 30-15-8-8.01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "30-15-8-8.01.json"; sourceTree = "<group>"; };
+		D45F0E5825318BBF0067912C /* 30-15-8-8.02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "30-15-8-8.02.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -214,9 +210,9 @@
 			isa = PBXGroup;
 			children = (
 				D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */,
+				D451712625300C1500290A38 /* WaterSourceComponent.swift */,
 				D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */,
 				D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */,
-				D451712625300C1500290A38 /* WaterSourceComponent.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -450,10 +446,8 @@
 			isa = PBXGroup;
 			children = (
 				D490039F2524E6A6002DA67C /* empty-zoo.json */,
-				D451712A2530163E00290A38 /* water-01.json */,
-				D451712E2530188B00290A38 /* water-02.json */,
-				D45F0E3725303BBC0067912C /* water-03.json */,
-				D45F0E3B25312B910067912C /* water-04.json */,
+				D45F0E5425317C240067912C /* 30-15-8-8.01.json */,
+				D45F0E5825318BBF0067912C /* 30-15-8-8.02.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -600,14 +594,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D49880462517D69400015724 /* README.md in Resources */,
-				D45F0E3C25312B910067912C /* water-04.json in Resources */,
-				D45F0E3825303BBC0067912C /* water-03.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
+				D45F0E5525317C240067912C /* 30-15-8-8.01.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
+				D45F0E5925318BBF0067912C /* 30-15-8-8.02.json in Resources */,
 				D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */,
-				D451712F2530188B00290A38 /* water-02.json in Resources */,
-				D451712B2530163E00290A38 /* water-01.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
