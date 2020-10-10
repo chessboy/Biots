@@ -73,7 +73,7 @@ struct Constants {
 		
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 		static let spinLimiter: CGFloat = 1/π
-		static let thrustForce: CGFloat = 15
+		static let thrustForce: CGFloat = 7.5
 
 		static let adjustBodyColor = false
 		

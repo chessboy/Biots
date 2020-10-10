@@ -50,14 +50,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			scene.addEntity(zapper)
 		}
 		
-		for _ in 0..<Constants.Env.waterCount {
-			let radius = CGFloat.random(in: 80...150)
-			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
-			let water = WaterSourceComponent.create(radius: radius, position: position)
-			water.node?.isHidden = hideNode
-			scene.addEntity(water)
-		}
-
 		let targetAlgaeSupply = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 

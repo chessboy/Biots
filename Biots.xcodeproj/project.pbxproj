@@ -23,15 +23,11 @@
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
-		D45170FD252D6D7500290A38 /* zoo-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D45170FC252D6D7500290A38 /* zoo-02.json */; };
-		D4517103252D946D00290A38 /* zoo-10.json in Resources */ = {isa = PBXBuildFile; fileRef = D4517102252D946D00290A38 /* zoo-10.json */; };
-		D4517107252DC06D00290A38 /* zoo-11.json in Resources */ = {isa = PBXBuildFile; fileRef = D4517106252DC06D00290A38 /* zoo-11.json */; };
-		D451710B252E205800290A38 /* zoo-12.json in Resources */ = {isa = PBXBuildFile; fileRef = D451710A252E205800290A38 /* zoo-12.json */; };
-		D4517111252EA7FE00290A38 /* zoo-13.json in Resources */ = {isa = PBXBuildFile; fileRef = D4517110252EA7FE00290A38 /* zoo-13.json */; };
-		D451712725300C1500290A38 /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D451712B2530163E00290A38 /* water-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D451712A2530163E00290A38 /* water-01.json */; };
 		D451712F2530188B00290A38 /* water-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D451712E2530188B00290A38 /* water-02.json */; };
 		D45F0E3825303BBC0067912C /* water-03.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E3725303BBC0067912C /* water-03.json */; };
+		D45F0E3C25312B910067912C /* water-04.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E3B25312B910067912C /* water-04.json */; };
+		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -76,7 +72,6 @@
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
 		D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */ = {isa = PBXBuildFile; fileRef = D490039F2524E6A6002DA67C /* empty-zoo.json */; };
-		D49003EE252C229D002DA67C /* zoo-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D49003ED252C229D002DA67C /* zoo-01.json */; };
 		D49880462517D69400015724 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D49880452517D69400015724 /* README.md */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
@@ -120,15 +115,11 @@
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
-		D45170FC252D6D7500290A38 /* zoo-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-02.json"; sourceTree = "<group>"; };
-		D4517102252D946D00290A38 /* zoo-10.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-10.json"; sourceTree = "<group>"; };
-		D4517106252DC06D00290A38 /* zoo-11.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-11.json"; sourceTree = "<group>"; };
-		D451710A252E205800290A38 /* zoo-12.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-12.json"; sourceTree = "<group>"; };
-		D4517110252EA7FE00290A38 /* zoo-13.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-13.json"; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
 		D451712A2530163E00290A38 /* water-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-01.json"; sourceTree = "<group>"; };
 		D451712E2530188B00290A38 /* water-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-02.json"; sourceTree = "<group>"; };
 		D45F0E3725303BBC0067912C /* water-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-03.json"; sourceTree = "<group>"; };
+		D45F0E3B25312B910067912C /* water-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "water-04.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -177,7 +168,6 @@
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
 		D490039F2524E6A6002DA67C /* empty-zoo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "empty-zoo.json"; sourceTree = "<group>"; };
-		D49003ED252C229D002DA67C /* zoo-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-01.json"; sourceTree = "<group>"; };
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
@@ -226,6 +216,7 @@
 				D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */,
 				D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */,
 				D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */,
+				D451712625300C1500290A38 /* WaterSourceComponent.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -459,15 +450,10 @@
 			isa = PBXGroup;
 			children = (
 				D490039F2524E6A6002DA67C /* empty-zoo.json */,
-				D49003ED252C229D002DA67C /* zoo-01.json */,
-				D45170FC252D6D7500290A38 /* zoo-02.json */,
-				D4517102252D946D00290A38 /* zoo-10.json */,
-				D4517106252DC06D00290A38 /* zoo-11.json */,
-				D451710A252E205800290A38 /* zoo-12.json */,
-				D4517110252EA7FE00290A38 /* zoo-13.json */,
 				D451712A2530163E00290A38 /* water-01.json */,
 				D451712E2530188B00290A38 /* water-02.json */,
 				D45F0E3725303BBC0067912C /* water-03.json */,
+				D45F0E3B25312B910067912C /* water-04.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -502,7 +488,6 @@
 				D47386C72442BEDB0022E760 /* GlobalDataComponent.swift */,
 				D4C2FC232483A4160076077A /* NoiseComponent.swift */,
 				D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */,
-				D451712625300C1500290A38 /* WaterSourceComponent.swift */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -615,19 +600,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				D49880462517D69400015724 /* README.md in Resources */,
-				D4517107252DC06D00290A38 /* zoo-11.json in Resources */,
+				D45F0E3C25312B910067912C /* water-04.json in Resources */,
 				D45F0E3825303BBC0067912C /* water-03.json in Resources */,
-				D4517103252D946D00290A38 /* zoo-10.json in Resources */,
-				D49003EE252C229D002DA67C /* zoo-01.json in Resources */,
-				D45170FD252D6D7500290A38 /* zoo-02.json in Resources */,
-				D451710B252E205800290A38 /* zoo-12.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */,
 				D451712F2530188B00290A38 /* water-02.json in Resources */,
 				D451712B2530163E00290A38 /* water-01.json in Resources */,
-				D4517111252EA7FE00290A38 /* zoo-13.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,7 +635,7 @@
 				D4738757244389C60022E760 /* CGFloatMath.swift in Sources */,
 				D47386D92442BEDB0022E760 /* GlobalDataComponent.swift in Sources */,
 				D47D719924493E590079D2F1 /* JsonLoad.swift in Sources */,
-				D451712725300C1500290A38 /* WaterSourceComponent.swift in Sources */,
+				D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */,
 				D42CE72E2443FF820049854C /* KeyTrackerComponent.swift in Sources */,
 				D47D719624489C450079D2F1 /* GenomeFactory.swift in Sources */,
 				D47386382442BA830022E760 /* ContentView.swift in Sources */,

@@ -18,20 +18,35 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 	var frame = Int.random(100)
 
 	var algaeEntities: [OKEntity] = []
+	var waterEntities: [OKEntity] = []
 
 	init(position: CGPoint = .zero, minRadius: CGFloat = 100, maxRadius: CGFloat, targetAlgaeSupply: CGFloat) {
 		self.position = position
 		self.minRadius = minRadius
 		self.maxRadius = maxRadius
 		self.targetAlgaeSupply = targetAlgaeSupply
+
 		super.init()
 	}
 	
-	public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-	
+	func createWaterEntity() -> OKEntity {
+
+		let radius = CGFloat.random(in: 80...150)
+		let position = CGPoint.randomAngle * CGFloat.random(in: 0...Constants.Env.worldRadius * 0.8)
+		let water = WaterSourceComponent.create(radius: radius, position: position)
+		
+		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
+			water.node?.isHidden = hideNode
+		}
+		
+		return water
+	}
+		
 	func createAlgaeEntity(energy: CGFloat) -> OKEntity {
 		
-		let position = algaeEntities.count > 0 && Int.oneChanceIn(3) ? pointNextToExistingAlgaeSource : randomPoint
+		let position = algaeEntities.count > 0 && Int.oneChanceIn(3) ? pointNextToExistingAlgaeSource :
+			waterEntities.count > 0 && Int.oneChanceIn(3) ? pointNextToExistingWaterSource : randomPoint
+		
 		let algae = AlgaeComponent.create(position: position, energy: energy)
 		algae.addComponent(RelayComponent(for: self))
 		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideAlgae {
@@ -64,6 +79,19 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 		return .zero
 	}
 	
+	var pointNextToExistingWaterSource: CGPoint {
+		
+		guard waterEntities.count > 0 else { return .zero }
+		
+		let index = Int.random(waterEntities.count)
+		let randomWaterEntity = waterEntities[index]
+		if let position = randomWaterEntity.node?.position {
+			return position + CGPoint(angle: CGFloat.random(in: 0..<2*π) * 80)
+		}
+		
+		return .zero
+	}
+
 	var currentAlgaeSupply: CGFloat {
 		var sum: CGFloat = 0.0
 		algaeEntities.forEach({ sum += $0.component(ofType: AlgaeComponent.self)?.energy ?? 0 })
@@ -76,6 +104,12 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 
 		guard frame.isMultiple(of: 10) else {
 			return
+		}
+		
+		if waterEntities.count < Constants.Env.waterCount, let scene = OctopusKit.shared?.currentScene {
+			let water = createWaterEntity()
+			waterEntities.append(water)
+			scene.addEntity(water)
 		}
 		
 		if currentAlgaeSupply > targetAlgaeSupply * 1.1 {
@@ -95,6 +129,8 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 	}
+	
+	public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 }
 
 extension ResourceFountainComponent {

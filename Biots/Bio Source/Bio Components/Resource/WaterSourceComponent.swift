@@ -27,9 +27,9 @@ extension WaterSourceComponent {
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 12)
 		node.name = "water"
 		node.zPosition = Constants.ZeeOrder.water
-		node.lineWidth = 4
+		node.lineWidth = 0
 		node.fillColor = Constants.Colors.water
-		node.strokeColor = Constants.Colors.grid
+		//node.strokeColor = Constants.Colors.grid
 		node.blendMode = Constants.Env.graphics.blendMode
 		node.isAntialiased = Constants.Env.graphics.antialiased
 		node.position = position

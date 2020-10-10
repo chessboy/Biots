@@ -136,7 +136,8 @@ final class BrainComponent: OKComponent {
 
 		// determine new position and heading
 		let (newPosition, newHeading) = newPositionAndHeading(node: node, thrust: CGVector(dx: left, dy: right))
-		node.run(SKAction.move(to: newPosition, duration: 0.05))
+		//node.run(SKAction.move(to: newPosition, duration: 0.05))
+		node.position = newPosition
 		node.zRotation = newHeading
 		
 		// movement energy expenditure
