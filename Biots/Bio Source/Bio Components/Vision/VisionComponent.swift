@@ -69,7 +69,6 @@ final class VisionComponent: OKComponent {
 			let cameraScale = camera?.xScale,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
-			let cell = cellComponent,
 			let physicsBody = physicsComponent?.physicsBody else {
 			return
 		}
@@ -88,7 +87,7 @@ final class VisionComponent: OKComponent {
 			for offset in Constants.Vision.refinerAngles {
 
 				let angleOffset = angle + offset
-				let rayDistance = cell.effectiveVisibility * Constants.Vision.rayDistance
+				let rayDistance = Constants.Vision.rayDistance
 				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				

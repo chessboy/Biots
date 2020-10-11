@@ -132,11 +132,14 @@ final class WorldScene: OKScene {
 	
 	func dumpGenomes() {
 		print("\n[")
-		let genomes = self.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).map({$0.component(ofType: CellComponent.self)}).map({$0?.genome})
-
+		var genomes = self.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).map({$0.component(ofType: CellComponent.self)}).map({$0?.genome})
+		if let unbornCells = (entity?.component(ofType: WorldComponent.self))?.unbornGenomes {
+			let unborn = Array(unbornCells.suffix(10))
+			genomes.append(contentsOf: unborn)
+		}
+		
 		var index = 0
 		for genome in genomes {
-			
 			if let jsonData = try? genome.encodedToJSON() {
 				if let jsonString = String(data: jsonData, encoding: .utf8) {
 					let delim = index == genomes.count-1 ? "" : ","

@@ -48,10 +48,6 @@ final class BrainComponent: OKComponent {
 		
 		vision.detect()
 		
-		let position = cell.entityNode?.position ?? .zero
-		let distanceToCenter = position.distance(to: .zero)/Constants.Env.worldRadius
-		let proximityToCenter = Float(1 - distanceToCenter)
-
 		senses.setSenses(
 			health: Float(cell.health),
 			energy: Float(cell.foodEnergy / cell.maximumEnergy),
@@ -60,8 +56,6 @@ final class BrainComponent: OKComponent {
 			pregnant: cell.isPregnant ? 1 : 0,
 			onTopOfFood: cell.onTopOfFood ? 1 : 0,
 			onTopOfWater: cell.onTopOfWater ? 1 : 0,
-			visibility: cell.visibility.float,
-			proximityToCenter: proximityToCenter,
 			clockShort: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate),
 			clockLong: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate*3),
 			age: Float(cell.age/Constants.Cell.maximumAge)
@@ -157,17 +151,9 @@ final class BrainComponent: OKComponent {
 		
 		// healing
 		if cell.stamina < 1 {
-			let staminaRecovery = -Constants.Cell.perMovementRecovery * (1 - (forceExerted/2))
+			let staminaRecovery = -Constants.Cell.perMovementRecovery * (1 - (forceExerted/3))
 			// print("cell.stamina: \(cell.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			cell.incurStaminaChange(staminaRecovery)
-		}
-		
-		// blink
-		if inference.blink {
-			cell.blink()
-		}
-		else {
-			cell.checkEyeState()
 		}
 
 		if Constants.Cell.adjustBodyColor {

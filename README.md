@@ -31,6 +31,7 @@
 |z|set zoom to default|
 | | |
 |command-s |dump current genomes to console (as `json`)|
+|command-shift-s |dump current world objects to console (as `json`)|
 
 ### Mouse Operations
 - command-click a biot → set it as the 'tracked` biot (camera will follow)
@@ -38,3 +39,5 @@
 - right-click a biot → kill that biot
 - shift-click anywhere → add some algae in that area
 - command-shift-click a biot → clicked biot becomes seed of ALL biots in the dish (random mode only)
+- b+click → add a block
+- w+click → add a water source
