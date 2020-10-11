@@ -502,7 +502,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		foodEnergy = foodEnergy / 4
 		hydration = Constants.Cell.initialHydration
-		incurStaminaChange(0.1)
+		incurStaminaChange(0.05)
 		
 		spawnCount += 1
 		
@@ -600,7 +600,7 @@ extension CellComponent {
 			shadowNode.zPosition = Constants.ZeeOrder.cell - 6
 			shadowNode.glowWidth = radius * 0.2
 			shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
-			node.addChild(shadowNode)
+			node.insertChild(shadowNode, at: 0)
 		}
 		
 		var eyeNodes: [SKShapeNode] = []

@@ -74,7 +74,7 @@ final class VisionComponent: OKComponent {
 		}
 		
 		let tracerScale = (0.2 * cameraScale).clamped(0.3, 1)
-		let maxObjectsPerAngle = 2
+		let maxObjectsPerAngle = 5
 		
 		for angle in Constants.Vision.eyeAngles {
 
@@ -114,7 +114,6 @@ final class VisionComponent: OKComponent {
 								// water
 								detectedColor = Constants.VisionColors.water
 								bodiesSeenAtAngle.append(body)
-								blockerSeenAtSubAngle = true
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.water.withAlpha(proximity), scale: tracerScale)
 								}

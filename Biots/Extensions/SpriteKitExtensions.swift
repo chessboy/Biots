@@ -62,6 +62,24 @@ extension SKShapeNode {
 
 		return shapeNode
 	}
+	
+	static func polygonOfRadius(_ radius: CGFloat, sides: Int, cornerRadius: CGFloat = 0, lineWidth: CGFloat = 0, rotationOffset: CGFloat = 0) -> SKShapeNode {
+		
+		let path = CGPath.roundedPolygonPath(radius: radius, lineWidth: lineWidth, sides: sides, cornerRadius: cornerRadius, rotationOffset: rotationOffset)
+		
+		guard sides > 2 else {
+			print("cannot make a polygon with less than 3 sides, here's a circle")
+			return SKShapeNode(circleOfRadius: radius)
+		}
+
+		let shapeNode = SKShapeNode()
+		shapeNode.path = path
+		shapeNode.fillColor = .clear
+		shapeNode.lineWidth = 0
+
+		return shapeNode
+	}
+
 }
 
 extension GKEntity {
@@ -73,5 +91,42 @@ extension GKEntity {
     	}
 
     	return nil
+	}
+}
+
+extension CGPath {
+	
+	// http://sapandiwakar.in/make-hexagonal-view-on-ios/
+	static func roundedPolygonPath(radius: CGFloat, lineWidth: CGFloat, sides: Int, cornerRadius: CGFloat, rotationOffset: CGFloat = 0) -> CGPath {
+		
+		let path = CGMutablePath()
+		let theta: CGFloat = 2*π/sides.cgFloat
+
+		// Radius of the circle that encircles the polygon
+		// Notice that the radius is adjusted for the corners, that way the largest outer
+		// dimension of the resulting shape is always exactly the width - linewidth
+		//let radius´ = (radius - lineWidth + cornerRadius - (cos(theta) * cornerRadius))
+
+		// Start drawing at a point, which by default is at the right hand edge, but can be offset
+		var angle = CGFloat(rotationOffset)
+
+		let corner = CGPoint(x: (radius - cornerRadius) * cos(angle), y: (radius - cornerRadius) * sin(angle))
+		path.move(to: CGPoint(x: corner.x + cornerRadius * cos(angle + theta), y: corner.y + cornerRadius * sin(angle + theta)))
+
+		for _ in 0..<sides {
+			angle += theta
+
+			let corner = CGPoint(x: (radius - cornerRadius) * cos(angle), y: (radius - cornerRadius) * sin(angle))
+			let tip = CGPoint(x: radius * cos(angle), y: radius * sin(angle))
+			let start = CGPoint(x: corner.x + cornerRadius * cos(angle - theta), y: corner.y + cornerRadius * sin(angle - theta))
+			let end = CGPoint(x: corner.x + cornerRadius * cos(angle + theta), y: corner.y + cornerRadius * sin(angle + theta))
+
+			path.addLine(to: start)
+			path.addQuadCurve(to: end, control: tip)
+		}
+
+		path.closeSubpath()
+
+		return path
 	}
 }

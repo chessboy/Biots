@@ -38,7 +38,7 @@ extension ZapperComponent {
 		let blendColor: SKColor = Bool.random() ? .yellow : .orange
 		let color = Constants.Colors.wall.blended(withFraction: CGFloat.random(in: 0..<0.15), of: blendColor) ?? Constants.Colors.wall
 
-		let node = SKShapeNode.polygonOfRadius(radius, sides: 8)
+		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
 		node.name = "zapper"
 		node.zPosition = Constants.ZeeOrder.wall
 		node.lineWidth = 4
@@ -50,11 +50,13 @@ extension ZapperComponent {
 
 		if Constants.Env.graphics.shadows {
 			let shadowWidth: CGFloat = 10
-			let shadowNode = SKShapeNode.polygonOfRadius(radius + shadowWidth/2, sides: 8)
+			let shadowRadius = radius + shadowWidth/2
+			let shadowNode =  SKShapeNode.polygonOfRadius(shadowRadius, sides: 8, cornerRadius: shadowRadius/4, lineWidth: 4, rotationOffset: π/8)
 			shadowNode.zPosition = Constants.ZeeOrder.wall - 0.1
 			shadowNode.glowWidth = shadowWidth
+			shadowNode.lineWidth = shadowWidth
 			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
-			node.addChild(shadowNode)
+			node.insertChild(shadowNode, at: 0)
 		}
 
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
