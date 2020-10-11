@@ -24,9 +24,9 @@
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
-		D45F0E5525317C240067912C /* 30-15-8-8.01.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E5425317C240067912C /* 30-15-8-8.01.json */; };
-		D45F0E5925318BBF0067912C /* 30-15-8-8.02.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E5825318BBF0067912C /* 30-15-8-8.02.json */; };
-		D45F0E5D253210F40067912C /* 30-15-8-8.03.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E5C253210F40067912C /* 30-15-8-8.03.json */; };
+		D45F0E6B253282360067912C /* NodePlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* NodePlacement.swift */; };
+		D45F0E6F2532BFD60067912C /* less-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E6E2532BFD60067912C /* less-placements.json */; };
+		D45F0E782532C7520067912C /* more-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* more-placements.json */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -115,9 +115,9 @@
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
-		D45F0E5425317C240067912C /* 30-15-8-8.01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "30-15-8-8.01.json"; sourceTree = "<group>"; };
-		D45F0E5825318BBF0067912C /* 30-15-8-8.02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "30-15-8-8.02.json"; sourceTree = "<group>"; };
-		D45F0E5C253210F40067912C /* 30-15-8-8.03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "30-15-8-8.03.json"; sourceTree = "<group>"; };
+		D45F0E6A253282360067912C /* NodePlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodePlacement.swift; sourceTree = "<group>"; };
+		D45F0E6E2532BFD60067912C /* less-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "less-placements.json"; sourceTree = "<group>"; };
+		D45F0E772532C7520067912C /* more-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "more-placements.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -252,6 +252,15 @@
 				D44E606424522F8400694462 /* EyesComponent.swift */,
 			);
 			path = Vision;
+			sourceTree = "<group>";
+		};
+		D45F0E722532BFE80067912C /* Placements */ = {
+			isa = PBXGroup;
+			children = (
+				D45F0E6E2532BFD60067912C /* less-placements.json */,
+				D45F0E772532C7520067912C /* more-placements.json */,
+			);
+			path = Placements;
 			sourceTree = "<group>";
 		};
 		D47386292442BA830022E760 = {
@@ -448,9 +457,6 @@
 			isa = PBXGroup;
 			children = (
 				D490039F2524E6A6002DA67C /* empty-zoo.json */,
-				D45F0E5425317C240067912C /* 30-15-8-8.01.json */,
-				D45F0E5825318BBF0067912C /* 30-15-8-8.02.json */,
-				D45F0E5C253210F40067912C /* 30-15-8-8.03.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -501,10 +507,12 @@
 		D4D18D97244799F500BF92FA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D45F0E722532BFE80067912C /* Placements */,
 				D49880422517D0AB00015724 /* Zoo */,
 				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D47D719524489C450079D2F1 /* GenomeFactory.swift */,
+				D45F0E6A253282360067912C /* NodePlacement.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -596,13 +604,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D45F0E5D253210F40067912C /* 30-15-8-8.03.json in Resources */,
 				D49880462517D69400015724 /* README.md in Resources */,
+				D45F0E6F2532BFD60067912C /* less-placements.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
-				D45F0E5525317C240067912C /* 30-15-8-8.01.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
-				D45F0E5925318BBF0067912C /* 30-15-8-8.02.json in Resources */,
+				D45F0E782532C7520067912C /* more-placements.json in Resources */,
 				D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -671,6 +678,7 @@
 				D4E4BA6025008EEA0044EC48 /* ZapperComponent.swift in Sources */,
 				D44E60682452740400694462 /* ContactComponent.swift in Sources */,
 				D47386D52442BEDB0022E760 /* 5A - TitleState.swift in Sources */,
+				D45F0E6B253282360067912C /* NodePlacement.swift in Sources */,
 				D4C6FB9F2453A84C00A0614F /* Senses.swift in Sources */,
 				D47386E42442C6B20022E760 /* CGGeometry.swift in Sources */,
 				D47386E62442C6F00022E760 /* CGAffineTransform.swift in Sources */,

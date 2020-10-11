@@ -41,15 +41,11 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
 		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
-				
-		for _ in 0..<Constants.Env.zapperCount {
-			let radius = CGFloat.random(in: 80...300)
-			let position = CGPoint.randomAngle * CGFloat.random(in: 0...worldRadius * 0.8)
-			let zapper = ZapperComponent.create(radius: radius, position: position)
-			zapper.node?.isHidden = hideNode
-			scene.addEntity(zapper)
-		}
 		
+		let filename = Constants.Env.placementsFilename
+		let placements: [NodePlacement] = loadJsonFromFile(filename)
+		print("WorldComponent: loaded \(placements.count) placements from \(filename)")
+				
 		let targetAlgaeSupply = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
@@ -61,6 +57,23 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			alageFountain.addComponent(ResourceFountainInfluenceComponent())
 		}
 		scene.addEntity(alageFountain)
+		
+		for placement in placements {
+			let position = CGPoint(angle: placement.angle.cgFloat) * placement.percentFromCenter.cgFloat * worldRadius
+			let radius = placement.percentRadius.cgFloat * worldRadius
+			
+			if placement.placeableType == .zapper {
+				let zapper = ZapperComponent.create(radius: radius, position: position)
+				zapper.node?.isHidden = hideNode
+				scene.addEntity(zapper)
+			}
+			else if placement.placeableType == .water {
+				let water = WaterSourceComponent.create(radius: radius, position: position)
+				alageFountain.component(ofType: ResourceFountainComponent.self)?.waterEntities.append(water)
+				water.node?.isHidden = hideNode
+				scene.addEntity(water)
+			}
+		}
  	}
 	
 	func addUnbornGenome(_ genome: Genome) {

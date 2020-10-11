@@ -15,10 +15,10 @@ class GenomeFactory {
 	var genomes: [Genome] = []
 	
 	init() {
-		let filename = Constants.Env.filename
+		let filename = Constants.Env.zooFilename
 		genomes = loadJsonFromFile(filename)
 		genomes = genomes.filter({ $0.generation >= 1 })
-		print("GenomeFactory: loaded \(genomes.count) genomes from \(filename):")
+		print("GenomeFactory: loaded \(genomes.count) genomes from \(filename)")
 		//genomes.forEach { print($0.description) }
 	}
 	

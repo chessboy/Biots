@@ -106,11 +106,11 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
-		if waterEntities.count < Constants.Env.waterCount, let scene = OctopusKit.shared?.currentScene {
-			let water = createWaterEntity()
-			waterEntities.append(water)
-			scene.addEntity(water)
-		}
+//		if waterEntities.count < Constants.Env.waterCount, let scene = OctopusKit.shared?.currentScene {
+//			let water = createWaterEntity()
+//			waterEntities.append(water)
+//			scene.addEntity(water)
+//		}
 		
 		if currentAlgaeSupply > targetAlgaeSupply * 1.1 {
 			for _ in 1...4 {

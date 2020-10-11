@@ -12,6 +12,17 @@ import OctopusKit
 
 final class WaterSourceComponent: OKComponent {
 	
+	var radius: CGFloat
+	
+	init(radius: CGFloat) {
+		self.radius = radius
+		super.init()
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
 	override var requiredComponents: [GKComponent.Type]? {
 		[
 			SpriteKitComponent.self,
@@ -55,8 +66,7 @@ extension WaterSourceComponent {
 		return OKEntity(components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),
-			ZapperComponent(),
-			WaterSourceComponent()
+			WaterSourceComponent(radius: radius)
 		])
 	}
 }

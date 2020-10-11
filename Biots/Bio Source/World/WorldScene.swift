@@ -99,6 +99,37 @@ final class WorldScene: OKScene {
     	}
 	}
 	
+	func dumpPlaceables() {
+		print("\n[")
+		
+		var nodePlacements: [NodePlacement] = []
+		
+		for component in entities(withName: "zapper")?.map({$0.component(ofType: ZapperComponent.self)}) as? [ZapperComponent] ?? [] {
+			if let node = component.entityNode {
+				nodePlacements.append(node.createNodePlacement(placeableType: .zapper, radius: component.radius))
+			}
+		}
+		
+		for component in entities(withName: "water")?.map({$0.component(ofType: WaterSourceComponent.self)}) as? [WaterSourceComponent] ?? [] {
+			if let node = component.entityNode {
+				nodePlacements.append(node.createNodePlacement(placeableType: .water, radius: component.radius))
+			}
+		}
+
+		var index = 0
+		for placement in nodePlacements {
+			if let jsonData = try? placement.encodedToJSON() {
+				if let jsonString = String(data: jsonData, encoding: .utf8) {
+					let delim = index == nodePlacements.count-1 ? "" : ","
+					print("\(jsonString)\(delim)")
+				}
+			}
+			index += 1
+		}
+		
+		print("]\n")
+	}
+	
 	func dumpGenomes() {
 		print("\n[")
 		let genomes = self.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).map({$0.component(ofType: CellComponent.self)}).map({$0?.genome})
@@ -195,6 +226,10 @@ final class WorldScene: OKScene {
 				entities(withName: "wall")?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
+				
+				entities(withName: "zapper")?.forEach({ entity in
+					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
+				})
 
 				entities(withName: "water")?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
@@ -219,7 +254,11 @@ final class WorldScene: OKScene {
 			})
 			
 		case Keycode.s:
-			if commandDown {
+			if commandDown, shiftDown {
+				dumpPlaceables()
+				return
+			}
+			else if commandDown {
 				dumpGenomes()
 				return
 			}
@@ -257,11 +296,14 @@ final class WorldScene: OKScene {
 			}
 			
 			let bump = 1000 * (shiftDown ? -1 : 1)
-			globalDataComponent.algaeTarget += bump
-			self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat
-			self.entities(withName: "fountain")?.map({$0.component(ofType: ResourceFountainComponent.self)}).forEach({ fountainComponent in
-				fountainComponent?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat / 4
-			})
+			if globalDataComponent.algaeTarget + bump >= 0 {
+				globalDataComponent.algaeTarget += bump
+				
+				self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat
+				self.entities(withName: "fountain")?.map({$0.component(ofType: ResourceFountainComponent.self)}).forEach({ fountainComponent in
+					fountainComponent?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat / 4
+				})
+			}
 			
 		case Keycode.tab:
 			if let cells = entities(withName: "cell") {
@@ -336,11 +378,24 @@ final class WorldScene: OKScene {
 	}
 	
 	func touchDown(at point: CGPoint, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false) {
-//		print("CGPoint(x: \(Int(point.x)), y: \(Int(point.y)))")
-//		let theta = atan2(point.y, point.x)
-//		print(theta.degrees.formattedTo2Places)
-
-		guard let mainFountain = entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self) else {
+		
+		guard let keyCodesDown = self.entity?.component(ofType: KeyTrackerComponent.self)?.keyCodesDown,
+			  let mainFountain = entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self) else {
+			return
+		}
+		
+		if keyCodesDown.contains(Keycode.w) {
+			let radius = CGFloat.random(in: 40...200)
+			let water = WaterSourceComponent.create(radius: radius, position: point)
+			mainFountain.waterEntities.append(water)
+			addEntity(water)
+			return
+		}
+		
+		if keyCodesDown.contains(Keycode.b) {
+			let radius = CGFloat.random(in: 80...300)
+			let zapper = ZapperComponent.create(radius: radius, position: point)
+			addEntity(zapper)
 			return
 		}
 		
@@ -356,6 +411,9 @@ final class WorldScene: OKScene {
 		}
 
 		if rightMouse, let waterNode = nodes(at: point).filter({$0.name == "water"}).first, let selectedEntity = entities.filter({ $0.node == waterNode }).first as? OKEntity {
+			removeEntity(selectedEntity)
+		}
+		else if rightMouse, let zapperNode = nodes(at: point).filter({$0.name == "zapper"}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity {
 			removeEntity(selectedEntity)
 		}
 		else if let cellNode = nodes(at: point).filter({$0.name == "cell"}).first {

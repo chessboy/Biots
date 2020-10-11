@@ -12,6 +12,17 @@ import OctopusKit
 
 final class ZapperComponent: OKComponent {
 	
+	var radius: CGFloat
+	
+	init(radius: CGFloat) {
+		self.radius = radius
+		super.init()
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
 	override var requiredComponents: [GKComponent.Type]? {
 		[
 			SpriteKitComponent.self,
@@ -28,7 +39,7 @@ extension ZapperComponent {
 		let color = Constants.Colors.wall.blended(withFraction: CGFloat.random(in: 0..<0.15), of: blendColor) ?? Constants.Colors.wall
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 8)
-		node.name = "wall"
+		node.name = "zapper"
 		node.zPosition = Constants.ZeeOrder.wall
 		node.lineWidth = 4
 		node.fillColor = color
@@ -56,7 +67,7 @@ extension ZapperComponent {
 		return OKEntity(components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),
-			ZapperComponent()
+			ZapperComponent(radius: radius)
 		])
 	}
 }

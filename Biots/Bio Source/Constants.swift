@@ -19,15 +19,16 @@ struct Constants {
 	
 	struct Env {
 		
-		static let filename = "30-15-8-8.03.json"
+		static let zooFilename = "empty-zoo.json"
+		static let placementsFilename = "more-placements.json"
 
-		static let randomRun = false
+		static let randomRun = true
 		static let easyMode = true
 		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 13) // 20k food works well here
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 15) // 20k food works well here
 		static let zapperCount = Int(worldRadius * (easyMode ? 0.003 : 0.004))
-		static let waterCount = Int(worldRadius * (easyMode ? 0.004 : 0.003))
+		static let waterCount = Int(worldRadius * (easyMode ? 0.005 : 0.003))
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -41,7 +42,7 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = simpleGraphics
+		static let graphics = niceGraphics
 	}
 	
 	struct Cell {
@@ -110,7 +111,7 @@ struct Constants {
 		static let thrusterSpots = [leftThrustPositive, leftThrustNegative, rightThrustPositive, rightThrustNegative]
 		
 		static let displayMemory = 8
-		static let inferenceMemory = 5
+		static let inferenceMemory = 3
 		
 		static let spinLimiter: CGFloat = 1/π
 		static let thrustForce: CGFloat = 7.5
@@ -168,7 +169,7 @@ struct Constants {
 	
 	struct VisionColors {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
-		static let water = SKColor(srgbRed: 0, green: 0, blue: 1, alpha: 1)
+		static let water = SKColor(srgbRed: 0, green: 1, blue: 1, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 	}
 		
