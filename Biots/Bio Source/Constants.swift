@@ -13,22 +13,20 @@ import OctopusKit
 struct Constants {
 		
 	struct NeuralNet {
-		static let newGenomeHiddenCounts = [15, 8]
+		static let newGenomeHiddenCounts = [14, 8]
 		static let maxWeightValue: Float = 1
 	}
 	
 	struct Env {
 		
-		static let zooFilename = "empty-zoo.json"
-		static let placementsFilename = "more-placements.json"
+		static let zooFilename = "zoo-06.json"
+		static let placementsFilename = "medium-placements.json"
 
-		static let randomRun = true
-		static let easyMode = true
+		static let randomRun = false
+		static let easyMode = false
 		
 		static let gridBlockSize: CGFloat = 400
 		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 15) // 20k food works well here
-		static let zapperCount = Int(worldRadius * (easyMode ? 0.003 : 0.004))
-		static let waterCount = Int(worldRadius * (easyMode ? 0.005 : 0.003))
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -42,32 +40,31 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = niceGraphics
+		static let graphics = simpleGraphics
 	}
 	
 	struct Cell {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let collisionDamage: CGFloat = Env.easyMode ?  0.2 :  0.25
-		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.00125 :  0.001
+		static let collisionDamage: CGFloat = Env.easyMode ?  0.1 :  0.15
+		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.0015 :  0.00125
 
-		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.85 // % of maximum health
-		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.8 // % of maximum health
+		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.75 // % of maximum health
+		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.65 // % of maximum health
 
 		static let maximumFoodEnergy: CGFloat = Env.easyMode ? 100 : 120
 		static let initialFoodEnergy: CGFloat = maximumFoodEnergy * 0.5
-		static let maximumHydration: CGFloat = Env.easyMode ? 75 : 100
-		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.5)
+		static let maximumHydration: CGFloat = Env.easyMode ? 85 : 100
+		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.55)
 
-		static let blinkEnergy: CGFloat = maximumFoodEnergy * 0.005
 		static let perMovementEnergy: CGFloat = 0.01
-		static let perMovementHydration: CGFloat = Env.easyMode ? 0.0075 : 0.01
+		static let perMovementHydration: CGFloat = Env.easyMode ? 0.0075 : 0.0085
 		static let armorEnergy: CGFloat = 0.06
 		static let speedBoostExertion: CGFloat = 0.0004
 		static let maxSpeedBoost: CGFloat = 1.375
 
-		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3200
+		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3000
 		static let matureAge: CGFloat = maximumAge * 0.2
 		static let gestationAge: CGFloat = maximumAge * 0.15
 		static let blinkAge: CGFloat = maximumAge * 0.1 // duration until not blinking degrades vision

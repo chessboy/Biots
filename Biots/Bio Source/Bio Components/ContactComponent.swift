@@ -49,15 +49,15 @@ final class ContactComponent: PhysicsContactComponent {
 	}
 	
 	func cellsCollided(cellA: CellComponent, cellB: CellComponent) {
-		let impact = Constants.Cell.collisionDamage
+		let impact = Constants.Cell.collisionDamage/2
 		
 		let armorA = cellA.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
 		let exposureA = 1 - armorA
 		let armorB = cellB.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
 		let exposureB = 1 - armorB
 
-		cellA.incurStaminaChange(impact/2 * exposureA, showEffect: true)
-		cellB.incurStaminaChange(impact/2 * exposureB, showEffect: true)
+		cellA.incurStaminaChange(impact * exposureA, showEffect: true)
+		cellB.incurStaminaChange(impact * exposureB, showEffect: true)
 	}
 }
 

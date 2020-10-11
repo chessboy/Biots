@@ -69,13 +69,12 @@ final class VisionComponent: OKComponent {
 			let cameraScale = camera?.xScale,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
-			let cell = cellComponent,
 			let physicsBody = physicsComponent?.physicsBody else {
 			return
 		}
 		
 		let tracerScale = (0.2 * cameraScale).clamped(0.3, 1)
-		let maxObjectsPerAngle = 2
+		let maxObjectsPerAngle = 5
 		
 		for angle in Constants.Vision.eyeAngles {
 
@@ -88,7 +87,7 @@ final class VisionComponent: OKComponent {
 			for offset in Constants.Vision.refinerAngles {
 
 				let angleOffset = angle + offset
-				let rayDistance = cell.effectiveVisibility * Constants.Vision.rayDistance
+				let rayDistance = Constants.Vision.rayDistance
 				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				
@@ -115,7 +114,6 @@ final class VisionComponent: OKComponent {
 								// water
 								detectedColor = Constants.VisionColors.water
 								bodiesSeenAtAngle.append(body)
-								blockerSeenAtSubAngle = true
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.water.withAlpha(proximity), scale: tracerScale)
 								}

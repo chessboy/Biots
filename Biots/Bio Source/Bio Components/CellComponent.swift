@@ -68,19 +68,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var bodyColor: SKColor {
 		return brainComponent?.inference.color.average.skColor ?? .black
 	}
-	
-	var visibility: CGFloat {
-		let lastBlinkDelta = (age - lastBlinkAge).clamped(0, Constants.Cell.blinkAge)
-		let visibility = (1 - (lastBlinkDelta / Constants.Cell.blinkAge))
-//		print("age: \(age.formattedTo2Places), lastBlinkAge: \(lastBlinkAge.formattedTo2Places), lastBlinkDelta: \(lastBlinkDelta.formattedTo2Places), visibility: \(visibility.formattedTo2Places)")
-		return visibility
-	}
-	
-	var effectiveVisibility: CGFloat {
-		let actualVisibility = visibility
-		return actualVisibility > 0.5 ? 1 : actualVisibility
-	}
-	
+
 	var frame = Int.random(100)
 
 	lazy var brainComponent = coComponent(BrainComponent.self)
@@ -267,57 +255,23 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 	}
-	
-	var animatingEyes = false
-	
+		
 	func blink() {
-		
-		guard age - lastBlinkAge > 30 else { return }
-		
+		guard age - lastBlinkAge > 60 else { return }
 		lastBlinkAge = age
-		incurEnergyChange(-Constants.Cell.blinkEnergy)
-		animatingEyes = true
 		eyeNodes.forEach({ eyeNode in
-			eyeNode.fillColor = .black
-			eyeNode.strokeColor = .white
 			eyeNode.run(SKAction.bulge(xScale: 0.05, yScale: 0.85, scalingDuration: 0.075, revertDuration: 0.125)) {
 				eyeNode.yScale = 0.85
-				self.animatingEyes = false
 			}
 		})
 	}
-	
-	func checkEyeState() {
-			
-		guard !animatingEyes else { return }
 		
-		let effectiveVisibility = self.effectiveVisibility.clamped(0.1, 1)
-		let currentScale = eyeNodes.first?.xScale ?? 0.1
-		
-		let phases: [CGFloat] = [0.5, 0.25, 0.1]
-		
-		let animate = phases.filter({currentScale > $0 && effectiveVisibility <= $0}).count > 0
-		
-		if animate {
-			//print("closing eyes: \(effectiveVisibility.formattedTo3Places), scale: \(currentScale.formattedTo3Places)")
-			let fillColor: SKColor = effectiveVisibility <= 0.1 ? SKColor.black.withAlpha(0.5) : .black
-			let strokeColor: SKColor = effectiveVisibility <= 0.1 ? .clear : .white
-
-			animatingEyes = true
-			eyeNodes.forEach({ eyeNode in
-				eyeNode.fillColor = fillColor
-				eyeNode.strokeColor = strokeColor
-				eyeNode.run(SKAction.scaleX(to: effectiveVisibility, duration: 0.25)) {
-					self.animatingEyes = false
-				}
-			})
-		}}
-	
 	override func update(deltaTime seconds: TimeInterval) {
 		
 		guard !expired else { return }
 		age += 1
 				
+		blink()
 		checkResourceContacts()
 		showStats()
 		
@@ -428,9 +382,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		if showingVision {
-			if Constants.Env.graphics.blendMode != .replace {
-				visionNode.alpha = effectiveVisibility
-			}
 			for angle in Constants.Vision.eyeAngles {
 				if let retinaNode = retinaNodes.filter({ $0.angle == angle }).first {
 					var color: SKColor = .black
@@ -523,7 +474,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 						armorDescr = inference.armor.average.formattedTo2Places
 					}
 					
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted), ev: \(effectiveVisibility.formattedToPercentNoDecimal)", for: .line1)
+					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), cf: \(cumulativeFoodEnergy.formattedNoDecimal), cw: \(cumulativeHydration.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
 					statsNode.updateBackgroundNode()
@@ -551,7 +502,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		foodEnergy = foodEnergy / 4
 		hydration = Constants.Cell.initialHydration
-		incurStaminaChange(0.1)
+		incurStaminaChange(0.05)
 		
 		spawnCount += 1
 		
@@ -649,7 +600,7 @@ extension CellComponent {
 			shadowNode.zPosition = Constants.ZeeOrder.cell - 6
 			shadowNode.glowWidth = radius * 0.2
 			shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
-			node.addChild(shadowNode)
+			node.insertChild(shadowNode, at: 0)
 		}
 		
 		var eyeNodes: [SKShapeNode] = []
@@ -657,7 +608,7 @@ extension CellComponent {
 			let eyeNode = SKShapeNode(circleOfRadius: radius * 0.2)
 			eyeNode.isHidden = true
 			eyeNode.fillColor = .black
-			eyeNode.strokeColor = .lightGray
+			eyeNode.strokeColor = .white
 			eyeNode.yScale = 0.75
 			eyeNode.lineWidth = Constants.Cell.radius * 0.1
 			eyeNode.position = CGPoint(angle: angle) * radius * 0.65

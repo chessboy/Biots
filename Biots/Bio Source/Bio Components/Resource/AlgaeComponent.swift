@@ -82,8 +82,9 @@ extension AlgaeComponent {
 
 		let blendColor: SKColor = Bool.random() ? .yellow : .brown		
 		let color = Constants.Colors.algae.blended(withFraction: CGFloat.random(in: 0..<0.5), of: blendColor) ?? Constants.Colors.algae
+		let radius = Constants.Algae.radius
+		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 0, rotationOffset: 0)
 
-		let node = SKShapeNode.polygonOfRadius(Constants.Algae.radius, sides: 8)
 		node.position = position
 		node.fillColor = color
 		node.lineWidth = 0
@@ -101,10 +102,10 @@ extension AlgaeComponent {
 			shadowNode.glowWidth = 5
 			shadowNode.zPosition = Constants.ZeeOrder.algae - 0.1
 			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
-			node.addChild(shadowNode)
+			node.insertChild(shadowNode, at: 0)
 		}
 
-		let bufferNode = SKShapeNode(circleOfRadius: Constants.Algae.radius * 1.25)
+		let bufferNode = SKShapeNode(circleOfRadius: radius * 1.25)
 		let physicsBody = SKPhysicsBody(polygonFrom: bufferNode.path!)
 
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.algae

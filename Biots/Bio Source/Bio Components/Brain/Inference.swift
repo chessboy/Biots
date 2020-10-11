@@ -29,15 +29,14 @@ struct Inference {
 	var thrust = RunningCGVector(memory: Constants.Thrust.displayMemory)
 	var color = RunningColorVector(memory: Constants.Vision.displayMemory)
 	var speedBoost = RunningValue(memory: 5)
-	var blink = false
 	var armor = RunningValue(memory: 8)
 	var interaction: Interaction = .doNothing
 
 	static let minFiringValue: Float = 0.5
 	
 	/**
-	|    0     |     1    |    2    |    3    |    4    |      5      |   6   |   7   |
-	| L thrust | R thrust | color R | color G | color B | speed boost | blink | armor |
+	|    0     |     1    |    2    |    3    |    4    |      5      |    6   |   7   |
+	| L thrust | R thrust | color R | color G | color B | speed boost | future | armor |
 	*/
 
 	static var outputCount: Int {
@@ -63,10 +62,9 @@ struct Inference {
 		
 		// speed boost (-1..1 --> 0|1 if > minFiringValue)
 		speedBoost.addValue(outputs[5] > Inference.minFiringValue ? 1 : 0)
-		
-		// blink (-1..1 --> true|false if > minFiringValue)
-		blink = outputs[6] > Inference.minFiringValue ? true : false
-		
+				
+		// outputs[6] unused for now
+
 		// armor (-1..1 --> 0|1 if > minFiringValue)
 		armor.addValue(outputs[7] > Inference.minFiringValue ? 1 : 0)
 	}

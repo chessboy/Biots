@@ -37,21 +37,23 @@ extension WaterSourceComponent {
 		
 		let color = Constants.Colors.water.blended(withFraction: CGFloat.random(in: 0..<0.15), of: SKColor.blue) ?? Constants.Colors.water
 
-		let node = SKShapeNode.polygonOfRadius(radius, sides: 12)
+		let node = SKShapeNode.polygonOfRadius(radius, sides: 12, cornerRadius: radius/4, lineWidth: 0, rotationOffset: π/12)
 		node.name = "water"
 		node.zPosition = Constants.ZeeOrder.water
-		node.lineWidth = 0
+		node.lineWidth = Constants.Env.graphics.shadows ? 0 : 8
 		node.fillColor = color
-		//node.strokeColor = Constants.Colors.grid
+		node.strokeColor = color.blended(withFraction: 0.1, of: .white) ?? .white
 		node.blendMode = Constants.Env.graphics.blendMode
 		node.isAntialiased = Constants.Env.graphics.antialiased
 		node.position = position
 
 		if Constants.Env.graphics.shadows {
-			let shadowWidth: CGFloat = 10
-			let shadowNode = SKShapeNode.polygonOfRadius(radius - shadowWidth, sides: 12)
+			let shadowWidth: CGFloat = 5
+			let shadowRadius = radius - (shadowWidth * 1.5)
+			let shadowNode =  SKShapeNode.polygonOfRadius(shadowRadius, sides: 12, cornerRadius: shadowRadius/4, lineWidth: 4, rotationOffset: π/12)
 			shadowNode.zPosition = Constants.ZeeOrder.water - 0.1
 			shadowNode.glowWidth = shadowWidth
+			shadowNode.lineWidth = shadowWidth
 			shadowNode.strokeColor = SKColor.white.withAlpha(0.167)
 			node.addChild(shadowNode)
 		}
