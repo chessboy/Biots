@@ -79,6 +79,7 @@
 		D4A85D662533CCB700F4861C /* new-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D652533CCB700F4861C /* new-placements.json */; };
 		D4A85D6E2533D4A800F4861C /* tiny-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D6D2533D4A800F4861C /* tiny-placements.json */; };
 		D4A85D802534B7B700F4861C /* zoo-03.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D7F2534B7B700F4861C /* zoo-03.json */; };
+		D4A85D882535165B00F4861C /* zoo-05.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D872535165B00F4861C /* zoo-05.json */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
@@ -183,6 +184,7 @@
 		D4A85D652533CCB700F4861C /* new-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "new-placements.json"; sourceTree = "<group>"; };
 		D4A85D6D2533D4A800F4861C /* tiny-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tiny-placements.json"; sourceTree = "<group>"; };
 		D4A85D7F2534B7B700F4861C /* zoo-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-03.json"; sourceTree = "<group>"; };
+		D4A85D872535165B00F4861C /* zoo-05.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-05.json"; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -481,6 +483,7 @@
 				D45F0E852532CE0F0067912C /* zoo-02.json */,
 				D4A85D7F2534B7B700F4861C /* zoo-03.json */,
 				E83A6C032534F9B4008718EE /* zoo-04.json */,
+				D4A85D872535165B00F4861C /* zoo-05.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -641,6 +644,7 @@
 				E83A6C042534F9B4008718EE /* zoo-04.json in Resources */,
 				D45F0E782532C7520067912C /* more-placements.json in Resources */,
 				D45F0E822532CC3A0067912C /* medium-placements.json in Resources */,
+				D4A85D882535165B00F4861C /* zoo-05.json in Resources */,
 				D4A85D662533CCB700F4861C /* new-placements.json in Resources */,
 				D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */,
 			);
