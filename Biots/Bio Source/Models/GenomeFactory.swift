@@ -18,6 +18,7 @@ class GenomeFactory {
 		let filename = Constants.Env.zooFilename
 		genomes = loadJsonFromFile(filename)
 		genomes = genomes.filter({ $0.generation >= 1 })
+		genomes = genomes.shuffled()
 		print("GenomeFactory: loaded \(genomes.count) genomes from \(filename)")
 		//genomes.forEach { print($0.description) }
 	}
