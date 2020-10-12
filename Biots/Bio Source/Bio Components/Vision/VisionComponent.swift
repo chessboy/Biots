@@ -88,7 +88,7 @@ final class VisionComponent: OKComponent {
 
 				let angleOffset = angle + offset
 				let rayDistance = Constants.Vision.rayDistance
-				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.95
+				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.98
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				
 				var blockerSeenAtSubAngle = false
@@ -99,13 +99,16 @@ final class VisionComponent: OKComponent {
 						let proximity = 1 - distance/Constants.Vision.rayDistance
 						var detectedColor: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
 						
-						if !blockerSeenAtSubAngle, !bodiesSeenAtAngle.contains(body), let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
+						if !blockerSeenAtSubAngle,
+						   !bodiesSeenAtAngle.contains(body),
+						   let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
 
 							if body.categoryBitMask & Constants.CategoryBitMasks.wall > 0 {
 								// wall
 								detectedColor = Constants.VisionColors.wall
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
+								pings += 1
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.wall.withAlpha(proximity), scale: tracerScale)
 								}
@@ -114,23 +117,26 @@ final class VisionComponent: OKComponent {
 								// water
 								detectedColor = Constants.VisionColors.water
 								bodiesSeenAtAngle.append(body)
+								pings += 1
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.water.withAlpha(proximity), scale: tracerScale)
 								}
 							}
-							else if !blockerSeenAtSubAngle, let otherCellComponent = object.component(ofType: CellComponent.self) {
+							else if let otherCellComponent = object.component(ofType: CellComponent.self) {
 								// cell
 								detectedColor = otherCellComponent.bodyColor
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
+								pings += 1
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
 								}
 							}
-							else if !blockerSeenAtSubAngle, let algae = object.component(ofType: AlgaeComponent.self) {
+							else if let algae = object.component(ofType: AlgaeComponent.self) {
 								// algae
 								detectedColor = Constants.VisionColors.algae
 								bodiesSeenAtAngle.append(body)
+								pings += 1
 								if showTracer {
 									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.Colors.algae.withAlpha(proximity), scale: tracerScale)
 								}
@@ -143,7 +149,6 @@ final class VisionComponent: OKComponent {
 						redTotal += detectedColor.redComponent * proximity
 						greenTotal += detectedColor.greenComponent * proximity
 						blueTotal += detectedColor.blueComponent * proximity
-						pings += 1
 
 						if bodiesSeenAtAngle.count == maxObjectsPerAngle || blockerSeenAtSubAngle {
 							stop[0] = true
@@ -153,6 +158,13 @@ final class VisionComponent: OKComponent {
 			}
 			
 			var colorVector = ColorVector.zero
+			
+			if let onTopOfWater = cellComponent?.onTopOfWater, onTopOfWater {
+				redTotal += Constants.VisionColors.water.redComponent/3
+				greenTotal += Constants.VisionColors.water.greenComponent/3
+				blueTotal += Constants.VisionColors.water.blueComponent/3
+				pings += 1
+			}
 			
 			if pings > 0 {
 				colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
@@ -169,14 +181,14 @@ final class VisionComponent: OKComponent {
 	func showTracer(rayStart: CGPoint, rayEnd: CGPoint, color: SKColor, scale: CGFloat) {
 		let path = CGMutablePath()
 		let tracerNode = SKShapeNode()
-		tracerNode.lineWidth = 0.0015 * Constants.Env.worldRadius * scale
+		tracerNode.lineWidth = 0.0025 * Constants.Env.worldRadius * scale
 		tracerNode.strokeColor = color
 		tracerNode.zPosition = Constants.ZeeOrder.cell - 0.1
 		path.move(to: rayStart)
 		path.addLine(to: rayEnd)
 		tracerNode.path = path
 		OctopusKit.shared.currentScene?.addChild(tracerNode)
-		tracerNode.run(SKAction.wait(forDuration: 0.15)) {
+		tracerNode.run(SKAction.wait(forDuration: 0.05)) {
 			tracerNode.removeFromParent()
 		}
 	}

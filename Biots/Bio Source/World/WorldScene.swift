@@ -369,10 +369,48 @@ final class WorldScene: OKScene {
 		}
 	}
 	
+	var draggingNode: SKNode? = nil
+	var resizing = false
+	var lastDragPoint: CGPoint = .zero
+	
+	override func mouseDragged(with event: NSEvent) {
+		//print(event.location(in: self).formattedTo2Places)
+		if draggingNode != nil {
+			if resizing {
+				let offset: CGFloat = 5
+				if let selectedEntity = entities.filter({ $0.node == draggingNode }).first as? OKEntity {
+					if let zapperComponent = selectedEntity.component(ofType: ZapperComponent.self) {
+						let delta: CGFloat = lastDragPoint.y - event.location(in: self).y > 0 ? -offset : offset
+						if !((zapperComponent.radius < 50 && delta < 0) || (zapperComponent.radius > 500 && delta > 0)) {
+							zapperComponent.radius += delta
+							zapperComponent.entityNode?.setScale(zapperComponent.radius / (zapperComponent.radius-delta) * (zapperComponent.entityNode?.xScale ?? 1))
+						}
+					}
+					else if let waterComponent = selectedEntity.component(ofType: WaterSourceComponent.self) {
+						let delta: CGFloat = lastDragPoint.y - event.location(in: self).y > 0 ? -offset : offset
+						if !((waterComponent.radius < 50 && delta < 0) || (waterComponent.radius > 500 && delta > 0)) {
+							waterComponent.radius += delta
+							waterComponent.entityNode?.setScale(waterComponent.radius / (waterComponent.radius-delta) * (waterComponent.entityNode?.xScale ?? 1))
+						}
+					}
+				}
+			}
+			else {
+				draggingNode?.position = event.location(in: self) - lastDragPoint
+			}
+		}
+	}
+	
 	override func mouseDown(with event: NSEvent) {
 		let commandDown = event.modifierFlags.contains(.command)
 		let shiftDown = event.modifierFlags.contains(.shift)
-		self.touchDown(at: event.location(in: self), commandDown: commandDown, shiftDown: shiftDown)
+		self.touchDown(at: event.location(in: self), commandDown: commandDown, shiftDown: shiftDown, clickCount: event.clickCount)
+	}
+	
+	override func mouseUp(with event: NSEvent) {
+		draggingNode = nil
+		resizing = false
+		lastDragPoint = .zero
 	}
 	
 	override func rightMouseDown(with event: NSEvent) {
@@ -380,7 +418,7 @@ final class WorldScene: OKScene {
 		self.touchDown(at: event.location(in: self), rightMouse: true, commandDown: commandDown)
 	}
 	
-	func touchDown(at point: CGPoint, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false) {
+	func touchDown(at point: CGPoint, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false, clickCount: Int = 1) {
 		
 		guard let keyCodesDown = self.entity?.component(ofType: KeyTrackerComponent.self)?.keyCodesDown,
 			  let mainFountain = entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self) else {
@@ -388,7 +426,7 @@ final class WorldScene: OKScene {
 		}
 		
 		if keyCodesDown.contains(Keycode.w) {
-			let radius = CGFloat.random(in: 40...200)
+			let radius: CGFloat = 200
 			let water = WaterSourceComponent.create(radius: radius, position: point)
 			mainFountain.waterEntities.append(water)
 			addEntity(water)
@@ -396,34 +434,22 @@ final class WorldScene: OKScene {
 		}
 		
 		if keyCodesDown.contains(Keycode.b) {
-			let radius = CGFloat.random(in: 80...300)
+			let radius: CGFloat = 200
 			let zapper = ZapperComponent.create(radius: radius, position: point)
 			addEntity(zapper)
 			return
 		}
-		
-		if shiftDown, !commandDown {
-			for _ in 1...3 + Int.random(3) {
-				let algae = mainFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
-				if let node = algae.component(ofType: SpriteKitComponent.self)?.node {
-					node.position = point + CGPoint.randomAngle * CGFloat.random(in: 50..<200)
-					addEntity(algae)
-				}
-			}
-			return
-		}
-
-		if rightMouse, let waterNode = nodes(at: point).filter({$0.name == "water"}).first, let selectedEntity = entities.filter({ $0.node == waterNode }).first as? OKEntity {
-			removeEntity(selectedEntity)
-		}
-		else if rightMouse, let zapperNode = nodes(at: point).filter({$0.name == "zapper"}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity {
-			removeEntity(selectedEntity)
-		}
-		else if let cellNode = nodes(at: point).filter({$0.name == "cell"}).first {
+				
+		if let cellNode = nodes(at: point).filter({$0.name == "cell"}).first {
 			//print(cellNode.position)
 			
 			if let selectedEntity = entities.filter({ $0.node == cellNode }).first as? OKEntity,
 				let cellComponent = selectedEntity.component(ofType: CellComponent.self) {
+				
+				if cellComponent.isInteracting, clickCount == 2 {
+					cellComponent.isInteracting = false
+					return
+				}
 				
 				if shiftDown, commandDown, Constants.Env.randomRun {
 					entities(withName: "cell")?.forEach({ cellEntity in
@@ -441,7 +467,6 @@ final class WorldScene: OKScene {
 					}
 				}
 				else if commandDown, let cameraComponent = entity?.component(ofType: CameraComponent.self) {
-					
 					if cameraComponent.nodeToTrack == selectedEntity.node {
 						cameraComponent.nodeToTrack = nil
 					}
@@ -452,7 +477,7 @@ final class WorldScene: OKScene {
 				else if rightMouse {
 					cellComponent.kill()
 				}
-				else {
+				else if shiftDown {
 					if let jsonData = try? cellComponent.genome.encodedToJSON() {
 						if let jsonString = String(data: jsonData, encoding: .utf8) {
 							print("\(jsonString),")
@@ -462,12 +487,44 @@ final class WorldScene: OKScene {
 					cellComponent.spawnChildren(selfReplication: true)
 					cellComponent.foodEnergy = cellComponent.maximumEnergy
 					cellComponent.hydration = Constants.Cell.maximumHydration
+					return
+				}
+				else if !rightMouse, let cellNode = nodes(at: point).filter({$0.name == "cell"}).first,
+						let selectedEntity = entities.filter({ $0.node == cellNode }).first as? OKEntity,
+						let cellComponent = selectedEntity.component(ofType: CellComponent.self) {
+					draggingNode = cellNode
+					lastDragPoint = point - cellNode.position
+					cellComponent.isInteracting = true
 				}
 			}
 		}
-		else {
-			// no-op
+		else if !rightMouse, let waterNode = nodes(at: point).filter({$0.name == "water"}).first {
+			draggingNode = waterNode
+			resizing = shiftDown
+			lastDragPoint = point - waterNode.position
 		}
+		else if !rightMouse, let zapperNode = nodes(at: point).filter({$0.name == "zapper"}).first {
+			draggingNode = zapperNode
+			resizing = shiftDown
+			lastDragPoint = point - zapperNode.position
+		}
+		else if rightMouse, let waterNode = nodes(at: point).filter({$0.name == "water"}).first, let selectedEntity = entities.filter({ $0.node == waterNode }).first as? OKEntity {
+			removeEntity(selectedEntity)
+		}
+		else if rightMouse, let zapperNode = nodes(at: point).filter({$0.name == "zapper"}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity {
+			removeEntity(selectedEntity)
+		}
+		else if shiftDown, !commandDown {
+			for _ in 1...3 + Int.random(3) {
+				let algae = mainFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
+				if let node = algae.component(ofType: SpriteKitComponent.self)?.node {
+					node.position = point + CGPoint.randomAngle * CGFloat.random(in: 50..<200)
+					addEntity(algae)
+				}
+			}
+			return
+		}
+
 	}
 
 	// MARK: - State & Scene Transitions

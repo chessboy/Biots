@@ -127,6 +127,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 		
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
+		guard !Constants.Env.debugMode else { return }
+		
 		if amount > 0 {
 			cumulativeFoodEnergy += amount
 		}
@@ -139,6 +141,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurHydrationChange(_ amount: CGFloat) {
+		guard !Constants.Env.debugMode else { return }
 		if amount > 0 {
 			cumulativeHydration += amount
 		}
@@ -147,6 +150,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
+		guard !Constants.Env.debugMode else { return }
 		guard abs(amount) != 0 else { return }
 		
 		if amount > 0 {
@@ -162,11 +166,11 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 	func kill() {
 		foodEnergy = 0
+		hydration = 0
 		stamina = 0
 	}
 	
 	func cellAndAlgaeCollided(algae: AlgaeComponent) {
-				
 		let bite: CGFloat = Constants.Algae.bite
 		guard foodEnergy + bite/4 < maximumEnergy else { return }
 		
@@ -269,7 +273,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	override func update(deltaTime seconds: TimeInterval) {
 		
 		guard !expired else { return }
-		age += 1
+		
+		if !Constants.Env.debugMode {
+			age += 1
+		}
 				
 		blink()
 		checkResourceContacts()

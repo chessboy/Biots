@@ -87,7 +87,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	func addNewCell(genome: Genome, in scene: OKScene) -> OKEntity {
 		
 		let worldRadius = Constants.Env.worldRadius
-		let distance = CGFloat.random(in: worldRadius * 0.05...worldRadius * 0.9)
+		let distance = CGFloat.random(in: worldRadius * 0.35...worldRadius * 0.9)
 		let position = CGPoint.randomDistance(distance)
 
 		let fountainComponent = scene.entities.filter({ $0.component(ofType: ResourceFountainComponent.self) != nil }).first?.component(ofType: ResourceFountainComponent.self)

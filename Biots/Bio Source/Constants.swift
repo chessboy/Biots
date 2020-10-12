@@ -19,28 +19,29 @@ struct Constants {
 	
 	struct Env {
 		
-		static let zooFilename = "zoo-06.json"
-		static let placementsFilename = "medium-placements.json"
+		static let zooFilename = "zoo-08.json"
+		static let placementsFilename = "tiny-placements.json"
 
 		static let randomRun = false
 		static let easyMode = false
+		static let debugMode = false
 		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 13 : 15) // 20k food works well here
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 10) // 20k food works well here
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80
 		
-		static let minimumCells = 10
-		static let maximumCells = 20
-		static let startupDelay = randomRun ? 20 : 250
+		static let minimumCells = debugMode ? 1 : 10
+		static let maximumCells = debugMode ? 1 : 20
+		static let startupDelay = debugMode ? 0 : randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = simpleGraphics
+		static let graphics = niceGraphics
 	}
 	
 	struct Cell {
@@ -61,13 +62,12 @@ struct Constants {
 		static let perMovementEnergy: CGFloat = 0.01
 		static let perMovementHydration: CGFloat = Env.easyMode ? 0.0075 : 0.0085
 		static let armorEnergy: CGFloat = 0.06
-		static let speedBoostExertion: CGFloat = 0.0004
+		static let speedBoostExertion: CGFloat = 0.0006
 		static let maxSpeedBoost: CGFloat = 1.375
 
 		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3000
 		static let matureAge: CGFloat = maximumAge * 0.2
 		static let gestationAge: CGFloat = maximumAge * 0.15
-		static let blinkAge: CGFloat = maximumAge * 0.1 // duration until not blinking degrades vision
 		
 		static let adjustBodyColor = false
 		

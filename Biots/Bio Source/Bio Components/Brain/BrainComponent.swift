@@ -122,7 +122,13 @@ final class BrainComponent: OKComponent {
 			let cell = cellComponent,
 			let node = entityNode as? SKShapeNode, !cell.isInteracting else { return }
 	
-		let thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
+		var thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
+		let dampening = (1 - (senses.onTopOfWater.average.cgFloat * 0.2))
+//		if senses.onTopOfWater.average.cgFloat > 0 {
+//			print("thrust: \(thrustAverage.formattedTo2Places), dampening: \(dampening.formattedTo2Places), new: \((thrustAverage * dampening).formattedTo2Places)")
+//		}
+		
+		thrustAverage *= dampening
 		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * Constants.Cell.maxSpeedBoost, 1)
 		let armor: CGFloat = inference.armor.average.cgFloat
 		let left = thrustAverage.dx * Constants.Thrust.thrustForce * speedBoost
