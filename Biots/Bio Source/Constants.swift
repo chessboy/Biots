@@ -19,7 +19,7 @@ struct Constants {
 	
 	struct Env {
 		
-		static let zooFilename = "zoo-08.json"
+		static let zooFilename = "zoo-01.json"
 		static let placementsFilename = "tiny-placements.json"
 
 		static let randomRun = false
@@ -41,7 +41,7 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = niceGraphics
+		static let graphics = simpleGraphics
 	}
 	
 	struct Cell {
@@ -59,11 +59,10 @@ struct Constants {
 		static let maximumHydration: CGFloat = Env.easyMode ? 85 : 100
 		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.55)
 
-		static let perMovementEnergy: CGFloat = 0.01
-		static let perMovementHydration: CGFloat = Env.easyMode ? 0.0075 : 0.0085
-		static let armorEnergy: CGFloat = 0.06
-		static let speedBoostExertion: CGFloat = 0.0006
-		static let maxSpeedBoost: CGFloat = 1.375
+		static let perMovementEnergyCost: CGFloat = 0.01
+		static let perMovementHydrationCost: CGFloat = Env.easyMode ? 0.0075 : 0.0085
+		static let armorEnergyCost: CGFloat = 0.06
+		static let speedBoostStaminaCost: CGFloat = 0.0006
 
 		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3000
 		static let matureAge: CGFloat = maximumAge * 0.2
@@ -86,7 +85,7 @@ struct Constants {
 	}
 	
 	struct Water {
-		static let sip: CGFloat = Cell.maximumHydration * 0.25
+		static let sip: CGFloat = Cell.maximumHydration * 0.2
 		static let timeBetweenSips: TimeInterval = 3 // seconds between drinking the same water
 	}
 	
@@ -97,6 +96,8 @@ struct Constants {
 		static let rayDistance: CGFloat = Cell.radius * 21
 		static let displayMemory = 8
 		static let inferenceMemory = 3
+		static let maxObjectsPerAngle = 5
+
 	}
 	
 	struct Thrust {
@@ -112,6 +113,7 @@ struct Constants {
 		
 		static let spinLimiter: CGFloat = 1/π
 		static let thrustForce: CGFloat = 7.5
+		static let maxSpeedBoost: CGFloat = 1.375
 	}
 	
 	struct Graphics {

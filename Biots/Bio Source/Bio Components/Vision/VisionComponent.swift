@@ -74,7 +74,6 @@ final class VisionComponent: OKComponent {
 		}
 		
 		let tracerScale = (0.2 * cameraScale).clamped(0.3, 1)
-		let maxObjectsPerAngle = 5
 		
 		for angle in Constants.Vision.eyeAngles {
 
@@ -150,7 +149,7 @@ final class VisionComponent: OKComponent {
 						greenTotal += detectedColor.greenComponent * proximity
 						blueTotal += detectedColor.blueComponent * proximity
 
-						if bodiesSeenAtAngle.count == maxObjectsPerAngle || blockerSeenAtSubAngle {
+						if bodiesSeenAtAngle.count == Constants.Vision.maxObjectsPerAngle || blockerSeenAtSubAngle {
 							stop[0] = true
 						}
 					}

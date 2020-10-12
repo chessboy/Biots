@@ -129,7 +129,7 @@ final class BrainComponent: OKComponent {
 //		}
 		
 		thrustAverage *= dampening
-		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * Constants.Cell.maxSpeedBoost, 1)
+		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * Constants.Thrust.maxSpeedBoost, 1)
 		let armor: CGFloat = inference.armor.average.cgFloat
 		let left = thrustAverage.dx * Constants.Thrust.thrustForce * speedBoost
 		let right = thrustAverage.dy * Constants.Thrust.thrustForce * speedBoost
@@ -142,17 +142,17 @@ final class BrainComponent: OKComponent {
 		
 		// movement energy expenditure
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
-		cell.incurEnergyChange(-Constants.Cell.perMovementEnergy * forceExerted)
-		cell.incurHydrationChange(-Constants.Cell.perMovementHydration * forceExerted)
+		cell.incurEnergyChange(-Constants.Cell.perMovementEnergyCost * forceExerted)
+		cell.incurHydrationChange(-Constants.Cell.perMovementHydrationCost * forceExerted)
 
 		if speedBoost > 1 {
-			cell.incurEnergyChange(-Constants.Cell.perMovementEnergy)
-			cell.incurHydrationChange(-Constants.Cell.perMovementHydration)
-			cell.incurStaminaChange(Constants.Cell.speedBoostExertion)
+			cell.incurEnergyChange(-Constants.Cell.perMovementEnergyCost)
+			cell.incurHydrationChange(-Constants.Cell.perMovementHydrationCost)
+			cell.incurStaminaChange(Constants.Cell.speedBoostStaminaCost)
 		}
 		
 		if armor > 0 {
-			cell.incurEnergyChange(-Constants.Cell.armorEnergy * armor)
+			cell.incurEnergyChange(-Constants.Cell.armorEnergyCost * armor)
 		}
 		
 		// healing
