@@ -19,7 +19,7 @@ struct Constants {
 	
 	struct Env {
 		
-		static let zooFilename = "zoo-03.json"
+		static let zooFilename = "zoo-04.json"
 		static let placementsFilename = "tiny-placements.json"
 
 		static let randomRun = false
@@ -41,7 +41,7 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = simpleGraphics
+		static let graphics = niceGraphics
 	}
 	
 	struct Cell {

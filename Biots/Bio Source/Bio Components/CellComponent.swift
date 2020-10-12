@@ -202,8 +202,12 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var onTopOfFood = false
 	var contactedWaterComponents: [BodyContact] = []
 	var onTopOfWater = false
+	var immersedInWater = false
 
 	func checkResourceContacts() {
+
+		guard let node = entityNode else { return }
+
 		let now = Date().timeIntervalSince1970
 
 		if frame.isMultiple(of: 30) {
@@ -218,6 +222,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		
 		onTopOfFood = false
 		onTopOfWater = false
+		immersedInWater = false
 
 		if let scene = OctopusKit.shared.currentScene, let bodies = entityNode?.physicsBody?.allContactedBodies(), bodies.count > 0 {
 			for body in bodies {
@@ -242,6 +247,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				}
 				else if body.categoryBitMask == Constants.CategoryBitMasks.water {
 					
+					let tailPoint = node.position + CGPoint(angle: node.zRotation + π) * Constants.Cell.radius
+					if let waterNode = body.node, waterNode.contains(tailPoint) {
+						immersedInWater = true
+					}
 					onTopOfWater = true
 					var contact = contactedWaterComponents.filter({ $0.body == body }).first
 					

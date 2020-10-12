@@ -161,6 +161,10 @@ final class BrainComponent: OKComponent {
 			// print("cell.stamina: \(cell.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			cell.incurStaminaChange(staminaRecovery)
 		}
+        
+		if cell.immersedInWater, frame.isMultiple(of: 4) {
+			showRipples(node: node)
+		}
 
 		if Constants.Cell.adjustBodyColor {
 			let minRGB: CGFloat = 0.25
@@ -180,4 +184,21 @@ final class BrainComponent: OKComponent {
 			}
 		}
 	}
+    
+    func showRipples(node: SKShapeNode) {
+		let rippleNode = SKShapeNode.arcOfRadius(radius: Constants.Cell.radius * 1.3 * node.xScale, startAngle: -π/6, endAngle: π/6)
+		rippleNode.position = node.position
+		rippleNode.zRotation = node.zRotation + π
+		rippleNode.lineWidth = Constants.Cell.radius * 0.1 * node.xScale
+		rippleNode.lineCap = .round
+		rippleNode.strokeColor = SKColor.white.withAlpha(0.33)
+		rippleNode.isAntialiased = Constants.Env.graphics.antialiased
+		rippleNode.zPosition = Constants.ZeeOrder.cell + 0.1
+		OctopusKit.shared.currentScene?.addChild(rippleNode)
+		let duraction: TimeInterval = 0.75
+		let group = SKAction.group([SKAction.scale(to: 0.2, duration: duraction), SKAction.fadeAlpha(to: 0, duration: duraction)])
+		rippleNode.run(group) {
+			rippleNode.removeFromParent()
+		}
+    }
 }
