@@ -19,7 +19,7 @@ struct Constants {
 	
 	struct Env {
 		
-		static let zooFilename = "zoo-01.json"
+		static let zooFilename = "zoo-03.json"
 		static let placementsFilename = "tiny-placements.json"
 
 		static let randomRun = false
@@ -27,14 +27,14 @@ struct Constants {
 		static let debugMode = false
 		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 10) // 20k food works well here
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 11) // 20k food works well here
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80
 		
-		static let minimumCells = debugMode ? 1 : 10
-		static let maximumCells = debugMode ? 1 : 20
+		static let minimumCells = debugMode ? 1 : 9
+		static let maximumCells = debugMode ? 1 : 18
 		static let startupDelay = debugMode ? 0 : randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
@@ -96,7 +96,7 @@ struct Constants {
 		static let rayDistance: CGFloat = Cell.radius * 21
 		static let displayMemory = 8
 		static let inferenceMemory = 3
-		static let maxObjectsPerAngle = 5
+		static let maxObjectsPerAngle = 4
 
 	}
 	

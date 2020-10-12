@@ -187,7 +187,7 @@ final class VisionComponent: OKComponent {
 		path.addLine(to: rayEnd)
 		tracerNode.path = path
 		OctopusKit.shared.currentScene?.addChild(tracerNode)
-		tracerNode.run(SKAction.wait(forDuration: 0.05)) {
+		tracerNode.run(SKAction.wait(forDuration: 0.1)) {
 			tracerNode.removeFromParent()
 		}
 	}
