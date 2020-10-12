@@ -94,6 +94,7 @@
 		D4E4BA6025008EEA0044EC48 /* ZapperComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */; };
 		D4E573AE244D515E006C2767 /* NoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E573AD244D515E006C2767 /* NoiseGenerator.swift */; };
 		D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F5055224ED282900EAA52E /* RunningFloatArray.swift */; };
+		E83A6C042534F9B4008718EE /* zoo-04.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C032534F9B4008718EE /* zoo-04.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -201,6 +202,7 @@
 		D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZapperComponent.swift; sourceTree = "<group>"; };
 		D4E573AD244D515E006C2767 /* NoiseGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseGenerator.swift; sourceTree = "<group>"; };
 		D4F5055224ED282900EAA52E /* RunningFloatArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningFloatArray.swift; sourceTree = "<group>"; };
+		E83A6C032534F9B4008718EE /* zoo-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-04.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -478,6 +480,7 @@
 				D45F0E7D2532C8E60067912C /* zoo-01.json */,
 				D45F0E852532CE0F0067912C /* zoo-02.json */,
 				D4A85D7F2534B7B700F4861C /* zoo-03.json */,
+				E83A6C032534F9B4008718EE /* zoo-04.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -635,6 +638,7 @@
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D4A85D6E2533D4A800F4861C /* tiny-placements.json in Resources */,
 				D4A85D802534B7B700F4861C /* zoo-03.json in Resources */,
+				E83A6C042534F9B4008718EE /* zoo-04.json in Resources */,
 				D45F0E782532C7520067912C /* more-placements.json in Resources */,
 				D45F0E822532CC3A0067912C /* medium-placements.json in Resources */,
 				D4A85D662533CCB700F4861C /* new-placements.json in Resources */,
