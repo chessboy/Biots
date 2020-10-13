@@ -13,8 +13,9 @@ import OctopusKit
 final class CellComponent: OKComponent, OKUpdatableComponent {
 				
 	var genome: Genome
-	var expired = false
-	
+	var isExpired = false
+	var isInteracting = false
+
 	var foodEnergy: CGFloat
 	var hydration: CGFloat
 	var stamina: CGFloat = 1
@@ -30,7 +31,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var lastBlinkAge: CGFloat = 0
 	
 	var spawnCount: Int = 0
-	var isInteracting = false
 	var matedCount = 0
 
 	var healthNode: SKShapeNode!
@@ -44,14 +44,20 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var onTopOfWaterRetinaNode: RetinaNode!
 	var thrusterNode: ThrusterNode!
 
-	var matingGenome: Genome?	
+	var matingGenome: Genome?
 	
+	lazy var brainComponent = coComponent(BrainComponent.self)
+	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
+	lazy var visionComponent = coComponent(VisionComponent.self)
+
+	var frame = Int.random(100)
+
 	var isPregnant: Bool {
 		return matingGenome != nil
 	}
 	
 	var canMate: Bool {
-		return !expired && !isPregnant && age >= Constants.Cell.matureAge && health >= Constants.Cell.mateHealth
+		return !isExpired && !isPregnant && age >= Constants.Cell.matureAge && health >= Constants.Cell.mateHealth
 	}
 
 	var maximumEnergy: CGFloat {
@@ -69,18 +75,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		return brainComponent?.inference.color.average.skColor ?? .black
 	}
 
-	var frame = Int.random(100)
-
-	lazy var brainComponent = coComponent(BrainComponent.self)
-	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
-	lazy var visionComponent = coComponent(VisionComponent.self)
-
 	init(genome: Genome) {
 		self.genome = genome
 		self.foodEnergy = Constants.Cell.initialFoodEnergy
 		self.hydration = Constants.Cell.initialHydration
 		super.init()
 	}
+	
+	required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
 	func startInteracting() {
 		isInteracting = true
@@ -91,8 +93,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		isInteracting = false
 		lastInteractedAge = age
 	}
-
-	required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
 	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
@@ -198,11 +198,11 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
+	var isOnTopOfFood = false
+	var isOnTopOfWater = false
+	var isImmersedInWater = false
 	var contactedAlgaeComponents: [BodyContact] = []
-	var onTopOfFood = false
 	var contactedWaterComponents: [BodyContact] = []
-	var onTopOfWater = false
-	var immersedInWater = false
 
 	func checkResourceContacts() {
 
@@ -220,9 +220,9 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			//print("water body purge: old count: \(countWater), new count: \(contactedWaterComponents.count)")
 		}
 		
-		onTopOfFood = false
-		onTopOfWater = false
-		immersedInWater = false
+		isOnTopOfFood = false
+		isOnTopOfWater = false
+		isImmersedInWater = false
 
 		if let scene = OctopusKit.shared.currentScene, let bodies = entityNode?.physicsBody?.allContactedBodies(), bodies.count > 0 {
 			for body in bodies {
@@ -230,7 +230,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				if body.categoryBitMask == Constants.CategoryBitMasks.algae {
 					if let algae = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first?.component(ofType: AlgaeComponent.self), algae.energy > 0 {
 
-						onTopOfFood = true
+						isOnTopOfFood = true
 						var contact = contactedAlgaeComponents.filter({ $0.body == body }).first
 						
 						if contact == nil {
@@ -249,9 +249,9 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					
 					let tailPoint = node.position + CGPoint(angle: node.zRotation + π) * Constants.Cell.radius
 					if let waterNode = body.node, waterNode.contains(tailPoint) {
-						immersedInWater = true
+						isImmersedInWater = true
 					}
-					onTopOfWater = true
+					isOnTopOfWater = true
 					var contact = contactedWaterComponents.filter({ $0.body == body }).first
 					
 					if contact == nil {
@@ -278,10 +278,31 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			}
 		})
 	}
+	
+	func showRipples() {
+		
+		guard !isInteracting, isImmersedInWater, frame.isMultiple(of: 2), let node = entityNode as? SKShapeNode else { return }
+		
+		let rippleNode = SKShapeNode.arcOfRadius(radius: Constants.Cell.radius * 1.3 * node.xScale, startAngle: -π/4, endAngle: π/4)
+		rippleNode.position = node.position
+		rippleNode.zRotation = node.zRotation + π
+		rippleNode.lineWidth = Constants.Cell.radius * 0.1 * node.xScale
+		rippleNode.lineCap = .round
+		rippleNode.strokeColor = SKColor.white.withAlpha(0.33)
+		rippleNode.isAntialiased = Constants.Env.graphics.antialiased
+		rippleNode.zPosition = Constants.ZeeOrder.cell - 0.1
+		OctopusKit.shared.currentScene?.addChild(rippleNode)
+		let duraction: TimeInterval = 0.75
+		let group = SKAction.group([SKAction.scale(to: 0.2, duration: duraction), SKAction.fadeAlpha(to: 0, duration: duraction)])
+		rippleNode.run(group) {
+			rippleNode.removeFromParent()
+		}
+	}
+
 		
 	override func update(deltaTime seconds: TimeInterval) {
 		
-		guard !expired else { return }
+		guard !isExpired else { return }
 		
 		if !Constants.Env.debugMode {
 			age += 1
@@ -289,6 +310,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				
 		blink()
 		checkResourceContacts()
+		showRipples()
 		showStats()
 		
 		// check old age or malnutrition
@@ -319,7 +341,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	func expire() {
 		if let scene = OctopusKit.shared.currentScene as? WorldScene, let entity = self.entity, let node = entityNode {
-			expired = true
+			isExpired = true
 			node.run(.group([.fadeOut(withDuration: 0.2), SKAction.scale(to: 0.1, duration: 0.2)])) {
 				if scene.trackedEntity == entity {
 					scene.trackedEntity = nil
@@ -614,7 +636,7 @@ extension CellComponent {
 			let shadowNode = SKShapeNode()
 			shadowNode.path = node.path
 			shadowNode.zPosition = Constants.ZeeOrder.cell - 6
-			shadowNode.glowWidth = radius * 0.2
+			shadowNode.glowWidth = radius * 0.25
 			shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
 			node.insertChild(shadowNode, at: 0)
 		}

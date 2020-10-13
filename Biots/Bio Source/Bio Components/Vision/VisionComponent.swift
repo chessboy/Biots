@@ -158,7 +158,7 @@ final class VisionComponent: OKComponent {
 			
 			var colorVector = ColorVector.zero
 			
-			if let onTopOfWater = cellComponent?.onTopOfWater, onTopOfWater {
+			if let onTopOfWater = cellComponent?.isOnTopOfWater, onTopOfWater {
 				redTotal += Constants.VisionColors.water.redComponent/3
 				greenTotal += Constants.VisionColors.water.greenComponent/3
 				blueTotal += Constants.VisionColors.water.blueComponent/3

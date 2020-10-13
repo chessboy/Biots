@@ -35,7 +35,7 @@ extension ZapperComponent {
 	
 	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
 		
-		let blendColor: SKColor = Bool.random() ? .yellow : .orange
+		let blendColor: SKColor = Bool.random() ? .red : .orange
 		let color = Constants.Colors.wall.blended(withFraction: CGFloat.random(in: 0..<0.15), of: blendColor) ?? Constants.Colors.wall
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
@@ -57,6 +57,17 @@ extension ZapperComponent {
 			shadowNode.lineWidth = shadowWidth
 			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
 			node.insertChild(shadowNode, at: 0)
+		}
+		
+		if Constants.Env.graphics.blendMode != .replace {
+			for scale: CGFloat in [0.92, 0.84, 0.76] {
+			
+				let rippleRadius = radius * scale
+				let rippleNode = SKShapeNode.polygonOfRadius(rippleRadius, sides: 8, cornerRadius: rippleRadius/4, lineWidth: 8, rotationOffset: π/8)
+				rippleNode.blendMode = Constants.Env.graphics.blendMode
+				rippleNode.fillColor = SKColor.white.withAlpha(scale/33)
+				node.addChild(rippleNode)
+			}
 		}
 
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)

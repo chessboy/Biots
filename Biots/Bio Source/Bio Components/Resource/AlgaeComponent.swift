@@ -100,8 +100,8 @@ extension AlgaeComponent {
 			let shadowNode = SKShapeNode()
 			shadowNode.path = node.path
 			shadowNode.glowWidth = 5
-			shadowNode.zPosition = Constants.ZeeOrder.algae - 0.1
-			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
+			shadowNode.zPosition = Constants.ZeeOrder.algae - 2
+			shadowNode.strokeColor = SKColor.black.withAlpha(0.2)
 			node.insertChild(shadowNode, at: 0)
 		}
 

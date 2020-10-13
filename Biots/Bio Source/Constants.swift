@@ -22,6 +22,7 @@ struct Constants {
 	struct Env {
 		
 		static let zooFilename = "zoo-04.json"
+		static let mixinZooFilename: String? = nil
 		static let placementsFilename = "tiny-placements.json"
 
 		static let randomRun = false

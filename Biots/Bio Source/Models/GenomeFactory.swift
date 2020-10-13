@@ -17,9 +17,16 @@ class GenomeFactory {
 	init() {
 		let filename = Constants.Env.zooFilename
 		genomes = loadJsonFromFile(filename)
-		genomes = genomes.filter({ $0.generation >= 1 })
-		genomes = genomes.shuffled()
 		print("GenomeFactory: loaded \(genomes.count) genomes from \(filename)")
+
+		if let mixinFilename = Constants.Env.mixinZooFilename {
+			let mixinGenomes: [Genome] = loadJsonFromFile(mixinFilename)
+			print("GenomeFactory: loaded \(genomes.count) genomes from \(mixinFilename)")
+			genomes.append(contentsOf: mixinGenomes)
+		}
+		
+		//genomes = genomes.filter({ $0.generation >= 1 })
+		genomes = genomes.shuffled()
 		//genomes.forEach { print($0.description) }
 	}
 	
