@@ -281,7 +281,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	
 	func showRipples() {
 		
-		guard !isInteracting, isImmersedInWater, frame.isMultiple(of: 2), let node = entityNode as? SKShapeNode else { return }
+		guard !isInteracting, isImmersedInWater, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 2), let node = entityNode as? SKShapeNode else { return }
 		
 		let rippleNode = SKShapeNode.arcOfRadius(radius: Constants.Cell.radius * 1.3 * node.xScale, startAngle: -π/4, endAngle: π/4)
 		rippleNode.position = node.position
@@ -310,7 +310,6 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				
 		blink()
 		checkResourceContacts()
-		showRipples()
 		showStats()
 		
 		// check old age or malnutrition
@@ -481,6 +480,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
 			speedNode.alpha = speedBoost.cgFloat
 			armorNode.alpha = armor.cgFloat
+			showRipples()
 		}
 	}
 	
@@ -507,14 +507,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 					let energyFormatted = (foodEnergy/maximumEnergy).formattedToPercentNoDecimal
 					let hydrationFormatted = (hydration/Constants.Cell.maximumHydration).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
-					var armorDescr = "-none-"
-					if let inference = brainComponent?.inference {
-						armorDescr = inference.armor.average.formattedTo2Places
-					}
 					
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted)", for: .line1)
 					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Cell.maximumAge).formattedToPercentNoDecimal)", for: .line2)
-					statsNode.setLineOfText("spawn: \(spawnCount), cf: \(cumulativeFoodEnergy.formattedNoDecimal), cw: \(cumulativeHydration.formattedNoDecimal), cd: \(cumulativeDamage.formatted), arm: \(armorDescr)", for: .line3)
+					statsNode.setLineOfText("spawn: \(spawnCount), cf: \(cumulativeFoodEnergy.formattedNoDecimal), cw: \(cumulativeHydration.formattedNoDecimal), cd: \(cumulativeDamage.formatted)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
@@ -525,7 +521,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func spawnChildren(selfReplication: Bool = false) {
-		guard let node = entityNode as? SKShapeNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome else {
+		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome else {
 			return
 		}
 
@@ -568,7 +564,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			scene.run(SKAction.wait(forDuration: 0.1)) {
 				scene.addEntity(childCell)
 				
-				if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
+				if let hideNode = self.globalDataComponent?.hideSpriteNodes {
 					childCell.node?.isHidden = hideNode
 				}
 			}

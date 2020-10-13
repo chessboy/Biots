@@ -21,7 +21,7 @@ struct Constants {
 	
 	struct Env {
 		
-		static let zooFilename = "zoo-04.json"
+		static let zooFilename = "zoo-05.json"
 		static let mixinZooFilename: String? = nil
 		static let placementsFilename = "tiny-placements.json"
 
@@ -44,14 +44,14 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = niceGraphics
+		static let graphics = simpleGraphics
 	}
 	
 	struct Cell {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let collisionDamage: CGFloat = Env.easyMode ?  0.1 :  0.15
+		static let collisionDamage: CGFloat = Env.easyMode ?  0.15 :  0.2
 		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.0015 :  0.00125
 
 		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.75 // % of maximum health
@@ -63,7 +63,7 @@ struct Constants {
 		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.55)
 
 		static let perMovementEnergyCost: CGFloat = 0.01
-		static let perMovementHydrationCost: CGFloat = Env.easyMode ? 0.0075 : 0.0085
+		static let perMovementHydrationCost: CGFloat = Env.easyMode ? 0.0075 : 0.01
 		static let armorEnergyCost: CGFloat = 0.06
 		static let speedBoostStaminaCost: CGFloat = 0.0006
 
