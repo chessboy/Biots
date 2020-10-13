@@ -381,14 +381,14 @@ final class WorldScene: OKScene {
 				if let selectedEntity = entities.filter({ $0.node == draggingNode }).first as? OKEntity {
 					if let zapperComponent = selectedEntity.component(ofType: ZapperComponent.self) {
 						let delta: CGFloat = (draggingNode?.position ?? .zero).y - event.location(in: self).y > 0 ? -offset : offset
-						if !((zapperComponent.radius < 50 && delta < 0) || (zapperComponent.radius > 500 && delta > 0)) {
+						if !((zapperComponent.radius < 50 && delta < 0) || (zapperComponent.radius > 800 && delta > 0)) {
 							zapperComponent.radius += delta
 							zapperComponent.entityNode?.setScale(zapperComponent.radius / (zapperComponent.radius-delta) * (zapperComponent.entityNode?.xScale ?? 1))
 						}
 					}
 					else if let waterComponent = selectedEntity.component(ofType: WaterSourceComponent.self) {
 						let delta: CGFloat = (draggingNode?.position ?? .zero).y - event.location(in: self).y > 0 ? -offset : offset
-						if !((waterComponent.radius < 50 && delta < 0) || (waterComponent.radius > 500 && delta > 0)) {
+						if !((waterComponent.radius < 50 && delta < 0) || (waterComponent.radius > 800 && delta > 0)) {
 							waterComponent.radius += delta
 							waterComponent.entityNode?.setScale(waterComponent.radius / (waterComponent.radius-delta) * (waterComponent.entityNode?.xScale ?? 1))
 						}
