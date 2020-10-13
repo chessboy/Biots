@@ -32,7 +32,7 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		maskNode = SKShapeNode(rect: rect, cornerRadius: 18)
 		maskNode.lineWidth = 0
 		maskNode.fillColor = SKColor(white: 0, alpha: 0.75)
-		maskNode.position = CGPoint(x: 0, y: Constants.Window.statsY)
+		maskNode.position = CGPoint(x: 0, y: Constants.Env.window.statsY)
 		maskNode.zPosition = Constants.ZeeOrder.stats
 
 		let font = OKFont(name: "Consolas", size: 20, color: .white)

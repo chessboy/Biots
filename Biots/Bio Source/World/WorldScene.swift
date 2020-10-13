@@ -165,6 +165,13 @@ final class WorldScene: OKScene {
 		}
 	}
 	
+	func stopTrackingEntity() {
+		if let cameraComponent = entity?.component(ofType: CameraComponent.self) {
+			trackedEntity = nil
+			cameraComponent.nodeToTrack = nil
+		}
+	}
+	
 	func selectMostFit() {
 		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let cellComponents = entities(withName: "cell")?.map({$0.component(ofType: CellComponent.self)}) as? [CellComponent] {
 			if let mostFit = cellComponents.sorted(by: { (cell1, cell2) -> Bool in
@@ -376,6 +383,7 @@ final class WorldScene: OKScene {
 	override func mouseDragged(with event: NSEvent) {
 		//print(event.location(in: self).formattedTo2Places)
 		if draggingNode != nil {
+			stopTrackingEntity()
 			if resizing {
 				let offset: CGFloat = 5
 				if let selectedEntity = entities.filter({ $0.node == draggingNode }).first as? OKEntity {

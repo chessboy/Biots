@@ -11,17 +11,10 @@ import GameplayKit
 import OctopusKit
 
 struct Constants {
-		
-	struct NeuralNet {
-		static let newGenomeHiddenCounts = [14, 8]
-		static let maxWeightValue: Float = 1
-		static let maxOutputValue: Float = 1
-		static let outputsSafetyCheck = false
-	}
-	
+			
 	struct Env {
 		
-		static let zooFilename = "zoo-05.json"
+		static let zooFilename = "zoo-06.json"
 		static let mixinZooFilename: String? = nil
 		static let placementsFilename = "tiny-placements.json"
 
@@ -44,7 +37,12 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = simpleGraphics
+		static let graphics = niceGraphics
+		
+		static let smallWindow = Window(size: 1600, statsY: -480)
+		static let mediumWindow = Window(size: 2000, statsY: -560)
+		static let largeWindow = Window(size: 2400, statsY: -700)
+		static let window = largeWindow
 	}
 	
 	struct Cell {
@@ -67,7 +65,7 @@ struct Constants {
 		static let armorEnergyCost: CGFloat = 0.06
 		static let speedBoostStaminaCost: CGFloat = 0.0006
 
-		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3000
+		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3200
 		static let matureAge: CGFloat = maximumAge * 0.2
 		static let gestationAge: CGFloat = maximumAge * 0.15
 		
@@ -79,6 +77,13 @@ struct Constants {
 			static let maxLinesOfText = 3
 			static let delimiter = "   "
 		}
+	}
+	
+	struct NeuralNet {
+		static let newGenomeHiddenCounts = [14, 8]
+		static let maxWeightValue: Float = 1
+		static let maxOutputValue: Float = 1
+		static let outputsSafetyCheck = false
 	}
 	
 	struct Algae {
@@ -100,7 +105,6 @@ struct Constants {
 		static let displayMemory = 8
 		static let inferenceMemory = 3
 		static let maxObjectsPerAngle = 4
-
 	}
 	
 	struct Thrust {
@@ -127,10 +131,8 @@ struct Constants {
 	}
 		
 	struct Window {
-		//static let size: CGFloat = 1600
-		//static let statsY: CGFloat = -480
-		static let size: CGFloat = 2000
-		static let statsY: CGFloat = -560
+		var size: CGFloat
+		var statsY: CGFloat
 	}
 	
 	static let noBitMask: UInt32 = 	0
@@ -164,14 +166,14 @@ struct Constants {
 	struct Colors {
 		static let background = SKColor(white: 0.125, alpha: 1)
 		static let grid = NSColor(white: 0.08125, alpha: 1)
-		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 0.8)
-		static let water =  SKColor(red: 0.1875/2, green: 0.3, blue: 0.3, alpha: 0.8)
+		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 1)
+		static let water =  SKColor(red: 0, green: 0.225, blue: 0.4, alpha: 1)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
 	}
 	
 	struct VisionColors {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
-		static let water = SKColor(srgbRed: 0, green: 1, blue: 1, alpha: 1)
+		static let water = SKColor(srgbRed: 0, green: 0.5, blue: 1, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 	}
 		

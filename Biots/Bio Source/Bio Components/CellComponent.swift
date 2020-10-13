@@ -33,7 +33,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var spawnCount: Int = 0
 	var matedCount = 0
 
-	var healthNode: SKShapeNode!
+	var healthNode: SKNode!
+	var healthMeterNodes: [SKShapeNode] = []
 	var speedNode: SKShapeNode!
 	var armorNode: SKShapeNode!
 	var eyeNodes: [SKShapeNode] = []
@@ -50,6 +51,13 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
 
+	enum HealthMeter: Int {
+		case overall = 0
+		case energy
+		case hydration
+		case stamina
+	}
+	
 	var frame = Int.random(100)
 
 	var isPregnant: Bool {
@@ -308,9 +316,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			age += 1
 		}
 				
-		blink()
 		checkResourceContacts()
-		showStats()
 		
 		// check old age or malnutrition
 		if age >= Constants.Cell.maximumAge || health <= 0 {
@@ -318,10 +324,14 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 		
 		// update visual indicators
-		updateVisionNode()
-		updateHealthNode()
-		updateThrusterNode()
-		
+		if let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes {
+			updateVisionNode()
+			updateHealthNode()
+			updateThrusterNode()
+			blink()
+			showStats()
+		}
+
 		// self-replication (sexual reproduction not supported yet)
 		if frame.isMultiple(of: 10) {
 			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Cell.gestationAge {
@@ -363,7 +373,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func updateHealthNode() {
-		guard frame.isMultiple(of: 5) else { return }
+		guard frame.isMultiple(of: 2) else { return }
 		
 		let showingHealth = !healthNode.isHidden
 		let showHealth = globalDataComponent?.showCellHealth ?? false
@@ -381,8 +391,20 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		if showHealth {
-			let intenstity = health
-			healthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
+			let overallHealthNode = healthMeterNodes[HealthMeter.overall.rawValue]
+			var intenstity = health
+			overallHealthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
+			
+			let energyHealthNode = healthMeterNodes[HealthMeter.energy.rawValue]
+			intenstity = foodEnergy/maximumEnergy
+			energyHealthNode.strokeColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
+			
+			let hydrationHealthNode = healthMeterNodes[HealthMeter.hydration.rawValue]
+			intenstity = hydration/Constants.Cell.maximumHydration
+			hydrationHealthNode.strokeColor = SKColor(red: 0, green: intenstity*0.75, blue: intenstity, alpha: 1)
+
+			let staminaHealthNode = healthMeterNodes[HealthMeter.stamina.rawValue]
+			staminaHealthNode.strokeColor = SKColor(red: 1-stamina, green: 0, blue: 0, alpha: 1)
 		}
 	}
 		
@@ -436,7 +458,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			}
 			
 			if let onTopOfFWaterAverage = brainComponent?.senses.onTopOfWater.average {
-				let color = SKColor(red: 0, green: onTopOfFWaterAverage.cgFloat, blue: onTopOfFWaterAverage.cgFloat, alpha: 1)
+				let color = SKColor(red: 0, green: onTopOfFWaterAverage.cgFloat * 0.75, blue: onTopOfFWaterAverage.cgFloat, alpha: 1)
 				onTopOfWaterRetinaNode.strokeColor = color
 			}
 		}
@@ -593,19 +615,21 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
+		let overallHealthNode = healthMeterNodes[HealthMeter.overall.rawValue]
+		
 		if impact > 0 {
 			let pulseUp = SKAction.scale(to: 1.5, duration: 0.2)
 			let pulseDown = SKAction.scale(to: 1, duration: 0.4)
 			let sequence = SKAction.sequence([pulseUp, .wait(forDuration: 0.1), pulseDown])
 			sequence.timingMode = .easeInEaseOut
-			healthNode.run(sequence)
+			overallHealthNode.run(sequence)
 		}
 		else {
 			let pulseDown = SKAction.scale(to: 0.5, duration: 0.1)
 			let pulseUp = SKAction.scale(to: 1, duration: 0.2)
 			let sequence = SKAction.sequence([pulseDown, .wait(forDuration: 0.1), pulseUp])
 			sequence.timingMode = .easeInEaseOut
-			healthNode.run(sequence)
+			overallHealthNode.run(sequence)
 		}
 	}
 }
@@ -652,14 +676,32 @@ extension CellComponent {
 			eyeNodes.append(eyeNode)
 		}
 		
-		let healthNode = SKShapeNode(circleOfRadius: radius * 0.25)
-		healthNode.fillColor = .darkGray
-		healthNode.lineWidth = radius * 0.05
-		healthNode.strokeColor = .black//Constants.Colors.background
-		healthNode.isAntialiased = Constants.Env.graphics.antialiased
+		let healthNode = SKNode()
 		healthNode.isHidden = true
 		healthNode.zPosition = Constants.ZeeOrder.cell + 0.1
+		var healthMeterNodes: [SKShapeNode] = []
+		
+		let healthMeterNode = SKShapeNode(circleOfRadius: radius * 0.25)
+		healthMeterNode.fillColor = .darkGray
+		healthMeterNode.lineWidth = radius * 0.05
+		healthMeterNode.strokeColor = .black
+		healthMeterNode.isAntialiased = Constants.Env.graphics.antialiased
+		healthNode.addChild(healthMeterNode)
+		healthMeterNodes.append(healthMeterNode)
 		node.addChild(healthNode)
+
+		for angle in [π/4.5, 0, -π/4.5] {
+			let node = SKShapeNode()
+			let path = CGMutablePath()
+			path.addArc(center: .zero, radius: radius * 0.6, startAngle: angle + π/20, endAngle: angle - π/20, clockwise: true)
+			node.path = path
+			node.strokeColor = .black
+			node.lineWidth = radius * 0.12
+			node.lineCap = .round
+			node.isAntialiased = Constants.Env.graphics.antialiased
+			healthNode.addChild(node)
+			healthMeterNodes.append(node)
+		}
 		
 		let speedNode = SKShapeNode()
 		let speedPath = CGMutablePath()
@@ -749,6 +791,7 @@ extension CellComponent {
 		cellComponent.onTopOfFoodRetinaNode = onTopOfFoodRetinaNode
 		cellComponent.onTopOfWaterRetinaNode = onTopOfWaterRetinaNode
 		cellComponent.healthNode = healthNode
+		cellComponent.healthMeterNodes = healthMeterNodes
 		cellComponent.speedNode = speedNode
 		cellComponent.armorNode = armorNode
 		cellComponent.eyeNodes = eyeNodes

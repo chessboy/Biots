@@ -109,7 +109,7 @@ final class VisionComponent: OKComponent {
 								blockerSeenAtSubAngle = true
 								pings += 1
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.wall.withAlpha(proximity), scale: tracerScale)
+									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.VisionColors.wall.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else if body.categoryBitMask & Constants.CategoryBitMasks.water > 0 {
@@ -118,7 +118,7 @@ final class VisionComponent: OKComponent {
 								bodiesSeenAtAngle.append(body)
 								pings += 1
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.Colors.water.withAlpha(proximity), scale: tracerScale)
+									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.VisionColors.water.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else if let otherCellComponent = object.component(ofType: CellComponent.self) {
@@ -137,7 +137,7 @@ final class VisionComponent: OKComponent {
 								bodiesSeenAtAngle.append(body)
 								pings += 1
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.Colors.algae.withAlpha(proximity), scale: tracerScale)
+									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.VisionColors.algae.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else {

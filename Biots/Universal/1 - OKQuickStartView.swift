@@ -31,7 +31,7 @@ struct OKQuickStartView: View {
 
     	return OKContainerView<MyGameCoordinator, MyGameViewController>()
 	    	.environmentObject(MyGameCoordinator())
-			.frame(width: Constants.Window.size, height: Constants.Window.size/φ)
+			.frame(width: Constants.Env.window.size, height: Constants.Env.window.size/φ)
 	    	.fixedSize()
     	
     	#elseif os(tvOS)

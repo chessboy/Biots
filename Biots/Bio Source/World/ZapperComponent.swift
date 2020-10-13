@@ -35,8 +35,7 @@ extension ZapperComponent {
 	
 	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
 		
-		let blendColor: SKColor = Bool.random() ? .red : .orange
-		let color = Constants.Colors.wall.blended(withFraction: CGFloat.random(in: 0..<0.15), of: blendColor) ?? Constants.Colors.wall
+		let color = Constants.Colors.wall
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
 		node.name = "zapper"

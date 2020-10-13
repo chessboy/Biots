@@ -35,7 +35,7 @@ extension WaterSourceComponent {
 	
 	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
 		
-		let color = Constants.Colors.water.blended(withFraction: CGFloat.random(in: 0.125..<0.175), of: SKColor.blue) ?? Constants.Colors.water
+		let color = Constants.Colors.water
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 12, cornerRadius: radius/4, lineWidth: 8, rotationOffset: π/12)
 		node.name = "water"
