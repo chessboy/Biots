@@ -78,6 +78,7 @@ final class WorldScene: OKScene {
 		if let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
 			//print("creating camera, zoom: \(globalDataComponent.cameraZoom)")
 			cameraComponent.camera.setScale(CGFloat(globalDataComponent.cameraZoom))
+			cameraComponent.camera.position = CGPoint(x: CGFloat(globalDataComponent.cameraX), y: CGFloat(globalDataComponent.cameraY))
 		}
 
     	// Set the permanent visual properties of the scene itself.
@@ -156,8 +157,9 @@ final class WorldScene: OKScene {
 		return (entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == id }).first as? OKEntity)?.component(ofType: CellComponent.self)
 	}
 	
-	func trackEntity() {
-		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let node = trackedEntity?.node {
+	func trackEntity(_ trackedEntity: OKEntity) {
+		self.trackedEntity = trackedEntity
+		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let node = trackedEntity.node {
 			cameraComponent.nodeToTrack = nil
 			cameraComponent.camera.run(SKAction.move(to: node.position, duration: 0.5)) {
 				cameraComponent.nodeToTrack = node
@@ -166,19 +168,20 @@ final class WorldScene: OKScene {
 	}
 	
 	func stopTrackingEntity() {
-		if let cameraComponent = entity?.component(ofType: CameraComponent.self) {
+		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
+			globalDataComponent.cameraX = Double(cameraComponent.camera.position.x)
+			globalDataComponent.cameraY = Double(cameraComponent.camera.position.y)
 			trackedEntity = nil
 			cameraComponent.nodeToTrack = nil
 		}
 	}
 	
 	func selectMostFit() {
-		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let cellComponents = entities(withName: "cell")?.map({$0.component(ofType: CellComponent.self)}) as? [CellComponent] {
+		if let cellComponents = entities(withName: "cell")?.map({$0.component(ofType: CellComponent.self)}) as? [CellComponent] {
 			if let mostFit = cellComponents.sorted(by: { (cell1, cell2) -> Bool in
 				return cell1.health > cell2.health
-			}).first {
-				cameraComponent.nodeToTrack = mostFit.entityNode
-				trackedEntity = mostFit.entity as? OKEntity
+			}).first, let mostFitEntity = mostFit.entity as? OKEntity {
+				trackEntity(mostFitEntity)
 			}
 		}
 	}
@@ -316,18 +319,16 @@ final class WorldScene: OKScene {
 			}
 			
 		case Keycode.tab:
-			if let cells = entities(withName: "cell") {
+			if let cells = entities(withName: "cell"), let firstCell = cells.first {
 				if trackedEntity == nil {
-					trackedEntity = cells.first
-					trackEntity()
+					trackEntity(firstCell)
 				}
 				else if cells.count > 1 {
 					if let index = cells.firstIndex(of: trackedEntity!) {
 
 						let direction = shiftDown ? -1 : 1
 						let nextIndex = (index + direction + cells.count) % cells.count
-						trackedEntity = cells[nextIndex]
-						trackEntity()
+						trackEntity(cells[nextIndex])
 					}
 				}
 			}
@@ -347,9 +348,7 @@ final class WorldScene: OKScene {
 			}
 			
 			if trackedEntity != nil, let cell = trackedEntity?.component(ofType: CellComponent.self) {
-				cell.kill()
-				trackedEntity = nil
-				
+				cell.kill()				
 				if shiftDown {
 					selectMostFit()
 				}
@@ -476,10 +475,10 @@ final class WorldScene: OKScene {
 				}
 				else if commandDown, let cameraComponent = entity?.component(ofType: CameraComponent.self) {
 					if cameraComponent.nodeToTrack == selectedEntity.node {
-						cameraComponent.nodeToTrack = nil
+						stopTrackingEntity()
 					}
-					else {
-						cameraComponent.nodeToTrack = selectedEntity.node
+					else if let entity = cellComponent.entity as? OKEntity {
+						trackEntity(entity)
 					}
 				}
 				else if rightMouse {

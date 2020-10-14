@@ -15,6 +15,8 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 	    	
 	@OKUserDefault(key: "showPhysics", defaultValue: false) public var showPhysics: Bool
 	@OKUserDefault(key: "cameraZoom", defaultValue: Double(Constants.Camera.initialScale)) public var cameraZoom: Double
+	@OKUserDefault(key: "cameraX", defaultValue: Double(0)) public var cameraX: Double
+	@OKUserDefault(key: "cameraY", defaultValue: Double(0)) public var cameraY: Double
 	@OKUserDefault(key: "hideSpriteNodes", defaultValue: false) public var hideSpriteNodes: Bool
 
 	@OKUserDefault(key: "showCellStats", defaultValue: false) public var showCellStats: Bool

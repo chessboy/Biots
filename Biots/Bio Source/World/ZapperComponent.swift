@@ -40,7 +40,7 @@ extension ZapperComponent {
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
 		node.name = "zapper"
 		node.zPosition = Constants.ZeeOrder.wall
-		node.lineWidth = 4
+		node.lineWidth = 8
 		node.fillColor = color
 		node.strokeColor = Constants.Colors.grid
 		node.blendMode = Constants.Env.graphics.blendMode

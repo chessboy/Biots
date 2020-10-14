@@ -14,7 +14,7 @@ struct Constants {
 			
 	struct Env {
 		
-		static let zooFilename = "zoo-06.json"
+		static let zooFilename = "zoo-07.json"
 		static let mixinZooFilename: String? = nil
 		static let placementsFilename = "tiny-placements.json"
 
@@ -23,7 +23,7 @@ struct Constants {
 		static let debugMode = false
 		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 12) // 10-15k food works well here
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 13) // 10-15k food works well here
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -42,7 +42,7 @@ struct Constants {
 		static let smallWindow = Window(size: 1600, statsY: -480)
 		static let mediumWindow = Window(size: 2000, statsY: -560)
 		static let largeWindow = Window(size: 2400, statsY: -700)
-		static let window = largeWindow
+		static let window = mediumWindow
 	}
 	
 	struct Cell {
@@ -94,7 +94,7 @@ struct Constants {
 	
 	struct Water {
 		static let sip: CGFloat = Cell.maximumHydration * 0.2
-		static let timeBetweenSips: TimeInterval = 3 // seconds between drinking the same water
+		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
 	}
 	
 	struct Vision {
@@ -118,7 +118,7 @@ struct Constants {
 		static let displayMemory = 8
 		static let inferenceMemory = 3
 		
-		static let spinLimiter: CGFloat = 1/π
+		static let spinLimiter: CGFloat = 0.4
 		static let thrustForce: CGFloat = 7.5
 		static let maxSpeedBoost: CGFloat = 1.375
 	}

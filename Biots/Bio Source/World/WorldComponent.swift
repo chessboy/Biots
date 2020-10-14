@@ -288,10 +288,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			 Keycode.downArrow,
 			 Keycode.upArrow:
 			
-			if let cameraComponent = entity?.component(ofType: CameraComponent.self) {
-				(OctopusKit.shared.currentScene as? WorldScene)?.trackedEntity = nil
-				cameraComponent.nodeToTrack = nil
-			}
+			(OctopusKit.shared.currentScene as? WorldScene)?.stopTrackingEntity()
 
 			var vector: CGVector = .zero
 			let boost = Constants.Camera.panBoost
@@ -302,7 +299,12 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			vector.dy += keyCode == Keycode.upArrow ? boost : 0
 
 			let moveAction = SKAction.move(by:vector, duration: Constants.Camera.animationDuration)
-			camera.run(moveAction)
+			camera.run(moveAction) {
+				if let scene = OctopusKit.shared.currentScene, let globalDataComponent = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
+					globalDataComponent.cameraX = Double(camera.position.x)
+					globalDataComponent.cameraY = Double(camera.position.y)
+				}
+			}
 			break
 
 		default: break

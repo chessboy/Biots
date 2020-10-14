@@ -36,9 +36,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
 	}
+	
+	func applicationDidResignActive(_ notification: Notification) {
+		//print("applicationDidResignActive")
+	}
 
 	func applicationWillTerminate(_ aNotification: Notification) {
-		// Insert code here to tear down your application
+		//print("applicationWillTerminate")
 	}
 }
 

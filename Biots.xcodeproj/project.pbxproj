@@ -97,6 +97,7 @@
 		D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F5055224ED282900EAA52E /* RunningFloatArray.swift */; };
 		E83A6C042534F9B4008718EE /* zoo-04.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C032534F9B4008718EE /* zoo-04.json */; };
 		E83A6C0A253608E5008718EE /* zoo-06.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C09253608E5008718EE /* zoo-06.json */; };
+		E83A6C0E25368450008718EE /* zoo-07.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C0D25368450008718EE /* zoo-07.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -207,6 +208,7 @@
 		D4F5055224ED282900EAA52E /* RunningFloatArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningFloatArray.swift; sourceTree = "<group>"; };
 		E83A6C032534F9B4008718EE /* zoo-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-04.json"; sourceTree = "<group>"; };
 		E83A6C09253608E5008718EE /* zoo-06.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-06.json"; sourceTree = "<group>"; };
+		E83A6C0D25368450008718EE /* zoo-07.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-07.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -487,6 +489,7 @@
 				E83A6C032534F9B4008718EE /* zoo-04.json */,
 				D4A85D872535165B00F4861C /* zoo-05.json */,
 				E83A6C09253608E5008718EE /* zoo-06.json */,
+				E83A6C0D25368450008718EE /* zoo-07.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -647,6 +650,7 @@
 				D4A85D802534B7B700F4861C /* zoo-03.json in Resources */,
 				E83A6C042534F9B4008718EE /* zoo-04.json in Resources */,
 				D45F0E782532C7520067912C /* more-placements.json in Resources */,
+				E83A6C0E25368450008718EE /* zoo-07.json in Resources */,
 				D45F0E822532CC3A0067912C /* medium-placements.json in Resources */,
 				D4A85D882535165B00F4861C /* zoo-05.json in Resources */,
 				D4A85D662533CCB700F4861C /* new-placements.json in Resources */,
