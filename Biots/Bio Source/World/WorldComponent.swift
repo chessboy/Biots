@@ -170,8 +170,12 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				var genome = GenomeFactory.shared.genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
 				print("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
-				let _ = addNewCell(genome: genome, in: scene)
+				let cell = addNewCell(genome: genome, in: scene)
 				genomeDispenseIndex += 1
+				if Constants.Env.debugMode {
+					(OctopusKit.shared.currentScene as? WorldScene)?.trackEntity(cell)
+					cell.component(ofType: CellComponent.self)?.startInteracting()
+				}
 			}
 		}
 	}

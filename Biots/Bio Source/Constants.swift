@@ -81,7 +81,7 @@ struct Constants {
 	
 	struct NeuralNet {
 		static let newGenomeHiddenCounts = [14, 8]
-		static let maxWeightValue: Float = 1
+		static let maxWeightValue: Float = 2
 		static let maxOutputValue: Float = 1
 		static let outputsSafetyCheck = false
 	}

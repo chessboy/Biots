@@ -34,7 +34,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 	var matedCount = 0
 
 	var healthNode: SKNode!
-	var healthMeterGroupNode: SKNode!
+	var healthDetailsNode: SKNode!
 	var healthMeterNodes: [SKShapeNode] = []
 	var speedNode: SKShapeNode!
 	var armorNode: SKShapeNode!
@@ -42,8 +42,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 
 	var visionNode: SKNode!
 	var retinaNodes: [RetinaNode] = []
-	var onTopOfFoodRetinaNode: SKShapeNode!
-	var onTopOfWaterRetinaNode: SKShapeNode!
+	var onTopOfFoodNode: SKShapeNode!
+	var onTopOfWaterNode: SKShapeNode!
 	var thrusterNode: ThrusterNode!
 
 	var matingGenome: Genome?
@@ -134,7 +134,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			eyeNode.isHidden = showVision
 		})
 		
-		healthMeterGroupNode.isHidden = !showVision
+		healthDetailsNode.isHidden = !showVision
 		
 		if Constants.Env.debugMode {
 			foodEnergy = Constants.Cell.maximumFoodEnergy
@@ -384,19 +384,31 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		guard frame.isMultiple(of: 2) else { return }
 		
 		let showingHealth = !healthNode.isHidden
-		let showingVision = !visionNode.isHidden
 		let showHealth = globalDataComponent?.showCellHealth ?? false
-		
-		if !showingHealth, showHealth {
+		let showingHealthDetails = !healthDetailsNode.isHidden
+		let showCellHealthDetails = globalDataComponent?.showCellHealthDetails ?? false
+		let showingVision = !visionNode.isHidden
+
+		if !showingHealth, showHealth{
 			healthNode.alpha = 0
 			healthNode.isHidden = false
-			healthMeterGroupNode.alpha = !showingVision ? 0 : 1
-			healthMeterGroupNode.isHidden = !showingVision
+			healthDetailsNode.alpha = !showingVision ? 0 : 1
+			healthDetailsNode.isHidden = !showingVision || !showCellHealthDetails
 			healthNode.run(.fadeIn(withDuration: 0.2))
 		}
 		else if showingHealth, !showHealth {
 			healthNode.run(.fadeOut(withDuration: 0.1)) {
 				self.healthNode.isHidden = true
+			}
+		}
+		
+		if !showingHealthDetails, showCellHealthDetails {
+			healthDetailsNode.alpha = !showingVision ? 0 : 1
+			healthDetailsNode.isHidden = !showingVision || !showCellHealthDetails
+		}
+		else if showingVision, showingHealthDetails, !showCellHealthDetails {
+			healthDetailsNode.run(.fadeOut(withDuration: 0.1)) {
+				self.healthDetailsNode.isHidden = true
 			}
 		}
 
@@ -407,15 +419,15 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			
 			let energyHealthNode = healthMeterNodes[HealthMeter.energy.rawValue]
 			intenstity = foodEnergy/maximumEnergy
-			energyHealthNode.strokeColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
+			energyHealthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
 			
 			let hydrationHealthNode = healthMeterNodes[HealthMeter.hydration.rawValue]
 			intenstity = hydration/Constants.Cell.maximumHydration
-			hydrationHealthNode.strokeColor = SKColor(red: 0, green: intenstity*0.75, blue: intenstity, alpha: 1)
+			hydrationHealthNode.fillColor = SKColor(red: 0, green: intenstity*0.75, blue: intenstity, alpha: 1)
 
 			let staminaHealthNode = healthMeterNodes[HealthMeter.stamina.rawValue]
 			intenstity = stamina * stamina
-			staminaHealthNode.strokeColor = SKColor(red: 1, green: intenstity, blue: intenstity, alpha: 1)
+			staminaHealthNode.fillColor = SKColor(red: 1, green: intenstity, blue: intenstity, alpha: 1)
 		}
 	}
 		
@@ -426,7 +438,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		let showingVision = !visionNode.isHidden
 		let showingHealth = !healthNode.isHidden
 		let showVision = globalDataComponent?.showCellVision ?? false
-		
+		let showCellHealthDetails = globalDataComponent?.showCellHealth ?? false
+
 		if !showingVision, showVision {
 			eyeNodes.forEach({ eyeNode in
 				eyeNode.run(.fadeOut(withDuration: 0.1), completion: {
@@ -434,10 +447,10 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 				})
 			})
 			
-			if showingHealth {
-				healthMeterGroupNode.alpha = 0
-				healthMeterGroupNode.isHidden = false
-				healthMeterGroupNode.run(.fadeIn(withDuration: 0.2))
+			if showingHealth, showCellHealthDetails {
+				healthDetailsNode.alpha = 0
+				healthDetailsNode.isHidden = false
+				healthDetailsNode.run(.fadeIn(withDuration: 0.2))
 			}
 			
 			visionNode.alpha = 0
@@ -453,8 +466,8 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			})
 			
 			if showingHealth {
-				healthMeterGroupNode.run(.fadeOut(withDuration: 0.1), completion: {
-					self.healthMeterGroupNode.isHidden = true
+				healthDetailsNode.run(.fadeOut(withDuration: 0.1), completion: {
+					self.healthDetailsNode.isHidden = true
 				})
 			}
 
@@ -478,12 +491,12 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 			
 			if let onTopOfFoodAverage = brainComponent?.senses.onTopOfFood.average {
 				let color = SKColor(red: 0, green: onTopOfFoodAverage.cgFloat, blue: 0, alpha: 1)
-				onTopOfFoodRetinaNode.fillColor = color
+				onTopOfFoodNode.fillColor = color
 			}
 			
 			if let onTopOfFWaterAverage = brainComponent?.senses.onTopOfWater.average {
 				let color = SKColor(red: 0, green: onTopOfFWaterAverage.cgFloat * 0.75, blue: onTopOfFWaterAverage.cgFloat, alpha: 1)
-				onTopOfWaterRetinaNode.fillColor = color
+				onTopOfWaterNode.fillColor = color
 			}
 		}
 	}
@@ -704,10 +717,10 @@ extension CellComponent {
 		healthNode.isHidden = true
 		healthNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		
-		let healthMeterGroupNode = SKNode()
-		healthMeterGroupNode.isHidden = true
-		healthMeterGroupNode.zPosition = Constants.ZeeOrder.cell + 0.1
-		healthNode.addChild(healthMeterGroupNode)
+		let healthDetailsNode = SKNode()
+		healthDetailsNode.isHidden = true
+		healthDetailsNode.zPosition = Constants.ZeeOrder.cell + 0.1
+		healthNode.addChild(healthDetailsNode)
 		
 		var healthMeterNodes: [SKShapeNode] = []
 		let healthMeterNode = SKShapeNode(circleOfRadius: radius * 0.25)
@@ -719,11 +732,15 @@ extension CellComponent {
 		healthMeterNodes.append(healthMeterNode)
 		node.addChild(healthNode)
 
-		for angle in [π/4.5, 0, -π/4.5] {
-			let backgroundNode = RetinaNode(angle: angle, radius: radius * 0.5, thickness: radius * 0.12, arcLength: π/36, forBackground: true)
-			healthMeterGroupNode.addChild(backgroundNode)
-			let meterNode = RetinaNode(angle: angle, radius: radius * 0.5, thickness: radius * 0.12, arcLength: π/36, forBackground: false)
-			healthMeterGroupNode.addChild(meterNode)
+		for angle in [π/6, 0, -π/6] {
+			let meterRadius: CGFloat = radius * 0.08
+			let meterNode = SKShapeNode(circleOfRadius: meterRadius)
+			meterNode.position = CGPoint(angle: angle) * radius * 0.5
+			meterNode.fillColor = .black
+			meterNode.strokeColor = .black
+			meterNode.lineWidth = meterRadius * 0.2
+			meterNode.blendMode = Constants.Env.graphics.blendMode
+			healthDetailsNode.addChild(meterNode)
 			healthMeterNodes.append(meterNode)
 		}
 		
@@ -782,21 +799,21 @@ extension CellComponent {
 		
 		// food and water
 		let resourceRadius: CGFloat = radius * 0.08
-		let onTopOfFoodRetinaNode = SKShapeNode(circleOfRadius: resourceRadius)
-		onTopOfFoodRetinaNode.position = CGPoint(angle: π - π/15) * radius * 0.5
-		onTopOfFoodRetinaNode.fillColor = .black
-		onTopOfFoodRetinaNode.strokeColor = .black
-		onTopOfFoodRetinaNode.lineWidth = resourceRadius * 0.2
-		onTopOfFoodRetinaNode.blendMode = Constants.Env.graphics.blendMode
-		visionNode.addChild(onTopOfFoodRetinaNode)
+		let onTopOfFoodNode = SKShapeNode(circleOfRadius: resourceRadius)
+		onTopOfFoodNode.position = CGPoint(angle: π - π/12) * radius * 0.5
+		onTopOfFoodNode.fillColor = .black
+		onTopOfFoodNode.strokeColor = .black
+		onTopOfFoodNode.lineWidth = resourceRadius * 0.2
+		onTopOfFoodNode.blendMode = Constants.Env.graphics.blendMode
+		visionNode.addChild(onTopOfFoodNode)
 
-		let onTopOfWaterRetinaNode = SKShapeNode(circleOfRadius: resourceRadius)
-		onTopOfWaterRetinaNode.position = CGPoint(angle: π + π/15) * radius * 0.5
-		onTopOfWaterRetinaNode.fillColor = .black
-		onTopOfWaterRetinaNode.strokeColor = .black
-		onTopOfWaterRetinaNode.lineWidth = resourceRadius * 0.2
-		onTopOfWaterRetinaNode.blendMode = Constants.Env.graphics.blendMode
-		visionNode.addChild(onTopOfWaterRetinaNode)
+		let onTopOfWaterNode = SKShapeNode(circleOfRadius: resourceRadius)
+		onTopOfWaterNode.position = CGPoint(angle: π + π/12) * radius * 0.5
+		onTopOfWaterNode.fillColor = .black
+		onTopOfWaterNode.strokeColor = .black
+		onTopOfWaterNode.lineWidth = resourceRadius * 0.2
+		onTopOfWaterNode.blendMode = Constants.Env.graphics.blendMode
+		visionNode.addChild(onTopOfWaterNode)
 
 		// thrusters
 		let thrusterNode = ThrusterNode(radius: radius)
@@ -823,10 +840,10 @@ extension CellComponent {
 		// set the nodes in the component
 		cellComponent.visionNode = visionNode
 		cellComponent.retinaNodes = retinaNodes
-		cellComponent.onTopOfFoodRetinaNode = onTopOfFoodRetinaNode
-		cellComponent.onTopOfWaterRetinaNode = onTopOfWaterRetinaNode
+		cellComponent.onTopOfFoodNode = onTopOfFoodNode
+		cellComponent.onTopOfWaterNode = onTopOfWaterNode
 		cellComponent.healthNode = healthNode
-		cellComponent.healthMeterGroupNode = healthMeterGroupNode
+		cellComponent.healthDetailsNode = healthDetailsNode
 		cellComponent.healthMeterNodes = healthMeterNodes
 		cellComponent.speedNode = speedNode
 		cellComponent.armorNode = armorNode

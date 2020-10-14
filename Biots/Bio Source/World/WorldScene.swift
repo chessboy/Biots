@@ -28,6 +28,10 @@ final class WorldScene: OKScene {
     	
     	self.name = "BioGenesis World Scene"
     	super.sceneDidLoad()
+		
+//		if let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
+//			globalDataComponent.reset()
+//		}
 	}
 
 	// MARK: 🔶 STEP 6B.2
@@ -210,7 +214,11 @@ final class WorldScene: OKScene {
 			break
 						
 		case Keycode.h:
-			globalDataComponent.showCellHealth.toggle()
+			if shiftDown {
+				globalDataComponent.showCellHealthDetails.toggle()
+			} else {
+				globalDataComponent.showCellHealth.toggle()
+			}
 			break
 			
 		case Keycode.v:
