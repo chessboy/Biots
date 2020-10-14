@@ -98,6 +98,7 @@
 		E83A6C042534F9B4008718EE /* zoo-04.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C032534F9B4008718EE /* zoo-04.json */; };
 		E83A6C0A253608E5008718EE /* zoo-06.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C09253608E5008718EE /* zoo-06.json */; };
 		E83A6C0E25368450008718EE /* zoo-07.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C0D25368450008718EE /* zoo-07.json */; };
+		E83A6C122536D0B5008718EE /* zoo-alt-01.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C112536D0B5008718EE /* zoo-alt-01.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -209,6 +210,7 @@
 		E83A6C032534F9B4008718EE /* zoo-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-04.json"; sourceTree = "<group>"; };
 		E83A6C09253608E5008718EE /* zoo-06.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-06.json"; sourceTree = "<group>"; };
 		E83A6C0D25368450008718EE /* zoo-07.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-07.json"; sourceTree = "<group>"; };
+		E83A6C112536D0B5008718EE /* zoo-alt-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-alt-01.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -490,6 +492,7 @@
 				D4A85D872535165B00F4861C /* zoo-05.json */,
 				E83A6C09253608E5008718EE /* zoo-06.json */,
 				E83A6C0D25368450008718EE /* zoo-07.json */,
+				E83A6C112536D0B5008718EE /* zoo-alt-01.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -649,6 +652,7 @@
 				D4A85D6E2533D4A800F4861C /* tiny-placements.json in Resources */,
 				D4A85D802534B7B700F4861C /* zoo-03.json in Resources */,
 				E83A6C042534F9B4008718EE /* zoo-04.json in Resources */,
+				E83A6C122536D0B5008718EE /* zoo-alt-01.json in Resources */,
 				D45F0E782532C7520067912C /* more-placements.json in Resources */,
 				E83A6C0E25368450008718EE /* zoo-07.json in Resources */,
 				D45F0E822532CC3A0067912C /* medium-placements.json in Resources */,
