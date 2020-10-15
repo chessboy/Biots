@@ -1,6 +1,6 @@
 //
 //  WorldComponent.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/11/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -84,30 +84,30 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		print("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
 	}
 		
-	func addNewCell(genome: Genome, in scene: OKScene) -> OKEntity {
+	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
 		
 		let worldRadius = Constants.Env.worldRadius
 		let distance = CGFloat.random(in: worldRadius * 0.35...worldRadius * 0.9)
 		let position = CGPoint.randomDistance(distance)
 
 		let fountainComponent = scene.entities.filter({ $0.component(ofType: ResourceFountainComponent.self) != nil }).first?.component(ofType: ResourceFountainComponent.self)
-		let cell = CellComponent.createCell(genome: genome, at: position, fountainComponent: RelayComponent(for: fountainComponent))
+		let biot = BiotComponent.createBiot(genome: genome, at: position, fountainComponent: RelayComponent(for: fountainComponent))
 		
-		let showEyeSpots = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showCellEyeSpots ?? false
+		let showEyeSpots = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showBiotEyeSpots ?? false
 		if showEyeSpots {
-			cell.addComponent(EyesComponent())
+			biot.addComponent(EyesComponent())
 		}
-		let showCellStats = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showCellStats ?? false
-		if showCellStats {
-			cell.addComponent(EntityStatsComponent())
+		let showBiotStats = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showBiotStats ?? false
+		if showBiotStats {
+			biot.addComponent(EntityStatsComponent())
 		}
-		scene.addEntity(cell)
+		scene.addEntity(biot)
 
 		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
-			cell.node?.isHidden = hideNode
+			biot.node?.isHidden = hideNode
 		}
 		
-		return cell
+		return biot
 	}
 				
 	func displayStats() {
@@ -117,10 +117,10 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 		if frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
-			let cellCount = scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count
+			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let cellStats = currentCellStats
-			let statsText = "\(Int(frame).abbrev) | pop: \(cellCount)/\(Constants.Env.maximumCells), gen: \(cellStats.minGen)–\(cellStats.maxGen) | h: \(cellStats.avgHealth.formattedToPercent) | e: \(cellStats.avgEnergy.formattedToPercentNoDecimal) | w: \(cellStats.avgHydration.formattedToPercentNoDecimal) | s: \(cellStats.avgStamina.formattedToPercentNoDecimal) | preg: \(cellStats.pregnantCount), spawned: \(cellStats.spawnAverage.formattedTo2Places) | alg: \(currentCellStats.resourceStats.algaeTarget.formattedNoDecimal)"
+			let biotStats = currentBiotStats
+			let statsText = "\(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen)–\(biotStats.maxGen) | h: \(biotStats.avgHealth.formattedToPercent) | e: \(biotStats.avgEnergy.formattedToPercentNoDecimal) | w: \(biotStats.avgHydration.formattedToPercentNoDecimal) | s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantCount), spawned: \(biotStats.spawnAverage.formattedTo2Places) | alg: \(currentBiotStats.resourceStats.algaeTarget.formattedNoDecimal)"
 
 			statsComponent.updateStats(statsText)
 			
@@ -148,20 +148,20 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		displayStats()
 		
-		// cell creation
-		if frame >= Constants.Env.startupDelay && frame.isMultiple(of: Constants.Env.dispenseInterval), scene.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).count < Constants.Env.minimumCells {
+		// biot creation
+		if frame >= Constants.Env.startupDelay && frame.isMultiple(of: Constants.Env.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < Constants.Env.minimumBiots {
 			
 			if Constants.Env.randomRun {
 				let genome = GenomeFactory.shared.newRandomGenome
 				print("created random genome: \(genome.description)")
-				let _ = addNewCell(genome: genome, in: scene)
+				let _ = addNewBiot(genome: genome, in: scene)
 			}
 			else if unbornGenomes.count > 0 {
 				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
 					genome1.generation > genome2.generation
 				}).first {
 					print("decanting unborn genome: \(highestGenGenome.description), cache size: \(unbornGenomes.count)")
-					let _ = addNewCell(genome: highestGenGenome, in: scene)
+					let _ = addNewBiot(genome: highestGenGenome, in: scene)
 					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
 				}
 			}
@@ -170,11 +170,11 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				var genome = GenomeFactory.shared.genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
 				print("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
-				let cell = addNewCell(genome: genome, in: scene)
+				let biot = addNewBiot(genome: genome, in: scene)
 				genomeDispenseIndex += 1
 				if Constants.Env.debugMode {
-					(OctopusKit.shared.currentScene as? WorldScene)?.trackEntity(cell)
-					cell.component(ofType: CellComponent.self)?.startInteracting()
+					(OctopusKit.shared.currentScene as? WorldScene)?.trackEntity(biot)
+					biot.component(ofType: BiotComponent.self)?.startInteracting()
 				}
 			}
 		}
@@ -195,7 +195,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		static let zero = ResourceStats(algaeTarget: 0, algaeSupply: 0)
 	}
 	
-	struct CellStats {
+	struct BiotStats {
 		var minGen: Int
 		var maxGen: Int
 		var avgEnergy: CGFloat
@@ -208,32 +208,32 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		var resourceStats: ResourceStats
 
-		static var zero: CellStats {
-			return CellStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgHydration: 0, avgStamina: 0, avgHealth: 0, pregnantCount: 0, spawnAverage: 0, resourceStats: .zero)
+		static var zero: BiotStats {
+			return BiotStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgHydration: 0, avgStamina: 0, avgHealth: 0, pregnantCount: 0, spawnAverage: 0, resourceStats: .zero)
 		}
 	}
 	
 	
-	var currentCells: [CellComponent] {
-		return OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: CellComponent.self) }) ?? []
+	var currentBiots: [BiotComponent] {
+		return OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: BiotComponent.self) }) ?? []
 	}
 	
-	var currentCellStats: CellStats {
+	var currentBiotStats: BiotStats {
 				
-		let cells = currentCells
+		let biots = currentBiots
 		
-		let minGen = cells.map({$0.genome.generation}).min() ?? 0
-		let maxGen = cells.map({$0.genome.generation}).max() ?? 0
+		let minGen = biots.map({$0.genome.generation}).min() ?? 0
+		let maxGen = biots.map({$0.genome.generation}).max() ?? 0
 
-		let averageEnergy = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.foodEnergy/$1.maximumEnergy } / cells.count.cgFloat
-		let averageHydration = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.hydration/Constants.Cell.maximumHydration } / cells.count.cgFloat
-		let averageStamina = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.stamina } / cells.count.cgFloat
-		let averageHealth = cells.count == 0 ? 0 : cells.reduce(0) { $0 + $1.health } / cells.count.cgFloat
+		let averageEnergy = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.foodEnergy/$1.maximumEnergy } / biots.count.cgFloat
+		let averageHydration = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.hydration/Constants.Biot.maximumHydration } / biots.count.cgFloat
+		let averageStamina = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.stamina } / biots.count.cgFloat
+		let averageHealth = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.health } / biots.count.cgFloat
 
-		let pregnantCount = cells.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }
-		let spawnAverage = cells.count == 0 ? 0 : CGFloat(cells.reduce(0) { $0 + $1.spawnCount }) / cells.count.cgFloat
+		let pregnantCount = biots.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }
+		let spawnAverage = biots.count == 0 ? 0 : CGFloat(biots.reduce(0) { $0 + $1.spawnCount }) / biots.count.cgFloat
 
-		return CellStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgHydration: averageHydration, avgStamina: averageStamina, avgHealth: averageHealth, pregnantCount: pregnantCount, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
+		return BiotStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgHydration: averageHydration, avgStamina: averageStamina, avgHealth: averageHealth, pregnantCount: pregnantCount, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
 	}
 
 	var currentResourceStats: ResourceStats {

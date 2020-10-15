@@ -1,6 +1,6 @@
 //
 //  EntityStatsComponent.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/15/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -19,8 +19,8 @@ final class EntityStatsComponent: OKComponent {
 	]}
 	
 	override init() {
-		statsNode = StatsNode(bodyRadius: Constants.Cell.radius, fontSize: 70)
-		statsNode.zPosition = Constants.ZeeOrder.cell + 10
+		statsNode = StatsNode(bodyRadius: Constants.Biot.radius, fontSize: 70)
+		statsNode.zPosition = Constants.ZeeOrder.biot + 10
 		super.init()
 	}
 	

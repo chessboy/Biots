@@ -17,13 +17,13 @@ struct Defaults {
 	static let cameraY: Double = 0
 	static let hideSpriteNodes = false
 	
-	static let showCellStats = false
-	static let showCellVisionTracer = false
-	static let showCellEyeSpots = false
-	static let showCellHealth = false
-	static let showCellHealthDetails = false
-	static let showCellVision = false
-	static let showCellThrust = false
+	static let showBiotStats = false
+	static let showBiotVisionTracer = false
+	static let showBiotEyeSpots = false
+	static let showBiotHealth = false
+	static let showBiotHealthDetails = false
+	static let showBiotVision = false
+	static let showBiotThrust = false
 	
 	static let algaeTarget = 12000
 	static let showAlgaeFountainInfluences = false
@@ -37,13 +37,13 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 	@OKUserDefault(key: "cameraY", defaultValue: Defaults.cameraY) public var cameraY: Double
 	@OKUserDefault(key: "hideSpriteNodes", defaultValue: Defaults.hideSpriteNodes) public var hideSpriteNodes: Bool
 
-	@OKUserDefault(key: "showCellStats", defaultValue: Defaults.showCellStats) public var showCellStats: Bool
-	@OKUserDefault(key: "showCellVisionTracer", defaultValue: Defaults.showCellVisionTracer) public var showCellVisionTracer: Bool
-	@OKUserDefault(key: "showCellEyeSpots", defaultValue: Defaults.showCellEyeSpots) public var showCellEyeSpots: Bool
-	@OKUserDefault(key: "showCellHealth", defaultValue: Defaults.showCellHealth) public var showCellHealth: Bool
-	@OKUserDefault(key: "showCellHealthDetails", defaultValue: Defaults.showCellHealthDetails) public var showCellHealthDetails: Bool
-	@OKUserDefault(key: "showCellVision", defaultValue: Defaults.showCellVision) public var showCellVision: Bool
-	@OKUserDefault(key: "showCellThrust", defaultValue: Defaults.showCellThrust) public var showCellThrust: Bool
+	@OKUserDefault(key: "showBiotStats", defaultValue: Defaults.showBiotStats) public var showBiotStats: Bool
+	@OKUserDefault(key: "showBiotVisionTracer", defaultValue: Defaults.showBiotVisionTracer) public var showBiotVisionTracer: Bool
+	@OKUserDefault(key: "showBiotEyeSpots", defaultValue: Defaults.showBiotEyeSpots) public var showBiotEyeSpots: Bool
+	@OKUserDefault(key: "showBiotHealth", defaultValue: Defaults.showBiotHealth) public var showBiotHealth: Bool
+	@OKUserDefault(key: "showBiotHealthDetails", defaultValue: Defaults.showBiotHealthDetails) public var showBiotHealthDetails: Bool
+	@OKUserDefault(key: "showBiotVision", defaultValue: Defaults.showBiotVision) public var showBiotVision: Bool
+	@OKUserDefault(key: "showBiotThrust", defaultValue: Defaults.showBiotThrust) public var showBiotThrust: Bool
 
 	@OKUserDefault(key: "algaeTarget", defaultValue: Defaults.algaeTarget) public var algaeTarget: Int
 	@OKUserDefault(key: "showAlgaeFountainInfluences", defaultValue: Defaults.showAlgaeFountainInfluences) public var showAlgaeFountainInfluences: Bool
@@ -55,13 +55,13 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 		cameraY = Defaults.cameraY
 		hideSpriteNodes = Defaults.hideSpriteNodes
 	
-		showCellStats = Defaults.showCellStats
-		showCellVisionTracer = Defaults.showCellVisionTracer
-		showCellEyeSpots = Defaults.showCellEyeSpots
-		showCellHealth = Defaults.showCellHealth
-		showCellHealthDetails = Defaults.showCellHealthDetails
-		showCellVision = Defaults.showCellVision
-		showCellThrust = Defaults.showCellThrust
+		showBiotStats = Defaults.showBiotStats
+		showBiotVisionTracer = Defaults.showBiotVisionTracer
+		showBiotEyeSpots = Defaults.showBiotEyeSpots
+		showBiotHealth = Defaults.showBiotHealth
+		showBiotHealthDetails = Defaults.showBiotHealthDetails
+		showBiotVision = Defaults.showBiotVision
+		showBiotThrust = Defaults.showBiotThrust
 	
 		algaeTarget = Defaults.algaeTarget
 		showAlgaeFountainInfluences = Defaults.showAlgaeFountainInfluences

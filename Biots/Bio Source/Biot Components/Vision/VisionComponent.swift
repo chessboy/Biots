@@ -1,6 +1,6 @@
 //
 //  VisionComponent.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/14/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -38,7 +38,7 @@ final class VisionComponent: OKComponent {
 	var visionMemory: [VisionMemory] = []
 
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
-	lazy var cellComponent = coComponent(CellComponent.self)
+	lazy var biotComponent = coComponent(BiotComponent.self)
 	lazy var physicsComponent = coComponent(PhysicsComponent.self)
 	lazy var camera = OctopusKit.shared.currentScene?.camera
 	
@@ -65,7 +65,7 @@ final class VisionComponent: OKComponent {
 		angleVisions.removeAll()
 
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
-			let showTracer = globalDataComponent?.showCellVisionTracer,
+			let showTracer = globalDataComponent?.showBiotVisionTracer,
 			let cameraScale = camera?.xScale,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
@@ -87,12 +87,12 @@ final class VisionComponent: OKComponent {
 
 				let angleOffset = angle + offset
 				let rayDistance = Constants.Vision.rayDistance
-				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Cell.radius * 0.98
+				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Biot.radius * 0.98
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				
 				var blockerSeenAtSubAngle = false
 				physicsWorld.enumerateBodies(alongRayStart: rayStart, end: rayEnd) { (body, hitPoint, normal, stop) in
-					if body != physicsBody, body.categoryBitMask & Constants.DetectionBitMasks.cell > 0 {
+					if body != physicsBody, body.categoryBitMask & Constants.DetectionBitMasks.biot > 0 {
 						
 						let distance = rayStart.distance(to: hitPoint)
 						let proximity = 1 - distance/Constants.Vision.rayDistance
@@ -121,14 +121,14 @@ final class VisionComponent: OKComponent {
 									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.VisionColors.water.withAlpha(proximity), scale: tracerScale)
 								}
 							}
-							else if let otherCellComponent = object.component(ofType: CellComponent.self) {
-								// cell
-								detectedColor = otherCellComponent.bodyColor
+							else if let otherBiotComponent = object.component(ofType: BiotComponent.self) {
+								// biot
+								detectedColor = otherBiotComponent.bodyColor
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								pings += 1
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: otherCellComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
+									self.showTracer(rayStart: rayStart, rayEnd: otherBiotComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else if let algae = object.component(ofType: AlgaeComponent.self) {
@@ -158,7 +158,7 @@ final class VisionComponent: OKComponent {
 			
 			var colorVector = ColorVector.zero
 			
-			if let onTopOfWater = cellComponent?.isOnTopOfWater, onTopOfWater {
+			if let onTopOfWater = biotComponent?.isOnTopOfWater, onTopOfWater {
 				redTotal += Constants.VisionColors.water.redComponent/4
 				greenTotal += Constants.VisionColors.water.greenComponent/4
 				blueTotal += Constants.VisionColors.water.blueComponent/4
@@ -182,7 +182,7 @@ final class VisionComponent: OKComponent {
 		let tracerNode = SKShapeNode()
 		tracerNode.lineWidth = 0.0025 * Constants.Env.worldRadius * scale
 		tracerNode.strokeColor = color
-		tracerNode.zPosition = Constants.ZeeOrder.cell - 0.1
+		tracerNode.zPosition = Constants.ZeeOrder.biot - 0.1
 		path.move(to: rayStart)
 		path.addLine(to: rayEnd)
 		tracerNode.path = path

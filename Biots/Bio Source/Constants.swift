@@ -1,6 +1,6 @@
 //
 //  Constants.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/12/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -29,8 +29,8 @@ struct Constants {
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80
 		
-		static let minimumCells = debugMode ? 1 : 12
-		static let maximumCells = debugMode ? 1 : 24
+		static let minimumBiots = debugMode ? 1 : 12
+		static let maximumBiots = debugMode ? 1 : 24
 		static let startupDelay = debugMode ? 0 : randomRun ? 20 : 250
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
@@ -45,7 +45,7 @@ struct Constants {
 		static let window = largeWindow
 	}
 	
-	struct Cell {
+	struct Biot {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
@@ -88,12 +88,12 @@ struct Constants {
 	
 	struct Algae {
 		static let radius: CGFloat = 16
-		static let bite: CGFloat = Cell.maximumFoodEnergy * 0.2
+		static let bite: CGFloat = Biot.maximumFoodEnergy * 0.2
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 	}
 	
 	struct Water {
-		static let sip: CGFloat = Cell.maximumHydration * 0.2
+		static let sip: CGFloat = Biot.maximumHydration * 0.2
 		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
 	}
 	
@@ -101,7 +101,7 @@ struct Constants {
 		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
 		static let refinerAngles = [0, -π/12, π/12]
 		static let colorDepth = 3 // r|g|b
-		static let rayDistance: CGFloat = Cell.radius * 21
+		static let rayDistance: CGFloat = Biot.radius * 21
 		static let displayMemory = 8
 		static let inferenceMemory = 3
 		static let maxObjectsPerAngle = 4
@@ -141,7 +141,7 @@ struct Constants {
 	struct CategoryBitMasks {
 		static let wall: UInt32 = 1
 		static let water: UInt32 = 2
-		static let cell: UInt32 = 4
+		static let biot: UInt32 = 4
 		static let algae: UInt32 = 8
 	}
 	
@@ -149,18 +149,18 @@ struct Constants {
 	struct CollisionBitMasks {
 		static let wall = CategoryBitMasks.wall
 		static let water = CategoryBitMasks.wall | CategoryBitMasks.water
-		static let cell = CategoryBitMasks.wall | CategoryBitMasks.cell
+		static let biot = CategoryBitMasks.wall | CategoryBitMasks.biot
 		static let algae = CategoryBitMasks.wall | CategoryBitMasks.water | CategoryBitMasks.algae
 	}
 	
 	// when to be notified of contact
 	struct ContactBitMasks {
-		static let cell = CategoryBitMasks.cell | CategoryBitMasks.wall | CategoryBitMasks.water | CategoryBitMasks.algae
+		static let biot = CategoryBitMasks.biot | CategoryBitMasks.wall | CategoryBitMasks.water | CategoryBitMasks.algae
 	}
 	
 	// used in detecting neighboring bodies
 	struct DetectionBitMasks {
-		static let cell = CategoryBitMasks.cell | CategoryBitMasks.water | CategoryBitMasks.algae | CategoryBitMasks.wall
+		static let biot = CategoryBitMasks.biot | CategoryBitMasks.water | CategoryBitMasks.algae | CategoryBitMasks.wall
 	}
 	
 	struct Colors {
@@ -191,7 +191,7 @@ struct Constants {
 		static let wall: CGFloat = 0
 		static let water: CGFloat = 1
 		static let algae: CGFloat = 1
-		static let cell: CGFloat = 5
+		static let biot: CGFloat = 5
 		static let stats: CGFloat = 100
 	}
 }

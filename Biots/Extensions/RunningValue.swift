@@ -1,6 +1,6 @@
 //
 //  RunningValue.swift
-//  SwiftBots
+//  Biots
 //
 //  Created by Robert Silverman on 9/19/18.
 //  Copyright © 2018 fep. All rights reserved.

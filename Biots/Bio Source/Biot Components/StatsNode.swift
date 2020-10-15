@@ -1,6 +1,6 @@
 //
 //  StatsNode.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/15/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -29,7 +29,7 @@ class StatsNode: SKNode {
 		self.addChild(backgroundNode)
 
 		let padding: CGFloat = fontSize + 20
-		for i in 0..<Constants.Cell.Stats.maxLinesOfText {
+		for i in 0..<Constants.Biot.Stats.maxLinesOfText {
 			
 			let node = SKLabelNode(fontNamed: "Consolas")
 			node.position = CGPoint(x: 0, y: (-padding * CGFloat(i)) - bodyRadius - padding)
@@ -46,11 +46,11 @@ class StatsNode: SKNode {
 		labelNodes.forEach({ $0.text = "" })
 	}
 	
-	func setLineOfText(_ text: String, for line: Constants.Cell.StatsLine) {
+	func setLineOfText(_ text: String, for line: Constants.Biot.StatsLine) {
 		
 		let index = line.rawValue
 		
-		guard index < Constants.Cell.Stats.maxLinesOfText else { return }
+		guard index < Constants.Biot.Stats.maxLinesOfText else { return }
 		
 		let labelNode = labelNodes[index]
 		labelNode.text = text
@@ -94,7 +94,7 @@ class StatsBuilder {
 	var text: String = ""
 	
 	func addEntry(label: String = "", value: String) {
-		self.text = "\(text)\(text == "" ? "" : Constants.Cell.Stats.delimiter)\(label)\(label == "" ? "" : ":")\(value)"
+		self.text = "\(text)\(text == "" ? "" : Constants.Biot.Stats.delimiter)\(label)\(label == "" ? "" : ":")\(value)"
 	}
 	
 	func addEntry(label: String = "", value: CGFloat) {

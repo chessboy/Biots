@@ -26,7 +26,7 @@ final class WorldScene: OKScene {
     	
     	// Set the name of this scene at the earliest override-able point, for logging purposes.
     	
-    	self.name = "BioGenesis World Scene"
+    	self.name = "Biots World Scene"
     	super.sceneDidLoad()
 		
 //		if let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
@@ -62,7 +62,7 @@ final class WorldScene: OKScene {
 			ContactComponent.self,
 	    	WorldComponent.self,
 			BrainComponent.self,
-			CellComponent.self,
+			BiotComponent.self,
     	]
 	}
 	
@@ -137,9 +137,9 @@ final class WorldScene: OKScene {
 	
 	func dumpGenomes() {
 		print("\n[")
-		var genomes = self.entities.filter({ $0.component(ofType: CellComponent.self) != nil }).map({$0.component(ofType: CellComponent.self)}).map({$0?.genome})
-		if let unbornCells = (entity?.component(ofType: WorldComponent.self))?.unbornGenomes {
-			let unborn = Array(unbornCells.suffix(10))
+		var genomes = self.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).map({$0.component(ofType: BiotComponent.self)}).map({$0?.genome})
+		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.unbornGenomes {
+			let unborn = Array(unbornBiots.suffix(10))
 			genomes.append(contentsOf: unborn)
 		}
 		
@@ -157,8 +157,8 @@ final class WorldScene: OKScene {
 		print("]\n")
 	}
 	
-	func cellEntityById(_ id: String) -> CellComponent? {
-		return (entities.filter({ $0.component(ofType: CellComponent.self)?.genome.id == id }).first as? OKEntity)?.component(ofType: CellComponent.self)
+	func biotEntityById(_ id: String) -> BiotComponent? {
+		return (entities.filter({ $0.component(ofType: BiotComponent.self)?.genome.id == id }).first as? OKEntity)?.component(ofType: BiotComponent.self)
 	}
 	
 	func trackEntity(_ trackedEntity: OKEntity) {
@@ -181,9 +181,9 @@ final class WorldScene: OKScene {
 	}
 	
 	func selectMostFit() {
-		if let cellComponents = entities(withName: "cell")?.map({$0.component(ofType: CellComponent.self)}) as? [CellComponent] {
-			if let mostFit = cellComponents.sorted(by: { (cell1, cell2) -> Bool in
-				return cell1.health > cell2.health
+		if let biotComponents = entities(withName: "biot")?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
+			if let mostFit = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
+				return biot1.health > biot2.health
 			}).first, let mostFitEntity = mostFit.entity as? OKEntity {
 				trackEntity(mostFitEntity)
 			}
@@ -207,30 +207,30 @@ final class WorldScene: OKScene {
 				
 		case Keycode.r:
 			if shiftDown, commandDown, Constants.Env.randomRun {
-				entities(withName: "cell")?.forEach({ cellEntity in
-					removeEntity(cellEntity)
+				entities(withName: "biot")?.forEach({ biotEntity in
+					removeEntity(biotEntity)
 				})
 			}
 			break
 						
 		case Keycode.h:
 			if shiftDown {
-				globalDataComponent.showCellHealthDetails.toggle()
+				globalDataComponent.showBiotHealthDetails.toggle()
 			} else {
-				globalDataComponent.showCellHealth.toggle()
+				globalDataComponent.showBiotHealth.toggle()
 			}
 			break
 			
 		case Keycode.v:
 			if shiftDown {
-				globalDataComponent.showCellVisionTracer.toggle()
+				globalDataComponent.showBiotVisionTracer.toggle()
 			} else {
-				globalDataComponent.showCellVision.toggle()
+				globalDataComponent.showBiotVision.toggle()
 			}
 			break
 
 		case Keycode.t:
-			globalDataComponent.showCellThrust.toggle()
+			globalDataComponent.showBiotThrust.toggle()
 			break
 
 		case Keycode.a:
@@ -240,7 +240,7 @@ final class WorldScene: OKScene {
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
-				entities(withName: "cell")?.forEach({ entity in
+				entities(withName: "biot")?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
@@ -264,13 +264,13 @@ final class WorldScene: OKScene {
 			break
 
 		case Keycode.e:
-			globalDataComponent.showCellEyeSpots.toggle()
-			self.entities.filter { $0.component(ofType: CellComponent.self) != nil }.forEach({ cell in
-				if globalDataComponent.showCellEyeSpots {
-					cell.addComponent(EyesComponent())
+			globalDataComponent.showBiotEyeSpots.toggle()
+			self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
+				if globalDataComponent.showBiotEyeSpots {
+					biot.addComponent(EyesComponent())
 				}
 				else {
-					cell.removeComponent(ofType: EyesComponent.self)
+					biot.removeComponent(ofType: EyesComponent.self)
 				}
 			})
 			
@@ -284,15 +284,15 @@ final class WorldScene: OKScene {
 				return
 			}
 			else {
-				globalDataComponent.showCellStats.toggle()
-				self.entities.filter { $0.component(ofType: CellComponent.self) != nil }.forEach({ cell in
-					if globalDataComponent.showCellStats {
-						if cell.component(ofType: EntityStatsComponent.self) == nil {
-							cell.addComponent(EntityStatsComponent())
+				globalDataComponent.showBiotStats.toggle()
+				self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
+					if globalDataComponent.showBiotStats {
+						if biot.component(ofType: EntityStatsComponent.self) == nil {
+							biot.addComponent(EntityStatsComponent())
 						}
 					}
 					else {
-						cell.removeComponent(ofType: EntityStatsComponent.self)
+						biot.removeComponent(ofType: EntityStatsComponent.self)
 					}
 				})
 			}
@@ -327,16 +327,16 @@ final class WorldScene: OKScene {
 			}
 			
 		case Keycode.tab:
-			if let cells = entities(withName: "cell"), let firstCell = cells.first {
+			if let biots = entities(withName: "biot"), let firstBiot = biots.first {
 				if trackedEntity == nil {
-					trackEntity(firstCell)
+					trackEntity(firstBiot)
 				}
-				else if cells.count > 1 {
-					if let index = cells.firstIndex(of: trackedEntity!) {
+				else if biots.count > 1 {
+					if let index = biots.firstIndex(of: trackedEntity!) {
 
 						let direction = shiftDown ? -1 : 1
-						let nextIndex = (index + direction + cells.count) % cells.count
-						trackEntity(cells[nextIndex])
+						let nextIndex = (index + direction + biots.count) % biots.count
+						trackEntity(biots[nextIndex])
 					}
 				}
 			}
@@ -349,14 +349,14 @@ final class WorldScene: OKScene {
 
 		case Keycode.k:
 			if commandDown {
-				var cells = OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: CellComponent.self) }) ?? []
-				cells = cells.filter({ $0.health < 0.25 })
-				cells.forEach({ $0.kill() })
+				var biots = OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: BiotComponent.self) }) ?? []
+				biots = biots.filter({ $0.health < 0.25 })
+				biots.forEach({ $0.kill() })
 				return
 			}
 			
-			if trackedEntity != nil, let cell = trackedEntity?.component(ofType: CellComponent.self) {
-				cell.kill()				
+			if trackedEntity != nil, let biot = trackedEntity?.component(ofType: BiotComponent.self) {
+				biot.kill()				
 				if shiftDown {
 					selectMostFit()
 				}
@@ -455,61 +455,61 @@ final class WorldScene: OKScene {
 			return
 		}
 				
-		if let cellNode = nodes(at: point).filter({$0.name == "cell"}).first {
-			//print(cellNode.position)
+		if let biotNode = nodes(at: point).filter({$0.name == "biot"}).first {
+			//print(biotNode.position)
 			
-			if let selectedEntity = entities.filter({ $0.node == cellNode }).first as? OKEntity,
-				let cellComponent = selectedEntity.component(ofType: CellComponent.self) {
+			if let selectedEntity = entities.filter({ $0.node == biotNode }).first as? OKEntity,
+				let biotComponent = selectedEntity.component(ofType: BiotComponent.self) {
 				
-				if cellComponent.isInteracting, clickCount == 2 {
-					cellComponent.isInteracting = false
+				if biotComponent.isInteracting, clickCount == 2 {
+					biotComponent.isInteracting = false
 					return
 				}
 				
 				if shiftDown, commandDown, Constants.Env.randomRun {
-					entities(withName: "cell")?.forEach({ cellEntity in
-						removeEntity(cellEntity)
+					entities(withName: "biot")?.forEach({ biotEntity in
+						removeEntity(biotEntity)
 					})
 					
 					let worldRadius = Constants.Env.worldRadius
 
-					for _ in 1...Constants.Env.minimumCells {
+					for _ in 1...Constants.Env.minimumBiots {
 						let distance = CGFloat.random(in: Constants.Env.worldRadius * 0.05...worldRadius * 0.9)
 						let position = CGPoint.randomDistance(distance)
-						let clonedGenome = Genome(parent: cellComponent.genome)
-						let childCell = CellComponent.createCell(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: mainFountain))
-						addEntity(childCell)
+						let clonedGenome = Genome(parent: biotComponent.genome)
+						let childBiot = BiotComponent.createBiot(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: mainFountain))
+						addEntity(childBiot)
 					}
 				}
 				else if commandDown, let cameraComponent = entity?.component(ofType: CameraComponent.self) {
 					if cameraComponent.nodeToTrack == selectedEntity.node {
 						stopTrackingEntity()
 					}
-					else if let entity = cellComponent.entity as? OKEntity {
+					else if let entity = biotComponent.entity as? OKEntity {
 						trackEntity(entity)
 					}
 				}
 				else if rightMouse {
-					cellComponent.kill()
+					biotComponent.kill()
 				}
 				else if shiftDown {
-					if let jsonData = try? cellComponent.genome.encodedToJSON() {
+					if let jsonData = try? biotComponent.genome.encodedToJSON() {
 						if let jsonString = String(data: jsonData, encoding: .utf8) {
 							print("\(jsonString),")
 						}
 					}
-					cellComponent.mated(otherGenome: cellComponent.genome)
-					cellComponent.spawnChildren(selfReplication: true)
-					cellComponent.foodEnergy = cellComponent.maximumEnergy
-					cellComponent.hydration = Constants.Cell.maximumHydration
+					biotComponent.mated(otherGenome: biotComponent.genome)
+					biotComponent.spawnChildren(selfReplication: true)
+					biotComponent.foodEnergy = biotComponent.maximumEnergy
+					biotComponent.hydration = Constants.Biot.maximumHydration
 					return
 				}
-				else if !rightMouse, let cellNode = nodes(at: point).filter({$0.name == "cell"}).first,
-						let selectedEntity = entities.filter({ $0.node == cellNode }).first as? OKEntity,
-						let cellComponent = selectedEntity.component(ofType: CellComponent.self) {
-					draggingNode = cellNode
-					lastDragPoint = point - cellNode.position
-					cellComponent.isInteracting = true
+				else if !rightMouse, let biotNode = nodes(at: point).filter({$0.name == "biot"}).first,
+						let selectedEntity = entities.filter({ $0.node == biotNode }).first as? OKEntity,
+						let biotComponent = selectedEntity.component(ofType: BiotComponent.self) {
+					draggingNode = biotNode
+					lastDragPoint = point - biotNode.position
+					biotComponent.isInteracting = true
 				}
 			}
 		}

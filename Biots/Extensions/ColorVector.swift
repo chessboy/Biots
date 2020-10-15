@@ -1,6 +1,6 @@
 //
 //  ColorVector.swift
-//  SwiftBots
+//  Biots
 //
 //  Created by Robert Silverman on 9/9/18.
 //  Copyright © 2018 fep. All rights reserved.

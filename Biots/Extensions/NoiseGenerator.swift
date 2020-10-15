@@ -1,6 +1,6 @@
 //
 //  NoiseGenerator.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/19/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  NoiseComponent.swift
-//  Cells
+//  Biots
 //
 //  Created by Robert Silverman on 5/16/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.

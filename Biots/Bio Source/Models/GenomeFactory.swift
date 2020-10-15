@@ -1,6 +1,6 @@
 //
 //  GenomeFactory.swift
-//  SwiftBots
+//  Biots
 //
 //  Created by Robert Silverman on 10/3/18.
 //  Copyright © 2018 fep. All rights reserved.

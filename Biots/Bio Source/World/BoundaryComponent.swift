@@ -1,6 +1,6 @@
 //
 //  BoundaryComponent.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/14/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -12,7 +12,7 @@ import OctopusKit
 
 final class BoundaryComponent: OKComponent {
 	
-	static let strokeWidth = Constants.Cell.radius * 2
+	static let strokeWidth = Constants.Biot.radius * 2
 
 	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,

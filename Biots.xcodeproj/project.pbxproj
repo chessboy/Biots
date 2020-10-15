@@ -61,7 +61,7 @@
 		D47386EA2442CA0F0022E760 /* CGPointMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386E92442CA0F0022E760 /* CGPointMath.swift */; };
 		D47386EF2442CB510022E760 /* CGConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386EE2442CB510022E760 /* CGConstants.swift */; };
 		D47386F22442CB9E0022E760 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386F12442CB9E0022E760 /* Constants.swift */; };
-		D47387052442DEA50022E760 /* CellComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387042442DEA50022E760 /* CellComponent.swift */; };
+		D47387052442DEA50022E760 /* BiotComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387042442DEA50022E760 /* BiotComponent.swift */; };
 		D47387332443748B0022E760 /* NeuralNetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387322443748B0022E760 /* NeuralNetComponent.swift */; };
 		D4738757244389C60022E760 /* CGFloatMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4738756244389C60022E760 /* CGFloatMath.swift */; };
 		D47D71942447F5950079D2F1 /* RunningValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D71932447F5950079D2F1 /* RunningValue.swift */; };
@@ -166,7 +166,7 @@
 		D47386E92442CA0F0022E760 /* CGPointMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGPointMath.swift; sourceTree = "<group>"; };
 		D47386EE2442CB510022E760 /* CGConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGConstants.swift; sourceTree = "<group>"; };
 		D47386F12442CB9E0022E760 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		D47387042442DEA50022E760 /* CellComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellComponent.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		D47387042442DEA50022E760 /* BiotComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotComponent.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		D47387322443748B0022E760 /* NeuralNetComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeuralNetComponent.swift; sourceTree = "<group>"; };
 		D4738756244389C60022E760 /* CGFloatMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatMath.swift; sourceTree = "<group>"; };
 		D47D71932447F5950079D2F1 /* RunningValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningValue.swift; sourceTree = "<group>"; };
@@ -248,10 +248,10 @@
 			path = "UI Components";
 			sourceTree = "<group>";
 		};
-		D42CE73424442E130049854C /* Bio Components */ = {
+		D42CE73424442E130049854C /* Biot Components */ = {
 			isa = PBXGroup;
 			children = (
-				D47387042442DEA50022E760 /* CellComponent.swift */,
+				D47387042442DEA50022E760 /* BiotComponent.swift */,
 				D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */,
 				D41B7A52248455170059A40B /* Resource */,
 				D44E6066245272C500694462 /* Vision */,
@@ -259,7 +259,7 @@
 				D4D18D9C2447ADBB00BF92FA /* StatsNode.swift */,
 				D4465B9E250F20250074D864 /* ThrusterNode.swift */,
 			);
-			path = "Bio Components";
+			path = "Biot Components";
 			sourceTree = "<group>";
 		};
 		D44E6066245272C500694462 /* Vision */ = {
@@ -441,7 +441,7 @@
 				D47386F12442CB9E0022E760 /* Constants.swift */,
 				D4D18D97244799F500BF92FA /* Models */,
 				D4D18D8F2446BC8200BF92FA /* World */,
-				D42CE73424442E130049854C /* Bio Components */,
+				D42CE73424442E130049854C /* Biot Components */,
 				D42CE73324442DFE0049854C /* UI Components */,
 			);
 			path = "Bio Source";
@@ -665,7 +665,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D47386DD2442BEDB0022E760 /* TitleEffectsComponent.swift in Sources */,
-				D47387052442DEA50022E760 /* CellComponent.swift in Sources */,
+				D47387052442DEA50022E760 /* BiotComponent.swift in Sources */,
 				D47386912442BD6C0022E760 /* Dataset.swift in Sources */,
 				D47386DE2442BEDB0022E760 /* 3 - MyGameViewController.swift in Sources */,
 				D4229EDF250A7CE600DE29CE /* RetinaNode.swift in Sources */,

@@ -1,6 +1,6 @@
 //
 //  BrainComponent.swift
-//  BioGenesis
+//  Biots
 //
 //  Created by Robert Silverman on 4/15/20.
 //  Copyright © 2020 Rob Silverman. All rights reserved.
@@ -16,7 +16,7 @@ final class BrainComponent: OKComponent {
 	var frame = Int.random(100)
 	var senses: Senses!
 	
-	lazy var cellComponent = coComponent(CellComponent.self)
+	lazy var biotComponent = coComponent(BiotComponent.self)
 	lazy var neuralNetComponent = coComponent(NeuralNetComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
 
@@ -28,8 +28,8 @@ final class BrainComponent: OKComponent {
 	
 	override func update(deltaTime seconds: TimeInterval) {
     				
-		if senses == nil, let cell = cellComponent {
-			senses = Senses(inputCount: cell.genome.inputCount)
+		if senses == nil, let biot = biotComponent {
+			senses = Senses(inputCount: biot.genome.inputCount)
 		}
 		
 		frame += 1
@@ -41,7 +41,7 @@ final class BrainComponent: OKComponent {
 		}
 		
 		guard
-			let cell = cellComponent,
+			let biot = biotComponent,
 			let neuralNet = neuralNetComponent,
 			let vision = visionComponent
 			else { return }
@@ -49,19 +49,19 @@ final class BrainComponent: OKComponent {
 		vision.detect()
 		
 		senses.setSenses(
-			health: Float(cell.health),
-			energy: Float(cell.foodEnergy / cell.maximumEnergy),
-			hydration: Float(cell.hydration / Constants.Cell.maximumHydration),
-			stamina: Float(cell.stamina),
-			pregnant: cell.isPregnant ? 1 : 0,
-			onTopOfFood: cell.isOnTopOfFood ? 1 : 0,
-			onTopOfWater: cell.isOnTopOfWater ? 1 : 0,
-			clockShort: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate),
-			clockLong: Int.timerForAge(Int(cell.age), clockRate: Constants.Cell.clockRate*3),
-			age: Float(cell.age/Constants.Cell.maximumAge)
+			health: Float(biot.health),
+			energy: Float(biot.foodEnergy / biot.maximumEnergy),
+			hydration: Float(biot.hydration / Constants.Biot.maximumHydration),
+			stamina: Float(biot.stamina),
+			pregnant: biot.isPregnant ? 1 : 0,
+			onTopOfFood: biot.isOnTopOfFood ? 1 : 0,
+			onTopOfWater: biot.isOnTopOfWater ? 1 : 0,
+			clockShort: Int.timerForAge(Int(biot.age), clockRate: Constants.Biot.clockRate),
+			clockLong: Int.timerForAge(Int(biot.age), clockRate: Constants.Biot.clockRate*3),
+			age: Float(biot.age/Constants.Biot.maximumAge)
 		)
 		
-//		if let genome = GenomeFactory.shared.genomes.first, cell.genome.id.starts(with: genome.id) {
+//		if let genome = GenomeFactory.shared.genomes.first, biot.genome.id.starts(with: genome.id) {
 //			print(senses)
 //		}
 
@@ -104,7 +104,7 @@ final class BrainComponent: OKComponent {
 			newHeading = zRotation
 		}
 		else {
-			let axisWidth = Constants.Cell.radius * 2
+			let axisWidth = Constants.Biot.radius * 2
 			let R = axisWidth * (left + right) / (2 * (right - left))
 			let wd = (right - left) / axisWidth
 
@@ -119,8 +119,8 @@ final class BrainComponent: OKComponent {
 	func action() {
 		
 		guard
-			let cell = cellComponent,
-			let node = entityNode as? SKShapeNode, !cell.isInteracting else { return }
+			let biot = biotComponent,
+			let node = entityNode as? SKShapeNode, !biot.isInteracting else { return }
 	
 		var thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
 		let dampening = (1 - (senses.onTopOfWater.average.cgFloat * 0.2))
@@ -142,39 +142,39 @@ final class BrainComponent: OKComponent {
 		
 		// movement energy expenditure
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
-		cell.incurEnergyChange(-Constants.Cell.perMovementEnergyCost * forceExerted)
-		cell.incurHydrationChange(-Constants.Cell.perMovementHydrationCost * forceExerted)
+		biot.incurEnergyChange(-Constants.Biot.perMovementEnergyCost * forceExerted)
+		biot.incurHydrationChange(-Constants.Biot.perMovementHydrationCost * forceExerted)
 
 		if speedBoost > 1 {
-			cell.incurEnergyChange(-Constants.Cell.perMovementEnergyCost)
-			cell.incurHydrationChange(-Constants.Cell.perMovementHydrationCost)
-			cell.incurStaminaChange(Constants.Cell.speedBoostStaminaCost)
+			biot.incurEnergyChange(-Constants.Biot.perMovementEnergyCost)
+			biot.incurHydrationChange(-Constants.Biot.perMovementHydrationCost)
+			biot.incurStaminaChange(Constants.Biot.speedBoostStaminaCost)
 		}
 		
 		if armor > 0 {
-			cell.incurEnergyChange(-Constants.Cell.armorEnergyCost * armor)
+			biot.incurEnergyChange(-Constants.Biot.armorEnergyCost * armor)
 		}
 		
 		// healing
-		if cell.stamina < 1 {
-			let staminaRecovery = -Constants.Cell.perMovementRecovery * (1 - (forceExerted/3))
-			// print("cell.stamina: \(cell.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
-			cell.incurStaminaChange(staminaRecovery)
+		if biot.stamina < 1 {
+			let staminaRecovery = -Constants.Biot.perMovementRecovery * (1 - (forceExerted/3))
+			// print("biot.stamina: \(biot.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
+			biot.incurStaminaChange(staminaRecovery)
 		}
         
-		if Constants.Cell.adjustBodyColor {
+		if Constants.Biot.adjustBodyColor {
 			let minRGB: CGFloat = 0.25
 			let skColor = inference.color.average.skColor
 			let adjustedRed = skColor.redComponent.clamped(minRGB, 1)
 			let adjustedGreen = skColor.greenComponent.clamped(minRGB, 1)
 			let adjustedBlue = skColor.blueComponent.clamped(minRGB, 1)
-			let alpha: CGFloat = Constants.Env.graphics.blendMode != .replace ? (cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667) : 1
+			let alpha: CGFloat = Constants.Env.graphics.blendMode != .replace ? (biot.age > Constants.Biot.maximumAge * 0.85 ? 0.33 : 0.667) : 1
 			let adjustedColor = SKColor(red: adjustedRed, green: adjustedGreen, blue: adjustedBlue, alpha: alpha)
 			node.fillColor = adjustedColor
 		}
 		else {
 			if Constants.Env.graphics.blendMode != .replace {
-				node.fillColor = inference.color.average.skColor.withAlpha(cell.age > Constants.Cell.maximumAge * 0.85 ? 0.33 : 0.667)
+				node.fillColor = inference.color.average.skColor.withAlpha(biot.age > Constants.Biot.maximumAge * 0.85 ? 0.33 : 0.667)
 			} else {
 				node.fillColor = inference.color.average.skColor
 			}
