@@ -8,7 +8,7 @@
 
 import Foundation
 
-// Data load from bundled file
+// load data as `codeable` objects from a bundled file
 func loadJsonFromFile<T: Decodable>(_ filename: String) -> T {
 	let data: Data
 	

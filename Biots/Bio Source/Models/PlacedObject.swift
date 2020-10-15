@@ -14,7 +14,7 @@ enum PlaceableType: Int, Codable {
 	case water
 }
 
-struct NodePlacement: Codable {
+struct PlacedObject: Codable {
 	var placeableType: PlaceableType
 	var angle: Float
 	var percentFromCenter: Float
@@ -22,9 +22,9 @@ struct NodePlacement: Codable {
 }
 
 extension SKNode {
-	func createNodePlacement(placeableType: PlaceableType, radius: CGFloat) -> NodePlacement {
+	func createPlacedObject(placeableType: PlaceableType, radius: CGFloat) -> PlacedObject {
 		let percentFromCenter = position.distance(to: .zero) / Constants.Env.worldRadius
 		let percentRadius = radius / Constants.Env.worldRadius
-		return NodePlacement(placeableType: placeableType, angle: position.angle.float, percentFromCenter: percentFromCenter.float, percentRadius: percentRadius.float)
+		return PlacedObject(placeableType: placeableType, angle: position.angle.float, percentFromCenter: percentFromCenter.float, percentRadius: percentRadius.float)
 	}
 }

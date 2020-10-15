@@ -24,11 +24,9 @@
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
-		D45F0E6B253282360067912C /* NodePlacement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* NodePlacement.swift */; };
-		D45F0E6F2532BFD60067912C /* less-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E6E2532BFD60067912C /* less-placements.json */; };
-		D45F0E782532C7520067912C /* more-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* more-placements.json */; };
+		D45F0E6B253282360067912C /* PlacedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* PlacedObject.swift */; };
+		D45F0E782532C7520067912C /* more-placed-objects.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* more-placed-objects.json */; };
 		D45F0E7E2532C8E60067912C /* zoo-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E7D2532C8E60067912C /* zoo-01.json */; };
-		D45F0E822532CC3A0067912C /* medium-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E812532CC3A0067912C /* medium-placements.json */; };
 		D45F0E862532CE0F0067912C /* zoo-02.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E852532CE0F0067912C /* zoo-02.json */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
@@ -75,9 +73,8 @@
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
 		D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */ = {isa = PBXBuildFile; fileRef = D490039F2524E6A6002DA67C /* empty-zoo.json */; };
 		D49880462517D69400015724 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D49880452517D69400015724 /* README.md */; };
-		D4A85D602533CAEB00F4861C /* empty-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D5F2533CAEB00F4861C /* empty-placements.json */; };
-		D4A85D662533CCB700F4861C /* new-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D652533CCB700F4861C /* new-placements.json */; };
-		D4A85D6E2533D4A800F4861C /* tiny-placements.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D6D2533D4A800F4861C /* tiny-placements.json */; };
+		D4A85D602533CAEB00F4861C /* empty-placed-object.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D5F2533CAEB00F4861C /* empty-placed-object.json */; };
+		D4A85D6E2533D4A800F4861C /* less-placed-objects.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D6D2533D4A800F4861C /* less-placed-objects.json */; };
 		D4A85D802534B7B700F4861C /* zoo-03.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D7F2534B7B700F4861C /* zoo-03.json */; };
 		D4A85D882535165B00F4861C /* zoo-05.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D872535165B00F4861C /* zoo-05.json */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
@@ -98,8 +95,6 @@
 		E83A6C042534F9B4008718EE /* zoo-04.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C032534F9B4008718EE /* zoo-04.json */; };
 		E83A6C0A253608E5008718EE /* zoo-06.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C09253608E5008718EE /* zoo-06.json */; };
 		E83A6C0E25368450008718EE /* zoo-07.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C0D25368450008718EE /* zoo-07.json */; };
-		E83A6C122536D0B5008718EE /* zoo-alt-01.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C112536D0B5008718EE /* zoo-alt-01.json */; };
-		E83A6C1C2537579A008718EE /* zoo-alt-02.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C1B2537579A008718EE /* zoo-alt-02.json */; };
 		E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* zoo-evolved.json */; };
 /* End PBXBuildFile section */
 
@@ -129,11 +124,9 @@
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
-		D45F0E6A253282360067912C /* NodePlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodePlacement.swift; sourceTree = "<group>"; };
-		D45F0E6E2532BFD60067912C /* less-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "less-placements.json"; sourceTree = "<group>"; };
-		D45F0E772532C7520067912C /* more-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "more-placements.json"; sourceTree = "<group>"; };
+		D45F0E6A253282360067912C /* PlacedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacedObject.swift; sourceTree = "<group>"; };
+		D45F0E772532C7520067912C /* more-placed-objects.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "more-placed-objects.json"; sourceTree = "<group>"; };
 		D45F0E7D2532C8E60067912C /* zoo-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-01.json"; sourceTree = "<group>"; };
-		D45F0E812532CC3A0067912C /* medium-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "medium-placements.json"; sourceTree = "<group>"; };
 		D45F0E852532CE0F0067912C /* zoo-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-02.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -185,9 +178,8 @@
 		D490039F2524E6A6002DA67C /* empty-zoo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "empty-zoo.json"; sourceTree = "<group>"; };
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
-		D4A85D5F2533CAEB00F4861C /* empty-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "empty-placements.json"; sourceTree = "<group>"; };
-		D4A85D652533CCB700F4861C /* new-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "new-placements.json"; sourceTree = "<group>"; };
-		D4A85D6D2533D4A800F4861C /* tiny-placements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "tiny-placements.json"; sourceTree = "<group>"; };
+		D4A85D5F2533CAEB00F4861C /* empty-placed-object.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "empty-placed-object.json"; sourceTree = "<group>"; };
+		D4A85D6D2533D4A800F4861C /* less-placed-objects.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "less-placed-objects.json"; sourceTree = "<group>"; };
 		D4A85D7F2534B7B700F4861C /* zoo-03.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-03.json"; sourceTree = "<group>"; };
 		D4A85D872535165B00F4861C /* zoo-05.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-05.json"; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
@@ -212,8 +204,6 @@
 		E83A6C032534F9B4008718EE /* zoo-04.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-04.json"; sourceTree = "<group>"; };
 		E83A6C09253608E5008718EE /* zoo-06.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-06.json"; sourceTree = "<group>"; };
 		E83A6C0D25368450008718EE /* zoo-07.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-07.json"; sourceTree = "<group>"; };
-		E83A6C112536D0B5008718EE /* zoo-alt-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-alt-01.json"; sourceTree = "<group>"; };
-		E83A6C1B2537579A008718EE /* zoo-alt-02.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-alt-02.json"; sourceTree = "<group>"; };
 		E83A6C2B2537EAC4008718EE /* zoo-evolved.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-evolved.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -285,12 +275,9 @@
 		D45F0E722532BFE80067912C /* Placements */ = {
 			isa = PBXGroup;
 			children = (
-				D4A85D5F2533CAEB00F4861C /* empty-placements.json */,
-				D45F0E6E2532BFD60067912C /* less-placements.json */,
-				D45F0E772532C7520067912C /* more-placements.json */,
-				D45F0E812532CC3A0067912C /* medium-placements.json */,
-				D4A85D652533CCB700F4861C /* new-placements.json */,
-				D4A85D6D2533D4A800F4861C /* tiny-placements.json */,
+				D4A85D5F2533CAEB00F4861C /* empty-placed-object.json */,
+				D4A85D6D2533D4A800F4861C /* less-placed-objects.json */,
+				D45F0E772532C7520067912C /* more-placed-objects.json */,
 			);
 			path = Placements;
 			sourceTree = "<group>";
@@ -463,6 +450,7 @@
 		D47386ED2442CB200022E760 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D47386E52442C6F00022E760 /* CGAffineTransform.swift */,
 				D47386EE2442CB510022E760 /* CGConstants.swift */,
 				D4738756244389C60022E760 /* CGFloatMath.swift */,
@@ -496,8 +484,6 @@
 				D4A85D872535165B00F4861C /* zoo-05.json */,
 				E83A6C09253608E5008718EE /* zoo-06.json */,
 				E83A6C0D25368450008718EE /* zoo-07.json */,
-				E83A6C112536D0B5008718EE /* zoo-alt-01.json */,
-				E83A6C1B2537579A008718EE /* zoo-alt-02.json */,
 				E83A6C2B2537EAC4008718EE /* zoo-evolved.json */,
 			);
 			path = Zoo;
@@ -551,10 +537,9 @@
 			children = (
 				D45F0E722532BFE80067912C /* Placements */,
 				D49880422517D0AB00015724 /* Zoo */,
-				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D47D719524489C450079D2F1 /* GenomeFactory.swift */,
-				D45F0E6A253282360067912C /* NodePlacement.swift */,
+				D45F0E6A253282360067912C /* PlacedObject.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -646,25 +631,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4A85D602533CAEB00F4861C /* empty-placements.json in Resources */,
+				D4A85D602533CAEB00F4861C /* empty-placed-object.json in Resources */,
 				D49880462517D69400015724 /* README.md in Resources */,
 				D45F0E7E2532C8E60067912C /* zoo-01.json in Resources */,
-				D45F0E6F2532BFD60067912C /* less-placements.json in Resources */,
-				E83A6C1C2537579A008718EE /* zoo-alt-02.json in Resources */,
 				E83A6C0A253608E5008718EE /* zoo-06.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D45F0E862532CE0F0067912C /* zoo-02.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
-				D4A85D6E2533D4A800F4861C /* tiny-placements.json in Resources */,
+				D4A85D6E2533D4A800F4861C /* less-placed-objects.json in Resources */,
 				D4A85D802534B7B700F4861C /* zoo-03.json in Resources */,
 				E83A6C042534F9B4008718EE /* zoo-04.json in Resources */,
-				E83A6C122536D0B5008718EE /* zoo-alt-01.json in Resources */,
-				D45F0E782532C7520067912C /* more-placements.json in Resources */,
+				D45F0E782532C7520067912C /* more-placed-objects.json in Resources */,
 				E83A6C0E25368450008718EE /* zoo-07.json in Resources */,
-				D45F0E822532CC3A0067912C /* medium-placements.json in Resources */,
 				D4A85D882535165B00F4861C /* zoo-05.json in Resources */,
-				D4A85D662533CCB700F4861C /* new-placements.json in Resources */,
 				E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */,
 				D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */,
 			);
@@ -734,7 +714,7 @@
 				D4E4BA6025008EEA0044EC48 /* ZapperComponent.swift in Sources */,
 				D44E60682452740400694462 /* ContactComponent.swift in Sources */,
 				D47386D52442BEDB0022E760 /* 5A - TitleState.swift in Sources */,
-				D45F0E6B253282360067912C /* NodePlacement.swift in Sources */,
+				D45F0E6B253282360067912C /* PlacedObject.swift in Sources */,
 				D4C6FB9F2453A84C00A0614F /* Senses.swift in Sources */,
 				D47386E42442C6B20022E760 /* CGGeometry.swift in Sources */,
 				D47386E62442C6F00022E760 /* CGAffineTransform.swift in Sources */,

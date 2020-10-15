@@ -16,14 +16,14 @@ struct Constants {
 		
 		static let zooFilename = "zoo-evolved.json"
 		static let mixinZooFilename: String? = nil
-		static let placementsFilename = "more-placements.json"
+		static let placementsFilename = "more-placed-objects.json"
 
 		static let debugMode = false
 		static let randomRun = false
 		static let easyMode = false
 		
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 13) // 10-15k food works well here
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 13) // 10-15k food works well here for highly-evolved biots
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3

@@ -107,17 +107,17 @@ final class WorldScene: OKScene {
 	func dumpPlaceables() {
 		print("\n[")
 		
-		var nodePlacements: [NodePlacement] = []
+		var nodePlacements: [PlacedObject] = []
 		
 		for component in entities(withName: "zapper")?.map({$0.component(ofType: ZapperComponent.self)}) as? [ZapperComponent] ?? [] {
 			if let node = component.entityNode {
-				nodePlacements.append(node.createNodePlacement(placeableType: .zapper, radius: component.radius))
+				nodePlacements.append(node.createPlacedObject(placeableType: .zapper, radius: component.radius))
 			}
 		}
 		
 		for component in entities(withName: "water")?.map({$0.component(ofType: WaterSourceComponent.self)}) as? [WaterSourceComponent] ?? [] {
 			if let node = component.entityNode {
-				nodePlacements.append(node.createNodePlacement(placeableType: .water, radius: component.radius))
+				nodePlacements.append(node.createPlacedObject(placeableType: .water, radius: component.radius))
 			}
 		}
 
