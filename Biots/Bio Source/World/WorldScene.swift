@@ -107,25 +107,25 @@ final class WorldScene: OKScene {
 	func dumpPlaceables() {
 		print("\n[")
 		
-		var nodePlacements: [PlacedObject] = []
+		var placedObjects: [PlacedObject] = []
 		
-		for component in entities(withName: "zapper")?.map({$0.component(ofType: ZapperComponent.self)}) as? [ZapperComponent] ?? [] {
+		for component in entities(withName: Constants.NodeName.zapper)?.map({$0.component(ofType: ZapperComponent.self)}) as? [ZapperComponent] ?? [] {
 			if let node = component.entityNode {
-				nodePlacements.append(node.createPlacedObject(placeableType: .zapper, radius: component.radius))
+				placedObjects.append(node.createPlacedObject(placeableType: .zapper, radius: component.radius))
 			}
 		}
 		
-		for component in entities(withName: "water")?.map({$0.component(ofType: WaterSourceComponent.self)}) as? [WaterSourceComponent] ?? [] {
+		for component in entities(withName: Constants.NodeName.water)?.map({$0.component(ofType: WaterSourceComponent.self)}) as? [WaterSourceComponent] ?? [] {
 			if let node = component.entityNode {
-				nodePlacements.append(node.createPlacedObject(placeableType: .water, radius: component.radius))
+				placedObjects.append(node.createPlacedObject(placeableType: .water, radius: component.radius))
 			}
 		}
 
 		var index = 0
-		for placement in nodePlacements {
-			if let jsonData = try? placement.encodedToJSON() {
+		for placedObject in placedObjects {
+			if let jsonData = try? placedObject.encodedToJSON() {
 				if let jsonString = String(data: jsonData, encoding: .utf8) {
-					let delim = index == nodePlacements.count-1 ? "" : ","
+					let delim = index == placedObjects.count-1 ? "" : ","
 					print("\(jsonString)\(delim)")
 				}
 			}
@@ -181,7 +181,7 @@ final class WorldScene: OKScene {
 	}
 	
 	func selectMostFit() {
-		if let biotComponents = entities(withName: "biot")?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
+		if let biotComponents = entities(withName: Constants.NodeName.biot)?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
 			if let mostFit = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
 				return biot1.health > biot2.health
 			}).first, let mostFitEntity = mostFit.entity as? OKEntity {
@@ -207,7 +207,7 @@ final class WorldScene: OKScene {
 				
 		case Keycode.r:
 			if shiftDown, commandDown, Constants.Env.randomRun {
-				entities(withName: "biot")?.forEach({ biotEntity in
+				entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
 					removeEntity(biotEntity)
 				})
 			}
@@ -236,27 +236,27 @@ final class WorldScene: OKScene {
 		case Keycode.a:
 			if commandDown {
 				globalDataComponent.hideSpriteNodes.toggle()
-				entities(withName: "algae")?.forEach({ entity in
+				entities(withName: Constants.NodeName.algae)?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
-				entities(withName: "biot")?.forEach({ entity in
+				entities(withName: Constants.NodeName.biot)?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
-				entities(withName: "wall")?.forEach({ entity in
+				entities(withName: Constants.NodeName.wall)?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
-				entities(withName: "zapper")?.forEach({ entity in
+				entities(withName: Constants.NodeName.zapper)?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 
-				entities(withName: "water")?.forEach({ entity in
+				entities(withName: Constants.NodeName.water)?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 
-				scene?.children.filter({$0.name == "grid"}).first?.isHidden = globalDataComponent.hideSpriteNodes
+				scene?.children.filter({$0.name == Constants.NodeName.grid }).first?.isHidden = globalDataComponent.hideSpriteNodes
 				return
 			}
 			
@@ -327,7 +327,7 @@ final class WorldScene: OKScene {
 			}
 			
 		case Keycode.tab:
-			if let biots = entities(withName: "biot"), let firstBiot = biots.first {
+			if let biots = entities(withName: Constants.NodeName.biot), let firstBiot = biots.first {
 				if trackedEntity == nil {
 					trackEntity(firstBiot)
 				}
@@ -455,7 +455,7 @@ final class WorldScene: OKScene {
 			return
 		}
 				
-		if let biotNode = nodes(at: point).filter({$0.name == "biot"}).first {
+		if let biotNode = nodes(at: point).filter({$0.name == Constants.NodeName.biot}).first {
 			//print(biotNode.position)
 			
 			if let selectedEntity = entities.filter({ $0.node == biotNode }).first as? OKEntity,
@@ -467,7 +467,7 @@ final class WorldScene: OKScene {
 				}
 				
 				if shiftDown, commandDown, Constants.Env.randomRun {
-					entities(withName: "biot")?.forEach({ biotEntity in
+					entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
 						removeEntity(biotEntity)
 					})
 					
@@ -504,7 +504,7 @@ final class WorldScene: OKScene {
 					biotComponent.hydration = Constants.Biot.maximumHydration
 					return
 				}
-				else if !rightMouse, let biotNode = nodes(at: point).filter({$0.name == "biot"}).first,
+				else if !rightMouse, let biotNode = nodes(at: point).filter({$0.name == Constants.NodeName.biot}).first,
 						let selectedEntity = entities.filter({ $0.node == biotNode }).first as? OKEntity,
 						let biotComponent = selectedEntity.component(ofType: BiotComponent.self) {
 					draggingNode = biotNode
@@ -513,20 +513,20 @@ final class WorldScene: OKScene {
 				}
 			}
 		}
-		else if !rightMouse, let waterNode = nodes(at: point).filter({$0.name == "water"}).first {
+		else if !rightMouse, let waterNode = nodes(at: point).filter({$0.name == Constants.NodeName.water}).first {
 			draggingNode = waterNode
 			resizing = shiftDown
 			lastDragPoint = point - waterNode.position
 		}
-		else if !rightMouse, let zapperNode = nodes(at: point).filter({$0.name == "zapper"}).first {
+		else if !rightMouse, let zapperNode = nodes(at: point).filter({$0.name == Constants.NodeName.zapper}).first {
 			draggingNode = zapperNode
 			resizing = shiftDown
 			lastDragPoint = point - zapperNode.position
 		}
-		else if rightMouse, let waterNode = nodes(at: point).filter({$0.name == "water"}).first, let selectedEntity = entities.filter({ $0.node == waterNode }).first as? OKEntity {
+		else if rightMouse, let waterNode = nodes(at: point).filter({$0.name == Constants.NodeName.water}).first, let selectedEntity = entities.filter({ $0.node == waterNode }).first as? OKEntity {
 			removeEntity(selectedEntity)
 		}
-		else if rightMouse, let zapperNode = nodes(at: point).filter({$0.name == "zapper"}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity {
+		else if rightMouse, let zapperNode = nodes(at: point).filter({$0.name == Constants.NodeName.zapper}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity {
 			removeEntity(selectedEntity)
 		}
 		else if shiftDown, !commandDown {

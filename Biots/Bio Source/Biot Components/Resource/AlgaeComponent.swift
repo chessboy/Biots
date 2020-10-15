@@ -116,7 +116,7 @@ extension AlgaeComponent {
 		physicsBody.linearDamping = 0.9
 		//physicsBody.usesPreciseCollisionDetection = true
 
-		return OKEntity(name: "algae", components: [
+		return OKEntity(name: Constants.NodeName.algae, components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),
 			AlgaeComponent(energy: energy)

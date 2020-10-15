@@ -680,7 +680,7 @@ extension BiotComponent {
 
 		let radius = Constants.Biot.radius
 		let node = SKShapeNode(circleOfRadius: radius)
-		node.name = "biot"
+		node.name = Constants.NodeName.biot
 		node.fillColor = SKColor.lightGray
 		node.lineWidth = radius * 0.075
 		node.strokeColor = .clear

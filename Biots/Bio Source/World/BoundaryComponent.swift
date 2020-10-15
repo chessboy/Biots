@@ -22,7 +22,7 @@ final class BoundaryComponent: OKComponent {
 	static func createCircularBarrier(radius: CGFloat) -> OKEntity {
 		
 		let node = SKShapeNode(circleOfRadius: radius)
-		node.name = "wall"
+		node.name = Constants.NodeName.wall
 		node.lineWidth = 0
 		node.fillColor = .black
 		node.isAntialiased = Constants.Env.graphics.isAntialiased
@@ -42,7 +42,7 @@ final class BoundaryComponent: OKComponent {
 	static func createLoopWall(radius: CGFloat) -> OKEntity {
 		
 		let node = SKShapeNode(circleOfRadius: radius + strokeWidth/2)
-		node.name = "wall"
+		node.name = Constants.NodeName.wall
 		node.lineWidth = strokeWidth + 10
 		node.strokeColor = Constants.Colors.grid
 		node.blendMode = Constants.Env.graphics.blendMode
@@ -84,7 +84,7 @@ final class BoundaryComponent: OKComponent {
 	static func createLine(rect: CGRect) -> OKEntity {
 		let minDim = min(rect.size.width, rect.size.height)
 		let node = SKShapeNode(rect: rect, cornerRadius: minDim/2)
-		node.name = "wall"
+		node.name = Constants.NodeName.wall
 		node.zPosition = Constants.ZeeOrder.wall
 		node.lineWidth = 0
 		node.fillColor = Constants.Colors.wall

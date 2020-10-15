@@ -38,7 +38,7 @@ extension ZapperComponent {
 		let color = Constants.Colors.wall.withAlpha(0.8)
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
-		node.name = "zapper"
+		node.name = Constants.NodeName.zapper
 		node.zPosition = Constants.ZeeOrder.wall
 		node.lineWidth = 4
 		node.fillColor = color

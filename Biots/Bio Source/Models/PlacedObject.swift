@@ -1,5 +1,5 @@
 //
-//  NodePlacement.swift
+//  PlacedObject.swift
 //  Biots
 //
 //  Created by Robert Silverman on 10/10/20.

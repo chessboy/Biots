@@ -38,7 +38,7 @@ extension WaterSourceComponent {
 		let color = Constants.Colors.water.withAlpha(0.8)
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 12, cornerRadius: radius/4, lineWidth: 8, rotationOffset: π/12)
-		node.name = "water"
+		node.name = Constants.NodeName.water
 		node.zPosition = Constants.ZeeOrder.water
 		node.lineWidth = Constants.Env.graphics.shadows ? 0 : 4
 		node.fillColor = color

@@ -16,7 +16,7 @@ struct Constants {
 		
 		static let zooFilename = "zoo-evolved.json"
 		static let mixinZooFilename: String? = nil
-		static let placementsFilename = "more-placed-objects.json"
+		static let placedObjectsFilename = "more-placed-objects.json"
 
 		static let debugMode = false
 		static let randomRun = false
@@ -77,6 +77,15 @@ struct Constants {
 			static let maxLinesOfText = 3
 			static let delimiter = "   "
 		}
+	}
+	
+	struct NodeName {
+		static let wall = "wall"
+		static let algae = "algae"
+		static let water = "water"
+		static let biot = "biot"
+		static let grid = "grid"
+		static let zapper = "zapper"
 	}
 	
 	struct NeuralNet {

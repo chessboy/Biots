@@ -14,7 +14,7 @@ class GridNode: SKNode {
 	static func create(blockSize: CGFloat, rows: Int, cols: Int) -> SKNode {
 		
 		let node = SKShapeNode()
-		node.name = "grid"
+		node.name = Constants.NodeName.grid
 		node.zPosition = Constants.ZeeOrder.grid
 		let size = CGSize(width: CGFloat(cols)*blockSize, height: CGFloat(rows)*blockSize)
 		let path = CGMutablePath()
