@@ -305,7 +305,7 @@ final class CellComponent: OKComponent, OKUpdatableComponent {
 		rippleNode.lineWidth = Constants.Cell.radius * 0.1 * node.xScale
 		rippleNode.lineCap = .round
 		rippleNode.strokeColor = SKColor.white.withAlpha(0.33)
-		rippleNode.isAntialiased = Constants.Env.graphics.antialiased
+		rippleNode.isAntialiased = Constants.Env.graphics.isAntialiased
 		rippleNode.zPosition = Constants.ZeeOrder.cell - 0.1
 		OctopusKit.shared.currentScene?.addChild(rippleNode)
 		let duraction: TimeInterval = 0.75
@@ -685,7 +685,7 @@ extension CellComponent {
 		node.zPosition = Constants.ZeeOrder.cell
 		node.zRotation = CGFloat.randomAngle
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = Constants.Env.graphics.antialiased
+		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		
 		let cellComponent = CellComponent(genome: genome)
 
@@ -727,7 +727,7 @@ extension CellComponent {
 		healthMeterNode.fillColor = .darkGray
 		healthMeterNode.lineWidth = radius * 0.05
 		healthMeterNode.strokeColor = .black
-		healthMeterNode.isAntialiased = Constants.Env.graphics.antialiased
+		healthMeterNode.isAntialiased = Constants.Env.graphics.isAntialiased
 		healthNode.addChild(healthMeterNode)
 		healthMeterNodes.append(healthMeterNode)
 		node.addChild(healthNode)
@@ -755,7 +755,7 @@ extension CellComponent {
 		speedNode.isHidden = true
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
-		speedNode.isAntialiased = Constants.Env.graphics.antialiased
+		speedNode.isAntialiased = Constants.Env.graphics.isAntialiased
 		speedNode.zPosition = Constants.ZeeOrder.cell + 0.1
 		node.addChild(speedNode)
 
@@ -770,7 +770,7 @@ extension CellComponent {
 		armorNode.isHidden = true
 		armorNode.lineCap = .round
 		armorNode.strokeColor = .green
-		armorNode.isAntialiased = Constants.Env.graphics.antialiased
+		armorNode.isAntialiased = Constants.Env.graphics.isAntialiased
 		armorNode.zPosition = Constants.ZeeOrder.cell + 0.2
 		node.addChild(armorNode)
 

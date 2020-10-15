@@ -35,16 +35,16 @@ extension ZapperComponent {
 	
 	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
 		
-		let color = Constants.Colors.wall
+		let color = Constants.Colors.wall.withAlpha(0.8)
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
 		node.name = "zapper"
 		node.zPosition = Constants.ZeeOrder.wall
-		node.lineWidth = 8
+		node.lineWidth = 4
 		node.fillColor = color
 		node.strokeColor = Constants.Colors.grid
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = Constants.Env.graphics.antialiased
+		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		node.position = position
 
 		if Constants.Env.graphics.shadows {

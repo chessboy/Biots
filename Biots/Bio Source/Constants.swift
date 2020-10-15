@@ -14,13 +14,13 @@ struct Constants {
 			
 	struct Env {
 		
-		static let zooFilename = "zoo-07.json"
+		static let zooFilename = "zoo-evolved.json"
 		static let mixinZooFilename: String? = nil
-		static let placementsFilename = "tiny-placements.json"
+		static let placementsFilename = "more-placements.json"
 
+		static let debugMode = false
 		static let randomRun = false
 		static let easyMode = false
-		static let debugMode = false
 		
 		static let gridBlockSize: CGFloat = 400
 		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 13) // 10-15k food works well here
@@ -35,30 +35,30 @@ struct Constants {
 		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
 		static let showSpriteKitStats = true
 		
-		static let simpleGraphics = Graphics(antialiased: false, blendMode: .replace, shadows: false, showGrid: false)
-		static let niceGraphics = Graphics(antialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
+		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
+		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
 		static let graphics = niceGraphics
 		
 		static let smallWindow = Window(size: 1600, statsY: -480)
 		static let mediumWindow = Window(size: 2000, statsY: -560)
 		static let largeWindow = Window(size: 2400, statsY: -700)
-		static let window = mediumWindow
+		static let window = largeWindow
 	}
 	
 	struct Cell {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let collisionDamage: CGFloat = Env.easyMode ?  0.15 :  0.2
+		static let collisionDamage: CGFloat = Env.easyMode ?  0.15 :  0.25
 		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.0015 :  0.00125
 
-		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.75 // % of maximum health
-		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.65 // % of maximum health
+		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.8 // % of maximum health
+		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.75 // % of maximum health
 
 		static let maximumFoodEnergy: CGFloat = Env.easyMode ? 100 : 120
 		static let initialFoodEnergy: CGFloat = maximumFoodEnergy * 0.5
 		static let maximumHydration: CGFloat = Env.easyMode ? 85 : 100
-		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.55)
+		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.5)
 
 		static let perMovementEnergyCost: CGFloat = 0.01
 		static let perMovementHydrationCost: CGFloat = Env.easyMode ? 0.0075 : 0.01
@@ -124,7 +124,7 @@ struct Constants {
 	}
 	
 	struct Graphics {
-		var antialiased: Bool
+		var isAntialiased: Bool
 		var blendMode: SKBlendMode
 		var shadows: Bool
 		var showGrid: Bool
@@ -166,8 +166,8 @@ struct Constants {
 	struct Colors {
 		static let background = SKColor(white: 0.125, alpha: 1)
 		static let grid = NSColor(white: 0.08125, alpha: 1)
-		static let wall =  SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 1)
-		static let water =  SKColor(red: 0, green: 0.225, blue: 0.4, alpha: 1)
+		static let wall = SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 1)
+		static let water = SKColor(red: 0, green: 0.225, blue: 0.4, alpha: 1)
 		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
 	}
 	

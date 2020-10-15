@@ -25,7 +25,7 @@ final class BoundaryComponent: OKComponent {
 		node.name = "wall"
 		node.lineWidth = 0
 		node.fillColor = .black
-		node.isAntialiased = Constants.Env.graphics.antialiased
+		node.isAntialiased = Constants.Env.graphics.isAntialiased
 
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius)
 		physicsBody.allowsRotation = false
@@ -42,15 +42,32 @@ final class BoundaryComponent: OKComponent {
 	static func createLoopWall(radius: CGFloat) -> OKEntity {
 		
 		let node = SKShapeNode(circleOfRadius: radius + strokeWidth/2)
-		//node.zPosition = Constants.ZeeOrder.wall
 		node.name = "wall"
-
-		node.lineWidth = strokeWidth
-		node.strokeColor = Constants.Colors.wall
-		//node.fillColor = Constants.Colors.background//Constants.Colors.world
+		node.lineWidth = strokeWidth + 10
+		node.strokeColor = Constants.Colors.grid
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = false
+		node.isAntialiased = Constants.Env.graphics.isAntialiased
+		node.zPosition = Constants.ZeeOrder.wall
 		
+		let topNode = SKShapeNode(circleOfRadius: radius + strokeWidth/2)
+		topNode.lineWidth = strokeWidth
+		topNode.strokeColor = Constants.Colors.wall.blended(withFraction: 0.05, of: .white)?.withAlpha(0.8) ?? .red
+		topNode.blendMode = Constants.Env.graphics.blendMode
+		topNode.isAntialiased = Constants.Env.graphics.isAntialiased
+		topNode.zPosition = Constants.ZeeOrder.wall
+		node.addChild(topNode)
+		
+		if Constants.Env.graphics.shadows {
+			let shadowWidth = strokeWidth/4
+			let shadowRadius = radius + shadowWidth/4
+			let shadowNode =  SKShapeNode(circleOfRadius: shadowRadius)
+			shadowNode.zPosition = Constants.ZeeOrder.wall - 0.1
+			shadowNode.glowWidth = shadowWidth
+			shadowNode.lineWidth = shadowWidth
+			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
+			node.insertChild(shadowNode, at: 0)
+		}
+
 		let physicsBody = SKPhysicsBody(edgeLoopFrom: SKShapeNode(circleOfRadius: radius).path!)
 		
 		physicsBody.allowsRotation = false
@@ -73,7 +90,7 @@ final class BoundaryComponent: OKComponent {
 		node.fillColor = Constants.Colors.wall
 		node.strokeColor = .clear
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = Constants.Env.graphics.antialiased
+		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
 		physicsBody.isDynamic = false
