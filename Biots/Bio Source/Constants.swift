@@ -175,9 +175,9 @@ struct Constants {
 	struct Colors {
 		static let background = SKColor(white: 0.125, alpha: 1)
 		static let grid = NSColor(white: 0.08125, alpha: 1)
-		static let wall = SKColor(red: 0.3, green: 0.1875/2, blue: 0.1875/2, alpha: 1)
-		static let water = SKColor(red: 0, green: 0.225, blue: 0.4, alpha: 1)
-		static let algae = SKColor(red: 29/255, green: 112/255, blue: 29/255, alpha: 1)
+		static let wall = SKColor(red: 0.33, green: 0.103, blue: 0.103, alpha: 1)
+		static let water = SKColor(red: 0, green: 0.2475, blue: 0.44, alpha: 1)
+		static let algae = SKColor(red: 0.1137, green: 0.439, blue: 0.1137, alpha: 1)
 	}
 	
 	struct VisionColors {

@@ -174,7 +174,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				genomeDispenseIndex += 1
 				if Constants.Env.debugMode {
 					(OctopusKit.shared.currentScene as? WorldScene)?.trackEntity(biot)
-					biot.component(ofType: BiotComponent.self)?.startInteracting()
+					//biot.component(ofType: BiotComponent.self)?.startInteracting()
 				}
 			}
 		}

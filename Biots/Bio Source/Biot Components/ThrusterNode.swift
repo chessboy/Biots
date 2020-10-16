@@ -17,7 +17,7 @@ class ThrusterNode: SKNode {
 	
 	init(radius: CGFloat) {
 		
-		let thrusterRadius = radius * 0.5
+		let thrusterRadius = radius * 0.55
 		let arcLength = Constants.Thrust.thrusterArc
 		let thickness = radius/8
 		

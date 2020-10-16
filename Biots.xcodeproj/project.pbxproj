@@ -96,6 +96,8 @@
 		E83A6C0A253608E5008718EE /* zoo-06.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C09253608E5008718EE /* zoo-06.json */; };
 		E83A6C0E25368450008718EE /* zoo-07.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C0D25368450008718EE /* zoo-07.json */; };
 		E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* zoo-evolved.json */; };
+		E8C1E2F925394D670013C290 /* zoo-evolved-01.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E2F825394D670013C290 /* zoo-evolved-01.json */; };
+		E8C1E2FE25395A240013C290 /* ProgressNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C1E2FD25395A240013C290 /* ProgressNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,6 +207,8 @@
 		E83A6C09253608E5008718EE /* zoo-06.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-06.json"; sourceTree = "<group>"; };
 		E83A6C0D25368450008718EE /* zoo-07.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-07.json"; sourceTree = "<group>"; };
 		E83A6C2B2537EAC4008718EE /* zoo-evolved.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-evolved.json"; sourceTree = "<group>"; };
+		E8C1E2F825394D670013C290 /* zoo-evolved-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-evolved-01.json"; sourceTree = "<group>"; };
+		E8C1E2FD25395A240013C290 /* ProgressNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,11 +257,12 @@
 			children = (
 				D47387042442DEA50022E760 /* BiotComponent.swift */,
 				D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */,
+				D4465B9E250F20250074D864 /* ThrusterNode.swift */,
+				E8C1E2FD25395A240013C290 /* ProgressNode.swift */,
+				D4D18D9C2447ADBB00BF92FA /* StatsNode.swift */,
 				D41B7A52248455170059A40B /* Resource */,
 				D44E6066245272C500694462 /* Vision */,
 				D4C6FB9724529D8500A0614F /* Brain */,
-				D4D18D9C2447ADBB00BF92FA /* StatsNode.swift */,
-				D4465B9E250F20250074D864 /* ThrusterNode.swift */,
 			);
 			path = "Biot Components";
 			sourceTree = "<group>";
@@ -485,6 +490,7 @@
 				E83A6C09253608E5008718EE /* zoo-06.json */,
 				E83A6C0D25368450008718EE /* zoo-07.json */,
 				E83A6C2B2537EAC4008718EE /* zoo-evolved.json */,
+				E8C1E2F825394D670013C290 /* zoo-evolved-01.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -635,6 +641,7 @@
 				D49880462517D69400015724 /* README.md in Resources */,
 				D45F0E7E2532C8E60067912C /* zoo-01.json in Resources */,
 				E83A6C0A253608E5008718EE /* zoo-06.json in Resources */,
+				E8C1E2F925394D670013C290 /* zoo-evolved-01.json in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				D45F0E862532CE0F0067912C /* zoo-02.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
@@ -712,6 +719,7 @@
 				D4D18D9D2447ADBB00BF92FA /* StatsNode.swift in Sources */,
 				D47386D82442BEDB0022E760 /* ButtonStyles.swift in Sources */,
 				D4E4BA6025008EEA0044EC48 /* ZapperComponent.swift in Sources */,
+				E8C1E2FE25395A240013C290 /* ProgressNode.swift in Sources */,
 				D44E60682452740400694462 /* ContactComponent.swift in Sources */,
 				D47386D52442BEDB0022E760 /* 5A - TitleState.swift in Sources */,
 				D45F0E6B253282360067912C /* PlacedObject.swift in Sources */,

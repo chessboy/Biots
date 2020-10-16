@@ -32,6 +32,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	var spawnCount: Int = 0
 	var matedCount = 0
+	var matured = false
 
 	var healthNode: SKNode!
 	var healthDetailsNode: SKNode!
@@ -39,6 +40,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var speedNode: SKShapeNode!
 	var armorNode: SKShapeNode!
 	var eyeNodes: [SKShapeNode] = []
+	var progressNode: ProgressNode!
 
 	var visionNode: SKNode!
 	var retinaNodes: [RetinaNode] = []
@@ -71,6 +73,30 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 
 	var maximumEnergy: CGFloat {
 		return isPregnant ? Constants.Biot.maximumFoodEnergy * 2 : Constants.Biot.maximumFoodEnergy
+	}
+
+	var progress: CGFloat {
+		if isExpired { return 0 }
+		
+		if age < Constants.Biot.matureAge {
+			if !matured {
+				return age/(Constants.Biot.matureAge/2)
+			}
+			return age/Constants.Biot.matureAge
+		}
+		
+		if !isPregnant {
+			if canMate {
+				return (age - lastSpawnedAge)/Constants.Biot.gestationAge
+			}
+			else {
+				return min((age - lastSpawnedAge)/Constants.Biot.gestationAge, (health / Constants.Biot.mateHealth))
+			}
+		}
+		else {
+			// pregnant
+			return min((age - lastPregnantAge)/Constants.Biot.gestationAge, (health / Constants.Biot.mateHealth))
+		}
 	}
 
 	var health: CGFloat {
@@ -115,17 +141,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	override func didAddToEntity() {
 				
 		if let node = entityNode as? SKShapeNode {
-			let scales = 5
 			node.setScale(0.2)
-			var actions: [SKAction] = []
-			for growth in 2...scales {
-				let scale: CGFloat = growth.cgFloat/scales.cgFloat
-				actions.append(.wait(forDuration: 0.5))
-				actions.append(.scale(to: scale, duration: 0.15))
-			}
-			
-			let sequence = SKAction.sequence(actions)
-			node.run(sequence)
+			node.run(SKAction.scale(to: 0.5, duration: 0.5))
 		}
 		
 		let showVision = globalDataComponent?.showBiotVision ?? false
@@ -136,14 +153,14 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		
 		healthDetailsNode.isHidden = !showVision
 		
-		if Constants.Env.debugMode {
-			foodEnergy = Constants.Biot.maximumFoodEnergy
-			hydration = Constants.Biot.maximumHydration
-		}
+//		if Constants.Env.debugMode {
+//			foodEnergy = Constants.Biot.maximumFoodEnergy
+//			hydration = Constants.Biot.maximumHydration
+//		}
 	}
 		
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
-		guard !Constants.Env.debugMode else { return }
+		//guard !Constants.Env.debugMode else { return }
 		
 		if amount > 0 {
 			cumulativeFoodEnergy += amount
@@ -157,7 +174,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurHydrationChange(_ amount: CGFloat) {
-		guard !Constants.Env.debugMode else { return }
+		//guard !Constants.Env.debugMode else { return }
 		if amount > 0 {
 			cumulativeHydration += amount
 		}
@@ -166,7 +183,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
-		guard !Constants.Env.debugMode else { return }
+		//guard !Constants.Env.debugMode else { return }
 		guard abs(amount) != 0 else { return }
 		
 		if amount > 0 {
@@ -176,7 +193,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		stamina = stamina.clamped(to: 0...1)
 		if showEffect {
 			updateHealthNode()
-			contactEffect(impact: amount)
+			contactEffect(impact: -amount)
 		}
 	}
 		
@@ -314,16 +331,20 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			rippleNode.removeFromParent()
 		}
 	}
-
-		
+	
 	override func update(deltaTime seconds: TimeInterval) {
 		
 		guard !isExpired else { return }
 		
-		if !Constants.Env.debugMode {
+		//if !Constants.Env.debugMode {
 			age += 1
+		//}
+
+		if !matured, age >= Constants.Biot.matureAge / 2 {
+			entityNode?.run(SKAction.scale(to: 1, duration: 0.5))
+			matured = true
 		}
-				
+
 		checkResourceContacts()
 		
 		// check old age or malnutrition
@@ -381,6 +402,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func updateHealthNode() {
+		
+		if let rotation = entityNode?.zRotation {
+			progressNode.zRotation = 2*π - rotation + π/2
+		}
+		
 		guard frame.isMultiple(of: 2) else { return }
 		
 		let showingHealth = !healthNode.isHidden
@@ -417,17 +443,25 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			var intenstity = health
 			overallHealthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
 			
-			let energyHealthNode = healthMeterNodes[HealthMeter.energy.rawValue]
-			intenstity = foodEnergy/maximumEnergy
-			energyHealthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
-			
-			let hydrationHealthNode = healthMeterNodes[HealthMeter.hydration.rawValue]
-			intenstity = hydration/Constants.Biot.maximumHydration
-			hydrationHealthNode.fillColor = SKColor(red: 0, green: intenstity*0.75, blue: intenstity, alpha: 1)
+			if showingHealthDetails {
+				
+				progressNode.setProgress(progress)
+				if let bodyColor = (entityNode as? SKShapeNode)?.fillColor {
+					progressNode.progressRing.strokeColor = bodyColor.withAlpha(1)
+				}
+				
+				let energyHealthNode = healthMeterNodes[HealthMeter.energy.rawValue]
+				intenstity = foodEnergy/maximumEnergy
+				energyHealthNode.fillColor = SKColor(red: 1 - intenstity, green: intenstity, blue: 0, alpha: 1)
+				
+				let hydrationHealthNode = healthMeterNodes[HealthMeter.hydration.rawValue]
+				intenstity = hydration/Constants.Biot.maximumHydration
+				hydrationHealthNode.fillColor = SKColor(red: 0, green: intenstity*0.75, blue: intenstity, alpha: 1)
 
-			let staminaHealthNode = healthMeterNodes[HealthMeter.stamina.rawValue]
-			intenstity = stamina * stamina
-			staminaHealthNode.fillColor = SKColor(red: 1, green: intenstity, blue: intenstity, alpha: 1)
+				let staminaHealthNode = healthMeterNodes[HealthMeter.stamina.rawValue]
+				intenstity = stamina * stamina
+				staminaHealthNode.fillColor = SKColor(red: 1, green: intenstity, blue: intenstity, alpha: 1)
+			}
 		}
 	}
 		
@@ -561,20 +595,21 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 //					let angle = ((entityNode?.zRotation ?? .zero) + π).normalizedAngle
 //					let theta = atan2(position.y, position.x).normalizedAngle
 //					let angleToCenter = ((theta + angle + π).normalizedAngle / (2*π))
-					
+								
 					let healthFormatted = health.formattedToPercentNoDecimal
 					let energyFormatted = (foodEnergy/maximumEnergy).formattedToPercentNoDecimal
 					let hydrationFormatted = (hydration/Constants.Biot.maximumHydration).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Biot.maximumAge).formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Biot.maximumAge).formattedToPercentNoDecimal) | mate: \(canMate ? "✓" : "✗") | preg: \(isPregnant ? "✓" : "✗") | prog: \(progress.formattedToPercent)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount), cf: \(cumulativeFoodEnergy.formattedNoDecimal), cw: \(cumulativeHydration.formattedNoDecimal), cd: \(cumulativeDamage.formatted)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
-			if let node = entityNode {
-				statsNode.zRotation = 2*π - node.zRotation
+			
+			if let rotation = entityNode?.zRotation {
+				statsNode.zRotation = 2*π - rotation
 			}
 		}
 	}
@@ -658,14 +693,14 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		let overallHealthNode = healthMeterNodes[HealthMeter.overall.rawValue]
 		
 		if impact > 0 {
-			let pulseUp = SKAction.scale(to: 1.5, duration: 0.2)
+			let pulseUp = SKAction.scale(to: 1.25, duration: 0.2)
 			let pulseDown = SKAction.scale(to: 1, duration: 0.4)
 			let sequence = SKAction.sequence([pulseUp, .wait(forDuration: 0.1), pulseDown])
 			sequence.timingMode = .easeInEaseOut
 			overallHealthNode.run(sequence)
 		}
 		else {
-			let pulseDown = SKAction.scale(to: 0.5, duration: 0.1)
+			let pulseDown = SKAction.scale(to: 0.75, duration: 0.1)
 			let pulseUp = SKAction.scale(to: 1, duration: 0.2)
 			let sequence = SKAction.sequence([pulseDown, .wait(forDuration: 0.1), pulseUp])
 			sequence.timingMode = .easeInEaseOut
@@ -720,25 +755,29 @@ extension BiotComponent {
 		healthNode.isHidden = true
 		healthNode.zPosition = Constants.ZeeOrder.biot + 0.1
 		
+		// health details
 		let healthDetailsNode = SKNode()
 		healthDetailsNode.isHidden = true
 		healthDetailsNode.zPosition = Constants.ZeeOrder.biot + 0.1
 		healthNode.addChild(healthDetailsNode)
-		
+				
+		// main health meter
 		var healthMeterNodes: [SKShapeNode] = []
 		let healthMeterNode = SKShapeNode(circleOfRadius: radius * 0.25)
+		healthMeterNode.zPosition = Constants.ZeeOrder.biot + 20
 		healthMeterNode.fillColor = .darkGray
-		healthMeterNode.lineWidth = radius * 0.05
+		healthMeterNode.lineWidth = radius * 0.02
 		healthMeterNode.strokeColor = .black
 		healthMeterNode.isAntialiased = Constants.Env.graphics.isAntialiased
-		healthNode.addChild(healthMeterNode)
 		healthMeterNodes.append(healthMeterNode)
+		healthNode.addChild(healthMeterNode)
 		node.addChild(healthNode)
 
+		// health detail meters
 		for angle in [π/6, 0, -π/6] {
 			let meterRadius: CGFloat = radius * 0.08
 			let meterNode = SKShapeNode(circleOfRadius: meterRadius)
-			meterNode.position = CGPoint(angle: angle) * radius * 0.5
+			meterNode.position = CGPoint(angle: angle) * radius * 0.55
 			meterNode.fillColor = .black
 			meterNode.strokeColor = .black
 			meterNode.lineWidth = meterRadius * 0.2
@@ -747,6 +786,12 @@ extension BiotComponent {
 			healthMeterNodes.append(meterNode)
 		}
 		
+		// progress
+		let progressNode = ProgressNode(radius: radius * 0.28, lineWidth: Constants.Biot.radius * 0.1)
+		healthDetailsNode.addChild(progressNode)
+		progressNode.zPosition = Constants.ZeeOrder.biot + 0.09
+
+		// speed boost
 		let speedNode = SKShapeNode()
 		let speedPath = CGMutablePath()
 		speedPath.addArc(center: .zero, radius: radius * 1.1, startAngle: π/6, endAngle: -π/6, clockwise: true)
@@ -762,6 +807,7 @@ extension BiotComponent {
 		speedNode.zPosition = Constants.ZeeOrder.biot + 0.1
 		node.addChild(speedNode)
 
+		// armor
 		let armorNode = SKShapeNode()
 		let armorPath = CGMutablePath()
 		armorPath.addArc(center: .zero, radius: radius * 1.1, startAngle: -π/6 - π/24, endAngle: π/6 + π/24, clockwise: true)
@@ -803,7 +849,7 @@ extension BiotComponent {
 		// food and water
 		let resourceRadius: CGFloat = radius * 0.08
 		let onTopOfFoodNode = SKShapeNode(circleOfRadius: resourceRadius)
-		onTopOfFoodNode.position = CGPoint(angle: π - π/12) * radius * 0.5
+		onTopOfFoodNode.position = CGPoint(angle: π - π/12) * radius * 0.55
 		onTopOfFoodNode.fillColor = .black
 		onTopOfFoodNode.strokeColor = .black
 		onTopOfFoodNode.lineWidth = resourceRadius * 0.2
@@ -811,7 +857,7 @@ extension BiotComponent {
 		visionNode.addChild(onTopOfFoodNode)
 
 		let onTopOfWaterNode = SKShapeNode(circleOfRadius: resourceRadius)
-		onTopOfWaterNode.position = CGPoint(angle: π + π/12) * radius * 0.5
+		onTopOfWaterNode.position = CGPoint(angle: π + π/12) * radius * 0.55
 		onTopOfWaterNode.fillColor = .black
 		onTopOfWaterNode.strokeColor = .black
 		onTopOfWaterNode.lineWidth = resourceRadius * 0.2
@@ -848,6 +894,7 @@ extension BiotComponent {
 		biotComponent.healthNode = healthNode
 		biotComponent.healthDetailsNode = healthDetailsNode
 		biotComponent.healthMeterNodes = healthMeterNodes
+		biotComponent.progressNode = progressNode
 		biotComponent.speedNode = speedNode
 		biotComponent.armorNode = armorNode
 		biotComponent.eyeNodes = eyeNodes
