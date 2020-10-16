@@ -560,31 +560,16 @@ final class WorldScene: OKScene {
     	case is PlayState.Type: // Entering `PlayState`
 
 			self.entity?.component(ofType: KeyTrackerComponent.self)?.clearKeysDown()
-	    	self.backgroundColor = Constants.Colors.background
+			self.backgroundColor = Constants.Colors.grid
 	    	self.entity?.addComponent(WorldComponent())
 						
 			self.view?.showsFPS = Constants.Env.showSpriteKitStats
-//			self.view?.showsNodeCount = Constants.Environment.showSpriteKitStats
-//			self.view?.showsDrawCount = Constants.Environment.showSpriteKitStats
+			self.view?.showsNodeCount = Constants.Env.showSpriteKitStats
+			self.view?.showsDrawCount = Constants.Env.showSpriteKitStats
 			self.view?.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false
 			self.view?.ignoresSiblingOrder = true
 			self.view?.preferredFramesPerSecond = 30
 			self.physicsWorld.gravity = .zero
-//			self.physicsWorld.speed = 4
-//			OctopusKit.shared.currentScene?.physicsWorld.speed = 4
-//			entity?.component(ofType: PhysicsWorldComponent.self)?.physicsWorld?.speed = 4
-
-//			let noise = SKFieldNode.noiseField(withSmoothness: 0.5, animationSpeed: 0.25)
-//			noise.strength = Constants.Environment.worldRadius.float * 0.01
-//			addChild(noise)
-			
-//			let turbulence = SKFieldNode.turbulenceField(withSmoothness: 0.9, animationSpeed: 0.05)
-//			turbulence.strength = 2
-//			addChild(turbulence)
-			
-//			let mag = SKFieldNode.springField()
-//			mag.strength = 0.01
-//			addChild(mag)
 
 	    	// Add a fade-in effect if the previous state and scene was the title screen.
 	    	if previousState is TitleState {

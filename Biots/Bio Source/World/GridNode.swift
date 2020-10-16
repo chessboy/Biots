@@ -18,19 +18,32 @@ class GridNode: SKNode {
 		node.zPosition = Constants.ZeeOrder.grid
 		let size = CGSize(width: CGFloat(cols)*blockSize, height: CGFloat(rows)*blockSize)
 		let path = CGMutablePath()
-
-		for i in 0...cols {
-			let x = CGFloat(i) * blockSize
-			path.move(to: CGPoint(x: x, y: 0))
-			path.addLine(to: CGPoint(x: x, y: size.height))
-		}
-
-		for i in 0...rows {
-			let y = CGFloat(i) * blockSize
-			path.move(to: CGPoint(x: 0, y: y))
-			path.addLine(to: CGPoint(x: size.width, y: y))
-		}
 		
+		// x^2 + y^2 = r^2
+		// x = sqrt(r*r - y*y)
+		// y = sqrt(r*r - x*x)
+		
+		let r = size.height/2
+		for i in -cols...cols {
+			let x = CGFloat(i) * blockSize
+			if r*r - x*x > 0 {
+				let y1 = sqrt(r*r - x*x)
+				let y2 = -y1
+				path.move(to: CGPoint(x: x + r, y: y1 + r))
+				path.addLine(to: CGPoint(x: x + r, y: y2 + r))
+			}
+		}
+
+		for i in -rows...rows {
+			let y = CGFloat(i) * blockSize
+			if r*r - y*y > 0 {
+				let x1 = sqrt(r*r - y*y)
+				let x2 = -x1
+				path.move(to: CGPoint(x: x1 + r, y: y + r))
+				path.addLine(to: CGPoint(x: x2 + r, y: y + r))
+			}
+		}
+
 		node.lineWidth = 6
 		node.strokeColor = Constants.Colors.grid
 		node.path = path
