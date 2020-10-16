@@ -151,12 +151,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		// biot creation
 		if frame >= Constants.Env.startupDelay && frame.isMultiple(of: Constants.Env.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < Constants.Env.minimumBiots {
 			
-			if Constants.Env.randomRun {
-				let genome = GenomeFactory.shared.newRandomGenome
-				print("created random genome: \(genome.description)")
-				let _ = addNewBiot(genome: genome, in: scene)
-			}
-			else if unbornGenomes.count > 0 {
+			if unbornGenomes.count > 0 {
 				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
 					genome1.generation > genome2.generation
 				}).first {
@@ -164,6 +159,11 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 					let _ = addNewBiot(genome: highestGenGenome, in: scene)
 					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
 				}
+			}
+			else if Constants.Env.randomRun {
+				let genome = GenomeFactory.shared.newRandomGenome
+				print("created random genome: \(genome.description)")
+				let _ = addNewBiot(genome: genome, in: scene)
 			}
 			else if GenomeFactory.shared.genomes.count > 0 {
 				let genomeIndex = genomeDispenseIndex % GenomeFactory.shared.genomes.count

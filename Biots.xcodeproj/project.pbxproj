@@ -64,6 +64,7 @@
 		D47387052442DEA50022E760 /* BiotComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387042442DEA50022E760 /* BiotComponent.swift */; };
 		D47387332443748B0022E760 /* NeuralNetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387322443748B0022E760 /* NeuralNetComponent.swift */; };
 		D4738757244389C60022E760 /* CGFloatMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4738756244389C60022E760 /* CGFloatMath.swift */; };
+		D47A8B8B2539923100A78BF5 /* new-01.json in Resources */ = {isa = PBXBuildFile; fileRef = D47A8B8A2539923100A78BF5 /* new-01.json */; };
 		D47D71942447F5950079D2F1 /* RunningValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D71932447F5950079D2F1 /* RunningValue.swift */; };
 		D47D719624489C450079D2F1 /* GenomeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D719524489C450079D2F1 /* GenomeFactory.swift */; };
 		D47D719924493E590079D2F1 /* JsonLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D719824493E590079D2F1 /* JsonLoad.swift */; };
@@ -171,6 +172,7 @@
 		D47387042442DEA50022E760 /* BiotComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotComponent.swift; sourceTree = "<group>"; wrapsLines = 0; };
 		D47387322443748B0022E760 /* NeuralNetComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeuralNetComponent.swift; sourceTree = "<group>"; };
 		D4738756244389C60022E760 /* CGFloatMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatMath.swift; sourceTree = "<group>"; };
+		D47A8B8A2539923100A78BF5 /* new-01.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "new-01.json"; sourceTree = "<group>"; };
 		D47D71932447F5950079D2F1 /* RunningValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningValue.swift; sourceTree = "<group>"; };
 		D47D719524489C450079D2F1 /* GenomeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeFactory.swift; sourceTree = "<group>"; };
 		D47D719824493E590079D2F1 /* JsonLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoad.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 				E83A6C0D25368450008718EE /* zoo-07.json */,
 				E83A6C2B2537EAC4008718EE /* zoo-evolved.json */,
 				E8C1E2F825394D670013C290 /* zoo-evolved-01.json */,
+				D47A8B8A2539923100A78BF5 /* new-01.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -654,6 +657,7 @@
 				D4A85D882535165B00F4861C /* zoo-05.json in Resources */,
 				E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */,
 				D49003A02524E6A6002DA67C /* empty-zoo.json in Resources */,
+				D47A8B8B2539923100A78BF5 /* new-01.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

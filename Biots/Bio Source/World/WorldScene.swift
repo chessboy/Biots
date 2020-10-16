@@ -184,7 +184,7 @@ final class WorldScene: OKScene {
 		if let biotComponents = entities(withName: Constants.NodeName.biot)?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
 			if let mostFit = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
 				return biot1.health > biot2.health
-			}).first, let mostFitEntity = mostFit.entity as? OKEntity {
+			}).first, let mostFitEntity = mostFit.entity as? OKEntity, mostFitEntity != trackedEntity {
 				trackEntity(mostFitEntity)
 			}
 		}

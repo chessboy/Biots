@@ -362,10 +362,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		// self-replication (sexual reproduction not supported yet)
-		if frame.isMultiple(of: 10) {
-			if !isPregnant, canMate, age - lastSpawnedAge > Constants.Biot.gestationAge {
-				mated(otherGenome: genome)
-			}
+		if !isPregnant, canMate, age - lastSpawnedAge > Constants.Biot.gestationAge {
+			mated(otherGenome: genome)
 		}
 		
 		// check spawning

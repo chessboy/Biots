@@ -27,7 +27,7 @@ class GridNode: SKNode {
 		for i in -cols...cols {
 			let x = CGFloat(i) * blockSize
 			if r*r - x*x > 0 {
-				let y1 = sqrt(r*r - x*x)
+				let y1 = sqrt(r*r - x*x) - 20
 				let y2 = -y1
 				path.move(to: CGPoint(x: x + r, y: y1 + r))
 				path.addLine(to: CGPoint(x: x + r, y: y2 + r))
@@ -37,7 +37,7 @@ class GridNode: SKNode {
 		for i in -rows...rows {
 			let y = CGFloat(i) * blockSize
 			if r*r - y*y > 0 {
-				let x1 = sqrt(r*r - y*y)
+				let x1 = sqrt(r*r - y*y) - 30
 				let x2 = -x1
 				path.move(to: CGPoint(x: x1 + r, y: y + r))
 				path.addLine(to: CGPoint(x: x2 + r, y: y + r))

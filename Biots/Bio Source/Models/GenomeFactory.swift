@@ -25,7 +25,7 @@ class GenomeFactory {
 			genomes.append(contentsOf: mixinGenomes)
 		}
 		
-		//genomes = genomes.filter({ $0.generation >= 1 })
+		genomes = genomes.filter({ $0.generation > 0 })
 		genomes = genomes.shuffled()
 		//genomes.forEach { print($0.description) }
 	}
