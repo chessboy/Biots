@@ -119,8 +119,9 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
+			let mode = Constants.Env.debugMode ? "DEBUG" : Constants.Env.randomRun ? "RAND" : Constants.Env.easyMode ? "EASY" : "NORMAL"
 			let biotStats = currentBiotStats
-			let statsText = "\(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen)–\(biotStats.maxGen) | h: \(biotStats.avgHealth.formattedToPercent) | e: \(biotStats.avgEnergy.formattedToPercentNoDecimal) | w: \(biotStats.avgHydration.formattedToPercentNoDecimal) | s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantCount), spawned: \(biotStats.spawnAverage.formattedTo2Places) | alg: \(currentBiotStats.resourceStats.algaeTarget.formattedNoDecimal)"
+			let statsText = "\(mode) | \(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen)–\(biotStats.maxGen) | h: \(biotStats.avgHealth.formattedToPercent) | e: \(biotStats.avgEnergy.formattedToPercentNoDecimal) | w: \(biotStats.avgHydration.formattedToPercentNoDecimal) | s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantCount), spawned: \(biotStats.spawnAverage.formattedTo2Places) | alg: \(currentBiotStats.resourceStats.algaeTarget.formattedNoDecimal)"
 
 			statsComponent.updateStats(statsText)
 			

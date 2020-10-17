@@ -627,8 +627,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Biot.maximumAge).formattedToPercentNoDecimal) | mate: \(canMate ? "✓" : "✗") | preg: \(isPregnant ? "✓" : "✗") | prog: \(progress.formattedToPercent)", for: .line2)
-					statsNode.setLineOfText("spawn: \(spawnCount), cf: \(cumulativeFoodEnergy.formattedNoDecimal), cw: \(cumulativeHydration.formattedNoDecimal), cd: \(cumulativeDamage.formatted)", for: .line3)
+					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Biot.maximumAge).formattedToPercentNoDecimal) | mate: \(canMate ? "✓" : "✗"), preg: \(isPregnant ? "✓" : "✗") | prog: \(progress.formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("spawn: \(spawnCount) | totF: \(cumulativeFoodEnergy.formattedNoDecimal), totW: \(cumulativeHydration.formattedNoDecimal), totD: \(cumulativeDamage.formatted)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}

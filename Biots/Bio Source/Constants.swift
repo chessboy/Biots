@@ -17,7 +17,7 @@ struct Constants {
 		static let zooFilename = "zoo-evolved.json"
 		static let mixinZooFilename: String? = nil
 
-		static let debugMode = true
+		static let debugMode = false
 		static let randomRun = false
 		static let easyMode = false
 		static let placedObjectsFilename = easyMode ? "placed-objects-less.json" : "placed-objects-more.json"
@@ -42,7 +42,7 @@ struct Constants {
 		static let smallWindow = Window(size: 1600, statsY: -480)
 		static let mediumWindow = Window(size: 2000, statsY: -560)
 		static let largeWindow = Window(size: 2400, statsY: -700)
-		static let window = largeWindow
+		static let window = mediumWindow
 	}
 	
 	struct Biot {
