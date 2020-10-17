@@ -14,16 +14,16 @@ struct Constants {
 			
 	struct Env {
 		
-		static let zooFilename = "new-01.json"
+		static let zooFilename = "zoo-evolved.json"
 		static let mixinZooFilename: String? = nil
 
-		static let debugMode = false
+		static let debugMode = true
 		static let randomRun = false
 		static let easyMode = false
-		static let placedObjectsFilename = easyMode ? "less-placed-objects.json" : "more-placed-objects.json"
+		static let placedObjectsFilename = easyMode ? "placed-objects-less.json" : "placed-objects-more.json"
 
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 13) // 10-15k food works well here for highly-evolved biots
+		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 13) // food: use 8-10k for smaller, 10-12k for larger
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -37,7 +37,7 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = niceGraphics
+		static let graphics = simpleGraphics
 		
 		static let smallWindow = Window(size: 1600, statsY: -480)
 		static let mediumWindow = Window(size: 2000, statsY: -560)

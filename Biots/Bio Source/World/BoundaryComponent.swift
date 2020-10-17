@@ -52,7 +52,7 @@ final class BoundaryComponent: OKComponent {
 	
 		let topNode = SKShapeNode(circleOfRadius: radius + strokeWidth/2)
 		topNode.lineWidth = strokeWidth
-		topNode.strokeColor = Constants.Colors.wall.blended(withFraction: 0.05, of: .white)?.withAlpha(0.8) ?? .red
+		topNode.strokeColor = Constants.Env.graphics.shadows ? (Constants.Colors.wall.blended(withFraction: 0.05, of: .white)?.withAlpha(0.8) ?? .red) : Constants.Colors.wall
 		topNode.blendMode = Constants.Env.graphics.blendMode
 		topNode.isAntialiased = Constants.Env.graphics.isAntialiased
 		topNode.zPosition = Constants.ZeeOrder.wall

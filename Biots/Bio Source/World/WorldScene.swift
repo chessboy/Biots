@@ -162,6 +162,12 @@ final class WorldScene: OKScene {
 	}
 	
 	func trackEntity(_ trackedEntity: OKEntity) {
+		
+		stopTrackingEntity()
+			
+		if let biotComponent = trackedEntity.component(ofType: BiotComponent.self) {
+			biotComponent.setSelected(true)
+		}
 		self.trackedEntity = trackedEntity
 		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let node = trackedEntity.node {
 			cameraComponent.nodeToTrack = nil
@@ -172,6 +178,11 @@ final class WorldScene: OKScene {
 	}
 	
 	func stopTrackingEntity() {
+
+		if let biotComponent = trackedEntity?.component(ofType: BiotComponent.self) {
+			biotComponent.setSelected(false)
+		}
+
 		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
 			globalDataComponent.cameraX = Double(cameraComponent.camera.position.x)
 			globalDataComponent.cameraY = Double(cameraComponent.camera.position.y)
@@ -263,6 +274,19 @@ final class WorldScene: OKScene {
 			selectMostFit()
 			break
 
+		case Keycode.d:
+			if globalDataComponent.showBiotHealth || globalDataComponent.showBiotVision || globalDataComponent.showBiotThrust {
+				globalDataComponent.showBiotHealth = false
+				globalDataComponent.showBiotVision = false
+				globalDataComponent.showBiotThrust = false
+			}
+			else  {
+				globalDataComponent.showBiotHealth = true
+				globalDataComponent.showBiotVision = true
+				globalDataComponent.showBiotThrust = true
+			}
+			break
+			
 		case Keycode.e:
 			globalDataComponent.showBiotEyeSpots.toggle()
 			self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
@@ -292,7 +316,11 @@ final class WorldScene: OKScene {
 						}
 					}
 					else {
-						biot.removeComponent(ofType: EntityStatsComponent.self)
+						if let statsComponent = biot.component(ofType: EntityStatsComponent.self) {
+							statsComponent.statsNode.run(SKAction.fadeOut(withDuration: 0.25)) {
+								biot.removeComponent(ofType: EntityStatsComponent.self)
+							}
+						}
 					}
 				})
 			}

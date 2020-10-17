@@ -16,6 +16,7 @@ todo: Playing with `Constants.swift` here...
 |v|show/hide vision, 'on top of food' and 'on top of water' indicators|
 |shift+v|show/hide seen objects|
 |t|show/hide thrust, speed boost, and armor indicators|
+|d|show/hide all indicators
 |s|show/hide **biot** stats|
 | | |
 |a|select most fit **biot**|

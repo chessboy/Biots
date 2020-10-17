@@ -27,16 +27,10 @@ final class EntityStatsComponent: OKComponent {
 	override func didAddToEntity() {
 		statsNode.alpha = 0
 		entityNode?.addChild(statsNode)
-		statsNode.run(SKAction.fadeIn(withDuration: 0.125))
+		statsNode.run(SKAction.fadeIn(withDuration: 0.25))
 		if let cameraScale = OctopusKit.shared.currentScene?.camera?.xScale {
 			let scale = (0.2 * cameraScale).clamped(0.3, 0.75)
 			statsNode.setScale(scale)
-		}
-	}
-	
-	override func willRemoveFromEntity() {
-		statsNode.run(SKAction.fadeOut(withDuration: 0.25)) {
-			self.statsNode.removeFromParent()
 		}
 	}
 

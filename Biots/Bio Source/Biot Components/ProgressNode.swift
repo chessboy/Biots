@@ -35,7 +35,7 @@ class ProgressNode: SKShapeNode {
 		progressRing.fillColor = .clear
 		progressRing.strokeColor = .black
 		progressRing.blendMode = Constants.Env.graphics.blendMode
-		progressRing.isAntialiased = Constants.Env.graphics.isAntialiased
+		progressRing.isAntialiased = false
 		self.addChild(progressRing)
 		
 		setProgress(0)
