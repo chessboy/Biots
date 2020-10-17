@@ -30,9 +30,6 @@ class AlgaeComponent: OKComponent {
 	
 	override func didAddToEntity(withNode node: SKNode) {
 		born()
-		if fromBiot {
-			(node as? SKShapeNode)?.fillColor = .yellow
-		}
 	}
 	
 	override func update(deltaTime seconds: TimeInterval) {
@@ -82,9 +79,9 @@ extension AlgaeComponent {
 	static func create(position: CGPoint, energy: CGFloat, fromBiot: Bool) -> OKEntity {
 
 		let blendColor: SKColor = Bool.random() ? .yellow : .brown		
-		let color = Constants.Colors.algae.blended(withFraction: CGFloat.random(in: 0..<0.5), of: blendColor) ?? Constants.Colors.algae
+		let color = fromBiot ? Constants.VisionColors.algaeFromBiot : Constants.Colors.algae.blended(withFraction: CGFloat.random(in: 0..<0.5), of: blendColor) ?? Constants.Colors.algae
 		let radius = Constants.Algae.radius
-		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 0, rotationOffset: 0)
+		let node = SKShapeNode.polygonOfRadius(radius, sides: fromBiot ? 12 : 8, cornerRadius: radius/4, lineWidth: 0, rotationOffset: 0)
 
 		node.position = position
 		node.fillColor = color

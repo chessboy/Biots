@@ -415,7 +415,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				scene.removeEntityOnNextUpdate(entity)
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
-					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * 8, fromBiot: true)
+					let bites: CGFloat = self.matured ? 8 : 5
+					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: true)
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self) {
 						if let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node, let physicsBody = algaeNode.physicsBody {
 							algaeNode.position = node.position
