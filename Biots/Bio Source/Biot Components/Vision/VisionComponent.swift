@@ -133,7 +133,7 @@ final class VisionComponent: OKComponent {
 							}
 							else if let algae = object.component(ofType: AlgaeComponent.self) {
 								// algae
-								detectedColor = Constants.VisionColors.algae
+								detectedColor = algae.fromBiot ? Constants.VisionColors.algaeFromBiot : Constants.VisionColors.algae
 								bodiesSeenAtAngle.append(body)
 								pings += 1
 								if showTracer {

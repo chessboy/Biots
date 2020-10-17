@@ -212,7 +212,12 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		let bite: CGFloat = Constants.Algae.bite
 		guard foodEnergy + bite/4 < maximumEnergy else { return }
 		
-		incurEnergyChange(bite, showEffect: true)
+		if algae.fromBiot {
+			incurEnergyChange(maximumEnergy-foodEnergy, showEffect: true)
+		}
+		else {
+			incurEnergyChange(bite, showEffect: true)
+		}
 
 		algae.energy -= bite
 		if algae.energy < bite {
@@ -409,8 +414,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				}
 				scene.removeEntityOnNextUpdate(entity)
 				
-				if node.position.distance(to: .zero) < Constants.Env.worldRadius * 0.5, let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
-					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * 5)
+				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
+					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * 8, fromBiot: true)
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self) {
 						if let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node, let physicsBody = algaeNode.physicsBody {
 							algaeNode.position = node.position

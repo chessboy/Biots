@@ -37,7 +37,7 @@ struct Constants {
 		
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
-		static let graphics = simpleGraphics
+		static let graphics = niceGraphics
 		
 		static let smallWindow = Window(size: 1600, statsY: -480)
 		static let mediumWindow = Window(size: 2000, statsY: -560)
@@ -184,6 +184,7 @@ struct Constants {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
 		static let water = SKColor(srgbRed: 0, green: 0.5, blue: 1, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
+		static let algaeFromBiot = SKColor(srgbRed: 1, green: 1, blue: 0, alpha: 1)
 	}
 		
 	struct Camera {

@@ -14,9 +14,11 @@ class AlgaeComponent: OKComponent {
 	
 	var energy: CGFloat = 0
 	var frame = Int.random(100)
+	var fromBiot = false
 
-	init(energy: CGFloat) {
+	init(energy: CGFloat, fromBiot: Bool) {
 		self.energy = energy
+		self.fromBiot = fromBiot
 		super.init()
 	}
 	
@@ -28,21 +30,20 @@ class AlgaeComponent: OKComponent {
 	
 	override func didAddToEntity(withNode node: SKNode) {
 		born()
+		if fromBiot {
+			(node as? SKShapeNode)?.fillColor = .yellow
+		}
 	}
 	
 	override func update(deltaTime seconds: TimeInterval) {
-		
 		frame += 1
-		
-		if frame.isMultiple(of: 40) {
 			
-			if Int.oneChanceIn(20) {
-				energy -= Constants.Algae.bite
-				if energy < Constants.Algae.bite {
-					energy = 0
-				}
-				bitten()
+		if frame.isMultiple(of: 40), Int.oneChanceIn(20) {
+			energy -= Constants.Algae.bite
+			if energy < Constants.Algae.bite {
+				energy = 0
 			}
+			bitten()
 		}
 	}
 	
@@ -78,7 +79,7 @@ class AlgaeComponent: OKComponent {
 
 extension AlgaeComponent {
 	
-	static func create(position: CGPoint, energy: CGFloat) -> OKEntity {
+	static func create(position: CGPoint, energy: CGFloat, fromBiot: Bool) -> OKEntity {
 
 		let blendColor: SKColor = Bool.random() ? .yellow : .brown		
 		let color = Constants.Colors.algae.blended(withFraction: CGFloat.random(in: 0..<0.5), of: blendColor) ?? Constants.Colors.algae
@@ -119,7 +120,7 @@ extension AlgaeComponent {
 		return OKEntity(name: Constants.NodeName.algae, components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),
-			AlgaeComponent(energy: energy)
+			AlgaeComponent(energy: energy, fromBiot: fromBiot)
 		])
 	}
 }

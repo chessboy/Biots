@@ -42,11 +42,11 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 		return water
 	}
 		
-	func createAlgaeEntity(energy: CGFloat) -> OKEntity {
+	func createAlgaeEntity(energy: CGFloat, fromBiot: Bool = false) -> OKEntity {
 		
 		let position = algaeEntities.count > 0 && Int.oneChanceIn(3) ? pointNextToExistingAlgaeSource : randomPoint
 		
-		let algae = AlgaeComponent.create(position: position, energy: energy)
+		let algae = AlgaeComponent.create(position: position, energy: energy, fromBiot: fromBiot)
 		algae.addComponent(RelayComponent(for: self))
 		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
 			algae.node?.isHidden = hideNode
