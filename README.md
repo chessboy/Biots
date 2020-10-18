@@ -1,7 +1,7 @@
 
 # Biots
 
-![biots Screenshot](https://github.com/chessboy/biots/blob/master/biots.png)
+![biots Screenshot](https://github.com/chessboy/Biots/blob/master/Biots.png)
 
 A prototype "software toy" built with [OctopusKit](https://github.com/InvadingOctopus/octopuskit) and SwiftAI's [NeuralNet](https://github.com/Swift-AI/NeuralNet) library. Biots allows you to evolve a population of ... todo...
 
