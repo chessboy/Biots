@@ -58,7 +58,7 @@ struct Constants {
 		static let maximumFoodEnergy: CGFloat = Env.easyMode ? 100 : 120
 		static let initialFoodEnergy: CGFloat = maximumFoodEnergy * 0.5
 		static let maximumHydration: CGFloat = Env.easyMode ? 85 : 100
-		static let initialHydration: CGFloat = maximumHydration * (Env.easyMode ? 0.65 : 0.5)
+		static let initialHydration: CGFloat = maximumHydration * 0.5
 
 		static let perMovementEnergyCost: CGFloat = 0.01
 		static let perMovementHydrationCost: CGFloat = Env.easyMode ? 0.0075 : 0.01
@@ -175,8 +175,8 @@ struct Constants {
 	struct Colors {
 		static let background = SKColor(white: 0.125, alpha: 1)
 		static let grid = SKColor(white: 0.08125, alpha: 1)
-		static let wall = SKColor(red: 0.33, green: 0.103, blue: 0.103, alpha: 1)
-		static let water = SKColor(red: 0, green: 0.2475, blue: 0.44, alpha: 1)
+		static let wall = SKColor(red: 0.33 * 1.25, green: 0.103 * 1.25, blue: 0.103 * 1.25, alpha: 1)
+		static let water = SKColor(red: 0.1, green: 0.2875 * 1.25, blue: 0.44 * 1.25, alpha: 1)
 		static let algae = SKColor(red: 0.1137, green: 0.439, blue: 0.1137, alpha: 1)
 	}
 	
@@ -199,8 +199,8 @@ struct Constants {
 	struct ZeeOrder {
 		static let background: CGFloat = -10
 		static let grid: CGFloat = -3
-		static let wall: CGFloat = 0
 		static let water: CGFloat = 1
+		static let wall: CGFloat = 0
 		static let algae: CGFloat = 1
 		static let biot: CGFloat = 5
 		static let stats: CGFloat = 100

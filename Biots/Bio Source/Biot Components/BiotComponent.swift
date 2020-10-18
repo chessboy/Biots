@@ -77,7 +77,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	var maximumEnergy: CGFloat {
-		return isPregnant ? Constants.Biot.maximumFoodEnergy * 2 : Constants.Biot.maximumFoodEnergy
+		return Constants.Biot.maximumFoodEnergy * (isPregnant ? 2 : 1)
+	}
+
+	var maximumHydration: CGFloat {
+		return Constants.Biot.maximumHydration * (isPregnant ? 2 : 1)
 	}
 
 	var progress: CGFloat {
@@ -106,7 +110,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 
 	var health: CGFloat {
 		let foodEnergyRatio = foodEnergy/maximumEnergy
-		let hydrationRatio = hydration/Constants.Biot.maximumHydration
+		let hydrationRatio = hydration/maximumHydration
 		let health = min(foodEnergyRatio, hydrationRatio)
 		return health - (1-stamina)
 	}
@@ -184,7 +188,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			cumulativeHydration += amount
 		}
 		hydration += amount
-		hydration = hydration.clamped(to: 0...Constants.Biot.maximumHydration)
+		hydration = hydration.clamped(to: 0...maximumHydration)
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
@@ -212,14 +216,15 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		let bite: CGFloat = Constants.Algae.bite
 		guard foodEnergy + bite/4 < maximumEnergy else { return }
 		
+		var bitesTaken: CGFloat = 1
+		
 		if algae.fromBiot {
-			incurEnergyChange(maximumEnergy-foodEnergy, showEffect: true)
+			bitesTaken = Int((maximumEnergy-foodEnergy) / bite).cgFloat
 		}
-		else {
-			incurEnergyChange(bite, showEffect: true)
-		}
+		
+		incurEnergyChange(bite * bitesTaken, showEffect: true)
 
-		algae.energy -= bite
+		algae.energy -= bite * bitesTaken
 		if algae.energy < bite {
 			algae.energy = 0
 		}
@@ -228,7 +233,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 
 	func biotAndWaterCollided() {
 		let sip: CGFloat = Constants.Water.sip
-		guard hydration + sip/8 < Constants.Biot.maximumHydration else { return }
+		guard hydration + sip/8 < maximumHydration else { return }
 		incurHydrationChange(sip)
 	}
 
@@ -415,7 +420,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				scene.removeEntityOnNextUpdate(entity)
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
-					let bites: CGFloat = self.matured ? 8 : 5
+					let bites: CGFloat = self.matured ? 4 : 2
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: true)
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self) {
 						if let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node, let physicsBody = algaeNode.physicsBody {
@@ -430,6 +435,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 
+	var flashingHealth = false
+	
 	func updateHealthNode() {
 				
 		if let rotation = entityNode?.zRotation {
@@ -469,8 +476,18 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 
 		if showHealth {
 			let intenstityOverall = health
+			let shouldFlash = intenstityOverall <= 0.15
 			healthOverallNode.fillColor = SKColor(red: 1 - intenstityOverall, green: intenstityOverall, blue: 0, alpha: 1)
-			
+
+			if !flashingHealth, shouldFlash {
+				healthOverallNode.run(SKAction.repeatForever(.flash()))
+				flashingHealth = true
+			} else if flashingHealth, !shouldFlash {
+				healthOverallNode.removeAllActions()
+				healthOverallNode.isHidden = false
+				flashingHealth = false
+			}
+
 			if showingHealthDetails {
 				
 				progressNode.setProgress(progress)
@@ -484,7 +501,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				energyHealthNode.zPosition = intenstityEnergy
 				
 				let hydrationHealthNode = healthMeterNodes[HealthMeter.hydration.rawValue]
-				let intenstityHydration = hydration/Constants.Biot.maximumHydration
+				let intenstityHydration = hydration/maximumHydration
 				hydrationHealthNode.strokeColor = SKColor(red: 0, green: intenstityHydration*0.75, blue: intenstityHydration, alpha: 1)
 				hydrationHealthNode.zPosition = intenstityHydration
 
@@ -629,7 +646,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 								
 					let healthFormatted = health.formattedToPercentNoDecimal
 					let energyFormatted = (foodEnergy/maximumEnergy).formattedToPercentNoDecimal
-					let hydrationFormatted = (hydration/Constants.Biot.maximumHydration).formattedToPercentNoDecimal
+					let hydrationFormatted = (hydration/maximumHydration).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted)", for: .line1)

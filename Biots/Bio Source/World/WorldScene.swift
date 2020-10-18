@@ -201,6 +201,16 @@ final class WorldScene: OKScene {
 		}
 	}
 	
+	func selectLeastFit() {
+		if let biotComponents = entities(withName: Constants.NodeName.biot)?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
+			if let mostFit = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
+				return biot1.health < biot2.health
+			}).first, let mostFitEntity = mostFit.entity as? OKEntity, mostFitEntity != trackedEntity {
+				trackEntity(mostFitEntity)
+			}
+		}
+	}
+	
 	override func keyDown(with event: NSEvent) {
 		
 		guard let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) else {
@@ -208,11 +218,17 @@ final class WorldScene: OKScene {
 			return
 		}
 		
+		
 		let shiftDown = event.modifierFlags.contains(.shift)
 		let commandDown = event.modifierFlags.contains(.command)
+		let optionDown = event.modifierFlags.contains(.option)
 		let keyDownCode = event.keyCode
 
-		//print("keyDown: \(event.characters ?? ""), keyDownCode: \(keyDownCode), shiftDown: \(shiftDown), commandDown: \(commandDown)")
+		if let tracker = self.entity?.component(ofType: KeyTrackerComponent.self) {
+			tracker.keyDown(keyCode: keyDownCode, shiftDown: shiftDown, commandDown: commandDown)
+		}
+
+		//print("keyDown: \(event.characters ?? ""), keyDownCode: \(keyDownCode), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
 				
 		switch event.keyCode {
 				
@@ -271,7 +287,11 @@ final class WorldScene: OKScene {
 				return
 			}
 			
-			selectMostFit()
+			if shiftDown {
+				selectLeastFit()
+			} else {
+				selectMostFit()
+			}
 			break
 
 		case Keycode.d:
@@ -343,17 +363,18 @@ final class WorldScene: OKScene {
 				})
 				return
 			}
-			
-			let bump = 1000 * (shiftDown ? -1 : 1)
-			if globalDataComponent.algaeTarget + bump >= 0 {
-				globalDataComponent.algaeTarget += bump
-				
-				self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat
-				self.entities(withName: "fountain")?.map({$0.component(ofType: ResourceFountainComponent.self)}).forEach({ fountainComponent in
-					fountainComponent?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat / 4
-				})
+			else if optionDown {
+				let bump = 1000 * (shiftDown ? -1 : 1)
+				if globalDataComponent.algaeTarget + bump >= 0 {
+					globalDataComponent.algaeTarget += bump
+
+					self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat
+					self.entities(withName: "fountain")?.map({$0.component(ofType: ResourceFountainComponent.self)}).forEach({ fountainComponent in
+						fountainComponent?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat / 4
+					})
+				}
 			}
-			
+
 		case Keycode.tab:
 			if let biots = entities(withName: Constants.NodeName.biot), let firstBiot = biots.first {
 				if trackedEntity == nil {
@@ -390,10 +411,7 @@ final class WorldScene: OKScene {
 				}
 			}
 			
-		default:
-			if let tracker = self.entity?.component(ofType: KeyTrackerComponent.self) {
-				tracker.keyDown(keyCode: keyDownCode, shiftDown: shiftDown, commandDown: commandDown)
-			}
+		default: break
 		}
 	}
 	
@@ -403,11 +421,12 @@ final class WorldScene: OKScene {
 		
 		let shiftDown = event.modifierFlags.contains(.shift)
 		let commandDown = event.modifierFlags.contains(.command)
+		let optionDown = event.modifierFlags.contains(.option)
 		let keyUpCode = event.keyCode
 		
 		//print("keyUp: \(event.characters ?? "") keyUpCode: \(keyUpCode), shiftDown: \(shiftDown), commandDown: \(commandDown)")
 		if let tracker = self.entity?.component(ofType: KeyTrackerComponent.self) {
-			tracker.keyUp(keyCode: keyUpCode, shiftDown: shiftDown, commandDown: commandDown)
+			tracker.keyUp(keyCode: keyUpCode, shiftDown: shiftDown, commandDown: commandDown, optionDown: optionDown)
 		}
 	}
 	
@@ -447,7 +466,8 @@ final class WorldScene: OKScene {
 	override func mouseDown(with event: NSEvent) {
 		let commandDown = event.modifierFlags.contains(.command)
 		let shiftDown = event.modifierFlags.contains(.shift)
-		self.touchDown(at: event.location(in: self), commandDown: commandDown, shiftDown: shiftDown, clickCount: event.clickCount)
+		let optionDown = event.modifierFlags.contains(.option)
+		self.touchDown(at: event.location(in: self), commandDown: commandDown, shiftDown: shiftDown, optionDown: optionDown, clickCount: event.clickCount)
 	}
 	
 	override func mouseUp(with event: NSEvent) {
@@ -458,16 +478,20 @@ final class WorldScene: OKScene {
 	
 	override func rightMouseDown(with event: NSEvent) {
 		let commandDown = event.modifierFlags.contains(.command)
-		self.touchDown(at: event.location(in: self), rightMouse: true, commandDown: commandDown)
+		let shiftDown = event.modifierFlags.contains(.shift)
+		let optionDown = event.modifierFlags.contains(.option)
+		self.touchDown(at: event.location(in: self), rightMouse: true, commandDown: commandDown, shiftDown: shiftDown, optionDown: optionDown)
 	}
 	
-	func touchDown(at point: CGPoint, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false, clickCount: Int = 1) {
+	func touchDown(at point: CGPoint, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false, optionDown: Bool = false, clickCount: Int = 1) {
 		
 		guard let keyCodesDown = self.entity?.component(ofType: KeyTrackerComponent.self)?.keyCodesDown,
 			  let mainFountain = entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self) else {
 			return
 		}
-		
+				
+		//print("touchDown: point: \(point.formattedTo2Places), keyCodesDown: \(keyCodesDown), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
+
 		if keyCodesDown.contains(Keycode.w) {
 			let radius: CGFloat = 200
 			let water = WaterSourceComponent.create(radius: radius, position: point)
@@ -483,6 +507,17 @@ final class WorldScene: OKScene {
 			return
 		}
 				
+		if keyCodesDown.contains(Keycode.f) {
+			for _ in 1...3 + Int.random(3) {
+				let algae = mainFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
+				if let node = algae.component(ofType: SpriteKitComponent.self)?.node {
+					node.position = point + CGPoint.randomAngle * CGFloat.random(in: 50..<200)
+					addEntity(algae)
+				}
+			}
+			return
+		}
+		
 		if let biotNode = nodes(at: point).filter({$0.name == Constants.NodeName.biot}).first {
 			//print(biotNode.position)
 			
@@ -529,7 +564,7 @@ final class WorldScene: OKScene {
 					biotComponent.mated(otherGenome: biotComponent.genome)
 					biotComponent.spawnChildren(selfReplication: true)
 					biotComponent.foodEnergy = biotComponent.maximumEnergy
-					biotComponent.hydration = Constants.Biot.maximumHydration
+					biotComponent.hydration = biotComponent.maximumHydration
 					return
 				}
 				else if !rightMouse, let biotNode = nodes(at: point).filter({$0.name == Constants.NodeName.biot}).first,
@@ -557,17 +592,6 @@ final class WorldScene: OKScene {
 		else if rightMouse, let zapperNode = nodes(at: point).filter({$0.name == Constants.NodeName.zapper}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity {
 			removeEntity(selectedEntity)
 		}
-		else if shiftDown, !commandDown {
-			for _ in 1...3 + Int.random(3) {
-				let algae = mainFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
-				if let node = algae.component(ofType: SpriteKitComponent.self)?.node {
-					node.position = point + CGPoint.randomAngle * CGFloat.random(in: 50..<200)
-					addEntity(algae)
-				}
-			}
-			return
-		}
-
 	}
 
 	// MARK: - State & Scene Transitions

@@ -51,7 +51,7 @@ final class BrainComponent: OKComponent {
 		senses.setSenses(
 			health: Float(biot.health),
 			energy: Float(biot.foodEnergy / biot.maximumEnergy),
-			hydration: Float(biot.hydration / Constants.Biot.maximumHydration),
+			hydration: Float(biot.hydration / biot.maximumHydration),
 			stamina: Float(biot.stamina),
 			pregnant: biot.isPregnant ? 1 : 0,
 			onTopOfFood: biot.isOnTopOfFood ? 1 : 0,

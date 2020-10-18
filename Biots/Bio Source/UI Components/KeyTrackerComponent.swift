@@ -15,8 +15,9 @@ final class KeyTrackerComponent: OKComponent {
 	var keyCodesDown = [UInt16]()
 	var shiftDown: Bool = false
 	var commandDown: Bool = false
+	var optionDown: Bool = false
 
-	func keyDown(keyCode: UInt16, shiftDown: Bool = false, commandDown: Bool = false) {
+	func keyDown(keyCode: UInt16, shiftDown: Bool = false, commandDown: Bool = false, optionDown: Bool = false) {
 		
 		self.shiftDown = shiftDown
 		self.commandDown = commandDown
@@ -27,7 +28,7 @@ final class KeyTrackerComponent: OKComponent {
 		//print("keyDown: \(keyCodesDown)")
 	}
 
-	func keyUp(keyCode: UInt16, shiftDown: Bool = false, commandDown: Bool = false) {
+	func keyUp(keyCode: UInt16, shiftDown: Bool = false, commandDown: Bool = false, optionDown: Bool = false) {
 		keyCodesDown = keyCodesDown.filter({ $0 != keyCode })
 		//print("keyUp: \(keyCodesDown)")
 	}
@@ -40,6 +41,7 @@ final class KeyTrackerComponent: OKComponent {
 		keyCodesDown.removeAll()
 		shiftDown = false
 		commandDown = false
+		optionDown = false
 		//print("clearKeysDown: \(keyCodesDown)")
 	}
 }

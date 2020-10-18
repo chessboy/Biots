@@ -132,7 +132,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				(scene as? WorldScene)?.dumpGenomes()
 			}
 		}
-
 	}
 	
 	override func update(deltaTime seconds: TimeInterval) {
@@ -227,7 +226,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let maxGen = biots.map({$0.genome.generation}).max() ?? 0
 
 		let averageEnergy = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.foodEnergy/$1.maximumEnergy } / biots.count.cgFloat
-		let averageHydration = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.hydration/Constants.Biot.maximumHydration } / biots.count.cgFloat
+		let averageHydration = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.hydration/$1.maximumHydration } / biots.count.cgFloat
 		let averageStamina = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.stamina } / biots.count.cgFloat
 		let averageHealth = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.health } / biots.count.cgFloat
 
