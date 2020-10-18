@@ -193,6 +193,7 @@
 		D4E573AD244D515E006C2767 /* NoiseGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseGenerator.swift; sourceTree = "<group>"; };
 		D4F5055224ED282900EAA52E /* RunningFloatArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningFloatArray.swift; sourceTree = "<group>"; };
 		E83A6C2B2537EAC4008718EE /* zoo-evolved.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-evolved.json"; sourceTree = "<group>"; };
+		E83B9117253BE350004DE02F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E8C1E2FD25395A240013C290 /* ProgressNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNode.swift; sourceTree = "<group>"; };
 		E8C1E305253A1DAA0013C290 /* zoo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -278,6 +279,7 @@
 			children = (
 				D49880452517D69400015724 /* README.md */,
 				D498804D2518050A00015724 /* Biots.png */,
+				E83B9117253BE350004DE02F /* LICENSE */,
 				D47386342442BA830022E760 /* Biots */,
 				D4BE801924FB6D2900208C6A /* BiotsTests */,
 				D47386332442BA830022E760 /* Products */,
