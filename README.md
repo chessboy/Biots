@@ -8,8 +8,8 @@ A prototype "software toy" built with [OctopusKit](https://github.com/InvadingOc
 ## Adjusting Constants
 You can play with all of the settings by editing `Constants.swift`
 
-### Screen Size and Graphics
-As this is still a prototype, you'll need to set the screen size in code:
+### Window Size and Graphics
+As this is still a prototype, you'll need to set the window size in code:
 
 ```swift
 static let smallWindow = Window(size: 1600, statsY: -480)
@@ -33,7 +33,7 @@ static let window = largeWindow
 |s|show/hide **biot** stats|
 | | |
 |a|select most fit **biot**|
-|shoft-a|select least fit **biot**|
+|shift-a|select least fit **biot**|
 |k|kill selected **biot**|
 |shift-k|kill selected **biot** and select most fit **biot**|
 |command-a|toggle speed mode (hides all nodes)|

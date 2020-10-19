@@ -33,6 +33,15 @@ final class WorldScene: OKScene {
 //			globalDataComponent.reset()
 //		}
 	}
+	
+	override func didMove(to: SKView) {
+		super.didMove(to: to)
+		
+		// from ShinryakuTako: Steal the focus on macOS so the player doesn't have to click on the view before using the keyboard.
+		#if os(macOS)
+		to.window?.makeFirstResponder(self)
+		#endif
+	}
 
 	// MARK: 🔶 STEP 6B.2
 	override func createComponentSystems() -> [GKComponent.Type] {
