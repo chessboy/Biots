@@ -62,8 +62,8 @@ final class WorldScene: OKScene {
 	    	GlobalDataComponent.self,
 			PhysicsComponent.self,
 			PhysicsEventComponent.self,
-			//NoiseComponent.self,
 			
+			// biots components that require update() to be called
 			AlgaeComponent.self,
 			ResourceFountainComponent.self,
 			ResourceFountainInfluenceComponent.self,

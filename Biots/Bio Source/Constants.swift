@@ -79,6 +79,14 @@ struct Constants {
 		}
 	}
 	
+	struct Font {
+		static let family = "Consolasligaturizedv2"
+		static let regular = "\(family)"
+		static let bold = "\(family)-Bold"
+		static let italic = "\(family)-Italic"
+		static let boldItalic = "\(family)-BoldItalic"
+	}
+	
 	struct NodeName {
 		static let wall = "wall"
 		static let algae = "algae"

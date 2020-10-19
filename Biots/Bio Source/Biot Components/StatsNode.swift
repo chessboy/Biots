@@ -31,7 +31,7 @@ class StatsNode: SKNode {
 		let padding: CGFloat = fontSize + 20
 		for i in 0..<Constants.Biot.Stats.maxLinesOfText {
 			
-			let node = SKLabelNode(fontNamed: "Consolas")
+			let node = SKLabelNode(fontNamed: Constants.Font.regular)
 			node.position = CGPoint(x: 0, y: (-padding * CGFloat(i)) - bodyRadius - padding)
 			node.fontSize = fontSize
 			node.fontColor = SKColor.white

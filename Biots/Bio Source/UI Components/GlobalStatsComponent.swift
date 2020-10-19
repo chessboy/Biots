@@ -35,7 +35,7 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		maskNode.position = CGPoint(x: 0, y: Constants.Env.window.statsY)
 		maskNode.zPosition = Constants.ZeeOrder.stats
 
-		let font = OKFont(name: "Consolas", size: 20, color: .white)
+		let font = OKFont(name: Constants.Font.regular, size: 20, color: .white)
 		
     	textNode = SKLabelNode()
 		textNode.text = "Starting up..."
