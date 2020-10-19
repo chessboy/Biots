@@ -49,13 +49,23 @@ extension WaterSourceComponent {
 
 		if Constants.Env.graphics.blendMode != .replace {
 			for scale: CGFloat in [0.92, 0.84, 0.76] {
-			
 				let rippleRadius = radius * scale
 				let rippleNode = SKShapeNode.polygonOfRadius(rippleRadius, sides: 12, cornerRadius: rippleRadius/4, lineWidth: 8, rotationOffset: π/12)
 				rippleNode.blendMode = Constants.Env.graphics.blendMode
 				rippleNode.fillColor = SKColor.black.withAlpha(scale/10)
 				node.addChild(rippleNode)
 			}
+		}
+
+		if Constants.Env.graphics.shadows {
+			let shadowWidth: CGFloat = sqrt(radius)
+			let shadowRadius = radius
+			let shadowNode =  SKShapeNode.polygonOfRadius(shadowRadius, sides: 12, cornerRadius: shadowRadius/4, lineWidth: 8, rotationOffset: π/12)
+			shadowNode.zPosition = Constants.ZeeOrder.water
+			shadowNode.glowWidth = shadowWidth
+			shadowNode.lineWidth = shadowWidth
+			shadowNode.strokeColor = color.withAlpha(0.33)
+			node.insertChild(shadowNode, at: 0)
 		}
 
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)

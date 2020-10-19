@@ -596,10 +596,18 @@ final class WorldScene: OKScene {
 			lastDragPoint = point - zapperNode.position
 		}
 		else if rightMouse, let waterNode = nodes(at: point).filter({$0.name == Constants.NodeName.water}).first, let selectedEntity = entities.filter({ $0.node == waterNode }).first as? OKEntity {
-			removeEntity(selectedEntity)
+			waterNode.run(.fadeOut(withDuration: 0.2)) {
+				self.removeEntity(selectedEntity)
+			}
+		}
+		else if rightMouse, let algaeNode = nodes(at: point).filter({$0.name == Constants.NodeName.algae}).first, let selectedEntity = entities.filter({ $0.node == algaeNode }).first as? OKEntity, let algaeComponent = selectedEntity.component(ofType: AlgaeComponent.self) {
+			algaeComponent.energy = 0
+			algaeComponent.bitten()
 		}
 		else if rightMouse, let zapperNode = nodes(at: point).filter({$0.name == Constants.NodeName.zapper}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity {
-			removeEntity(selectedEntity)
+			zapperNode.run(.fadeOut(withDuration: 0.2)) {
+				self.removeEntity(selectedEntity)
+			}
 		}
 	}
 
@@ -742,8 +750,8 @@ final class WorldScene: OKScene {
 	}
 
 	override func didPauseByPlayer() {
-	   self.physicsWorld.speed = 0
-    	self.isPaused = true
+		self.physicsWorld.speed = 0
+		self.isPaused = true
 	}
 	
 	override func didUnpauseByPlayer() {

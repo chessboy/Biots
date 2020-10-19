@@ -14,12 +14,12 @@ struct Constants {
 			
 	struct Env {
 		
-		static let zooFilename = "zoo-evolved.json"
-		static let mixinZooFilename: String? = nil
-
 		static let debugMode = false
 		static let randomRun = false
 		static let easyMode = false
+
+		static let zooFilename = "zoo-evolved.json"
+		static let mixinZooFilename: String? = nil
 		static let placedObjectsFilename = easyMode ? "placed-objects-less.json" : "placed-objects-more.json"
 
 		static let gridBlockSize: CGFloat = 400

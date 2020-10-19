@@ -118,7 +118,7 @@ final class VisionComponent: OKComponent {
 								bodiesSeenAtAngle.append(body)
 								pings += 1
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.VisionColors.water.withAlpha(proximity), scale: tracerScale)
+									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: detectedColor.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else if let otherBiotComponent = object.component(ofType: BiotComponent.self) {
@@ -137,7 +137,7 @@ final class VisionComponent: OKComponent {
 								bodiesSeenAtAngle.append(body)
 								pings += 1
 								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: Constants.VisionColors.algae.withAlpha(proximity), scale: tracerScale)
+									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
 								}
 							}
 							else {

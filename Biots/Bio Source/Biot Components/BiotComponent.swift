@@ -338,7 +338,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		rippleNode.lineCap = .round
 		rippleNode.strokeColor = SKColor.white.withAlpha(0.33)
 		rippleNode.isAntialiased = Constants.Env.graphics.isAntialiased
-		rippleNode.zPosition = Constants.ZeeOrder.biot - 0.1
+		rippleNode.zPosition = Constants.ZeeOrder.biot - 1
 		OctopusKit.shared.currentScene?.addChild(rippleNode)
 		let duraction: TimeInterval = 0.75
 		let group = SKAction.group([SKAction.scale(to: 0.2, duration: duraction), SKAction.fadeAlpha(to: 0, duration: duraction)])
