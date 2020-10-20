@@ -88,13 +88,15 @@
 		D4E4BA6025008EEA0044EC48 /* ZapperComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */; };
 		D4E573AE244D515E006C2767 /* NoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E573AD244D515E006C2767 /* NoiseGenerator.swift */; };
 		D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F5055224ED282900EAA52E /* RunningFloatArray.swift */; };
-		E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* zoo-evolved.json */; };
+		E82E304F253ED2D400837E89 /* zoo-32.json in Resources */ = {isa = PBXBuildFile; fileRef = E82E304E253ED2D400837E89 /* zoo-32.json */; };
+		E82E3053253F33B500837E89 /* zoo-1850.json in Resources */ = {isa = PBXBuildFile; fileRef = E82E3052253F33B400837E89 /* zoo-1850.json */; };
+		E83A6C2C2537EAC4008718EE /* zoo-1740.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* zoo-1740.json */; };
 		E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */; };
 		E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */; };
 		E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */; };
 		E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */; };
 		E8C1E2FE25395A240013C290 /* ProgressNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C1E2FD25395A240013C290 /* ProgressNode.swift */; };
-		E8C1E306253A1DAA0013C290 /* zoo.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E305253A1DAA0013C290 /* zoo.json */; };
+		E8C1E306253A1DAA0013C290 /* zoo-135.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E305253A1DAA0013C290 /* zoo-135.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -196,14 +198,16 @@
 		D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZapperComponent.swift; sourceTree = "<group>"; };
 		D4E573AD244D515E006C2767 /* NoiseGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseGenerator.swift; sourceTree = "<group>"; };
 		D4F5055224ED282900EAA52E /* RunningFloatArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningFloatArray.swift; sourceTree = "<group>"; };
-		E83A6C2B2537EAC4008718EE /* zoo-evolved.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-evolved.json"; sourceTree = "<group>"; };
+		E82E304E253ED2D400837E89 /* zoo-32.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32.json"; sourceTree = "<group>"; };
+		E82E3052253F33B400837E89 /* zoo-1850.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-1850.json"; sourceTree = "<group>"; };
+		E83A6C2B2537EAC4008718EE /* zoo-1740.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-1740.json"; sourceTree = "<group>"; };
 		E83B9117253BE350004DE02F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-BoldItalic.ttf"; sourceTree = "<group>"; };
 		E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consolasligaturizedv2.ttf; sourceTree = "<group>"; };
 		E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Italic.ttf"; sourceTree = "<group>"; };
 		E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Bold.ttf"; sourceTree = "<group>"; };
 		E8C1E2FD25395A240013C290 /* ProgressNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNode.swift; sourceTree = "<group>"; };
-		E8C1E305253A1DAA0013C290 /* zoo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo.json; sourceTree = "<group>"; };
+		E8C1E305253A1DAA0013C290 /* zoo-135.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-135.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -479,8 +483,10 @@
 			isa = PBXGroup;
 			children = (
 				D490039F2524E6A6002DA67C /* zoo-empty.json */,
-				E83A6C2B2537EAC4008718EE /* zoo-evolved.json */,
-				E8C1E305253A1DAA0013C290 /* zoo.json */,
+				E82E304E253ED2D400837E89 /* zoo-32.json */,
+				E8C1E305253A1DAA0013C290 /* zoo-135.json */,
+				E83A6C2B2537EAC4008718EE /* zoo-1740.json */,
+				E82E3052253F33B400837E89 /* zoo-1850.json */,
 			);
 			path = Zoo;
 			sourceTree = "<group>";
@@ -642,14 +648,16 @@
 				D49880462517D69400015724 /* README.md in Resources */,
 				E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
-				E8C1E306253A1DAA0013C290 /* zoo.json in Resources */,
+				E82E3053253F33B500837E89 /* zoo-1850.json in Resources */,
+				E8C1E306253A1DAA0013C290 /* zoo-135.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */,
 				E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */,
+				E82E304F253ED2D400837E89 /* zoo-32.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D4A85D6E2533D4A800F4861C /* placed-objects-less.json in Resources */,
 				D45F0E782532C7520067912C /* placed-objects-more.json in Resources */,
-				E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */,
+				E83A6C2C2537EAC4008718EE /* zoo-1740.json in Resources */,
 				E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */,
 				D49003A02524E6A6002DA67C /* zoo-empty.json in Resources */,
 			);

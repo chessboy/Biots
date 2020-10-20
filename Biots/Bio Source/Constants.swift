@@ -16,9 +16,10 @@ struct Constants {
 		
 		static let debugMode = false
 		static let randomRun = false
-		static let easyMode = false
+		static let easyMode = randomRun || false
+		static let windowWidth: CGFloat = 2400
 
-		static let zooFilename = "zoo-evolved.json"
+		static let zooFilename = "zoo-1740.json"
 		static let mixinZooFilename: String? = nil
 		static let placedObjectsFilename = easyMode ? "placed-objects-less.json" : "placed-objects-more.json"
 
@@ -38,7 +39,6 @@ struct Constants {
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
 		static let graphics = niceGraphics
-		static let windowWidth: CGFloat = 1920
 	}
 	
 	struct Biot {
