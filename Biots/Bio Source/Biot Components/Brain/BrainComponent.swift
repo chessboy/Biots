@@ -20,7 +20,7 @@ final class BrainComponent: OKComponent {
 	lazy var neuralNetComponent = coComponent(NeuralNetComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
 
-	override var requiredComponents: [GKComponent.Type]? { return [
+	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
 		PhysicsComponent.self,
 		NeuralNetComponent.self,

@@ -14,7 +14,17 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 	
 	var textNode: SKLabelNode!
 	var maskNode: SKShapeNode!
-
+	var pointerEventComponent: PointerEventComponent
+	
+	init(pointerEventComponent: PointerEventComponent) {
+		self.pointerEventComponent = pointerEventComponent
+		super.init()
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
 	func updateStats(_ text: String) {
 		textNode.text = text
 	}
@@ -23,24 +33,46 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		maskNode.fillColor = paused ? SKColor(red: 0.5, green: 0, blue: 0, alpha: 0.5) : SKColor(white: 0, alpha: 0.75)
 	}
 	
-	override var requiredComponents: [GKComponent.Type]? {
-		[SpriteKitComponent.self, CameraComponent.self]
+	func toggleVisibility() {
+		let isHidden = maskNode.isHidden
+		
+		if isHidden {
+			maskNode.isHidden = false
+			maskNode.alpha = 0
+			maskNode.run(.fadeIn(withDuration: 0.15))
+			maskNode.run(.fadeIn(withDuration: 0.15))
+		} else {
+			maskNode.run(.fadeOut(withDuration: 0.25)) {
+			   self.maskNode.isHidden = true
+			}
+		}
 	}
 	
+	override var requiredComponents: [GKComponent.Type]? {[
+		SpriteKitComponent.self,
+		CameraComponent.self
+	]}
+	
 	override func didAddToEntity(withNode node: SKNode) {
-		let rect = CGRect(x: -750, y: 0, width: 1500, height: 36)
-		maskNode = SKShapeNode(rect: rect, cornerRadius: 18)
+		
+		let height: CGFloat = 80
+		let fontHeight: CGFloat = 24
+
+		let parentFrame = node.frame
+		let rect = CGRect(x: parentFrame.minX, y: 0, width: parentFrame.width, height: height)
+		maskNode = SKShapeNode(rect: rect)
 		maskNode.lineWidth = 0
 		maskNode.fillColor = SKColor(white: 0, alpha: 0.75)
-		maskNode.position = CGPoint(x: 0, y: Constants.Env.window.statsY)
+		maskNode.position = CGPoint(x: 0, y: parentFrame.origin.y)
 		maskNode.zPosition = Constants.ZeeOrder.stats
 
-		let font = OKFont(name: Constants.Font.regular, size: 20, color: .white)
-		
+		let font = OKFont(name: Constants.Font.regular, size: fontHeight, color: .white)
     	textNode = SKLabelNode()
 		textNode.text = "Starting up..."
+		textNode.horizontalAlignmentMode = .center
+		textNode.verticalAlignmentMode = .center
 		textNode.font = font
-		textNode.position = CGPoint(x: 0, y: 12)
+		textNode.position = CGPoint(x: 0, y: height/2)
 		
 		maskNode.addChild(textNode)
 		
@@ -50,3 +82,8 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 	}
 }
 
+extension GlobalStatsComponent {
+	static func create() {
+		
+	}
+}

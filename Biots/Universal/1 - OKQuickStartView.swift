@@ -31,8 +31,9 @@ struct OKQuickStartView: View {
 
     	return OKContainerView<MyGameCoordinator, MyGameViewController>()
 	    	.environmentObject(MyGameCoordinator())
-			.frame(width: Constants.Env.window.size, height: Constants.Env.window.size/φ)
+			.frame(width: Constants.Env.windowWidth, height: Constants.Env.windowWidth/φ)
 	    	.fixedSize()
+//			.aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
     	
     	#elseif os(tvOS)
     	

@@ -10,15 +10,10 @@ You can play with all of the settings by editing `Constants.swift`
 
 ### Window Size and Graphics
 As this is still a prototype, you'll need to set the window size in code:
-
 ```swift
-static let smallWindow = Window(size: 1600, statsY: -480)
-static let mediumWindow = Window(size: 2000, statsY: -560)
-static let largeWindow = Window(size: 2400, statsY: -700)
-
-/** set this to one of the above sizes or add your own **/
-static let window = largeWindow 
+static let windowWidth: CGFloat = 1920
 ```
+The height of the window will be `windowWidth/φ` (where φ = golden ratio)
 
 ### Key Commands
 

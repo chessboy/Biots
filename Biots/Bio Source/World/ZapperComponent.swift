@@ -23,8 +23,7 @@ final class ZapperComponent: OKComponent {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override var requiredComponents: [GKComponent.Type]? {
-		[
+	override var requiredComponents: [GKComponent.Type]? {[
 			SpriteKitComponent.self,
 			PhysicsComponent.self
 		]
@@ -70,7 +69,6 @@ extension ZapperComponent {
 		}
 
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
-
 		physicsBody.allowsRotation = false
 		physicsBody.mass = 20
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.wall
