@@ -29,7 +29,8 @@ class AlgaeComponent: OKComponent {
 	public required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 	
 	override func didAddToEntity(withNode node: SKNode) {
-		born()
+		entityNode?.setScale(0.25)
+		bitten()
 	}
 	
 	override func update(deltaTime seconds: TimeInterval) {
@@ -41,13 +42,6 @@ class AlgaeComponent: OKComponent {
 			if energy < Constants.Algae.bite {
 				energy = 0
 			}
-			bitten()
-		}
-	}
-	
-	func born() {
-		if let node = entityNode {
-			node.setScale(0.25)
 			bitten()
 		}
 	}
