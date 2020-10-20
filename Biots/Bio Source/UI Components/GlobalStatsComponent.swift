@@ -66,7 +66,7 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		maskNode.position = CGPoint(x: 0, y: parentFrame.origin.y)
 		maskNode.zPosition = Constants.ZeeOrder.stats
 
-		let font = OKFont(name: Constants.Font.regular, size: fontHeight, color: .white)
+		let font = OKFont(name: Constants.Font.regular, size: fontHeight, color: SKColor.white.withAlpha(0.8))
     	textNode = SKLabelNode()
 		textNode.text = "Starting up..."
 		textNode.horizontalAlignmentMode = .center
