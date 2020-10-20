@@ -10,7 +10,8 @@ import SwiftUI
 
 struct ContentView: View {
 	var body: some View {
-		 OctopusKitQuickStartView()
+		//OctopusKitQuickStartView().frame(maxWidth: .infinity, maxHeight: .infinity)
+		OctopusKitQuickStartView()
 	}
 }
 

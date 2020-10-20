@@ -89,6 +89,10 @@
 		D4E573AE244D515E006C2767 /* NoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E573AD244D515E006C2767 /* NoiseGenerator.swift */; };
 		D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F5055224ED282900EAA52E /* RunningFloatArray.swift */; };
 		E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* zoo-evolved.json */; };
+		E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */; };
+		E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */; };
+		E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */; };
+		E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */; };
 		E8C1E2FE25395A240013C290 /* ProgressNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C1E2FD25395A240013C290 /* ProgressNode.swift */; };
 		E8C1E306253A1DAA0013C290 /* zoo.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E305253A1DAA0013C290 /* zoo.json */; };
 /* End PBXBuildFile section */
@@ -194,6 +198,10 @@
 		D4F5055224ED282900EAA52E /* RunningFloatArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningFloatArray.swift; sourceTree = "<group>"; };
 		E83A6C2B2537EAC4008718EE /* zoo-evolved.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-evolved.json"; sourceTree = "<group>"; };
 		E83B9117253BE350004DE02F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-BoldItalic.ttf"; sourceTree = "<group>"; };
+		E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consolasligaturizedv2.ttf; sourceTree = "<group>"; };
+		E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Italic.ttf"; sourceTree = "<group>"; };
+		E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Bold.ttf"; sourceTree = "<group>"; };
 		E8C1E2FD25395A240013C290 /* ProgressNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNode.swift; sourceTree = "<group>"; };
 		E8C1E305253A1DAA0013C290 /* zoo.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = zoo.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -303,6 +311,7 @@
 				D47386B32442BEDB0022E760 /* Universal */,
 				D47386852442BD6C0022E760 /* Neural Network */,
 				D4D18D902446BCA900BF92FA /* App */,
+				E872B8FE253DE8B5009CF8A5 /* Consolas-FiraCode_v2 */,
 				D47386392442BA850022E760 /* Assets.xcassets */,
 				D473863E2442BA850022E760 /* Main.storyboard */,
 				D47386412442BA850022E760 /* Info.plist */,
@@ -531,6 +540,17 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		E872B8FE253DE8B5009CF8A5 /* Consolas-FiraCode_v2 */ = {
+			isa = PBXGroup;
+			children = (
+				E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */,
+				E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */,
+				E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */,
+				E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */,
+			);
+			path = "Consolas-FiraCode_v2";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -620,13 +640,17 @@
 			files = (
 				D4A85D602533CAEB00F4861C /* placed-objects-empty.json in Resources */,
 				D49880462517D69400015724 /* README.md in Resources */,
+				E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
 				E8C1E306253A1DAA0013C290 /* zoo.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
+				E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */,
+				E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D4A85D6E2533D4A800F4861C /* placed-objects-less.json in Resources */,
 				D45F0E782532C7520067912C /* placed-objects-more.json in Resources */,
 				E83A6C2C2537EAC4008718EE /* zoo-evolved.json in Resources */,
+				E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */,
 				D49003A02524E6A6002DA67C /* zoo-empty.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

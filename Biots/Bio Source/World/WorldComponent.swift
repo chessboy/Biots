@@ -121,7 +121,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 			let mode = Constants.Env.debugMode ? "DEBUG" : Constants.Env.randomRun ? "RAND" : Constants.Env.easyMode ? "EASY" : "NORMAL"
 			let biotStats = currentBiotStats
-			let statsText = "\(mode) | \(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen)–\(biotStats.maxGen) | h: \(biotStats.avgHealth.formattedToPercent) | e: \(biotStats.avgEnergy.formattedToPercentNoDecimal) | w: \(biotStats.avgHydration.formattedToPercentNoDecimal) | s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantCount), spawned: \(biotStats.spawnAverage.formattedTo2Places) | alg: \(currentBiotStats.resourceStats.algaeTarget.formattedNoDecimal)"
+			let statsText = "\(mode) \(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
 
 			statsComponent.updateStats(statsText)
 			
@@ -203,13 +203,13 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		var avgStamina: CGFloat
 		var avgHealth: CGFloat
 		
-		var pregnantCount: Int
+		var pregnantPercent: CGFloat
 		var spawnAverage: CGFloat
 		
 		var resourceStats: ResourceStats
 
 		static var zero: BiotStats {
-			return BiotStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgHydration: 0, avgStamina: 0, avgHealth: 0, pregnantCount: 0, spawnAverage: 0, resourceStats: .zero)
+			return BiotStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgHydration: 0, avgStamina: 0, avgHealth: 0, pregnantPercent: 0, spawnAverage: 0, resourceStats: .zero)
 		}
 	}
 	
@@ -230,10 +230,10 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let averageStamina = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.stamina } / biots.count.cgFloat
 		let averageHealth = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.health } / biots.count.cgFloat
 
-		let pregnantCount = biots.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }
+		let pregnantPercent = biots.count == 0 ? 0 : CGFloat(biots.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }) / biots.count.cgFloat
 		let spawnAverage = biots.count == 0 ? 0 : CGFloat(biots.reduce(0) { $0 + $1.spawnCount }) / biots.count.cgFloat
 
-		return BiotStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgHydration: averageHydration, avgStamina: averageStamina, avgHealth: averageHealth, pregnantCount: pregnantCount, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
+		return BiotStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgHydration: averageHydration, avgStamina: averageStamina, avgHealth: averageHealth, pregnantPercent: pregnantPercent, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
 	}
 
 	var currentResourceStats: ResourceStats {

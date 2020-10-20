@@ -32,5 +32,12 @@
 	<true/>
 	<key>NSSupportsSuddenTermination</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Consolasligaturizedv2-BoldItalic.ttf</string>
+		<string>Consolasligaturizedv2.ttf</string>
+		<string>Consolasligaturizedv2-Italic.ttf</string>
+		<string>Consolasligaturizedv2-Bold.ttf</string>
+	</array>
 </dict>
 </plist>

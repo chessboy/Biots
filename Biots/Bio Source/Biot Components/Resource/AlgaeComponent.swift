@@ -34,8 +34,9 @@ class AlgaeComponent: OKComponent {
 	
 	override func update(deltaTime seconds: TimeInterval) {
 		frame += 1
-			
-		if frame.isMultiple(of: 40), Int.oneChanceIn(20) {
+		
+		// energy from biots decays	 fasters
+		if frame.isMultiple(of: 40), Int.oneChanceIn(fromBiot ? 10 : 20) {
 			energy -= Constants.Algae.bite
 			if energy < Constants.Algae.bite {
 				energy = 0

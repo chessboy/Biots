@@ -38,11 +38,7 @@ struct Constants {
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
 		static let graphics = niceGraphics
-		
-		static let smallWindow = Window(size: 1600, statsY: -480)
-		static let mediumWindow = Window(size: 2000, statsY: -560)
-		static let largeWindow = Window(size: 2400, statsY: -700)
-		static let window = mediumWindow
+		static let windowWidth: CGFloat = 1920
 	}
 	
 	struct Biot {
@@ -77,6 +73,14 @@ struct Constants {
 			static let maxLinesOfText = 3
 			static let delimiter = "   "
 		}
+	}
+	
+	struct Font {
+		static let family = "Consolasligaturizedv2"
+		static let regular = "\(family)"
+		static let bold = "\(family)-Bold"
+		static let italic = "\(family)-Italic"
+		static let boldItalic = "\(family)-BoldItalic"
 	}
 	
 	struct NodeName {
@@ -141,7 +145,6 @@ struct Constants {
 		
 	struct Window {
 		var size: CGFloat
-		var statsY: CGFloat
 	}
 	
 	static let noBitMask: UInt32 = 	0

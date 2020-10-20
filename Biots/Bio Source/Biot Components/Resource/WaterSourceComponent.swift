@@ -23,8 +23,7 @@ final class WaterSourceComponent: OKComponent {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override var requiredComponents: [GKComponent.Type]? {
-		[
+	override var requiredComponents: [GKComponent.Type]? {[
 			SpriteKitComponent.self,
 			PhysicsComponent.self
 		]

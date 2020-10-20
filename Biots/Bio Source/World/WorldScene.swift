@@ -62,8 +62,8 @@ final class WorldScene: OKScene {
 	    	GlobalDataComponent.self,
 			PhysicsComponent.self,
 			PhysicsEventComponent.self,
-			//NoiseComponent.self,
 			
+			// biots components that require update() to be called
 			AlgaeComponent.self,
 			ResourceFountainComponent.self,
 			ResourceFountainInfluenceComponent.self,
@@ -104,7 +104,7 @@ final class WorldScene: OKScene {
 			sharedPhysicsEventComponent,
 			cameraComponent,
 			KeyTrackerComponent(),
-			GlobalStatsComponent(),
+			GlobalStatsComponent(pointerEventComponent: sharedPointerEventComponent),
 		])
     	    	
     	// Add the global game coordinator entity to this scene so that global components will be included in the update cycle, and updated in the order specified by this scene's `componentSystems` array.
@@ -328,6 +328,7 @@ final class WorldScene: OKScene {
 			})
 			
 		case Keycode.s:
+						
 			if commandDown, shiftDown {
 				dumpPlaceables()
 				return
@@ -335,6 +336,10 @@ final class WorldScene: OKScene {
 			else if commandDown {
 				dumpGenomes()
 				return
+			}
+			else if shiftDown {
+				self.entity?.component(ofType: GlobalStatsComponent.self)?.toggleVisibility()
+
 			}
 			else {
 				globalDataComponent.showBiotStats.toggle()
@@ -637,6 +642,7 @@ final class WorldScene: OKScene {
 			self.view?.showsDrawCount = Constants.Env.showSpriteKitStats
 			self.view?.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false
 			self.view?.ignoresSiblingOrder = true
+			self.view?.shouldCullNonVisibleNodes = true
 			self.view?.preferredFramesPerSecond = 30
 			self.physicsWorld.gravity = .zero
 
