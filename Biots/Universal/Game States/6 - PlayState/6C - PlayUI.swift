@@ -15,31 +15,37 @@ import OctopusKit
 
 struct PlayUI: View {
 	
-	@EnvironmentObject var gameCoordinator:  MyGameCoordinator
-	
+	@EnvironmentObject var gameCoordinator: MyGameCoordinator
+
 	private var globalDataComponent: GlobalDataComponent? {
     	gameCoordinator.entity.component(ofType: GlobalDataComponent.self)
 	}
+	
+	private var worldScene: WorldScene? {
+		return gameCoordinator.currentScene as? WorldScene
+	}
     	
 	var body: some View {
-		EmptyView()
+		BiotsUI(globalDataComponent: globalDataComponent!, worldScene: worldScene!)
 	}
 }
 
-// MARK: - Preview
-
-struct PlayUI_Previews: PreviewProvider {
+struct BiotsUI: View {
 	
-	static let gameCoordinator = MyGameCoordinator()
+	@ObservedObject var globalDataComponent: GlobalDataComponent
+	var worldScene: WorldScene
 	
-	static var previews: some View {
-    	gameCoordinator.entity.addComponent(GlobalDataComponent())
-    	
-    	return PlayUI()
-	    	.environmentObject(gameCoordinator)
-	    	.frame(maxWidth: .infinity, maxHeight: .infinity)
-	    	.foregroundColor(.red)
-	    	.background(Color(red: 0.1, green: 0.2, blue: 0.2))
-	    	.edgesIgnoringSafeArea(.all)
+	var body: some View {
+		VStack {
+			Spacer().frame(maxWidth: .infinity)
+			Button("Select Most Fit (a)", action: { worldScene.selectMostFit() })
+				.font(.title)
+				.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
+			Spacer(minLength: 80)
+		}
+		.opacity(globalDataComponent.showUi ? 1 : 0)
+		.animation(.easeInOut(duration: globalDataComponent.showUi ? 0.1 : 0.25))
+		.transition(.opacity)
+		.frame(maxHeight: .infinity)
 	}
 }

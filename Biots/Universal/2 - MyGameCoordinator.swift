@@ -24,17 +24,8 @@ import OctopusKit
 
 final class MyGameCoordinator: OKGameCoordinator {
 	
-//	init() {
-//		super.init(states: [LogoState(),
-//							TitleState(),
-//							PlayState(),
-//							PausedState(),
-//							GameOverState()],
-//				   initialStateClass: PlayState.self)
-//	}
 	init() {
 		super.init(states: [PlayState()], initialStateClass: PlayState.self)
 	}
-
 }
 

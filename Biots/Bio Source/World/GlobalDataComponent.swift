@@ -47,7 +47,10 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 
 	@OKUserDefault(key: "algaeTarget", defaultValue: Defaults.algaeTarget) public var algaeTarget: Int
 	@OKUserDefault(key: "showAlgaeFountainInfluences", defaultValue: Defaults.showAlgaeFountainInfluences) public var showAlgaeFountainInfluences: Bool
-	
+
+	@Published
+	public var showUi: Bool = false
+
 	func reset() {
 		showPhysics = Defaults.showPhysics
 		cameraZoom = Defaults.cameraZoom

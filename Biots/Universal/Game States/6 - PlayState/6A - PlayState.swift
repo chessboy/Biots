@@ -42,7 +42,7 @@ final class PlayState: OKGameState {
     	
     	// 🔶 STEP 6A.3: This method will be called by the PlayScene when the "Cycle Game States" button is tapped.
     	
-    	return stateMachine?.enter(PausedState.self) ?? false
+    	return false
 	}
 	
 	override func isValidNextState(_ stateClass: AnyClass) -> Bool {
@@ -51,9 +51,10 @@ final class PlayState: OKGameState {
     	//
     	// The PlayState can lead to either the PausedState or the GameOverState.
     	
-    	return stateClass == PausedState.self
-	    	|| stateClass == GameOverState.self
+    	return false
 	}
+	
+	
 	
 }
 

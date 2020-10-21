@@ -227,7 +227,6 @@ final class WorldScene: OKScene {
 			return
 		}
 		
-		
 		let shiftDown = event.modifierFlags.contains(.shift)
 		let commandDown = event.modifierFlags.contains(.command)
 		let optionDown = event.modifierFlags.contains(.option)
@@ -240,7 +239,11 @@ final class WorldScene: OKScene {
 		//print("keyDown: \(event.characters ?? ""), keyDownCode: \(keyDownCode), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
 				
 		switch event.keyCode {
-				
+		
+		case Keycode.u:
+			globalDataComponent.showUi.toggle()
+			break
+		
 		case Keycode.r:
 			if shiftDown, commandDown, Constants.Env.randomRun {
 				entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
@@ -505,7 +508,7 @@ final class WorldScene: OKScene {
 		}
 				
 		//print("touchDown: point: \(point.formattedTo2Places), keyCodesDown: \(keyCodesDown), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
-
+		
 		if keyCodesDown.contains(Keycode.w) {
 			let radius: CGFloat = 200
 			let water = WaterSourceComponent.create(radius: radius, position: point)
@@ -633,44 +636,19 @@ final class WorldScene: OKScene {
 	    	
     	case is PlayState.Type: // Entering `PlayState`
 
-			self.entity?.component(ofType: KeyTrackerComponent.self)?.clearKeysDown()
-			self.backgroundColor = Constants.Colors.grid
-	    	self.entity?.addComponent(WorldComponent())
-						
-			self.view?.showsFPS = Constants.Env.showSpriteKitStats
-			self.view?.showsNodeCount = Constants.Env.showSpriteKitStats
-			self.view?.showsDrawCount = Constants.Env.showSpriteKitStats
-			self.view?.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false
-			self.view?.ignoresSiblingOrder = true
-			self.view?.shouldCullNonVisibleNodes = true
-			self.view?.preferredFramesPerSecond = 30
-			self.physicsWorld.gravity = .zero
-
-	    	// Add a fade-in effect if the previous state and scene was the title screen.
-	    	if previousState is TitleState {
-				let colorFill = SKSpriteNode(color: .white, size: self.frame.size)
-				colorFill.alpha = 1
-				colorFill.blendMode = .replace
-				self.addChild(colorFill)
-				let fadeOut = SKAction.fadeAlpha(to: 0, duration: 1.5).withTimingMode(.easeIn)
-				colorFill.run(.sequence([fadeOut, .removeFromParent()]))
-	    	}
-	    	
-    	case is PausedState.Type: // Entering `PausedState`
-	    	
-	    	self.backgroundColor = SKColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1.0)
-	    	
-	    	// Remove the global entity from this scene so we do not update it until the game is unpaused.
-	    	if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
-    	    	self.removeEntity(gameCoordinatorEntity)
-	    	}
-	    	
-	    	// Set the scene's "paused by player" flag, because the PausedState is a state which is specific to this QuickStart project, not a feature of OctopusKit. When we manually enter this state, we must also notify OctopusKit that the player has chosen to pause the game.
-	    	if !isPausedByPlayer { togglePauseByPlayer() }
-	    	
-    	case is GameOverState.Type: // Entering `GameOverState`
-	    	self.backgroundColor = SKColor(red: 0.3, green: 0.1, blue: 0.1, alpha: 1.0)
-	    	
+		self.entity?.component(ofType: KeyTrackerComponent.self)?.clearKeysDown()
+		self.backgroundColor = Constants.Colors.grid
+		self.entity?.addComponent(WorldComponent())
+					
+		self.view?.showsFPS = Constants.Env.showSpriteKitStats
+		self.view?.showsNodeCount = Constants.Env.showSpriteKitStats
+		self.view?.showsDrawCount = Constants.Env.showSpriteKitStats
+		self.view?.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false
+		self.view?.ignoresSiblingOrder = true
+		self.view?.shouldCullNonVisibleNodes = true
+		self.view?.preferredFramesPerSecond = 30
+		self.physicsWorld.gravity = .zero
+	    		    	
     	default: break
     	}
 	}
@@ -689,19 +667,7 @@ final class WorldScene: OKScene {
     	case is PlayState.Type: // Exiting `PlayState`
 	    	
 	    	self.entity?.removeComponent(ofType: WorldComponent.self)
-	    	
-    	case is PausedState.Type: // Exiting `PausedState`
-	    	
-	    	// Add the global entity back to this scene so we can resume updating it.
-	    	
-	    	if let gameCoordinatorEntity = OctopusKit.shared?.gameCoordinator.entity {
-    	    	self.addEntity(gameCoordinatorEntity)
-	    	}
-	    	
-	    	// Clear the scene's "paused by player" flag,
-	    	
-	    	if isPausedByPlayer { togglePauseByPlayer() }
-	    	
+	    		    	
     	default: break
     	}
     	
@@ -714,7 +680,7 @@ final class WorldScene: OKScene {
     	//
     	// Here we display transition effects if the next scene is the TitleScene.
     	
-    	guard nextSceneClass is TitleScene.Type else { return nil }
+    	//guard nextSceneClass is TitleScene.Type else { return nil }
     	
     	// First, apply some effects to the current scene.
     	
