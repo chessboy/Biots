@@ -84,7 +84,7 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 		
 		showHUD = Defaults.showHUD
 
-		OctopusKit.logForSim.add("GlobalDataComponent: all observables have been reset")
+		OctopusKit.logForSimInfo.add("GlobalDataComponent: all observables have been reset")
 	}
 }
 

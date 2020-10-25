@@ -143,7 +143,7 @@ final class VisionComponent: OKComponent {
 								}
 							}
 							else {
-								OctopusKit.logForSim.add("detected object unknown: \(body.categoryBitMask)")
+								OctopusKit.logForSimInfo.add("detected object unknown: \(body.categoryBitMask)")
 							}
 						}
 						

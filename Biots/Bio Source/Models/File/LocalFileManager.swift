@@ -19,11 +19,11 @@ class LocalFileManager {
 			let encoder = JSONEncoder()
 			let data = try encoder.encode(saveState)
 			if let url = saveDataFile(filename, fileExtension: fileExtension, data: data) {
-				OctopusKit.logForSim.add("Saved SaveState: \(url)")
+				OctopusKit.logForSimInfo.add("Saved SaveState: \(url)")
 			}
 			
 		} catch {
-			OctopusKit.logForSimErrors.add("Couldn't encode SaveState as \(filename).\(fileExtension):\n\(error)")
+			OctopusKit.logForSimErrors.add("could not encode SaveState as \(filename).\(fileExtension): reason: \(error.localizedDescription)")
 		}
 	}
 	
@@ -34,7 +34,7 @@ class LocalFileManager {
 			return documentDirectoryURL.appendingPathComponent("\(filename).\(fileExtension)")
 			
 		} catch let error as NSError {
-			OctopusKit.logForSimErrors.add("LocalFileManager: could not create file URL: \(filename).\(fileExtension): error: \(error.localizedDescription)")
+			OctopusKit.logForSimErrors.add("could not create file URL: \(filename).\(fileExtension): reason: \(error.localizedDescription)")
 		}
 		
 		return nil
@@ -50,30 +50,36 @@ class LocalFileManager {
 				return fileUrl
 				
 			} catch let error as NSError {
-				OctopusKit.logForSimErrors.add("LocalFileManager: could not save file: \(filename): error: \(error.localizedDescription)")
+				OctopusKit.logForSimErrors.add("could not save file: \(filename): reason: \(error.localizedDescription)")
 			}
 		}
 		
 		return nil
 	}
 	
-	func loadDataFile<T: Decodable>(_ filename: String, fileExtension: String = "json") -> T? {
+	func loadDataFile<T: Decodable>(_ filename: String, fileExtension: String = "json", treatAsWarning: Bool = false) -> T? {
 		
 		if let fileUrl = createFileUrl(filename, fileExtension: fileExtension) {
 			
 			do {
 				let data = try Data(contentsOf: fileUrl, options: .alwaysMapped)
-				OctopusKit.logForSim.add("LocalFileManager: loadDataFile success: \(fileUrl)")
+				OctopusKit.logForSimInfo.add("data file loaded successfully: \(fileUrl)")
 
 				do {
 					let decoder = JSONDecoder()
 					return try decoder.decode(T.self, from: data)
 				} catch {
-					OctopusKit.logForSimErrors.add("Couldn't parse \(filename) as \(T.self):\n\(error)")
+					OctopusKit.logForSimErrors.add("could not parse \(filename) as \(T.self):\n\(error)")
 				}
 				
 			} catch let error as NSError {
-				OctopusKit.logForSimErrors.add("LocalFileManager: error loading contents of file \(filename): error: \(error.localizedDescription)")
+				let errorDescription = "could not load contents of file \(filename): reason: \(error.localizedDescription)"
+				if treatAsWarning {
+					OctopusKit.logForSimWarnings.add(errorDescription)
+				}
+				else {
+					OctopusKit.logForSimErrors.add(errorDescription)
+				}
 			}
 		}
 		
@@ -84,16 +90,16 @@ class LocalFileManager {
 		
 		do {
 			try FileManager.default.removeItem(at: fileUrl)
-			OctopusKit.logForSim.add("LocalFileManager: deleteFile: success: \(fileUrl)")
+			OctopusKit.logForSimInfo.add("deleteFile: success: \(fileUrl)")
 			
 		} catch let error as NSError {
 			
 			if error.code != 4 {
 				// ignore file not found
-				OctopusKit.logForSimErrors.add("LocalFileManager: deleteFile: error deleting file: \(fileUrl): error: \(error.localizedDescription), code: \(error.code)")
+				OctopusKit.logForSimErrors.add("deleteFile: error deleting file: \(fileUrl): error: \(error.localizedDescription), code: \(error.code)")
 				
 			} else {
-				OctopusKit.logForSim.add("LocalFileManager: deleteFile: file not found: \(fileUrl)")
+				OctopusKit.logForSimInfo.add("deleteFile: file not found: \(fileUrl)")
 			}
 		}
 	}

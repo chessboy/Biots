@@ -47,7 +47,7 @@ struct Inference {
 
 		let count = Inference.outputCount
 		guard outputs.count == count else {
-			OctopusKit.logForSim.add("outputs count != \(count), count given: \(outputs.count)")
+			OctopusKit.logForSimInfo.add("outputs count != \(count), count given: \(outputs.count)")
 			return
 		}
 	

@@ -20,7 +20,7 @@ class RunningFloatArray {
 	
 	func addFloats(_ floats: [Float]) {
 		guard floats.count == floatValues.count else {
-			OctopusKit.logForSim.add("floats count != \(floatValues.count), count given: \(floats.count)")
+			OctopusKit.logForSimInfo.add("floats count != \(floatValues.count), count given: \(floats.count)")
 			return
 		}
 		

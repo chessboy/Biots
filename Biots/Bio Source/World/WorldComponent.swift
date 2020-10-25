@@ -85,7 +85,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			unbornGenomes.remove(at: 0)
 		}
 		unbornGenomes.append(genome)
-		OctopusKit.logForSim.add("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
+		OctopusKit.logForSimInfo.add("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
 	}
 		
 	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
@@ -123,7 +123,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = Constants.Env.debugMode ? "DEBUG" : Constants.Env.randomRun ? "RAND" : Constants.Env.difficultyMode.description
+			let mode = Constants.Env.debugMode ? "DEBUG" : Constants.Env.randomRun ? "RAND" : Constants.Env.difficultyMode.description.uppercased()
 			let biotStats = currentBiotStats
 			let statsText = "\(mode) \(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
 
@@ -159,21 +159,21 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
 					genome1.generation > genome2.generation
 				}).first {
-					OctopusKit.logForSim.add("decanting unborn genome: \(highestGenGenome.description), cache size: \(unbornGenomes.count)")
+					OctopusKit.logForSimInfo.add("decanting unborn genome: \(highestGenGenome.description), cache size: \(unbornGenomes.count)")
 					let _ = addNewBiot(genome: highestGenGenome, in: scene)
 					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
 				}
 			}
 			else if Constants.Env.randomRun {
 				let genome = Genome.newRandomGenome
-				OctopusKit.logForSim.add("created random genome: \(genome.description)")
+				OctopusKit.logForSimInfo.add("created random genome: \(genome.description)")
 				let _ = addNewBiot(genome: genome, in: scene)
 			}
 			else if let genomes = DataManager.shared.saveState?.genomes, genomes.count > 0 {
 				let genomeIndex = genomeDispenseIndex % genomes.count
 				var genome = genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
-				OctopusKit.logForSim.add("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
+				OctopusKit.logForSimInfo.add("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
 				let biot = addNewBiot(genome: genome, in: scene)
 				genomeDispenseIndex += 1
 				if Constants.Env.debugMode {

@@ -30,7 +30,7 @@ final class ContactComponent: PhysicsContactComponent {
 		}
 
 		guard let biot = biotCandidateA ?? biotCandidateB else {
-			OctopusKit.logForSim.add("no contact in collision is a biot!")
+			OctopusKit.logForSimInfo.add("no contact in collision is a biot!")
 			return
 		}
 

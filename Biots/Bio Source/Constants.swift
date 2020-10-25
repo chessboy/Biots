@@ -15,7 +15,7 @@ enum DifficultyMode: Int, Codable, CustomStringConvertible {
 	case normal
 	
 	var description: String {
-		return self == .easy ? "EASY" : "NORMAL"
+		return self == .easy ? "easy" : "normal"
 	}
 }
 
@@ -28,6 +28,7 @@ struct Constants {
 		static let difficultyMode: DifficultyMode = randomRun ? .easy : .normal
 		static let windowWidth: CGFloat = 2000
 
+		static let saveSavedStateFilename = "Save"
 		static let firstRunSavedStateFilename = "Evolved"
 
 		static let gridBlockSize: CGFloat = 400
@@ -82,6 +83,17 @@ struct Constants {
 		}
 	}
 	
+	struct Algae {
+		static let radius: CGFloat = 16
+		static let bite: CGFloat = Biot.maximumFoodEnergy * 0.2
+		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
+	}
+	
+	struct Water {
+		static let sip: CGFloat = Biot.maximumHydration * 0.2
+		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
+	}
+	
 	struct Resource {
 		static let minSize: CGFloat = 80
 		static let plopSize: CGFloat = 200
@@ -113,18 +125,7 @@ struct Constants {
 		static let maxOutputValue: Float = 2
 		static let outputsSafetyCheck = false
 	}
-	
-	struct Algae {
-		static let radius: CGFloat = 16
-		static let bite: CGFloat = Biot.maximumFoodEnergy * 0.2
-		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
-	}
-	
-	struct Water {
-		static let sip: CGFloat = Biot.maximumHydration * 0.2
-		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
-	}
-	
+		
 	struct Vision {
 		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
 		static let refinerAngles = [0, -π/12, π/12]
@@ -226,6 +227,7 @@ struct Constants {
 }
 
 extension OctopusKit {
-	public static var logForSim = OKLog(title: "ℹ️")
+	public static var logForSimInfo = OKLog(title: "ℹ️")
+	public static var logForSimWarnings = OKLog(title: "⚠️")
 	public static var logForSimErrors = OKLog(title: "🐞")
 }

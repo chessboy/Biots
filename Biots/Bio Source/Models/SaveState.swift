@@ -15,6 +15,6 @@ struct SaveState: Codable, CustomStringConvertible {
 	var genomes: [Genome]
 	
 	var description: String {
-		return "{difficultyMode: \(difficultyMode.description), algaeTarget: \(algaeTarget), placedObjects: \(placedObjects.count), genomes: \(genomes.count)}"
+		return "{difficultyMode: \(difficultyMode), algaeTarget: \(algaeTarget), placedObjects: \(placedObjects.count), genomes: \(genomes.count)}"
 	}
 }
