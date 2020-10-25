@@ -69,10 +69,12 @@ final class VisionComponent: OKComponent {
 			let cameraScale = camera?.xScale,
 			let node = entityNode,
 			let scene = OctopusKit.shared.currentScene,
-			let physicsBody = physicsComponent?.physicsBody else {
+			let physicsBody = physicsComponent?.physicsBody,
+			let biotComponent = biotComponent else {
 			return
 		}
 		
+		let biotRadius = Constants.Biot.radius * 0.99 * (biotComponent.isMature ? 1 : 0.5)
 		let tracerScale = (0.2 * cameraScale).clamped(0.3, 1)
 		
 		for angle in Constants.Vision.eyeAngles {
@@ -87,7 +89,7 @@ final class VisionComponent: OKComponent {
 
 				let angleOffset = angle + offset
 				let rayDistance = Constants.Vision.rayDistance
-				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * Constants.Biot.radius * 0.98
+				let rayStart = node.position + CGPoint(angle: node.zRotation + angleOffset) * biotRadius
 				let rayEnd = rayStart + CGPoint(angle: node.zRotation + angleOffset) * rayDistance
 				
 				var blockerSeenAtSubAngle = false
@@ -158,7 +160,7 @@ final class VisionComponent: OKComponent {
 			
 			var colorVector = ColorVector.zero
 			
-			if let onTopOfWater = biotComponent?.isOnTopOfWater, onTopOfWater {
+			if biotComponent.isOnTopOfWater {
 				redTotal += Constants.VisionColors.water.redComponent/4
 				greenTotal += Constants.VisionColors.water.greenComponent/4
 				blueTotal += Constants.VisionColors.water.blueComponent/4

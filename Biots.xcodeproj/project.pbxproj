@@ -25,7 +25,7 @@
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D45F0E6B253282360067912C /* PlacedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* PlacedObject.swift */; };
-		D45F0E782532C7520067912C /* placed-objects-more.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* placed-objects-more.json */; };
+		D45F0E782532C7520067912C /* placedObjects-more.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* placedObjects-more.json */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -56,16 +56,13 @@
 		D47387332443748B0022E760 /* NeuralNetComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47387322443748B0022E760 /* NeuralNetComponent.swift */; };
 		D4738757244389C60022E760 /* CGFloatMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4738756244389C60022E760 /* CGFloatMath.swift */; };
 		D47D71942447F5950079D2F1 /* RunningValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D71932447F5950079D2F1 /* RunningValue.swift */; };
-		D47D719624489C450079D2F1 /* GenomeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D719524489C450079D2F1 /* GenomeFactory.swift */; };
 		D47D719924493E590079D2F1 /* JsonLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47D719824493E590079D2F1 /* JsonLoad.swift */; };
 		D484F18424CAA9290079CFD3 /* OctopusKit in Frameworks */ = {isa = PBXBuildFile; productRef = D484F18324CAA9290079CFD3 /* OctopusKit */; };
 		D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */; };
 		D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */; };
 		D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */; };
-		D49003A02524E6A6002DA67C /* zoo-empty.json in Resources */ = {isa = PBXBuildFile; fileRef = D490039F2524E6A6002DA67C /* zoo-empty.json */; };
 		D49880462517D69400015724 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D49880452517D69400015724 /* README.md */; };
-		D4A85D602533CAEB00F4861C /* placed-objects-empty.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D5F2533CAEB00F4861C /* placed-objects-empty.json */; };
-		D4A85D6E2533D4A800F4861C /* placed-objects-less.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D6D2533D4A800F4861C /* placed-objects-less.json */; };
+		D4A85D6E2533D4A800F4861C /* placedObjects-less.json in Resources */ = {isa = PBXBuildFile; fileRef = D4A85D6D2533D4A800F4861C /* placedObjects-less.json */; };
 		D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B2EE37244EC434007D615E /* KeyCodes.swift */; };
 		D4BE801B24FB6D2900208C6A /* BiotsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BE801A24FB6D2900208C6A /* BiotsTests.swift */; };
 		D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */; };
@@ -81,15 +78,17 @@
 		D4E4BA6025008EEA0044EC48 /* ZapperComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */; };
 		D4E573AE244D515E006C2767 /* NoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E573AD244D515E006C2767 /* NoiseGenerator.swift */; };
 		D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F5055224ED282900EAA52E /* RunningFloatArray.swift */; };
-		E82E304F253ED2D400837E89 /* zoo-32.json in Resources */ = {isa = PBXBuildFile; fileRef = E82E304E253ED2D400837E89 /* zoo-32.json */; };
-		E82E3053253F33B500837E89 /* zoo-1850.json in Resources */ = {isa = PBXBuildFile; fileRef = E82E3052253F33B400837E89 /* zoo-1850.json */; };
-		E83A6C2C2537EAC4008718EE /* zoo-1740.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* zoo-1740.json */; };
+		E82E304F253ED2D400837E89 /* genomes-32.json in Resources */ = {isa = PBXBuildFile; fileRef = E82E304E253ED2D400837E89 /* genomes-32.json */; };
+		E83A6C2C2537EAC4008718EE /* genomes-1740.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* genomes-1740.json */; };
 		E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */; };
 		E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */; };
 		E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */; };
 		E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */; };
+		E8BB0535254487B4008C39D2 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB0534254487B4008C39D2 /* SaveState.swift */; };
+		E8BB053E25448A3A008C39D2 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB053D25448A3A008C39D2 /* LocalFileManager.swift */; };
+		E8BB054425449247008C39D2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB054325449247008C39D2 /* DataManager.swift */; };
 		E8C1E2FE25395A240013C290 /* ProgressNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C1E2FD25395A240013C290 /* ProgressNode.swift */; };
-		E8C1E306253A1DAA0013C290 /* zoo-135.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E305253A1DAA0013C290 /* zoo-135.json */; };
+		E8C1E306253A1DAA0013C290 /* genomes-135.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E305253A1DAA0013C290 /* genomes-135.json */; };
 		E8D63D58253FFDF000ACF9D7 /* SwiftUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D63D57253FFDF000ACF9D7 /* SwiftUiExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -120,7 +119,7 @@
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
 		D45F0E6A253282360067912C /* PlacedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacedObject.swift; sourceTree = "<group>"; };
-		D45F0E772532C7520067912C /* placed-objects-more.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "placed-objects-more.json"; sourceTree = "<group>"; };
+		D45F0E772532C7520067912C /* placedObjects-more.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "placedObjects-more.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -156,16 +155,13 @@
 		D47387322443748B0022E760 /* NeuralNetComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeuralNetComponent.swift; sourceTree = "<group>"; };
 		D4738756244389C60022E760 /* CGFloatMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGFloatMath.swift; sourceTree = "<group>"; };
 		D47D71932447F5950079D2F1 /* RunningValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningValue.swift; sourceTree = "<group>"; };
-		D47D719524489C450079D2F1 /* GenomeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeFactory.swift; sourceTree = "<group>"; };
 		D47D719824493E590079D2F1 /* JsonLoad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonLoad.swift; sourceTree = "<group>"; };
 		D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CGVectorMath.swift; sourceTree = "<group>"; };
 		D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorVector.swift; sourceTree = "<group>"; };
 		D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OctopusKitExtensions.swift; sourceTree = "<group>"; };
-		D490039F2524E6A6002DA67C /* zoo-empty.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-empty.json"; sourceTree = "<group>"; };
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
-		D4A85D5F2533CAEB00F4861C /* placed-objects-empty.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "placed-objects-empty.json"; sourceTree = "<group>"; };
-		D4A85D6D2533D4A800F4861C /* placed-objects-less.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "placed-objects-less.json"; sourceTree = "<group>"; };
+		D4A85D6D2533D4A800F4861C /* placedObjects-less.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "placedObjects-less.json"; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -185,16 +181,18 @@
 		D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZapperComponent.swift; sourceTree = "<group>"; };
 		D4E573AD244D515E006C2767 /* NoiseGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseGenerator.swift; sourceTree = "<group>"; };
 		D4F5055224ED282900EAA52E /* RunningFloatArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningFloatArray.swift; sourceTree = "<group>"; };
-		E82E304E253ED2D400837E89 /* zoo-32.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-32.json"; sourceTree = "<group>"; };
-		E82E3052253F33B400837E89 /* zoo-1850.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-1850.json"; sourceTree = "<group>"; };
-		E83A6C2B2537EAC4008718EE /* zoo-1740.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-1740.json"; sourceTree = "<group>"; };
+		E82E304E253ED2D400837E89 /* genomes-32.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-32.json"; sourceTree = "<group>"; };
+		E83A6C2B2537EAC4008718EE /* genomes-1740.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-1740.json"; sourceTree = "<group>"; };
 		E83B9117253BE350004DE02F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-BoldItalic.ttf"; sourceTree = "<group>"; };
 		E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consolasligaturizedv2.ttf; sourceTree = "<group>"; };
 		E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Italic.ttf"; sourceTree = "<group>"; };
 		E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Bold.ttf"; sourceTree = "<group>"; };
+		E8BB0534254487B4008C39D2 /* SaveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveState.swift; sourceTree = "<group>"; };
+		E8BB053D25448A3A008C39D2 /* LocalFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalFileManager.swift; path = ../../../../../../Downloads/LocalFileManager.swift; sourceTree = "<group>"; };
+		E8BB054325449247008C39D2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		E8C1E2FD25395A240013C290 /* ProgressNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNode.swift; sourceTree = "<group>"; };
-		E8C1E305253A1DAA0013C290 /* zoo-135.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "zoo-135.json"; sourceTree = "<group>"; };
+		E8C1E305253A1DAA0013C290 /* genomes-135.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-135.json"; sourceTree = "<group>"; };
 		E8D63D57253FFDF000ACF9D7 /* SwiftUiExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUiExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -264,14 +262,13 @@
 			path = Vision;
 			sourceTree = "<group>";
 		};
-		D45F0E722532BFE80067912C /* Placements */ = {
+		D45F0E722532BFE80067912C /* Placed Objects */ = {
 			isa = PBXGroup;
 			children = (
-				D4A85D5F2533CAEB00F4861C /* placed-objects-empty.json */,
-				D4A85D6D2533D4A800F4861C /* placed-objects-less.json */,
-				D45F0E772532C7520067912C /* placed-objects-more.json */,
+				D4A85D6D2533D4A800F4861C /* placedObjects-less.json */,
+				D45F0E772532C7520067912C /* placedObjects-more.json */,
 			);
-			path = Placements;
+			path = "Placed Objects";
 			sourceTree = "<group>";
 		};
 		D47386292442BA830022E760 = {
@@ -386,6 +383,7 @@
 			isa = PBXGroup;
 			children = (
 				D47386F12442CB9E0022E760 /* Constants.swift */,
+				E8BB054325449247008C39D2 /* DataManager.swift */,
 				D4D18D97244799F500BF92FA /* Models */,
 				D4D18D8F2446BC8200BF92FA /* World */,
 				D42CE73424442E130049854C /* Biot Components */,
@@ -421,16 +419,14 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		D49880422517D0AB00015724 /* Zoo */ = {
+		D49880422517D0AB00015724 /* Genomes */ = {
 			isa = PBXGroup;
 			children = (
-				D490039F2524E6A6002DA67C /* zoo-empty.json */,
-				E82E304E253ED2D400837E89 /* zoo-32.json */,
-				E8C1E305253A1DAA0013C290 /* zoo-135.json */,
-				E83A6C2B2537EAC4008718EE /* zoo-1740.json */,
-				E82E3052253F33B400837E89 /* zoo-1850.json */,
+				E82E304E253ED2D400837E89 /* genomes-32.json */,
+				E8C1E305253A1DAA0013C290 /* genomes-135.json */,
+				E83A6C2B2537EAC4008718EE /* genomes-1740.json */,
 			);
-			path = Zoo;
+			path = Genomes;
 			sourceTree = "<group>";
 		};
 		D4BE801924FB6D2900208C6A /* BiotsTests */ = {
@@ -479,11 +475,11 @@
 		D4D18D97244799F500BF92FA /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				D45F0E722532BFE80067912C /* Placements */,
-				D49880422517D0AB00015724 /* Zoo */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
-				D47D719524489C450079D2F1 /* GenomeFactory.swift */,
 				D45F0E6A253282360067912C /* PlacedObject.swift */,
+				E8BB0534254487B4008C39D2 /* SaveState.swift */,
+				E8BB054F25453126008C39D2 /* Bundled Files */,
+				E8BB053C254488BF008C39D2 /* File */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -497,6 +493,23 @@
 				E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */,
 			);
 			path = "Consolas-FiraCode_v2";
+			sourceTree = "<group>";
+		};
+		E8BB053C254488BF008C39D2 /* File */ = {
+			isa = PBXGroup;
+			children = (
+				E8BB053D25448A3A008C39D2 /* LocalFileManager.swift */,
+			);
+			path = File;
+			sourceTree = "<group>";
+		};
+		E8BB054F25453126008C39D2 /* Bundled Files */ = {
+			isa = PBXGroup;
+			children = (
+				D45F0E722532BFE80067912C /* Placed Objects */,
+				D49880422517D0AB00015724 /* Genomes */,
+			);
+			path = "Bundled Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -586,22 +599,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4A85D602533CAEB00F4861C /* placed-objects-empty.json in Resources */,
 				D49880462517D69400015724 /* README.md in Resources */,
 				E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
-				E82E3053253F33B500837E89 /* zoo-1850.json in Resources */,
-				E8C1E306253A1DAA0013C290 /* zoo-135.json in Resources */,
+				E8C1E306253A1DAA0013C290 /* genomes-135.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */,
 				E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */,
-				E82E304F253ED2D400837E89 /* zoo-32.json in Resources */,
+				E82E304F253ED2D400837E89 /* genomes-32.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
-				D4A85D6E2533D4A800F4861C /* placed-objects-less.json in Resources */,
-				D45F0E782532C7520067912C /* placed-objects-more.json in Resources */,
-				E83A6C2C2537EAC4008718EE /* zoo-1740.json in Resources */,
+				D4A85D6E2533D4A800F4861C /* placedObjects-less.json in Resources */,
+				D45F0E782532C7520067912C /* placedObjects-more.json in Resources */,
+				E83A6C2C2537EAC4008718EE /* genomes-1740.json in Resources */,
 				E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */,
-				D49003A02524E6A6002DA67C /* zoo-empty.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,7 +640,6 @@
 				D47D719924493E590079D2F1 /* JsonLoad.swift in Sources */,
 				D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */,
 				D42CE72E2443FF820049854C /* KeyTrackerComponent.swift in Sources */,
-				D47D719624489C450079D2F1 /* GenomeFactory.swift in Sources */,
 				D47386382442BA830022E760 /* ContentView.swift in Sources */,
 				D473868D2442BD6C0022E760 /* Storage.swift in Sources */,
 				D4D18D992447A37000BF92FA /* Genome.swift in Sources */,
@@ -640,12 +649,14 @@
 				D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */,
 				D47386F22442CB9E0022E760 /* Constants.swift in Sources */,
 				D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */,
+				E8BB0535254487B4008C39D2 /* SaveState.swift in Sources */,
 				D473868E2442BD6C0022E760 /* Error.swift in Sources */,
 				D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */,
 				D47386922442BD6C0022E760 /* Cache.swift in Sources */,
 				D47386932442BD6C0022E760 /* NeuralNet.swift in Sources */,
 				D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */,
 				D48E2DDD24F74E9C009FB3D7 /* ColorVector.swift in Sources */,
+				E8BB054425449247008C39D2 /* DataManager.swift in Sources */,
 				D42CE738244430CE0049854C /* RulerComponent.swift in Sources */,
 				D42CE73224440EC20049854C /* GlobalStatsComponent.swift in Sources */,
 				D47387332443748B0022E760 /* NeuralNetComponent.swift in Sources */,
@@ -685,6 +696,7 @@
 				D4040D1024F8BDFC00A2C500 /* RunningColorVector.swift in Sources */,
 				D42CE73A24449A670049854C /* SpriteKitExtensions.swift in Sources */,
 				D44E606524522F8400694462 /* EyesComponent.swift in Sources */,
+				E8BB053E25448A3A008C39D2 /* LocalFileManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

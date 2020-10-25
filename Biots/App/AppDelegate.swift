@@ -20,6 +20,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		// Create the SwiftUI view that provides the window contents.
 		let contentView = ContentView()
 
+		OKLog.printTextOnSecondLine = true
+		
 		OctopusKit.logForDeinits.disabled = true
 		OctopusKit.logForDebug.disabled = true
 		OctopusKit.logForStates.disabled = true
@@ -35,6 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.setFrameAutosaveName("Main Window")
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
+		window.enableCursorRects()
 	}
 	
 	func applicationDidResignActive(_ notification: Notification) {

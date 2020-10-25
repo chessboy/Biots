@@ -34,18 +34,83 @@ struct BiotsUI: View {
 	
 	@ObservedObject var globalDataComponent: GlobalDataComponent
 	var worldScene: WorldScene
+
+	@State var algaeTargetState: CGFloat!
+
+	init(globalDataComponent: GlobalDataComponent, worldScene: WorldScene) {
+		self.globalDataComponent = globalDataComponent
+		self.worldScene = worldScene
+
+		_algaeTargetState = State(initialValue: globalDataComponent.algaeTarget.cgFloat)
+	}
 	
 	var body: some View {
-		VStack {
+		
+		let algaeTarget = Binding<CGFloat>(
+			get: {
+				algaeTargetState
+			},
+			set: {
+				algaeTargetState = $0
+				globalDataComponent.algaeTarget = Int($0)
+				worldScene.setAlgaeTargetsInFountains(globalDataComponent.algaeTarget)
+			}
+		)
+		
+		return VStack {
 			Spacer().frame(maxWidth: .infinity)
-			Button("Select Most Fit (a)", action: { worldScene.selectMostFit() })
-				.font(.title)
+			HStack {
+				
+				VStack {
+					Slider(value: algaeTarget, in: 0...20000, step: 1000)
+					Text("Algae Target: \(Int(algaeTargetState).abbrev)")
+						.font(.body)
+						.animation(nil)
+				}
+				.padding()
+				.frame(minWidth: 200, idealWidth: 200, maxWidth: 200)
+				
+				Button("Toggle Biot Stats", action: {
+					globalDataComponent.showBiotStats.toggle()
+					worldScene.showBiotStats(globalDataComponent.showBiotStats)
+				})
+				.font(.body)
 				.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
+				Button("Select Most Fit (a)", action: { worldScene.selectMostFit() })
+					.font(.body)
+					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
+				Button("Save", action: {
+					let algaeTarget = worldScene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
+					let saveState = SaveState(difficultyMode: .normal, algaeTarget: algaeTarget, placedObjects: worldScene.currentPlacedObjects, genomes: worldScene.currentGenomes)
+					LocalFileManager.shared.saveStateToFile(saveState: saveState, filename: "Save")
+				})
+					.font(.body)
+					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
+			}
+			.padding(.top, 20)
+			.frame(maxWidth: .infinity)
+			.background(Color(white: 0).opacity(0.75))
 			Spacer(minLength: 80)
 		}
-		.opacity(globalDataComponent.showUi ? 1 : 0)
-		.animation(.easeInOut(duration: globalDataComponent.showUi ? 0.1 : 0.25))
+		.opacity(globalDataComponent.showHUDPub ? 1 : 0)
+		.animation(.easeInOut(duration: globalDataComponent.showHUDPub ? 0.1 : 0.25))
 		.transition(.opacity)
 		.frame(maxHeight: .infinity)
+	}
+}
+
+struct PlayUI_Previews: PreviewProvider {
+	
+	static let gameCoordinator = MyGameCoordinator()
+	
+	static var previews: some View {
+		gameCoordinator.entity.addComponent(GlobalDataComponent())
+		
+		return PlayUI()
+			.environmentObject(gameCoordinator)
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+			.foregroundColor(.red)
+			.background(Color(red: 0.1, green: 0.2, blue: 0.2))
+			.edgesIgnoringSafeArea(.all)
 	}
 }

@@ -27,12 +27,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var age: CGFloat = 0
 	var lastSpawnedAge: CGFloat = 0
 	var lastPregnantAge: CGFloat = 0
-	var lastInteractedAge: CGFloat = 0
 	var lastBlinkAge: CGFloat = 0
 	
 	var spawnCount: Int = 0
 	var matedCount = 0
-	var matured = false
+	var isMature = false
 
 	var healthNode: SKNode!
 	var healthDetailsNode: SKNode!
@@ -88,7 +87,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		if isExpired { return 0 }
 		
 		if age < Constants.Biot.matureAge {
-			if !matured {
+			if !isMature {
 				return age/(Constants.Biot.matureAge/2)
 			}
 			return age/Constants.Biot.matureAge
@@ -130,12 +129,10 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 
 	func startInteracting() {
 		isInteracting = true
-		lastInteractedAge = age
 	}
 	
 	func stopInteracting() {
 		isInteracting = false
-		lastInteractedAge = age
 	}
 
 	override var requiredComponents: [GKComponent.Type]? {[
@@ -329,7 +326,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	func showRipples() {
 		
-		guard !isInteracting, isImmersedInWater, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 2), let node = entityNode as? SKShapeNode else { return }
+		guard isImmersedInWater, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 2), let node = entityNode as? SKShapeNode else { return }
 		
 		let rippleNode = SKShapeNode.arcOfRadius(radius: Constants.Biot.radius * 1.3 * node.xScale, startAngle: -π/4, endAngle: π/4)
 		rippleNode.position = node.position
@@ -364,13 +361,13 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		
 		guard !isExpired else { return }
 		
-		//if !Constants.Env.debugMode {
+		if !isInteracting {
 			age += 1
-		//}
+		}
 
-		if !matured, age >= Constants.Biot.matureAge / 2 {
+		if !isMature, age >= Constants.Biot.matureAge / 2 {
 			entityNode?.run(SKAction.scale(to: 1, duration: 0.5))
-			matured = true
+			isMature = true
 		}
 
 		checkResourceContacts()
@@ -386,6 +383,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			updateHealthNode()
 			updateThrusterNode()
 			blink()
+			showRipples()
 			showStats()
 			if !selectionNode.isHidden, let rotation = entityNode?.zRotation {
 				selectionNode.zRotation = 2*π - rotation + π/2
@@ -420,7 +418,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				scene.removeEntityOnNextUpdate(entity)
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
-					let bites: CGFloat = self.matured ? 6 : 3
+					let bites: CGFloat = self.isMature ? 6 : 3
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: true)
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self) {
 						if let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node, let physicsBody = algaeNode.physicsBody {
@@ -621,7 +619,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
 			speedNode.alpha = speedBoost.cgFloat
 			armorNode.alpha = armor.cgFloat
-			showRipples()
 		}
 	}
 	

@@ -178,3 +178,13 @@ extension Genome {
 		return (weights: randomizedWeights, biases: randomizedBiases)
 	}
 }
+
+extension Genome {
+	static var newRandomGenome: Genome {
+		let inputCount = Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth + Senses.newInputCount
+		let outputCount = Inference.outputCount
+		let hiddenCounts = Constants.NeuralNet.newGenomeHiddenCounts
+
+		return Genome(inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
+	}
+}

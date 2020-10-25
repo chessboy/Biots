@@ -15,6 +15,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	var cameraZoom: CGFloat = Constants.Camera.initialScale
 	var genomeDispenseIndex = 0
 	var unbornGenomes: [Genome] = []
+	var saveState: SaveState?
 	
 	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
 	
@@ -42,11 +43,14 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
 		
-		let filename = Constants.Env.placedObjectsFilename
-		let placedObjects: [PlacedObject] = loadJsonFromFile(filename)
-		print("WorldComponent: loaded \(placedObjects.count) placedObjects from \(filename)")
-				
-		let targetAlgaeSupply = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
+		guard let saveState = DataManager.shared.saveState else {
+			return
+		}
+		
+		let placedObjects = saveState.placedObjects
+						
+		let targetAlgaeSupply = saveState.algaeTarget
+		scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget = targetAlgaeSupply
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
 		// algae fountain(s)
@@ -81,7 +85,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			unbornGenomes.remove(at: 0)
 		}
 		unbornGenomes.append(genome)
-		print("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
+		OctopusKit.logForSim.add("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
 	}
 		
 	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
@@ -113,13 +117,13 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	func displayStats() {
 		
 		guard let scene =  OctopusKit.shared?.currentScene else { return }
-		let frame = scene.currentFrameNumber
+		let frame = Int(scene.currentFrameNumber) - Constants.Env.startupDelay
 
 		if frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = Constants.Env.debugMode ? "DEBUG" : Constants.Env.randomRun ? "RAND" : Constants.Env.easyMode ? "EASY" : "NORMAL"
+			let mode = Constants.Env.debugMode ? "DEBUG" : Constants.Env.randomRun ? "RAND" : Constants.Env.difficultyMode.description
 			let biotStats = currentBiotStats
 			let statsText = "\(mode) \(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
 
@@ -155,21 +159,21 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
 					genome1.generation > genome2.generation
 				}).first {
-					print("decanting unborn genome: \(highestGenGenome.description), cache size: \(unbornGenomes.count)")
+					OctopusKit.logForSim.add("decanting unborn genome: \(highestGenGenome.description), cache size: \(unbornGenomes.count)")
 					let _ = addNewBiot(genome: highestGenGenome, in: scene)
 					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
 				}
 			}
 			else if Constants.Env.randomRun {
-				let genome = GenomeFactory.shared.newRandomGenome
-				print("created random genome: \(genome.description)")
+				let genome = Genome.newRandomGenome
+				OctopusKit.logForSim.add("created random genome: \(genome.description)")
 				let _ = addNewBiot(genome: genome, in: scene)
 			}
-			else if GenomeFactory.shared.genomes.count > 0 {
-				let genomeIndex = genomeDispenseIndex % GenomeFactory.shared.genomes.count
-				var genome = GenomeFactory.shared.genomes[genomeIndex]
+			else if let genomes = DataManager.shared.saveState?.genomes, genomes.count > 0 {
+				let genomeIndex = genomeDispenseIndex % genomes.count
+				var genome = genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
-				print("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
+				OctopusKit.logForSim.add("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
 				let biot = addNewBiot(genome: genome, in: scene)
 				genomeDispenseIndex += 1
 				if Constants.Env.debugMode {

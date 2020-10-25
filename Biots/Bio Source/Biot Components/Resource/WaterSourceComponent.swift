@@ -13,6 +13,7 @@ import OctopusKit
 final class WaterSourceComponent: OKComponent {
 	
 	var radius: CGFloat
+	var selected = false
 	
 	init(radius: CGFloat) {
 		self.radius = radius
@@ -66,6 +67,16 @@ extension WaterSourceComponent {
 			shadowNode.strokeColor = color.withAlpha(0.33)
 			node.insertChild(shadowNode, at: 0)
 		}
+		
+//		let resizeNode = SKShapeNode(rect: CGRect(center: CGPoint(angle: 0) * (radius + 10), size: CGSize(width: 20, height: radius*2)), cornerRadius: 10)
+//		resizeNode.lineWidth = 0
+//		resizeNode.fillColor = SKColor.white.withAlpha(0.33)
+//		node.addChild(resizeNode)
+//		let resizeThumb = SKShapeNode(circleOfRadius: 40)
+//		resizeThumb.position = CGPoint(angle: 0) * (radius + 10)
+//		resizeThumb.lineWidth = 0
+//		resizeThumb.fillColor = .white
+//		resizeNode.addChild(resizeThumb)
 
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
 		physicsBody.allowsRotation = false

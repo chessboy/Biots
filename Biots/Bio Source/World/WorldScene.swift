@@ -40,6 +40,12 @@ final class WorldScene: OKScene {
 		// from ShinryakuTako: Steal the focus on macOS so the player doesn't have to click on the view before using the keyboard.
 		#if os(macOS)
 		to.window?.makeFirstResponder(self)
+		
+		// CHECK: why is no cursor stuff working?
+		//to.window?.enableCursorRects()
+		to.addCursorRect(to.bounds, cursor: .pointingHand)
+		//NSCursor.pointingHand.set()
+
 		#endif
 	}
 
@@ -113,9 +119,8 @@ final class WorldScene: OKScene {
     	}
 	}
 	
-	func dumpPlaceables() {
-		print("\n[")
-		
+	var currentPlacedObjects: [PlacedObject] {
+	
 		var placedObjects: [PlacedObject] = []
 		
 		for component in entities(withName: Constants.NodeName.zapper)?.map({$0.component(ofType: ZapperComponent.self)}) as? [ZapperComponent] ?? [] {
@@ -129,7 +134,15 @@ final class WorldScene: OKScene {
 				placedObjects.append(node.createPlacedObject(placeableType: .water, radius: component.radius))
 			}
 		}
-
+		
+		return placedObjects.compactMap { $0 }
+	}
+	
+	func dumpPlaceables() {
+		print("\n[")
+		
+		let placedObjects = currentPlacedObjects
+		
 		var index = 0
 		for placedObject in placedObjects {
 			if let jsonData = try? placedObject.encodedToJSON() {
@@ -144,13 +157,20 @@ final class WorldScene: OKScene {
 		print("]\n")
 	}
 	
-	func dumpGenomes() {
-		print("\n[")
+	var currentGenomes: [Genome] {
 		var genomes = self.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).map({$0.component(ofType: BiotComponent.self)}).map({$0?.genome})
+		
 		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.unbornGenomes {
 			let unborn = Array(unbornBiots.suffix(10))
 			genomes.append(contentsOf: unborn)
 		}
+		
+		return genomes.compactMap { $0 }
+	}
+	
+	func dumpGenomes() {
+		print("\n[")
+		let genomes = currentGenomes
 		
 		var index = 0
 		for genome in genomes {
@@ -220,6 +240,30 @@ final class WorldScene: OKScene {
 		}
 	}
 	
+	func showBiotStats(_ showBiotStats: Bool) {
+		self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
+			if showBiotStats {
+				if biot.component(ofType: EntityStatsComponent.self) == nil {
+					biot.addComponent(EntityStatsComponent())
+				}
+			}
+			else {
+				if let statsComponent = biot.component(ofType: EntityStatsComponent.self) {
+					statsComponent.statsNode.run(SKAction.fadeOut(withDuration: 0.25)) {
+						biot.removeComponent(ofType: EntityStatsComponent.self)
+					}
+				}
+			}
+		})
+	}
+	
+	func setAlgaeTargetsInFountains(_ algaeTarget: Int) {
+		self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = algaeTarget.cgFloat
+		self.entities(withName: "fountain")?.map({$0.component(ofType: ResourceFountainComponent.self)}).forEach({ fountainComponent in
+			fountainComponent?.targetAlgaeSupply = algaeTarget.cgFloat / 4
+		})
+	}
+	
 	override func keyDown(with event: NSEvent) {
 		
 		guard let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) else {
@@ -241,7 +285,7 @@ final class WorldScene: OKScene {
 		switch event.keyCode {
 		
 		case Keycode.u:
-			globalDataComponent.showUi.toggle()
+			globalDataComponent.showHUDPub.toggle()
 			break
 		
 		case Keycode.r:
@@ -346,20 +390,7 @@ final class WorldScene: OKScene {
 			}
 			else {
 				globalDataComponent.showBiotStats.toggle()
-				self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
-					if globalDataComponent.showBiotStats {
-						if biot.component(ofType: EntityStatsComponent.self) == nil {
-							biot.addComponent(EntityStatsComponent())
-						}
-					}
-					else {
-						if let statsComponent = biot.component(ofType: EntityStatsComponent.self) {
-							statsComponent.statsNode.run(SKAction.fadeOut(withDuration: 0.25)) {
-								biot.removeComponent(ofType: EntityStatsComponent.self)
-							}
-						}
-					}
-				})
+				showBiotStats(globalDataComponent.showBiotStats)
 			}
 			
 		case Keycode.p:
@@ -382,15 +413,13 @@ final class WorldScene: OKScene {
 			}
 			else if optionDown {
 				let bump = 1000 * (shiftDown ? -1 : 1)
-				if globalDataComponent.algaeTarget + bump >= 0 {
+				if globalDataComponent.algaeTarget + bump >= 0, globalDataComponent.algaeTarget + bump <= 20000 {
 					globalDataComponent.algaeTarget += bump
-
-					self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat
-					self.entities(withName: "fountain")?.map({$0.component(ofType: ResourceFountainComponent.self)}).forEach({ fountainComponent in
-						fountainComponent?.targetAlgaeSupply = globalDataComponent.algaeTarget.cgFloat / 4
-					})
+					setAlgaeTargetsInFountains(globalDataComponent.algaeTarget)
 				}
 			}
+			break
+
 
 		case Keycode.tab:
 			if let biots = entities(withName: Constants.NodeName.biot), let firstBiot = biots.first {
@@ -460,14 +489,14 @@ final class WorldScene: OKScene {
 				if let selectedEntity = entities.filter({ $0.node == draggingNode }).first as? OKEntity {
 					if let zapperComponent = selectedEntity.component(ofType: ZapperComponent.self) {
 						let delta: CGFloat = (draggingNode?.position ?? .zero).y - event.location(in: self).y > 0 ? -offset : offset
-						if !((zapperComponent.radius < 50 && delta < 0) || (zapperComponent.radius > 800 && delta > 0)) {
+						if !((zapperComponent.radius < Constants.Resource.minSize && delta < 0) || (zapperComponent.radius > Constants.Resource.maxSize && delta > 0)) {
 							zapperComponent.radius += delta
 							zapperComponent.entityNode?.setScale(zapperComponent.radius / (zapperComponent.radius-delta) * (zapperComponent.entityNode?.xScale ?? 1))
 						}
 					}
 					else if let waterComponent = selectedEntity.component(ofType: WaterSourceComponent.self) {
 						let delta: CGFloat = (draggingNode?.position ?? .zero).y - event.location(in: self).y > 0 ? -offset : offset
-						if !((waterComponent.radius < 50 && delta < 0) || (waterComponent.radius > 800 && delta > 0)) {
+						if !((waterComponent.radius < Constants.Resource.minSize && delta < 0) || (waterComponent.radius > Constants.Resource.maxSize && delta > 0)) {
 							waterComponent.radius += delta
 							waterComponent.entityNode?.setScale(waterComponent.radius / (waterComponent.radius-delta) * (waterComponent.entityNode?.xScale ?? 1))
 						}
@@ -510,7 +539,7 @@ final class WorldScene: OKScene {
 		//print("touchDown: point: \(point.formattedTo2Places), keyCodesDown: \(keyCodesDown), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
 		
 		if keyCodesDown.contains(Keycode.w) {
-			let radius: CGFloat = 200
+			let radius: CGFloat = Constants.Resource.plopSize
 			let water = WaterSourceComponent.create(radius: radius, position: point)
 			mainFountain.waterEntities.append(water)
 			addEntity(water)
@@ -518,7 +547,7 @@ final class WorldScene: OKScene {
 		}
 		
 		if keyCodesDown.contains(Keycode.b) {
-			let radius: CGFloat = 200
+			let radius: CGFloat = Constants.Resource.plopSize
 			let zapper = ZapperComponent.create(radius: radius, position: point)
 			addEntity(zapper)
 			return

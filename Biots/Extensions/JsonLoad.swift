@@ -7,26 +7,29 @@
 //
 
 import Foundation
+import OctopusKit
 
 // load data as `codeable` objects from a bundled file
-func loadJsonFromFile<T: Decodable>(_ filename: String) -> T {
+func loadJsonFromFile<T: Decodable>(_ filename: String, fileExtension: String = "json") -> T? {
 	let data: Data
 	
-	guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
-	else {
-		fatalError("Couldn't find \(filename) in main bundle.")
+	guard let file = Bundle.main.url(forResource: filename, withExtension: fileExtension) else {
+		OctopusKit.logForSimErrors.add("Couldn't find \(filename) in main bundle.")
+		return nil
 	}
 	
 	do {
 		data = try Data(contentsOf: file)
 	} catch {
-		fatalError("Couldn't load \(filename) from main bundle:\n\(error)")
+		OctopusKit.logForSimErrors.add("Couldn't load \(filename) from main bundle:\n\(error)")
+		return nil
 	}
 	
 	do {
 		let decoder = JSONDecoder()
 		return try decoder.decode(T.self, from: data)
 	} catch {
-		fatalError("Couldn't parse \(filename) as \(T.self):\n\(error)")
+		OctopusKit.logForSimErrors.add("Couldn't parse \(filename) as \(T.self):\n\(error)")
+		return nil
 	}
 }

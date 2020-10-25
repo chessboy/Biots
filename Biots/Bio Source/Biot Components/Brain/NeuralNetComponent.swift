@@ -29,7 +29,7 @@ final class NeuralNetComponent: OKComponent, OKUpdatableComponent {
 			self.neuralNet = neuralNet
 			
 		} catch let error {
-			print("\(error.localizedDescription)")
+			OctopusKit.logForSimErrors.add("\(error.localizedDescription)")
 		}
 		
 		super.init()
@@ -42,7 +42,7 @@ final class NeuralNetComponent: OKComponent, OKUpdatableComponent {
 			try neuralNet.setWeights(genome.weights)
 			try neuralNet.setBiases(genome.biases)
 		} catch let error {
-			print("\(error.localizedDescription)")
+			OctopusKit.logForSimErrors.add("\(error.localizedDescription)")
 		}
 	}
 		
@@ -75,7 +75,7 @@ final class NeuralNetComponent: OKComponent, OKUpdatableComponent {
 			return outputs
 			
 		} catch let error {
-			print("\(error)")
+			OctopusKit.logForSimErrors.add("\(error)")
 			return Array(repeating: Float.zero, count: genome.outputCount)
 		}
 	}

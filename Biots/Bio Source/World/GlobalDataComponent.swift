@@ -27,10 +27,13 @@ struct Defaults {
 	
 	static let algaeTarget = 12000
 	static let showAlgaeFountainInfluences = false
+	
+	static let showHUD = false
 }
 
 /// A custom component for the QuickStart project that holds some simple data to be shared across multiple game states and scenes.
 final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableObject {
+	
 	@OKUserDefault(key: "showPhysics", defaultValue: Defaults.showPhysics) public var showPhysics: Bool
 	@OKUserDefault(key: "cameraZoom", defaultValue: Defaults.cameraZoom) public var cameraZoom: Double
 	@OKUserDefault(key: "cameraX", defaultValue: Defaults.cameraX) public var cameraX: Double
@@ -47,9 +50,19 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 
 	@OKUserDefault(key: "algaeTarget", defaultValue: Defaults.algaeTarget) public var algaeTarget: Int
 	@OKUserDefault(key: "showAlgaeFountainInfluences", defaultValue: Defaults.showAlgaeFountainInfluences) public var showAlgaeFountainInfluences: Bool
+	
+	@OKUserDefault(key: "showHUD", defaultValue: Defaults.showHUD) public var showHUD: Bool
 
+	override func didAddToEntity() {
+		showHUDPub = showHUD
+	}
+	
 	@Published
-	public var showUi: Bool = false
+	public var showHUDPub: Bool = false {
+		didSet {
+			showHUD = showHUDPub
+		}
+	}
 
 	func reset() {
 		showPhysics = Defaults.showPhysics
@@ -69,6 +82,8 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 		algaeTarget = Defaults.algaeTarget
 		showAlgaeFountainInfluences = Defaults.showAlgaeFountainInfluences
 		
+		showHUD = Defaults.showHUD
+
 		OctopusKit.logForSim.add("GlobalDataComponent: all observables have been reset")
 	}
 }

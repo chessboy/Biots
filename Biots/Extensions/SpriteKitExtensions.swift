@@ -9,6 +9,7 @@
 import SpriteKit
 import GameplayKit
 import CoreGraphics
+import OctopusKit
 
 extension SKShapeNode {
 	
@@ -68,7 +69,7 @@ extension SKShapeNode {
 		let path = CGPath.roundedPolygonPath(radius: radius, lineWidth: lineWidth, sides: sides, cornerRadius: cornerRadius, rotationOffset: rotationOffset)
 		
 		guard sides > 2 else {
-			print("cannot make a polygon with less than 3 sides, here's a circle")
+			OctopusKit.logForSimErrors.add("cannot make a polygon with less than 3 sides, here's a circle")
 			return SKShapeNode(circleOfRadius: radius)
 		}
 

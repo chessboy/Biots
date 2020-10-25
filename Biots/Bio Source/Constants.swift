@@ -10,21 +10,28 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
+enum DifficultyMode: Int, Codable, CustomStringConvertible {
+	case easy = 0
+	case normal
+	
+	var description: String {
+		return self == .easy ? "EASY" : "NORMAL"
+	}
+}
+
 struct Constants {
-			
+	
 	struct Env {
 		
 		static let debugMode = false
 		static let randomRun = false
-		static let easyMode = randomRun || false
-		static let windowWidth: CGFloat = 2400
+		static let difficultyMode: DifficultyMode = randomRun ? .easy : .normal
+		static let windowWidth: CGFloat = 2000
 
-		static let zooFilename = "zoo-1740.json"
-		static let mixinZooFilename: String? = nil
-		static let placedObjectsFilename = easyMode ? "placed-objects-less.json" : "placed-objects-more.json"
+		static let firstRunSavedStateFilename = "Evolved"
 
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (easyMode ? 10 : 13) // food: use 8-10k for smaller, 10-12k for larger
+		static let worldRadius: CGFloat = gridBlockSize * (difficultyMode == .easy ? 10 : 13) // food: use 8-10k for smaller, 10-12k for larger
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -45,23 +52,23 @@ struct Constants {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let collisionDamage: CGFloat = Env.easyMode ?  0.15 :  0.25
-		static let perMovementRecovery: CGFloat = Env.easyMode ?  0.0015 :  0.00125
+		static let collisionDamage: CGFloat = Env.difficultyMode == .easy ?  0.15 :  0.25
+		static let perMovementRecovery: CGFloat = Env.difficultyMode == .easy ?  0.0015 :  0.00125
 
-		static let mateHealth: CGFloat = Env.easyMode ? 0.7 : 0.8 // % of maximum health
-		static let spawnHealth: CGFloat = Env.easyMode ? 0.6 : 0.75 // % of maximum health
+		static let mateHealth: CGFloat = Env.difficultyMode == .easy ? 0.7 : 0.8 // % of maximum health
+		static let spawnHealth: CGFloat = Env.difficultyMode == .easy ? 0.6 : 0.75 // % of maximum health
 
-		static let maximumFoodEnergy: CGFloat = Env.easyMode ? 100 : 120
+		static let maximumFoodEnergy: CGFloat = Env.difficultyMode == .easy ? 100 : 120
 		static let initialFoodEnergy: CGFloat = maximumFoodEnergy * 0.5
-		static let maximumHydration: CGFloat = Env.easyMode ? 85 : 100
+		static let maximumHydration: CGFloat = Env.difficultyMode == .easy ? 85 : 100
 		static let initialHydration: CGFloat = maximumHydration * 0.5
 
 		static let perMovementEnergyCost: CGFloat = 0.01
-		static let perMovementHydrationCost: CGFloat = Env.easyMode ? 0.0075 : 0.01
+		static let perMovementHydrationCost: CGFloat = Env.difficultyMode == .easy ? 0.0075 : 0.01
 		static let armorEnergyCost: CGFloat = 0.06
 		static let speedBoostStaminaCost: CGFloat = 0.0006
 
-		static let maximumAge: CGFloat = Env.easyMode ? 2400 : 3200
+		static let maximumAge: CGFloat = Env.difficultyMode == .easy ? 2400 : 3200
 		static let matureAge: CGFloat = maximumAge * 0.2
 		static let gestationAge: CGFloat = maximumAge * 0.15
 		
@@ -73,6 +80,12 @@ struct Constants {
 			static let maxLinesOfText = 3
 			static let delimiter = "   "
 		}
+	}
+	
+	struct Resource {
+		static let minSize: CGFloat = 80
+		static let plopSize: CGFloat = 200
+		static let maxSize: CGFloat = 800
 	}
 	
 	struct Font {
@@ -91,6 +104,8 @@ struct Constants {
 		static let grid = "grid"
 		static let zapper = "zapper"
 	}
+	
+	// 28, 14, 8, 8
 	
 	struct NeuralNet {
 		static let newGenomeHiddenCounts = [14, 8]
@@ -211,5 +226,6 @@ struct Constants {
 }
 
 extension OctopusKit {
-	public static var logForSim = OKLog(title: "🐠")
+	public static var logForSim = OKLog(title: "ℹ️")
+	public static var logForSimErrors = OKLog(title: "🐞")
 }
