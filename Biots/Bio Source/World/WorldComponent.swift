@@ -15,7 +15,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	var cameraZoom: CGFloat = Constants.Camera.initialScale
 	var genomeDispenseIndex = 0
 	var unbornGenomes: [Genome] = []
-	var saveState: SaveState?
+	var gameState: GameState?
 	
 	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
 	
@@ -43,13 +43,13 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
 		
-		guard let saveState = DataManager.shared.saveState else {
+		guard let gameState = DataManager.shared.gameState else {
 			return
 		}
 		
-		let worldObjects = saveState.worldObjects
+		let worldObjects = gameState.worldObjects
 						
-		let targetAlgaeSupply = saveState.algaeTarget
+		let targetAlgaeSupply = gameState.algaeTarget
 		scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget = targetAlgaeSupply
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
@@ -158,12 +158,12 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 			statsComponent.updateStats(statsText)
 			
-			if frame > 0, frame.isMultiple(of: 20000) {
-				print()
-				print(statsText)
-				print()
-				(scene as? WorldScene)?.dumpGenomes()
-			}
+//			if frame > 0, frame.isMultiple(of: 20000) {
+//				print()
+//				print(statsText)
+//				print()
+//				(scene as? WorldScene)?.dumpGenomes()
+//			}
 		}
 	}
 	
@@ -198,7 +198,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				OctopusKit.logForSimInfo.add("created random genome: \(genome.description)")
 				let _ = addNewBiot(genome: genome, in: scene)
 			}
-			else if let genomes = DataManager.shared.saveState?.genomes, genomes.count > 0 {
+			else if let genomes = DataManager.shared.gameState?.genomes, genomes.count > 0 {
 				let genomeIndex = genomeDispenseIndex % genomes.count
 				var genome = genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"

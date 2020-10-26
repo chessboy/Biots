@@ -15,18 +15,18 @@ class DataManager {
 	static let keyCreatedLocalDocuments = "createdLocalDocuments"
 	static let bundledFileConfigFilename = "bundled-file-configs"
 
-	var saveState: SaveState?
+	var gameState: GameState?
 	
 	init() {
 		checkLocalDocuments()
 		
-		if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.saveSavedStateFilename, treatAsWarning: true) {
-			self.saveState = saveState
-			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+		if let gameState: GameState = LocalFileManager.shared.loadDataFile(Constants.Env.saveSavedStateFilename, treatAsWarning: true) {
+			self.gameState = gameState
+			OctopusKit.logForSimInfo.add("loaded save state: \(gameState.description)")
 		}
-		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
-			self.saveState = saveState
-			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+		else if let gameState: GameState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
+			self.gameState = gameState
+			OctopusKit.logForSimInfo.add("loaded save state: \(gameState.description)")
 		} else {
 			OctopusKit.logForSimErrors.add("could not load a save state")
 		}
@@ -41,8 +41,8 @@ class DataManager {
 				
 				for config in bundledFileConfigs {
 					if let worldObjects: [WorldObject] = loadJsonFromFile(config.worldObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
-						let saveState = SaveState(difficultyMode: config.difficultyMode, algaeTarget: config.algaeTarget, worldObjects: worldObjects, genomes: genomes)
-						LocalFileManager.shared.saveStateToFile(saveState: saveState, filename: config.filename)
+						let gameState = GameState(difficultyMode: config.difficultyMode, algaeTarget: config.algaeTarget, worldObjects: worldObjects, genomes: genomes)
+						LocalFileManager.shared.saveGameStateToFile(gameState: gameState, filename: config.filename)
 					}
 				}
 				

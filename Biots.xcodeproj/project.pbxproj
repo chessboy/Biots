@@ -87,7 +87,7 @@
 		E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */; };
 		E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */; };
 		E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */; };
-		E8BB0535254487B4008C39D2 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB0534254487B4008C39D2 /* SaveState.swift */; };
+		E8BB0535254487B4008C39D2 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB0534254487B4008C39D2 /* GameState.swift */; };
 		E8BB054425449247008C39D2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB054325449247008C39D2 /* DataManager.swift */; };
 		E8C1E2FE25395A240013C290 /* ProgressNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C1E2FD25395A240013C290 /* ProgressNode.swift */; };
 		E8C1E306253A1DAA0013C290 /* genomes-135.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E305253A1DAA0013C290 /* genomes-135.json */; };
@@ -193,7 +193,7 @@
 		E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consolasligaturizedv2.ttf; sourceTree = "<group>"; };
 		E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Italic.ttf"; sourceTree = "<group>"; };
 		E872B902253DE8B5009CF8A5 /* Consolasligaturizedv2-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Bold.ttf"; sourceTree = "<group>"; };
-		E8BB0534254487B4008C39D2 /* SaveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveState.swift; sourceTree = "<group>"; };
+		E8BB0534254487B4008C39D2 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		E8BB054325449247008C39D2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		E8C1E2FD25395A240013C290 /* ProgressNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNode.swift; sourceTree = "<group>"; };
 		E8C1E305253A1DAA0013C290 /* genomes-135.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-135.json"; sourceTree = "<group>"; };
@@ -481,7 +481,7 @@
 			children = (
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D45F0E6A253282360067912C /* PlacedObject.swift */,
-				E8BB0534254487B4008C39D2 /* SaveState.swift */,
+				E8BB0534254487B4008C39D2 /* GameState.swift */,
 				E8BB054F25453126008C39D2 /* Bundled Files */,
 				E8BB053C254488BF008C39D2 /* File */,
 			);
@@ -656,7 +656,7 @@
 				D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */,
 				D47386F22442CB9E0022E760 /* Constants.swift in Sources */,
 				D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */,
-				E8BB0535254487B4008C39D2 /* SaveState.swift in Sources */,
+				E8BB0535254487B4008C39D2 /* GameState.swift in Sources */,
 				D473868E2442BD6C0022E760 /* Error.swift in Sources */,
 				D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */,
 				D47386922442BD6C0022E760 /* Cache.swift in Sources */,

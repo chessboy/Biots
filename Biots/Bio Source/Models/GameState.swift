@@ -1,5 +1,5 @@
 //
-//  SaveState.swift
+//  GameState.swift
 //  Biots
 //
 //  Created by Robert Silverman on 10/24/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct SaveState: Codable, CustomStringConvertible {
+struct GameState: Codable, CustomStringConvertible {
 	var difficultyMode: DifficultyMode
 	var algaeTarget: Int
 	var worldObjects: [WorldObject]
