@@ -81,7 +81,7 @@ struct BiotsUI: View {
 					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
 				Button("Save", action: {
 					let algaeTarget = worldScene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
-					let saveState = SaveState(difficultyMode: .normal, algaeTarget: algaeTarget, placedObjects: worldScene.currentPlacedObjects, genomes: worldScene.currentGenomes)
+					let saveState = SaveState(difficultyMode: .normal, algaeTarget: algaeTarget, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes)
 					LocalFileManager.shared.saveStateToFile(saveState: saveState, filename: "Save")
 				})
 					.font(.body)

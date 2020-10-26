@@ -40,8 +40,8 @@ class DataManager {
 			if let bundledFileConfigs: [BundledFileConfig] = loadJsonFromFile(DataManager.bundledFileConfigFilename) {
 				
 				for config in bundledFileConfigs {
-					if let placedObjects: [PlacedObject] = loadJsonFromFile(config.placedObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
-						let saveState = SaveState(difficultyMode: config.difficultyMode, algaeTarget: config.algaeTarget, placedObjects: placedObjects, genomes: genomes)
+					if let worldObjects: [WorldObject] = loadJsonFromFile(config.worldObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
+						let saveState = SaveState(difficultyMode: config.difficultyMode, algaeTarget: config.algaeTarget, worldObjects: worldObjects, genomes: genomes)
 						LocalFileManager.shared.saveStateToFile(saveState: saveState, filename: config.filename)
 					}
 				}

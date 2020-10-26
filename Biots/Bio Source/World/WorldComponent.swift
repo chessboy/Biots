@@ -47,7 +47,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
-		let placedObjects = saveState.placedObjects
+		let worldObjects = saveState.worldObjects
 						
 		let targetAlgaeSupply = saveState.algaeTarget
 		scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget = targetAlgaeSupply
@@ -62,16 +62,16 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		}
 		scene.addEntity(alageFountain)
 		
-		for placedObject in placedObjects {
-			let position = CGPoint(angle: placedObject.angle.cgFloat) * placedObject.percentFromCenter.cgFloat * worldRadius
-			let radius = placedObject.percentRadius.cgFloat * worldRadius
+		for worldObject in worldObjects {
+			let position = CGPoint(angle: worldObject.angle.cgFloat) * worldObject.percentFromCenter.cgFloat * worldRadius
+			let radius = worldObject.percentRadius.cgFloat * worldRadius
 			
-			if placedObject.placeableType == .zapper {
+			if worldObject.placeableType == .zapper {
 				let zapper = ZapperComponent.create(radius: radius, position: position)
 				zapper.node?.isHidden = hideNode
 				scene.addEntity(zapper)
 			}
-			else if placedObject.placeableType == .water {
+			else if worldObject.placeableType == .water {
 				let water = WaterSourceComponent.create(radius: radius, position: position)
 				alageFountain.component(ofType: ResourceFountainComponent.self)?.waterEntities.append(water)
 				water.node?.isHidden = hideNode
@@ -79,6 +79,35 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
  	}
+	
+	func removeAllEntitiesTest() {
+		
+		guard let scene =  OctopusKit.shared?.currentScene else { return }
+
+		scene.entities(withName: Constants.NodeName.algae)?.forEach({ entity in
+			scene.removeEntityOnNextUpdate(entity)
+		})
+		
+		scene.entities(withName: Constants.NodeName.biot)?.forEach({ entity in
+			scene.removeEntityOnNextUpdate(entity)
+		})
+		
+		scene.entities(withName: Constants.NodeName.wall)?.forEach({ entity in
+			scene.removeEntityOnNextUpdate(entity)
+		})
+		
+		scene.entities(withName: Constants.NodeName.zapper)?.forEach({ entity in
+			scene.removeEntityOnNextUpdate(entity)
+		})
+
+		scene.entities(withName: Constants.NodeName.water)?.forEach({ entity in
+			scene.removeEntityOnNextUpdate(entity)
+		})
+		
+		scene.entities(withName: Constants.NodeName.grid)?.forEach({ entity in
+			scene.removeEntityOnNextUpdate(entity)
+		})
+	}
 	
 	func addUnbornGenome(_ genome: Genome) {
 		if unbornGenomes.count == Constants.Env.unbornGenomeCacheCount {

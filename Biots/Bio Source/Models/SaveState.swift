@@ -11,10 +11,10 @@ import Foundation
 struct SaveState: Codable, CustomStringConvertible {
 	var difficultyMode: DifficultyMode
 	var algaeTarget: Int
-	var placedObjects: [PlacedObject]
+	var worldObjects: [WorldObject]
 	var genomes: [Genome]
 	
 	var description: String {
-		return "{difficultyMode: \(difficultyMode), algaeTarget: \(algaeTarget), placedObjects: \(placedObjects.count), genomes: \(genomes.count)}"
+		return "{difficultyMode: \(difficultyMode), algaeTarget: \(algaeTarget), worldObjects: \(worldObjects.count), genomes: \(genomes.count)}"
 	}
 }

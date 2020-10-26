@@ -2,21 +2,21 @@
 	{
 		"difficultyMode": 0,
 		"algaeTarget": 10000,
-		"placedObjectsFilename": "placed-objects-less",
+		"worldObjectsFilename": "world-objects-less",
 		"genomeFilename": "genomes-32",
 		"filename": "Newbies"
 	},
 	{
 		"difficultyMode": 0,
 		"algaeTarget": 12000,
-		"placedObjectsFilename": "placed-objects-more",
+		"worldObjectsFilename": "world-objects-more",
 		"genomeFilename": "genomes-135",
 		"filename": "Evolving"
 	},
 	{
 		"difficultyMode": 1,
 		"algaeTarget": 12000,
-		"placedObjectsFilename": "placed-objects-more",
+		"worldObjectsFilename": "world-objects-more",
 		"genomeFilename": "genomes-1740",
 		"filename": "Evolved"
 	}

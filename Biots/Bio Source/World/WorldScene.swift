@@ -119,35 +119,35 @@ final class WorldScene: OKScene {
     	}
 	}
 	
-	var currentPlacedObjects: [PlacedObject] {
+	var currentWorldObjects: [WorldObject] {
 	
-		var placedObjects: [PlacedObject] = []
+		var worldObjects: [WorldObject] = []
 		
 		for component in entities(withName: Constants.NodeName.zapper)?.map({$0.component(ofType: ZapperComponent.self)}) as? [ZapperComponent] ?? [] {
 			if let node = component.entityNode {
-				placedObjects.append(node.createPlacedObject(placeableType: .zapper, radius: component.radius))
+				worldObjects.append(node.createWorldObject(placeableType: .zapper, radius: component.radius))
 			}
 		}
 		
 		for component in entities(withName: Constants.NodeName.water)?.map({$0.component(ofType: WaterSourceComponent.self)}) as? [WaterSourceComponent] ?? [] {
 			if let node = component.entityNode {
-				placedObjects.append(node.createPlacedObject(placeableType: .water, radius: component.radius))
+				worldObjects.append(node.createWorldObject(placeableType: .water, radius: component.radius))
 			}
 		}
 		
-		return placedObjects.compactMap { $0 }
+		return worldObjects.compactMap { $0 }
 	}
 	
 	func dumpPlaceables() {
 		print("\n[")
 		
-		let placedObjects = currentPlacedObjects
+		let worldObjects = currentWorldObjects
 		
 		var index = 0
-		for placedObject in placedObjects {
-			if let jsonData = try? placedObject.encodedToJSON() {
+		for worldObject in worldObjects {
+			if let jsonData = try? worldObject.encodedToJSON() {
 				if let jsonString = String(data: jsonData, encoding: .utf8) {
-					let delim = index == placedObjects.count-1 ? "" : ","
+					let delim = index == worldObjects.count-1 ? "" : ","
 					print("\(jsonString)\(delim)")
 				}
 			}
@@ -338,7 +338,7 @@ final class WorldScene: OKScene {
 				entities(withName: Constants.NodeName.water)?.forEach({ entity in
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
-
+				
 				scene?.children.filter({$0.name == Constants.NodeName.grid }).first?.isHidden = globalDataComponent.hideSpriteNodes
 				return
 			}

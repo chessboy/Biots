@@ -1,5 +1,5 @@
 //
-//  PlacedObject.swift
+//  WorldObject.swift
 //  Biots
 //
 //  Created by Robert Silverman on 10/10/20.
@@ -14,7 +14,7 @@ enum PlaceableType: Int, Codable {
 	case water
 }
 
-struct PlacedObject: Codable {
+struct WorldObject: Codable {
 	var placeableType: PlaceableType
 	var angle: Float
 	var percentFromCenter: Float
@@ -22,9 +22,9 @@ struct PlacedObject: Codable {
 }
 
 extension SKNode {
-	func createPlacedObject(placeableType: PlaceableType, radius: CGFloat) -> PlacedObject {
+	func createWorldObject(placeableType: PlaceableType, radius: CGFloat) -> WorldObject {
 		let percentFromCenter = position.distance(to: .zero) / Constants.Env.worldRadius
 		let percentRadius = radius / Constants.Env.worldRadius
-		return PlacedObject(placeableType: placeableType, angle: position.angle.float, percentFromCenter: percentFromCenter.float, percentRadius: percentRadius.float)
+		return WorldObject(placeableType: placeableType, angle: position.angle.float, percentFromCenter: percentFromCenter.float, percentRadius: percentRadius.float)
 	}
 }

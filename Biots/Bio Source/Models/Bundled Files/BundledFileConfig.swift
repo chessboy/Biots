@@ -12,7 +12,7 @@ struct BundledFileConfig: Codable {
 	
 	var difficultyMode: DifficultyMode
 	var algaeTarget: Int
-	var placedObjectsFilename: String
+	var worldObjectsFilename: String
 	var genomeFilename: String
 	var filename: String
 }
