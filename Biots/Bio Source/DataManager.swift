@@ -35,13 +35,13 @@ class DataManager {
 	func checkLocalDocuments() {
 		let defaults = UserDefaults.standard
 
-		if true || !defaults.bool(forKey: DataManager.keyCreatedLocalDocuments) {
+		if !defaults.bool(forKey: DataManager.keyCreatedLocalDocuments) {
 			
 			if let bundledFileConfigs: [BundledFileConfig] = loadJsonFromFile(DataManager.bundledFileConfigFilename) {
 				
 				for config in bundledFileConfigs {
 					if let worldObjects: [WorldObject] = loadJsonFromFile(config.worldObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
-						let gameState = GameState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldObjects: worldObjects, genomes: genomes)
+						let gameState = GameState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldSize: config.worldSize, worldObjects: worldObjects, genomes: genomes)
 						LocalFileManager.shared.saveGameStateToFile(gameState: gameState, filename: config.filename)
 					}
 				}

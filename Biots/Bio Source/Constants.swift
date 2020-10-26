@@ -23,9 +23,9 @@ struct Constants {
 		static let firstRunSavedStateFilename = "Evolved"
 
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (gameMode == .easy ? 10 : 13) // food: use 8-10k for smaller, 10-12k for larger
+		static let worldSize = gameMode == .easy ? 10 : 13
+		static let worldRadius: CGFloat = gridBlockSize * worldSize.cgFloat
 
-		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80
 		

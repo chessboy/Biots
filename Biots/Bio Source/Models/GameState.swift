@@ -11,10 +11,11 @@ import Foundation
 struct GameState: Codable, CustomStringConvertible {
 	var gameMode: GameMode
 	var algaeTarget: Int
+	var worldSize: Int
 	var worldObjects: [WorldObject]
 	var genomes: [Genome]
 	
 	var description: String {
-		return "{gameMode: \(gameMode), algaeTarget: \(algaeTarget), worldObjects: \(worldObjects.count), genomes: \(genomes.count)}"
+		return "{gameMode: \(gameMode), algaeTarget: \(algaeTarget), worldSize: \(worldSize), worldObjects: \(worldObjects.count), genomes: \(genomes.count)}"
 	}
 }
