@@ -10,7 +10,7 @@ import Foundation
 
 struct BundledFileConfig: Codable {
 	
-	var difficultyMode: DifficultyMode
+	var gameMode: GameMode
 	var algaeTarget: Int
 	var worldObjectsFilename: String
 	var genomeFilename: String

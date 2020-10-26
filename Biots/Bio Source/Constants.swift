@@ -10,29 +10,20 @@ import SpriteKit
 import GameplayKit
 import OctopusKit
 
-enum DifficultyMode: Int, Codable, CustomStringConvertible {
-	case easy = 0
-	case normal
-	
-	var description: String {
-		return self == .easy ? "easy" : "normal"
-	}
-}
-
 struct Constants {
 	
 	struct Env {
 		
 		static let debugMode = false
 		static let randomRun = false
-		static let difficultyMode: DifficultyMode = randomRun ? .easy : .normal
+		static let gameMode: GameMode = randomRun ? .easy : .normal
 		static let windowWidth: CGFloat = 2000
 
 		static let saveSavedStateFilename = "Save"
 		static let firstRunSavedStateFilename = "Evolved"
 
 		static let gridBlockSize: CGFloat = 400
-		static let worldRadius: CGFloat = gridBlockSize * (difficultyMode == .easy ? 10 : 13) // food: use 8-10k for smaller, 10-12k for larger
+		static let worldRadius: CGFloat = gridBlockSize * (gameMode == .easy ? 10 : 13) // food: use 8-10k for smaller, 10-12k for larger
 
 		static let selfReplication = true
 		static let selfReplicationMaxSpawn = 3
@@ -53,23 +44,23 @@ struct Constants {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 
-		static let collisionDamage: CGFloat = Env.difficultyMode == .easy ?  0.15 :  0.25
-		static let perMovementRecovery: CGFloat = Env.difficultyMode == .easy ?  0.0015 :  0.00125
+		static let collisionDamage: CGFloat = Env.gameMode == .easy ?  0.15 :  0.25
+		static let perMovementRecovery: CGFloat = Env.gameMode == .easy ?  0.0015 :  0.00125
 
-		static let mateHealth: CGFloat = Env.difficultyMode == .easy ? 0.7 : 0.8 // % of maximum health
-		static let spawnHealth: CGFloat = Env.difficultyMode == .easy ? 0.6 : 0.75 // % of maximum health
+		static let mateHealth: CGFloat = Env.gameMode == .easy ? 0.7 : 0.8 // % of maximum health
+		static let spawnHealth: CGFloat = Env.gameMode == .easy ? 0.6 : 0.75 // % of maximum health
 
-		static let maximumFoodEnergy: CGFloat = Env.difficultyMode == .easy ? 100 : 120
+		static let maximumFoodEnergy: CGFloat = Env.gameMode == .easy ? 100 : 120
 		static let initialFoodEnergy: CGFloat = maximumFoodEnergy * 0.5
-		static let maximumHydration: CGFloat = Env.difficultyMode == .easy ? 85 : 100
+		static let maximumHydration: CGFloat = Env.gameMode == .easy ? 85 : 100
 		static let initialHydration: CGFloat = maximumHydration * 0.5
 
 		static let perMovementEnergyCost: CGFloat = 0.01
-		static let perMovementHydrationCost: CGFloat = Env.difficultyMode == .easy ? 0.0075 : 0.01
+		static let perMovementHydrationCost: CGFloat = Env.gameMode == .easy ? 0.0075 : 0.01
 		static let armorEnergyCost: CGFloat = 0.06
 		static let speedBoostStaminaCost: CGFloat = 0.0006
 
-		static let maximumAge: CGFloat = Env.difficultyMode == .easy ? 2400 : 3200
+		static let maximumAge: CGFloat = Env.gameMode == .easy ? 2400 : 3200
 		static let matureAge: CGFloat = maximumAge * 0.2
 		static let gestationAge: CGFloat = maximumAge * 0.15
 		
