@@ -34,7 +34,6 @@ struct VisionMemory {
 
 final class VisionComponent: OKComponent {
 
-	var angleVisions: [AngleVision] = []
 	var visionMemory: [VisionMemory] = []
 
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
@@ -62,8 +61,6 @@ final class VisionComponent: OKComponent {
 	// test for push
 	func detect() {
 		
-		angleVisions.removeAll()
-
 		guard let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld,
 			let showTracer = globalDataComponent?.showBiotVisionTracer,
 			let cameraScale = camera?.xScale,
@@ -169,8 +166,6 @@ final class VisionComponent: OKComponent {
 			
 			if pings > 0 {
 				colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
-				let angleVision = AngleVision(angle: angle, colorVector: colorVector)
-				angleVisions.append(angleVision)
 			}
 			
 			if let visionMemory = visionMemory.filter({ $0.angle == angle }).first {

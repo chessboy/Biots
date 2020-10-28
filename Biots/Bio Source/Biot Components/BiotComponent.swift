@@ -571,12 +571,14 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			
 			if let onTopOfFoodAverage = brainComponent?.senses.onTopOfFood.average, let onTopOfFWaterAverage = brainComponent?.senses.onTopOfWater.average {
 				let foodColor = SKColor(red: 0, green: onTopOfFoodAverage.cgFloat, blue: 0, alpha: 1)
-				resourceNodes[ResourceMeter.food.rawValue].strokeColor = foodColor
-				resourceNodes[ResourceMeter.food.rawValue].zPosition = onTopOfFoodAverage.cgFloat
+                let foodMeterNode = resourceNodes[ResourceMeter.food.rawValue]
+                foodMeterNode.strokeColor = foodColor
+                foodMeterNode.zPosition = onTopOfFoodAverage.cgFloat
 
 				let waterColor = SKColor(red: 0, green: onTopOfFWaterAverage.cgFloat * 0.75, blue: onTopOfFWaterAverage.cgFloat, alpha: 1)
-				resourceNodes[ResourceMeter.water.rawValue].strokeColor = waterColor
-				resourceNodes[ResourceMeter.water.rawValue].zPosition = onTopOfFWaterAverage.cgFloat
+                let waterMeterNode = resourceNodes[ResourceMeter.food.rawValue]
+                waterMeterNode.strokeColor = waterColor
+                waterMeterNode.zPosition = onTopOfFWaterAverage.cgFloat
 			}
 		}
 	}

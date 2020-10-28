@@ -19,11 +19,12 @@ class DataManager {
 	
 	init() {
 		checkLocalDocuments()
-		
+		// first try to load the last saved state
 		if let gameState: GameState = LocalFileManager.shared.loadDataFile(Constants.Env.saveSavedStateFilename, treatAsWarning: true) {
 			self.gameState = gameState
 			OctopusKit.logForSimInfo.add("loaded save state: \(gameState.description)")
 		}
+        // then try to load the designated initial state
 		else if let gameState: GameState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
 			self.gameState = gameState
 			OctopusKit.logForSimInfo.add("loaded save state: \(gameState.description)")
@@ -41,7 +42,7 @@ class DataManager {
 				
 				for config in bundledFileConfigs {
 					if let worldObjects: [WorldObject] = loadJsonFromFile(config.worldObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
-						let gameState = GameState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldSize: config.worldSize, worldObjects: worldObjects, genomes: genomes)
+						let gameState = GameState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldBlockCount: config.worldBlockCount, worldObjects: worldObjects, genomes: genomes)
 						LocalFileManager.shared.saveGameStateToFile(gameState: gameState, filename: config.filename)
 					}
 				}

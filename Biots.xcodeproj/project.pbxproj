@@ -482,9 +482,9 @@
 		D4D18D97244799F500BF92FA /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E8BB0534254487B4008C39D2 /* GameState.swift */,
 				D4D18D982447A37000BF92FA /* Genome.swift */,
 				D45F0E6A253282360067912C /* PlacedObject.swift */,
-				E8BB0534254487B4008C39D2 /* GameState.swift */,
 				E8BB054F25453126008C39D2 /* Bundled Files */,
 				E8BB053C254488BF008C39D2 /* File */,
 			);

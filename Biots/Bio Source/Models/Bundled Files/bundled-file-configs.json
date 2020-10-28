@@ -2,7 +2,7 @@
 	{
 		"gameMode": 1,
 		"algaeTarget": 10000,
-		"worldSize": 10,
+		"worldBlockCount": 10,
 		"worldObjectsFilename": "world-objects-less",
 		"genomeFilename": "genomes-32",
 		"filename": "Newbies"
@@ -10,7 +10,7 @@
 	{
 		"gameMode": 1,
 		"algaeTarget": 12000,
-		"worldSize": 13,
+		"worldBlockCount": 13,
 		"worldObjectsFilename": "world-objects-more",
 		"genomeFilename": "genomes-135",
 		"filename": "Evolving"
@@ -18,7 +18,7 @@
 	{
 		"gameMode": 0,
 		"algaeTarget": 12000,
-		"worldSize": 13,
+		"worldBlockCount": 13,
 		"worldObjectsFilename": "world-objects-more",
 		"genomeFilename": "genomes-1740",
 		"filename": "Evolved"

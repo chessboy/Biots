@@ -12,7 +12,7 @@ struct BundledFileConfig: Codable {
 	
 	var gameMode: GameMode
 	var algaeTarget: Int
-	var worldSize: Int
+	var worldBlockCount: Int
 	var worldObjectsFilename: String
 	var genomeFilename: String
 	var filename: String
