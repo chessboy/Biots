@@ -13,11 +13,11 @@ class LocalFileManager {
 	
 	static let shared = LocalFileManager()
 	
-	public func saveGameStateToFile(gameState: GameState, filename: String, fileExtension: String = "json") {
+	public func saveStateToFile(_ saveState: SaveState, filename: String, fileExtension: String = "json") {
 				
 		do {
 			let encoder = JSONEncoder()
-			let data = try encoder.encode(gameState)
+			let data = try encoder.encode(saveState)
 			if let url = saveDataFile(filename, fileExtension: fileExtension, data: data) {
 				OctopusKit.logForSimInfo.add("saved game state: \(url)")
 			}

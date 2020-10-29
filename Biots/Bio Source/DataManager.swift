@@ -15,19 +15,19 @@ class DataManager {
 	static let keyCreatedLocalDocuments = "createdLocalDocuments"
 	static let bundledFileConfigFilename = "bundled-file-configs"
 
-	var gameState: GameState?
+	var saveState: SaveState?
 	
 	init() {
 		checkLocalDocuments()
 		// first try to load the last saved state
-		if let gameState: GameState = LocalFileManager.shared.loadDataFile(Constants.Env.saveSavedStateFilename, treatAsWarning: true) {
-			self.gameState = gameState
-			OctopusKit.logForSimInfo.add("loaded save state: \(gameState.description)")
+		if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.saveSavedStateFilename, treatAsWarning: true) {
+			self.saveState = saveState
+			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
 		}
         // then try to load the designated initial state
-		else if let gameState: GameState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
-			self.gameState = gameState
-			OctopusKit.logForSimInfo.add("loaded save state: \(gameState.description)")
+		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
+			self.saveState = saveState
+			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
 		} else {
 			OctopusKit.logForSimErrors.add("could not load a save state")
 		}
@@ -42,8 +42,8 @@ class DataManager {
 				
 				for config in bundledFileConfigs {
 					if let worldObjects: [WorldObject] = loadJsonFromFile(config.worldObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
-						let gameState = GameState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldBlockCount: config.worldBlockCount, worldObjects: worldObjects, genomes: genomes)
-						LocalFileManager.shared.saveGameStateToFile(gameState: gameState, filename: config.filename)
+						let saveState = SaveState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldBlockCount: config.worldBlockCount, worldObjects: worldObjects, genomes: genomes)
+						LocalFileManager.shared.saveStateToFile(saveState, filename: config.filename)
 					}
 				}
 				

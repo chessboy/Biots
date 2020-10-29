@@ -1,5 +1,5 @@
 //
-//  GameState.swift
+//  SaveState.swift
 //  Biots
 //
 //  Created by Robert Silverman on 10/24/20.
