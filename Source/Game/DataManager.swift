@@ -14,23 +14,17 @@ class DataManager {
 	
 	static let keyCreatedLocalDocuments = "createdLocalDocuments"
 	static let bundledFileConfigFilename = "bundled-file-configs"
-
-	var saveState: SaveState?
 	
 	init() {
 		checkLocalDocuments()
-		// first try to load the last saved state
-		if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.saveSavedStateFilename, treatAsWarning: true) {
-			self.saveState = saveState
-			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+	}
+	
+	func loadWorldObjects(type: WorldObjectsBundleType) -> [WorldObject] {
+		if let worldObjects: [WorldObject] = loadJsonFromFile(type.filename) {
+			return worldObjects
 		}
-        // then try to load the designated initial state
-		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
-			self.saveState = saveState
-			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
-		} else {
-			OctopusKit.logForSimErrors.add("could not load a save state")
-		}
+		
+		return []
 	}
 	
 	func checkLocalDocuments() {
@@ -42,7 +36,7 @@ class DataManager {
 				
 				for config in bundledFileConfigs {
 					if let worldObjects: [WorldObject] = loadJsonFromFile(config.worldObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
-						let saveState = SaveState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldBlockCount: config.worldBlockCount, worldObjects: worldObjects, genomes: genomes)
+						let saveState = SaveState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldBlockCount: config.worldBlockCount, worldObjects: worldObjects, genomes: genomes, minimumBiotCount: config.minimumBiotCount, maximumBiotCount: config.maximumBiotCount)
 						LocalFileManager.shared.saveStateToFile(saveState, filename: config.filename)
 					}
 				}

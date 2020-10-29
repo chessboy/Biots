@@ -5,7 +5,9 @@
 		"worldBlockCount": 10,
 		"worldObjectsFilename": "world-objects-less",
 		"genomeFilename": "genomes-32",
-		"filename": "Newbies"
+		"filename": "Newbies",
+		"minimumBiotCount": 12,
+		"maximumBiotCount": 24
 	},
 	{
 		"gameMode": 1,
@@ -13,7 +15,9 @@
 		"worldBlockCount": 13,
 		"worldObjectsFilename": "world-objects-more",
 		"genomeFilename": "genomes-135",
-		"filename": "Evolving"
+		"filename": "Evolving",
+		"minimumBiotCount": 12,
+		"maximumBiotCount": 24
 	},
 	{
 		"gameMode": 0,
@@ -21,6 +25,8 @@
 		"worldBlockCount": 13,
 		"worldObjectsFilename": "world-objects-more",
 		"genomeFilename": "genomes-1740",
-		"filename": "Evolved"
+		"filename": "Evolved",
+		"minimumBiotCount": 12,
+		"maximumBiotCount": 24
 	}
 ]

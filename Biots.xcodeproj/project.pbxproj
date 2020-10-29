@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D4040D1024F8BDFC00A2C500 /* RunningColorVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */; };
 		D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4040D1F24FB477400A2C500 /* RunningCGVector.swift */; };
+		D40C4D8F254A6DC1008AA986 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C4D8E254A6DC1008AA986 /* GameManager.swift */; };
+		D40C4D93254A6DF9008AA986 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C4D92254A6DF9008AA986 /* GameConfig.swift */; };
 		D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */; };
 		D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */; };
 		D41D1F95244ACF8100A876F4 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D1F94244ACF8100A876F4 /* StringExtensions.swift */; };
@@ -108,6 +110,8 @@
 /* Begin PBXFileReference section */
 		D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningColorVector.swift; sourceTree = "<group>"; };
 		D4040D1F24FB477400A2C500 /* RunningCGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningCGVector.swift; sourceTree = "<group>"; };
+		D40C4D8E254A6DC1008AA986 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
+		D40C4D92254A6DF9008AA986 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
 		D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceFountainInfluenceComponent.swift; sourceTree = "<group>"; };
 		D41D1F94244ACF8100A876F4 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D4229EDE250A7CE600DE29CE /* RetinaNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetinaNode.swift; sourceTree = "<group>"; };
@@ -225,7 +229,9 @@
 			isa = PBXGroup;
 			children = (
 				E8BB054325449247008C39D2 /* DataManager.swift */,
+				D40C4D92254A6DF9008AA986 /* GameConfig.swift */,
 				E85C3AF325467E97000D2926 /* GameMode.swift */,
+				D40C4D8E254A6DC1008AA986 /* GameManager.swift */,
 				E8BB0534254487B4008C39D2 /* SaveState.swift */,
 			);
 			path = Game;
@@ -394,15 +400,15 @@
 		D47386E22442C50C0022E760 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D47386ED2442CB200022E760 /* Extensions */,
-				D47386B32442BEDB0022E760 /* Universal */,
-				D47386852442BD6C0022E760 /* Neural Network */,
 				D4D18D902446BCA900BF92FA /* App */,
-				D40C4D76254A69A1008AA986 /* Game */,
 				D42CE73424442E130049854C /* Biot Components */,
 				D47386F12442CB9E0022E760 /* Constants.swift */,
+				D47386ED2442CB200022E760 /* Extensions */,
+				D40C4D76254A69A1008AA986 /* Game */,
 				D4D18D97244799F500BF92FA /* Models */,
+				D47386852442BD6C0022E760 /* Neural Network */,
 				D42CE73324442DFE0049854C /* UI Components */,
+				D47386B32442BEDB0022E760 /* Universal */,
 				D4D18D8F2446BC8200BF92FA /* World */,
 			);
 			path = Source;
@@ -666,11 +672,13 @@
 				D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */,
 				D4C2FC2824842C910076077A /* CGRectMath.swift in Sources */,
 				D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */,
+				D40C4D93254A6DF9008AA986 /* GameConfig.swift in Sources */,
 				D47386F22442CB9E0022E760 /* Constants.swift in Sources */,
 				D4B2EE38244EC434007D615E /* KeyCodes.swift in Sources */,
 				E8BB0535254487B4008C39D2 /* SaveState.swift in Sources */,
 				D473868E2442BD6C0022E760 /* Error.swift in Sources */,
 				D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */,
+				D40C4D8F254A6DC1008AA986 /* GameManager.swift in Sources */,
 				D47386922442BD6C0022E760 /* Cache.swift in Sources */,
 				D47386932442BD6C0022E760 /* NeuralNet.swift in Sources */,
 				D48E2DDC24F74E9C009FB3D7 /* CGVectorMath.swift in Sources */,

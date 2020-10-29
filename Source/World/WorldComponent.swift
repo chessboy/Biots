@@ -15,7 +15,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	var cameraZoom: CGFloat = Constants.Camera.initialScale
 	var genomeDispenseIndex = 0
 	var unbornGenomes: [Genome] = []
-	var saveState: SaveState?
 	
 	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
 	
@@ -28,6 +27,9 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity(withNode node: SKNode) {
+		
+		
+		
 		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes else { return }
 		
 		if Constants.Env.graphics.showGrid {
@@ -43,13 +45,13 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
 		
-		guard let saveState = DataManager.shared.saveState else {
+		guard let gameConfig = GameManager.shared.gameConfig else {
 			return
 		}
 		
-		let worldObjects = saveState.worldObjects
+		let worldObjects = gameConfig.worldObjects
 						
-		let targetAlgaeSupply = saveState.algaeTarget
+		let targetAlgaeSupply = gameConfig.algaeTarget
 		scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget = targetAlgaeSupply
 		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
 
@@ -145,16 +147,17 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				
 	func displayStats() {
 		
-		guard let scene =  OctopusKit.shared?.currentScene else { return }
-		let frame = Int(scene.currentFrameNumber) - Constants.Env.startupDelay
+		guard let scene = OctopusKit.shared?.currentScene, let gameConfig = GameManager.shared.gameConfig else { return }
+		let dispenseDelay = gameConfig.gameMode.dispenseDelay
+		let frame = Int(scene.currentFrameNumber) - dispenseDelay
 
 		if frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = Constants.Env.debugMode ? "DEBUG" : Constants.Env.randomRun ? "RAND" : Constants.Env.gameMode.description.uppercased()
+			let mode = GameManager.shared.gameConfig?.gameMode.description.uppercased() ?? ""
 			let biotStats = currentBiotStats
-			let statsText = "\(mode) \(Int(frame).abbrev) | pop: \(biotCount)/\(Constants.Env.maximumBiots), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
+			let statsText = "\(mode) \(Int(frame).abbrev) | pop: \(biotCount)/\(gameConfig.maximumBiotCount), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
 
 			statsComponent.updateStats(statsText)
 			
@@ -169,7 +172,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	
 	override func update(deltaTime seconds: TimeInterval) {
 		
-		guard let scene =  OctopusKit.shared?.currentScene else { return }
+		guard let scene =  OctopusKit.shared?.currentScene, let gameConfig = GameManager.shared.gameConfig else { return }
 		let frame = scene.currentFrameNumber
 				
 		// key event handling
@@ -182,7 +185,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		displayStats()
 		
 		// biot creation
-		if frame >= Constants.Env.startupDelay && frame.isMultiple(of: Constants.Env.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < Constants.Env.minimumBiots {
+		if frame >= gameConfig.gameMode.dispenseDelay && frame.isMultiple(of: gameConfig.gameMode.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < gameConfig.minimumBiotCount {
 			
 			if unbornGenomes.count > 0 {
 				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
@@ -193,22 +196,18 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
 				}
 			}
-			else if Constants.Env.randomRun {
+			else if gameConfig.gameMode == .random {
 				let genome = Genome.newRandomGenome
 				OctopusKit.logForSimInfo.add("created random genome: \(genome.description)")
 				let _ = addNewBiot(genome: genome, in: scene)
 			}
-			else if let genomes = DataManager.shared.saveState?.genomes, genomes.count > 0 {
+			else if let genomes = GameManager.shared.gameConfig?.genomes, genomes.count > 0 {
 				let genomeIndex = genomeDispenseIndex % genomes.count
 				var genome = genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
 				OctopusKit.logForSimInfo.add("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
-				let biot = addNewBiot(genome: genome, in: scene)
+				let _ = addNewBiot(genome: genome, in: scene)
 				genomeDispenseIndex += 1
-				if Constants.Env.debugMode {
-					(OctopusKit.shared.currentScene as? WorldScene)?.trackEntity(biot)
-					//biot.component(ofType: BiotComponent.self)?.startInteracting()
-				}
 			}
 		}
 	}

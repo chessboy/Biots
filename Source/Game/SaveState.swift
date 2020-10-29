@@ -16,7 +16,10 @@ struct SaveState: Codable, CustomStringConvertible {
 	var worldObjects: [WorldObject]
 	var genomes: [Genome]
 	
+	var minimumBiotCount: Int
+	var maximumBiotCount: Int
+	
 	var description: String {
-		return "{gameMode: \(gameMode), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldObjects: \(worldObjects.count), genomes: \(genomes.count)}"
+		return "{gameMode: \(gameMode), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldObjects: \(worldObjects.count), genomes: \(genomes.count), minimumBiotCount: \(minimumBiotCount), maximumBiotCount: \(maximumBiotCount)}"
 	}
 }

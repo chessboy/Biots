@@ -158,15 +158,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		})
 		
 		healthDetailsNode.isHidden = !showVision
-		
-//		if Constants.Env.debugMode {
-//			foodEnergy = Constants.Biot.maximumFoodEnergy
-//			hydration = Constants.Biot.maximumHydration
-//		}
 	}
 		
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
-		//guard !Constants.Env.debugMode else { return }
 		
 		if amount > 0 {
 			cumulativeFoodEnergy += amount
@@ -180,7 +174,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurHydrationChange(_ amount: CGFloat) {
-		//guard !Constants.Env.debugMode else { return }
+
 		if amount > 0 {
 			cumulativeHydration += amount
 		}
@@ -189,7 +183,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
-		//guard !Constants.Env.debugMode else { return }
+
 		guard abs(amount) != 0 else { return }
 		
 		if amount > 0 {
@@ -658,13 +652,13 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func spawnChildren(selfReplication: Bool = false) {
-		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome else {
+		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome, let gameConfig = GameManager.shared.gameConfig else {
 			return
 		}
 
 		if let worldScene = scene as? WorldScene,
 		   let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self),
-		   worldComponent.currentBiots.count >= Constants.Env.maximumBiots {
+		   worldComponent.currentBiots.count >= gameConfig.maximumBiotCount {
 			// no more room in the dish, cache a single (potentailly) mutated clone and become nonpregnant
 			let clonedGenome = Genome(parent: matingGenome)
 			worldComponent.addUnbornGenome(clonedGenome)

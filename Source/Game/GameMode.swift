@@ -20,4 +20,18 @@ enum GameMode: Int, Codable, CustomStringConvertible {
 			case .normal: return "normal"
 		}
 	}
+	
+	var dispenseDelay: Int {
+		switch self {
+			case .random: return 20
+			case .easy, .normal: return 250
+		}
+	}
+	
+	var dispenseInterval: UInt64 {
+		switch self {
+			case .random: return 10
+			default: return 50
+		}
+	}
 }

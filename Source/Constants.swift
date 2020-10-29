@@ -11,28 +11,25 @@ import GameplayKit
 import OctopusKit
 
 struct Constants {
-	
+		
 	struct Env {
 		
-		static let debugMode = false
-		static let randomRun = false
-		static let gameMode: GameMode = randomRun ? .easy : .normal
+		// todo: migrate this and all uses below to GameConfig
+		static let gameMode: GameMode = .easy
+		
 		static let windowWidth: CGFloat = 2000
 
-		static let saveSavedStateFilename = "Save"
+		static let savedStateFilename = "Save"
 		static let firstRunSavedStateFilename = "Evolved"
 
 		static let gridBlockSize: CGFloat = 400
 		static let worldBlockCount = gameMode == .easy ? 10 : 13
+		
+		// todo: migrate this and all uses in components to GameConfig
 		static let worldRadius: CGFloat = gridBlockSize * worldBlockCount.cgFloat
 
 		static let selfReplicationMaxSpawn = 3
-		static let unbornGenomeCacheCount = 80
-		
-		static let minimumBiots = debugMode ? 1 : 12
-		static let maximumBiots = debugMode ? 1 : 24
-		static let startupDelay = debugMode ? 0 : randomRun ? 20 : 250
-		static let dispenseInterval: UInt64 = randomRun ? 10 : 50
+		static let unbornGenomeCacheCount = 80		
 		static let showSpriteKitStats = true
 		
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
@@ -200,7 +197,7 @@ struct Constants {
 	struct Camera {
 		static let initialScale: CGFloat = 3
 		static let zoomMin: CGFloat = 0.1
-		static let zoomMax: CGFloat = 0.005 * Constants.Env.worldRadius
+		static let zoomMax: CGFloat = 20
 		static let scaleFactor: CGFloat = 1.25
 		static let panBoost: CGFloat = 100
 		static let animationDuration: TimeInterval = 0.25

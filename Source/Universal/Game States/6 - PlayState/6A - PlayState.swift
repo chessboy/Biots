@@ -35,6 +35,21 @@ final class PlayState: OKGameState {
     	
     	// Note that we pass control to the OKGameState superclass AFTER we've added the global component, so that it will be available to the PlayScene when it's presented by the code in the superclass.
     	
+		//GameManager.shared.gameConfig = GameConfig(gameMode: .random)
+		
+		if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.savedStateFilename, treatAsWarning: true) {
+			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
+			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+		}
+		// then try to load the designated initial state
+		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
+			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
+			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+		} else {
+			OctopusKit.logForSimErrors.add("could not load a save state")
+			GameManager.shared.gameConfig = GameConfig(gameMode: .random)
+		}
+
     	super.didEnter(from: previousState)
 	}
 	

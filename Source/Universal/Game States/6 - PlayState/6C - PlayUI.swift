@@ -54,8 +54,15 @@ struct BiotsUI: View {
 				algaeTargetState = $0
 				globalDataComponent.algaeTarget = Int($0)
 				worldScene.setAlgaeTargetsInFountains(globalDataComponent.algaeTarget)
+				GameManager.shared.gameConfig?.algaeTarget = Int($0)
 			}
 		)
+		
+//		guard let gameConfig = GameManager.shared.gameConfig else {
+//			return Text("")
+//		}
+		
+		let gameConfig = GameManager.shared.gameConfig!
 		
 		return VStack {
 			Spacer().frame(maxWidth: .infinity)
@@ -80,8 +87,7 @@ struct BiotsUI: View {
 					.font(.body)
 					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
 				Button("Save", action: {
-					let algaeTarget = worldScene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget ?? 0
-					let saveState = SaveState(gameMode: .normal, algaeTarget: algaeTarget, worldBlockCount: Constants.Env.worldBlockCount, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes)
+					let saveState = SaveState(gameMode: gameConfig.gameMode, algaeTarget: gameConfig.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
 					LocalFileManager.shared.saveStateToFile(saveState, filename: "Save")
 				})
 					.font(.body)
