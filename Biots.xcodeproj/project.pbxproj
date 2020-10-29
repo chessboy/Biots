@@ -235,10 +235,10 @@
 		D42CE73324442DFE0049854C /* UI Components */ = {
 			isa = PBXGroup;
 			children = (
-				D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */,
-				D42CE73124440EC20049854C /* GlobalStatsComponent.swift */,
-				D42CE737244430CE0049854C /* RulerComponent.swift */,
 				D4C2FC212483981C0076077A /* EntityStatsComponent.swift */,
+				D42CE73124440EC20049854C /* GlobalStatsComponent.swift */,
+				D42CE72D2443FF820049854C /* KeyTrackerComponent.swift */,
+				D42CE737244430CE0049854C /* RulerComponent.swift */,
 			);
 			path = "UI Components";
 			sourceTree = "<group>";
@@ -280,12 +280,12 @@
 		D47386292442BA830022E760 = {
 			isa = PBXGroup;
 			children = (
-				D49880452517D69400015724 /* README.md */,
-				D498804D2518050A00015724 /* Biots.png */,
-				E83B9117253BE350004DE02F /* LICENSE */,
 				D47386342442BA830022E760 /* Biots */,
+				D498804D2518050A00015724 /* Biots.png */,
 				D4BE801924FB6D2900208C6A /* BiotsTests */,
+				E83B9117253BE350004DE02F /* LICENSE */,
 				D47386332442BA830022E760 /* Products */,
+				D49880452517D69400015724 /* README.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -388,13 +388,13 @@
 		D47386E22442C50C0022E760 /* Bio Source */ = {
 			isa = PBXGroup;
 			children = (
-				E85C3AF325467E97000D2926 /* GameMode.swift */,
+				D42CE73424442E130049854C /* Biot Components */,
 				D47386F12442CB9E0022E760 /* Constants.swift */,
 				E8BB054325449247008C39D2 /* DataManager.swift */,
+				E85C3AF325467E97000D2926 /* GameMode.swift */,
 				D4D18D97244799F500BF92FA /* Models */,
-				D4D18D8F2446BC8200BF92FA /* World */,
-				D42CE73424442E130049854C /* Biot Components */,
 				D42CE73324442DFE0049854C /* UI Components */,
+				D4D18D8F2446BC8200BF92FA /* World */,
 			);
 			path = "Bio Source";
 			sourceTree = "<group>";
@@ -402,7 +402,6 @@
 		D47386ED2442CB200022E760 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D47386E52442C6F00022E760 /* CGAffineTransform.swift */,
 				D47386EE2442CB510022E760 /* CGConstants.swift */,
 				D4738756244389C60022E760 /* CGFloatMath.swift */,
@@ -412,15 +411,16 @@
 				D48E2DDA24F74E9B009FB3D7 /* CGVectorMath.swift */,
 				D48E2DDB24F74E9C009FB3D7 /* ColorVector.swift */,
 				D44EE9B624439592006A2083 /* IntMath.swift */,
+				D47D719824493E590079D2F1 /* JsonLoad.swift */,
 				D4B2EE37244EC434007D615E /* KeyCodes.swift */,
 				D4E573AD244D515E006C2767 /* NoiseGenerator.swift */,
-				D4F5055224ED282900EAA52E /* RunningFloatArray.swift */,
-				D47D71932447F5950079D2F1 /* RunningValue.swift */,
+				D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */,
 				D4040D1F24FB477400A2C500 /* RunningCGVector.swift */,
 				D4040D0F24F8BDFC00A2C500 /* RunningColorVector.swift */,
+				D4F5055224ED282900EAA52E /* RunningFloatArray.swift */,
+				D47D71932447F5950079D2F1 /* RunningValue.swift */,
 				D42CE73924449A670049854C /* SpriteKitExtensions.swift */,
 				D41D1F94244ACF8100A876F4 /* StringExtensions.swift */,
-				D48E2DE424F76141009FB3D7 /* OctopusKitExtensions.swift */,
 				E8D63D57253FFDF000ACF9D7 /* SwiftUiExtensions.swift */,
 			);
 			path = Extensions;
@@ -459,12 +459,12 @@
 		D4D18D8F2446BC8200BF92FA /* World */ = {
 			isa = PBXGroup;
 			children = (
-				D47386B72442BEDB0022E760 /* WorldScene.swift */,
-				D47386E02442BF1D0022E760 /* WorldComponent.swift */,
 				D4D18D8D2446B54200BF92FA /* BoundaryComponent.swift */,
-				D44B334B2503ECA200AAF342 /* GridNode.swift */,
 				D47386C72442BEDB0022E760 /* GlobalDataComponent.swift */,
+				D44B334B2503ECA200AAF342 /* GridNode.swift */,
 				D4C2FC232483A4160076077A /* NoiseComponent.swift */,
+				D47386E02442BF1D0022E760 /* WorldComponent.swift */,
+				D47386B72442BEDB0022E760 /* WorldScene.swift */,
 				D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */,
 			);
 			path = World;
@@ -482,11 +482,11 @@
 		D4D18D97244799F500BF92FA /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				E8BB0534254487B4008C39D2 /* SaveState.swift */,
-				D4D18D982447A37000BF92FA /* Genome.swift */,
-				D45F0E6A253282360067912C /* PlacedObject.swift */,
 				E8BB054F25453126008C39D2 /* Bundled Files */,
 				E8BB053C254488BF008C39D2 /* File */,
+				D4D18D982447A37000BF92FA /* Genome.swift */,
+				D45F0E6A253282360067912C /* PlacedObject.swift */,
+				E8BB0534254487B4008C39D2 /* SaveState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -513,10 +513,10 @@
 		E8BB054F25453126008C39D2 /* Bundled Files */ = {
 			isa = PBXGroup;
 			children = (
-				E85C3AE72545D35F000D2926 /* BundledFileConfig.swift */,
 				E85C3ADF2545D0CB000D2926 /* bundled-file-configs.json */,
-				D45F0E722532BFE80067912C /* World Objects */,
+				E85C3AE72545D35F000D2926 /* BundledFileConfig.swift */,
 				D49880422517D0AB00015724 /* Genomes */,
+				D45F0E722532BFE80067912C /* World Objects */,
 			);
 			path = "Bundled Files";
 			sourceTree = "<group>";
