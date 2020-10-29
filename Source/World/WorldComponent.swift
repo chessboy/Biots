@@ -43,10 +43,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
 		
-		guard let gameConfig = GameManager.shared.gameConfig else {
-			return
-		}
-		
+		let gameConfig = GameManager.shared.gameConfig
 		let worldObjects = gameConfig.worldObjects
 						
 		let targetAlgaeSupply = gameConfig.algaeTarget
@@ -145,7 +142,9 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				
 	func displayStats() {
 		
-		guard let scene = OctopusKit.shared?.currentScene, let gameConfig = GameManager.shared.gameConfig else { return }
+		guard let scene = OctopusKit.shared?.currentScene else { return }
+		
+		let gameConfig = GameManager.shared.gameConfig
 		let dispenseDelay = gameConfig.gameMode.dispenseDelay
 		let frame = Int(scene.currentFrameNumber) - dispenseDelay
 
@@ -153,7 +152,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = GameManager.shared.gameConfig?.gameMode.description.uppercased() ?? ""
+			let mode = gameConfig.gameMode.description.uppercased()
 			let biotStats = currentBiotStats
 			let statsText = "\(mode) \(Int(frame).abbrev) | pop: \(biotCount)/\(gameConfig.maximumBiotCount), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
 
@@ -170,9 +169,10 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	
 	override func update(deltaTime seconds: TimeInterval) {
 		
-		guard let scene =  OctopusKit.shared?.currentScene, let gameConfig = GameManager.shared.gameConfig else { return }
+		guard let scene =  OctopusKit.shared?.currentScene else { return }
 		let frame = scene.currentFrameNumber
 				
+		let gameConfig = GameManager.shared.gameConfig
 		// key event handling
 		if let keyTracker = keyTrackerComponent {
 			for keyCode in keyTracker.keyCodesDown {
@@ -199,7 +199,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				OctopusKit.logForSimInfo.add("created random genome: \(genome.description)")
 				let _ = addNewBiot(genome: genome, in: scene)
 			}
-			else if let genomes = GameManager.shared.gameConfig?.genomes, genomes.count > 0 {
+			else if GameManager.shared.gameConfig.genomes.count > 0 {
+				let genomes = GameManager.shared.gameConfig.genomes
 				let genomeIndex = genomeDispenseIndex % genomes.count
 				var genome = genomes[genomeIndex]
 				genome.id = "\(genome.id)-\(genomeDispenseIndex)"

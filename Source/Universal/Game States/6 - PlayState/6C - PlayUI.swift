@@ -54,15 +54,11 @@ struct BiotsUI: View {
 				algaeTargetState = $0
 				globalDataComponent.algaeTarget = Int($0)
 				worldScene.setAlgaeTargetsInFountains(globalDataComponent.algaeTarget)
-				GameManager.shared.gameConfig?.algaeTarget = Int($0)
+				GameManager.shared.gameConfig.algaeTarget = Int($0)
 			}
 		)
 		
-//		guard let gameConfig = GameManager.shared.gameConfig else {
-//			return Text("")
-//		}
-		
-		let gameConfig = GameManager.shared.gameConfig!
+		let gameConfig = GameManager.shared.gameConfig
 		
 		return VStack {
 			Spacer().frame(maxWidth: .infinity)

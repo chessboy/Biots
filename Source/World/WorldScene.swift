@@ -270,11 +270,7 @@ final class WorldScene: OKScene {
 			OctopusKit.logForErrors.add("could get GlobalDataComponent")
 			return
 		}
-		
-		guard let gameConfig = GameManager.shared.gameConfig else {
-			return
-		}
-		
+				
 		let shiftDown = event.modifierFlags.contains(.shift)
 		let commandDown = event.modifierFlags.contains(.command)
 		let optionDown = event.modifierFlags.contains(.option)
@@ -293,7 +289,7 @@ final class WorldScene: OKScene {
 			break
 		
 		case Keycode.r:
-			if shiftDown, commandDown, gameConfig.gameMode == .random {
+			if shiftDown, commandDown, GameManager.shared.gameConfig.gameMode == .random {
 				entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
 					removeEntity(biotEntity)
 				})
@@ -540,10 +536,6 @@ final class WorldScene: OKScene {
 			return
 		}
 
-		guard let gameConfig = GameManager.shared.gameConfig else {
-			return
-		}
-
 		//print("touchDown: point: \(point.formattedTo2Places), keyCodesDown: \(keyCodesDown), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
 		
 		if keyCodesDown.contains(Keycode.w) {
@@ -583,14 +575,14 @@ final class WorldScene: OKScene {
 					return
 				}
 				
-				if shiftDown, commandDown, gameConfig.gameMode == .random {
+				if shiftDown, commandDown, GameManager.shared.gameConfig.gameMode == .random {
 					entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
 						removeEntity(biotEntity)
 					})
 					
 					let worldRadius = Constants.Env.worldRadius
 
-					for _ in 1...gameConfig.minimumBiotCount {
+					for _ in 1...GameManager.shared.gameConfig.minimumBiotCount {
 						let distance = CGFloat.random(in: Constants.Env.worldRadius * 0.05...worldRadius * 0.9)
 						let position = CGPoint.randomDistance(distance)
 						let clonedGenome = Genome(parent: biotComponent.genome)

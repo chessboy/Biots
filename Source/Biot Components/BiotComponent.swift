@@ -652,13 +652,13 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func spawnChildren(selfReplication: Bool = false) {
-		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome, let gameConfig = GameManager.shared.gameConfig else {
+		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome else {
 			return
 		}
 
 		if let worldScene = scene as? WorldScene,
 		   let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self),
-		   worldComponent.currentBiots.count >= gameConfig.maximumBiotCount {
+		   worldComponent.currentBiots.count >= GameManager.shared.gameConfig.maximumBiotCount {
 			// no more room in the dish, cache a single (potentailly) mutated clone and become nonpregnant
 			let clonedGenome = Genome(parent: matingGenome)
 			worldComponent.addUnbornGenome(clonedGenome)
