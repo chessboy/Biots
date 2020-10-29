@@ -27,9 +27,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity(withNode node: SKNode) {
-		
-		
-		
+	
 		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes else { return }
 		
 		if Constants.Env.graphics.showGrid {
