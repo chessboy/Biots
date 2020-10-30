@@ -85,7 +85,7 @@ extension AlgaeComponent {
 		node.blendMode = Constants.Env.graphics.blendMode
 		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		node.isHidden = true
-		let range = SKRange(lowerLimit: 0, upperLimit: Constants.Env.worldRadius * 0.9)
+		let range = SKRange(lowerLimit: 0, upperLimit: GameManager.shared.gameConfig.worldRadius * 0.9)
 		let keepInBounds = SKConstraint.distance(range, to: .zero)
 		node.constraints = [keepInBounds]
 		

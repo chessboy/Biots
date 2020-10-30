@@ -177,7 +177,7 @@ final class VisionComponent: OKComponent {
 	func showTracer(rayStart: CGPoint, rayEnd: CGPoint, color: SKColor, scale: CGFloat) {
 		let path = CGMutablePath()
 		let tracerNode = SKShapeNode()
-		tracerNode.lineWidth = 0.0025 * Constants.Env.worldRadius * scale
+		tracerNode.lineWidth = 0.0025 * GameManager.shared.gameConfig.worldRadius * scale
 		tracerNode.strokeColor = color
 		tracerNode.zPosition = Constants.ZeeOrder.biot - 0.1
 		path.move(to: rayStart)

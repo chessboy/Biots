@@ -24,6 +24,19 @@ class BiotsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 	
+	func testBiotParam() throws {
+		let param1 = BiotParam(start: 10, end: 20)
+		for gen in [0, 10, 50, 75, 100, 200] {
+			print("gen: \(gen), value: \(param1.valueForGeneration(gen))")
+		}
+		print()
+		let param2 = BiotParam(start: 30, end: 20)
+		for gen in [0, 10, 50, 75, 100, 200] {
+			print("gen: \(gen), value: \(param2.valueForGeneration(gen))")
+		}
+
+	}
+	
 	func testNeuralNet() throws {
         do {
 			let structure = try NeuralNet.Structure(nodes: [3, 1], hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
@@ -154,50 +167,45 @@ class BiotsTests: XCTestCase {
 		XCTAssertTrue(wall & playerDetection > 0)
 	}
 	
-	func testLoadGenomes() throws {
-		let genomes = GenomeFactory.shared.genomes
-		
-		genomes.forEach { print($0.description) }
-	}
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-		
-		guard let genome = GenomeFactory.shared.genomes.first else {
-			XCTFail()
-			return
-		}
-		
-		var neuralNet: NeuralNet!
-		
-		do {
-			var nodes: [Int] = []
-			nodes.append(genome.inputCount)
-			nodes.append(contentsOf: genome.hiddenCounts)
-			nodes.append(genome.outputCount)
-
-			let structure = try NeuralNet.Structure(nodes: nodes, hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
-			
-			neuralNet = try NeuralNet(structure: structure)
-			try neuralNet.setWeights(genome.weights)
-			try neuralNet.setBiases(genome.biases)
-
-		} catch let error {
-			XCTFail(error.localizedDescription)
-		}
-
-		let inputs: [[Float]] = [[0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5]]
-		
-        self.measure {
-			do {
-				for _ in 0..<10000 {
-					let _ = try neuralNet.infer(inputs)
-				}
-			} catch let error {
-				XCTFail(error.localizedDescription)
-			}
-        }
-    }
+//    func testPerformanceExample() throws {
+//        // This is an example of a performance test case.
+//
+//		guard let genome = GenomeFactory.shared.genomes.first else {
+//			XCTFail()
+//			return
+//		}
+//
+//		var neuralNet: NeuralNet!
+//
+//		do {
+//			var nodes: [Int] = []
+//			nodes.append(genome.inputCount)
+//			nodes.append(contentsOf: genome.hiddenCounts)
+//			nodes.append(genome.outputCount)
+//
+//			let structure = try NeuralNet.Structure(nodes: nodes, hiddenActivation: .sigmoid, outputActivation: .sigmoid, batchSize: 1, learningRate: 0.1, momentum: 0.5)
+//
+//			neuralNet = try NeuralNet(structure: structure)
+//			try neuralNet.setWeights(genome.weights)
+//			try neuralNet.setBiases(genome.biases)
+//
+//		} catch let error {
+//			XCTFail(error.localizedDescription)
+//		}
+//
+//		let inputs: [[Float]] = [[0.01, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 0.5]]
+//
+//        self.measure {
+//			do {
+//				for _ in 0..<10000 {
+//					let _ = try neuralNet.infer(inputs)
+//				}
+//			} catch let error {
+//				XCTFail(error.localizedDescription)
+//			}
+//        }
+//    }
 	
 	func testTimer() {
 		for age in 0..<200 {

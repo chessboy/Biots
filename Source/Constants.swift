@@ -13,19 +13,12 @@ import OctopusKit
 struct Constants {
 		
 	struct Env {
-		
-		// todo: migrate this and all uses below to GameConfig
-		static let gameMode: GameMode = .easy
-		
+				
 		static let windowWidth: CGFloat = 2000
 
 		static let savedStateFilename = "Save"
 		static let firstRunSavedStateFilename = "Evolved"
-
 		static let gridBlockSize: CGFloat = 400
-		
-		// todo: migrate this and all uses in components to GameConfig
-		static let worldRadius: CGFloat = gridBlockSize * 13
 
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80		
@@ -35,30 +28,15 @@ struct Constants {
 		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
 		static let graphics = niceGraphics
 	}
-	
+		
 	struct Biot {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
-
-		static let collisionDamage: CGFloat = Env.gameMode == .easy ?  0.15 :  0.25
-		static let perMovementRecovery: CGFloat = Env.gameMode == .easy ?  0.0015 :  0.00125
-
-		static let mateHealth: CGFloat = Env.gameMode == .easy ? 0.7 : 0.8 // % of maximum health
-		static let spawnHealth: CGFloat = Env.gameMode == .easy ? 0.6 : 0.75 // % of maximum health
-
-		static let maximumFoodEnergy: CGFloat = Env.gameMode == .easy ? 100 : 120
-		static let initialFoodEnergy: CGFloat = maximumFoodEnergy * 0.5
-		static let maximumHydration: CGFloat = Env.gameMode == .easy ? 85 : 100
-		static let initialHydration: CGFloat = maximumHydration * 0.5
-
+		static let environmentalPressureGenerationalThreshold = 200
+		
 		static let perMovementEnergyCost: CGFloat = 0.01
-		static let perMovementHydrationCost: CGFloat = Env.gameMode == .easy ? 0.0075 : 0.01
 		static let armorEnergyCost: CGFloat = 0.06
 		static let speedBoostStaminaCost: CGFloat = 0.0006
-
-		static let maximumAge: CGFloat = Env.gameMode == .easy ? 2400 : 3200
-		static let matureAge: CGFloat = maximumAge * 0.2
-		static let gestationAge: CGFloat = maximumAge * 0.15
 		
 		static let adjustBodyColor = false
 		
@@ -72,12 +50,12 @@ struct Constants {
 	
 	struct Algae {
 		static let radius: CGFloat = 16
-		static let bite: CGFloat = Biot.maximumFoodEnergy * 0.2
+		static let bite: CGFloat = 20
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 	}
 	
 	struct Water {
-		static let sip: CGFloat = Biot.maximumHydration * 0.2
+		static let sip: CGFloat = 20
 		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
 	}
 	
@@ -98,6 +76,7 @@ struct Constants {
 	struct NodeName {
 		static let wall = "wall"
 		static let algae = "algae"
+		static let algaeFountain = "algaeFountain"
 		static let water = "water"
 		static let biot = "biot"
 		static let grid = "grid"

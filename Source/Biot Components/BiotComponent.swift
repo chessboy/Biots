@@ -66,44 +66,58 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	var frame = Int.random(100)
-
+	
+	lazy var mateHealth = GameManager.shared.gameConfig.mateHealth.valueForGeneration(genome.generation)
+	lazy var spawnHealth = GameManager.shared.gameConfig.spawnHealth.valueForGeneration(genome.generation)
+	lazy var maximumAge = GameManager.shared.gameConfig.maximumAge.valueForGeneration(genome.generation)
+	lazy var maximumFoodEnergy = GameManager.shared.gameConfig.maximumFoodEnergy.valueForGeneration(genome.generation)
+	lazy var maximumWaterHydration = GameManager.shared.gameConfig.maximumHydration.valueForGeneration(genome.generation)
+	
 	var isPregnant: Bool {
 		return matingGenome != nil
 	}
-	
+
 	var canMate: Bool {
-		return !isExpired && !isPregnant && age >= Constants.Biot.matureAge && health >= Constants.Biot.mateHealth
+		return !isExpired && !isPregnant && age >= matureAge && health >= mateHealth
+	}
+	
+	var matureAge: CGFloat {
+		return maximumAge * 0.2
+	}
+	
+	var gestationAge: CGFloat {
+		return maximumAge * 0.15
 	}
 
 	var maximumEnergy: CGFloat {
-		return Constants.Biot.maximumFoodEnergy * (isPregnant ? 2 : 1)
+		return maximumFoodEnergy * (isPregnant ? 2 : 1)
 	}
 
 	var maximumHydration: CGFloat {
-		return Constants.Biot.maximumHydration * (isPregnant ? 2 : 1)
+		return maximumWaterHydration * (isPregnant ? 2 : 1)
 	}
 
 	var progress: CGFloat {
 		if isExpired { return 0 }
 		
-		if age < Constants.Biot.matureAge {
+		if age < matureAge {
 			if !isMature {
-				return age/(Constants.Biot.matureAge/2)
+				return age/(matureAge/2)
 			}
-			return age/Constants.Biot.matureAge
+			return age/matureAge
 		}
-		
+				
 		if !isPregnant {
 			if canMate {
-				return (age - lastSpawnedAge)/Constants.Biot.gestationAge
+				return (age - lastSpawnedAge)/gestationAge
 			}
 			else {
-				return min((age - lastSpawnedAge)/Constants.Biot.gestationAge, (health / Constants.Biot.mateHealth))
+				return min((age - lastSpawnedAge)/gestationAge, (health / mateHealth))
 			}
 		}
 		else {
 			// pregnant
-			return min((age - lastPregnantAge)/Constants.Biot.gestationAge, (health / Constants.Biot.mateHealth))
+			return min((age - lastPregnantAge)/gestationAge, (health / mateHealth))
 		}
 	}
 
@@ -120,8 +134,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 
 	init(genome: Genome) {
 		self.genome = genome
-		self.foodEnergy = Constants.Biot.initialFoodEnergy
-		self.hydration = Constants.Biot.initialHydration
+		self.foodEnergy = 50
+		self.hydration = 50
 		super.init()
 	}
 	
@@ -359,7 +373,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			age += 1
 		}
 
-		if !isMature, age >= Constants.Biot.matureAge / 2 {
+		if !isMature, age >= matureAge / 2 {
 			entityNode?.run(SKAction.scale(to: 1, duration: 0.5))
 			isMature = true
 		}
@@ -367,7 +381,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		checkResourceContacts()
 		
 		// check old age or malnutrition
-		if age >= Constants.Biot.maximumAge || health <= 0 {
+		if age >= maximumAge || health <= 0 {
 			expire()
 		}
 		
@@ -389,12 +403,12 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		}
 
 		// self-replication (sexual reproduction not supported yet)
-		if !isPregnant, canMate, age - lastSpawnedAge > Constants.Biot.gestationAge {
+		if !isPregnant, canMate, age - lastSpawnedAge > gestationAge {
 			mated(otherGenome: genome)
 		}
 		
 		// check spawning
-		if isPregnant, age - lastPregnantAge > Constants.Biot.gestationAge, health >= Constants.Biot.spawnHealth {
+		if isPregnant, age - lastPregnantAge > gestationAge, health >= spawnHealth {
 			spawnChildren()
 			lastSpawnedAge = age
 		}
@@ -643,7 +657,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					
 					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/Constants.Biot.maximumAge).formattedToPercentNoDecimal) | mate: \(canMate ? "✓" : "✗"), preg: \(isPregnant ? "✓" : "✗") | prog: \(progress.formattedToPercentNoDecimal)", for: .line2)
+					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/maximumAge).formattedToPercentNoDecimal) | mate: \(canMate ? "✓" : "✗"), preg: \(isPregnant ? "✓" : "✗") | prog: \(progress.formattedToPercentNoDecimal)", for: .line2)
 					statsNode.setLineOfText("spawn: \(spawnCount) | totF: \(cumulativeFoodEnergy.formattedNoDecimal), totW: \(cumulativeHydration.formattedNoDecimal), totD: \(cumulativeDamage.formatted)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
@@ -669,7 +683,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		}
 		
 		foodEnergy = foodEnergy / 4
-		hydration = Constants.Biot.initialHydration
+		hydration = hydration / 3
 		incurStaminaChange(0.05)
 		
 		spawnCount += 1
@@ -926,7 +940,7 @@ extension BiotComponent {
 		physicsBody.linearDamping = 1
 		physicsBody.friction = 1
 		
-		let range = SKRange(lowerLimit: 0, upperLimit: Constants.Env.worldRadius)
+		let range = SKRange(lowerLimit: 0, upperLimit: GameManager.shared.gameConfig.worldRadius)
 		let keepInBounds = SKConstraint.distance(range, to: .zero)
 		node.constraints = [keepInBounds]
 

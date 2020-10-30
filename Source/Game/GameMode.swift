@@ -10,28 +10,30 @@ import Foundation
 
 enum GameMode: Int, Codable, CustomStringConvertible {
 	case normal = 0
-	case easy
 	case random
 	
-	var description: String {
+	var humanReadableDescription: String {
 		switch self {
-			case .easy: return "easy"
 			case .random: return "random"
 			case .normal: return "normal"
 		}
 	}
 	
+	var description: String {
+		return "{mode: \(humanReadableDescription), dispenseDelay: \(dispenseDelay), dispenseInterval: \(dispenseInterval)}"
+	}
+	
 	var dispenseDelay: Int {
 		switch self {
 			case .random: return 20
-			case .easy, .normal: return 250
+			case .normal: return 250
 		}
 	}
 	
 	var dispenseInterval: UInt64 {
 		switch self {
 			case .random: return 10
-			default: return 50
+			case .normal: return 50
 		}
 	}
 }

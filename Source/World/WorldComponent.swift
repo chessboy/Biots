@@ -27,57 +27,54 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity(withNode node: SKNode) {
+		createWorld()
+ 	}
 	
-		guard let scene = OctopusKit.shared?.currentScene, let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes else { return }
+	func createWorld() {
 		
+		guard let scene = OctopusKit.shared?.currentScene else { return }
+		
+		// cleanup and prepare
+		removeAllEntities()
+		let gameConfig = GameManager.shared.gameConfig
+		let worldRadius = GameManager.shared.gameConfig.worldRadius
+
+		// grid
 		if Constants.Env.graphics.showGrid {
 			let blockSize = Constants.Env.gridBlockSize
-			let gridSize = Int(Constants.Env.worldRadius / blockSize) * 2
+			let gridSize = Int(GameManager.shared.gameConfig.worldRadius / blockSize) * 2
 			let gridNode = GridNode.create(blockSize: 400, rows: gridSize, cols: gridSize)
-			gridNode.isHidden = hideNode
 			scene.addChild(gridNode)
 		}
 		
-		let worldRadius = Constants.Env.worldRadius
+		// boundry wall
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
-		boundary.node?.isHidden = hideNode
 		scene.addEntity(boundary)
-		
-		let gameConfig = GameManager.shared.gameConfig
-		let worldObjects = gameConfig.worldObjects
 						
-		let targetAlgaeSupply = gameConfig.algaeTarget
-		scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget = targetAlgaeSupply
-		let showFountainInfluence = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showAlgaeFountainInfluences ?? false
-
-		// algae fountain(s)
-		let alageFountain = ResourceFountainComponent.createFountain(position: .zero, minRadius: worldRadius * 0.2, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
-		alageFountain.name = "mainFountain"
-
-		if showFountainInfluence {
-			alageFountain.addComponent(ResourceFountainInfluenceComponent())
-		}
-		scene.addEntity(alageFountain)
-		
+		// world objects
+		let worldObjects = gameConfig.worldObjects
 		for worldObject in worldObjects {
 			let position = CGPoint(angle: worldObject.angle.cgFloat) * worldObject.percentFromCenter.cgFloat * worldRadius
 			let radius = worldObject.percentRadius.cgFloat * worldRadius
 			
 			if worldObject.placeableType == .zapper {
 				let zapper = ZapperComponent.create(radius: radius, position: position)
-				zapper.node?.isHidden = hideNode
 				scene.addEntity(zapper)
 			}
 			else if worldObject.placeableType == .water {
 				let water = WaterSourceComponent.create(radius: radius, position: position)
-				alageFountain.component(ofType: ResourceFountainComponent.self)?.waterEntities.append(water)
-				water.node?.isHidden = hideNode
 				scene.addEntity(water)
 			}
 		}
- 	}
+		
+		// algae fountain(s)
+		let targetAlgaeSupply = gameConfig.algaeTarget
+		scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget = targetAlgaeSupply
+		let alageFountain = ResourceFountainComponent.create(position: .zero, minRadius: worldRadius * 0.2, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
+		scene.addEntity(alageFountain)
+	}
 	
-	func removeAllEntitiesTest() {
+	func removeAllEntities() {
 		
 		guard let scene =  OctopusKit.shared?.currentScene else { return }
 
@@ -104,6 +101,10 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		scene.entities(withName: Constants.NodeName.grid)?.forEach({ entity in
 			scene.removeEntityOnNextUpdate(entity)
 		})
+		
+		scene.entities(withName: Constants.NodeName.algaeFountain)?.forEach({ entity in
+			scene.removeEntityOnNextUpdate(entity)
+		})
 	}
 	
 	func addUnbornGenome(_ genome: Genome) {
@@ -116,7 +117,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
 		
-		let worldRadius = Constants.Env.worldRadius
+		let worldRadius = GameManager.shared.gameConfig.worldRadius
 		let distance = CGFloat.random(in: worldRadius * 0.35...worldRadius * 0.9)
 		let position = CGPoint.randomDistance(distance)
 
@@ -152,7 +153,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = gameConfig.gameMode.description.uppercased()
+			let mode = gameConfig.gameMode.humanReadableDescription.uppercased()
 			let biotStats = currentBiotStats
 			let statsText = "\(mode) \(Int(frame).abbrev) | pop: \(biotCount)/\(gameConfig.maximumBiotCount), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
 

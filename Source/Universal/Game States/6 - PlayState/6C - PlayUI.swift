@@ -83,8 +83,10 @@ struct BiotsUI: View {
 					.font(.body)
 					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
 				Button("Save", action: {
-					let saveState = SaveState(gameMode: gameConfig.gameMode, algaeTarget: gameConfig.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
-					LocalFileManager.shared.saveStateToFile(saveState, filename: "Save")
+					
+					let saveState = SaveState(name: Constants.Env.savedStateFilename, gameMode: GameMode.normal, algaeTarget: gameConfig.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
+					LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.savedStateFilename)
+					
 				})
 					.font(.body)
 					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))

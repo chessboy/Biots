@@ -58,7 +58,7 @@ final class BrainComponent: OKComponent {
 			onTopOfWater: biot.isOnTopOfWater ? 1 : 0,
 			clockShort: Int.timerForAge(Int(biot.age), clockRate: Constants.Biot.clockRate),
 			clockLong: Int.timerForAge(Int(biot.age), clockRate: Constants.Biot.clockRate*3),
-			age: Float(biot.age/Constants.Biot.maximumAge)
+			age: Float(biot.age/biot.maximumAge)
 		)
 		
 //		if let genome = GenomeFactory.shared.genomes.first, biot.genome.id.starts(with: genome.id) {
@@ -143,11 +143,13 @@ final class BrainComponent: OKComponent {
 		// movement energy expenditure
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
 		biot.incurEnergyChange(-Constants.Biot.perMovementEnergyCost * forceExerted)
-		biot.incurHydrationChange(-Constants.Biot.perMovementHydrationCost * forceExerted)
+		
+		let perMovementHydrationCost = GameManager.shared.gameConfig.perMovementHydrationCost.valueForGeneration(biot.genome.generation)
+		biot.incurHydrationChange(-perMovementHydrationCost * forceExerted)
 
 		if speedBoost > 1 {
 			biot.incurEnergyChange(-Constants.Biot.perMovementEnergyCost)
-			biot.incurHydrationChange(-Constants.Biot.perMovementHydrationCost)
+			biot.incurHydrationChange(-perMovementHydrationCost)
 			biot.incurStaminaChange(Constants.Biot.speedBoostStaminaCost)
 		}
 		
@@ -157,7 +159,8 @@ final class BrainComponent: OKComponent {
 		
 		// healing
 		if biot.stamina < 1 {
-			let staminaRecovery = -Constants.Biot.perMovementRecovery * (1 - (forceExerted/3))
+			let perMovementRecovery = GameManager.shared.gameConfig.perMovementRecovery.valueForGeneration(biot.genome.generation)
+			let staminaRecovery = -perMovementRecovery * (1 - (forceExerted/3))
 			// print("biot.stamina: \(biot.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			biot.incurStaminaChange(staminaRecovery)
 		}
@@ -168,13 +171,13 @@ final class BrainComponent: OKComponent {
 			let adjustedRed = skColor.redComponent.clamped(minRGB, 1)
 			let adjustedGreen = skColor.greenComponent.clamped(minRGB, 1)
 			let adjustedBlue = skColor.blueComponent.clamped(minRGB, 1)
-			let alpha: CGFloat = Constants.Env.graphics.blendMode != .replace ? (biot.age > Constants.Biot.maximumAge * 0.85 ? 0.33 : 0.667) : 1
+			let alpha: CGFloat = Constants.Env.graphics.blendMode != .replace ? (biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667) : 1
 			let adjustedColor = SKColor(red: adjustedRed, green: adjustedGreen, blue: adjustedBlue, alpha: alpha)
 			node.fillColor = adjustedColor
 		}
 		else {
 			if Constants.Env.graphics.blendMode != .replace {
-				node.fillColor = inference.color.average.skColor.withAlpha(biot.age > Constants.Biot.maximumAge * 0.85 ? 0.33 : 0.667)
+				node.fillColor = inference.color.average.skColor.withAlpha(biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667)
 			} else {
 				node.fillColor = inference.color.average.skColor
 			}

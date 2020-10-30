@@ -258,10 +258,7 @@ final class WorldScene: OKScene {
 	}
 	
 	func setAlgaeTargetsInFountains(_ algaeTarget: Int) {
-		self.entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = algaeTarget.cgFloat
-		self.entities(withName: "fountain")?.map({$0.component(ofType: ResourceFountainComponent.self)}).forEach({ fountainComponent in
-			fountainComponent?.targetAlgaeSupply = algaeTarget.cgFloat / 4
-		})
+		self.entities(withName: Constants.NodeName.algaeFountain)?.first?.component(ofType: ResourceFountainComponent.self)?.targetAlgaeSupply = algaeTarget.cgFloat
 	}
 	
 	override func keyDown(with event: NSEvent) {
@@ -284,6 +281,13 @@ final class WorldScene: OKScene {
 				
 		switch event.keyCode {
 		
+		//case Keycode.t:
+		//	if let worldComponent = entity?.component(ofType: WorldComponent.self) {
+		//		GameManager.shared.gameConfig = GameConfig(gameMode: .random)
+		//		worldComponent.createWorld()
+		//	}
+		//	break
+			
 		case Keycode.u:
 			globalDataComponent.showHUDPub.toggle()
 			break
@@ -532,7 +536,7 @@ final class WorldScene: OKScene {
 	func touchDown(at point: CGPoint, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false, optionDown: Bool = false, clickCount: Int = 1) {
 		
 		guard let keyCodesDown = self.entity?.component(ofType: KeyTrackerComponent.self)?.keyCodesDown,
-			  let mainFountain = entities(withName: "mainFountain")?.first?.component(ofType: ResourceFountainComponent.self) else {
+			  let algaeFountain = entities(withName: Constants.NodeName.algaeFountain)?.first?.component(ofType: ResourceFountainComponent.self) else {
 			return
 		}
 
@@ -541,7 +545,6 @@ final class WorldScene: OKScene {
 		if keyCodesDown.contains(Keycode.w) {
 			let radius: CGFloat = Constants.Resource.plopSize
 			let water = WaterSourceComponent.create(radius: radius, position: point)
-			mainFountain.waterEntities.append(water)
 			addEntity(water)
 			return
 		}
@@ -555,7 +558,7 @@ final class WorldScene: OKScene {
 				
 		if keyCodesDown.contains(Keycode.f) {
 			for _ in 1...3 + Int.random(3) {
-				let algae = mainFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
+				let algae = algaeFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
 				if let node = algae.component(ofType: SpriteKitComponent.self)?.node {
 					node.position = point + CGPoint.randomAngle * CGFloat.random(in: 50..<200)
 					addEntity(algae)
@@ -580,13 +583,13 @@ final class WorldScene: OKScene {
 						removeEntity(biotEntity)
 					})
 					
-					let worldRadius = Constants.Env.worldRadius
+					let worldRadius = GameManager.shared.gameConfig.worldRadius
 
 					for _ in 1...GameManager.shared.gameConfig.minimumBiotCount {
-						let distance = CGFloat.random(in: Constants.Env.worldRadius * 0.05...worldRadius * 0.9)
+						let distance = CGFloat.random(in: GameManager.shared.gameConfig.worldRadius * 0.05...worldRadius * 0.9)
 						let position = CGPoint.randomDistance(distance)
 						let clonedGenome = Genome(parent: biotComponent.genome)
-						let childBiot = BiotComponent.createBiot(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: mainFountain))
+						let childBiot = BiotComponent.createBiot(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: algaeFountain))
 						addEntity(childBiot)
 					}
 				}
@@ -602,11 +605,11 @@ final class WorldScene: OKScene {
 					biotComponent.kill()
 				}
 				else if shiftDown {
-					if let jsonData = try? biotComponent.genome.encodedToJSON() {
-						if let jsonString = String(data: jsonData, encoding: .utf8) {
-							print("\(jsonString),")
-						}
-					}
+					//if let jsonData = try? biotComponent.genome.encodedToJSON() {
+					//	if let jsonString = String(data: jsonData, encoding: .utf8) {
+					//		print("\(jsonString),")
+					//	}
+					//}
 					biotComponent.mated(otherGenome: biotComponent.genome)
 					biotComponent.spawnChildren(selfReplication: true)
 					biotComponent.foodEnergy = biotComponent.maximumEnergy

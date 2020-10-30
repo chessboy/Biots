@@ -23,8 +23,8 @@ struct WorldObject: Codable {
 
 extension SKNode {
 	func createWorldObject(placeableType: PlaceableType, radius: CGFloat) -> WorldObject {
-		let percentFromCenter = position.distance(to: .zero) / Constants.Env.worldRadius
-		let percentRadius = radius / Constants.Env.worldRadius
+		let percentFromCenter = position.distance(to: .zero) / GameManager.shared.gameConfig.worldRadius
+		let percentRadius = radius / GameManager.shared.gameConfig.worldRadius
 		return WorldObject(placeableType: placeableType, angle: position.angle.float, percentFromCenter: percentFromCenter.float, percentRadius: percentRadius.float)
 	}
 }

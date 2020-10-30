@@ -36,7 +36,7 @@ class DataManager {
 				
 				for config in bundledFileConfigs {
 					if let worldObjects: [WorldObject] = loadJsonFromFile(config.worldObjectsFilename), let genomes: [Genome] = loadJsonFromFile(config.genomeFilename) {
-						let saveState = SaveState(gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldBlockCount: config.worldBlockCount, worldObjects: worldObjects, genomes: genomes, minimumBiotCount: config.minimumBiotCount, maximumBiotCount: config.maximumBiotCount)
+						let saveState = SaveState(name: config.filename, gameMode: config.gameMode, algaeTarget: config.algaeTarget, worldBlockCount: config.worldBlockCount, worldObjects: worldObjects, genomes: genomes, minimumBiotCount: config.minimumBiotCount, maximumBiotCount: config.maximumBiotCount)
 						LocalFileManager.shared.saveStateToFile(saveState, filename: config.filename)
 					}
 				}

@@ -54,6 +54,8 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 	@OKUserDefault(key: "showHUD", defaultValue: Defaults.showHUD) public var showHUD: Bool
 
 	override func didAddToEntity() {
+		hideSpriteNodes = false
+		showAlgaeFountainInfluences = false
 		showHUDPub = showHUD
 	}
 	

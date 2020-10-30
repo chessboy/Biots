@@ -36,11 +36,12 @@ final class ContactComponent: PhysicsContactComponent {
 
 		if contact.bodyA.categoryBitMask == Constants.CategoryBitMasks.wall {
 			
+			let collisionDamage = GameManager.shared.gameConfig.collisionDamage.valueForGeneration(biot.genome.generation)
 			let armor = biot.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
 			let exposure = 1 - armor
 
 			if armor < 1 {
-				biot.incurStaminaChange(Constants.Biot.collisionDamage * exposure, showEffect: true)
+				biot.incurStaminaChange(collisionDamage * exposure, showEffect: true)
 			}
 			return
 		}
@@ -49,7 +50,8 @@ final class ContactComponent: PhysicsContactComponent {
 	}
 	
 	func biotsCollided(biotA: BiotComponent, biotB: BiotComponent) {
-		let impact = Constants.Biot.collisionDamage/2
+		let collisionDamage = GameManager.shared.gameConfig.collisionDamage.valueForGeneration(biotA.genome.generation)
+		let impact = collisionDamage/2
 		
 		let armorA = biotA.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
 		let exposureA = 1 - armorA
