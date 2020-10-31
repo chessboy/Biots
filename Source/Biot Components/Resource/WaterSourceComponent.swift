@@ -13,7 +13,7 @@ import OctopusKit
 final class WaterSourceComponent: OKComponent {
 	
 	var radius: CGFloat
-	var selected = false
+	var isSelected = false
 	
 	init(radius: CGFloat) {
 		self.radius = radius

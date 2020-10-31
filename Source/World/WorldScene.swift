@@ -344,7 +344,7 @@ final class WorldScene: OKScene {
 					entity.node?.isHidden = globalDataComponent.hideSpriteNodes
 				})
 				
-				scene?.children.filter({$0.name == Constants.NodeName.grid }).first?.isHidden = globalDataComponent.hideSpriteNodes
+				children.filter({$0.name == Constants.NodeName.grid }).first?.isHidden = globalDataComponent.hideSpriteNodes
 				return
 			}
 			
@@ -386,12 +386,13 @@ final class WorldScene: OKScene {
 				return
 			}
 			else if commandDown {
-				dumpGenomes()
+				let gameConfig = GameManager.shared.gameConfig
+				let saveState = SaveState(name: Constants.Env.filenameSaveStateSave, gameMode: GameMode.normal, algaeTarget: gameConfig.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
+				LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.filenameSaveStateSave)
 				return
 			}
 			else if shiftDown {
 				self.entity?.component(ofType: GlobalStatsComponent.self)?.toggleVisibility()
-
 			}
 			else {
 				globalDataComponent.showBiotStats.toggle()
@@ -449,7 +450,7 @@ final class WorldScene: OKScene {
 
 		case Keycode.k:
 			if commandDown {
-				var biots = OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: BiotComponent.self) }) ?? []
+				var biots = entities.compactMap({ $0.component(ofType: BiotComponent.self) })
 				biots = biots.filter({ $0.health < 0.25 })
 				biots.forEach({ $0.kill() })
 				return
