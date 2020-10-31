@@ -22,7 +22,7 @@ struct Constants {
 		
 		static let gridBlockSize: CGFloat = 400
 		static let selfReplicationMaxSpawn = 3
-		static let unbornGenomeCacheCount = 80		
+		static let unbornGenomeCacheCount = 40
 		static let showSpriteKitStats = true
 		
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
@@ -35,11 +35,6 @@ struct Constants {
 		static let radius: CGFloat = 40
 		static let clockRate = 60 // ticks per 1-way cycle
 		static let environmentalPressureGenerationalThreshold = 200
-		
-		static let perMovementEnergyCost: CGFloat = 0.01
-		static let armorEnergyCost: CGFloat = 0.06
-		static let speedBoostStaminaCost: CGFloat = 0.0006
-		
 		static let adjustBodyColor = false
 		
 		enum StatsLine: Int { case line1, line2, line3 }

@@ -34,8 +34,8 @@ final class PlayState: OKGameState {
     	}
     	
     	// Note that we pass control to the OKGameState superclass AFTER we've added the global component, so that it will be available to the PlayScene when it's presented by the code in the superclass.
-    	
-//		GameManager.shared.gameConfig = GameConfig(gameMode: .random)
+		
+		//GameManager.shared.gameConfig = GameConfig(gameMode: .random)
 		
 		if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.filenameSaveStateDebug, treatAsWarning: true) {
 			GameManager.shared.gameConfig = GameConfig(saveState: saveState)

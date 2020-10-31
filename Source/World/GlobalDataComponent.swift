@@ -12,9 +12,6 @@ import OctopusKit
 
 struct Defaults {
 	static let showPhysics = false
-	static let cameraZoom = Double(Constants.Camera.initialScale)
-	static let cameraX: Double = 0
-	static let cameraY: Double = 0
 	static let hideSpriteNodes = false
 	
 	static let showBiotStats = false
@@ -35,9 +32,6 @@ struct Defaults {
 final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableObject {
 	
 	@OKUserDefault(key: "showPhysics", defaultValue: Defaults.showPhysics) public var showPhysics: Bool
-	@OKUserDefault(key: "cameraZoom", defaultValue: Defaults.cameraZoom) public var cameraZoom: Double
-	@OKUserDefault(key: "cameraX", defaultValue: Defaults.cameraX) public var cameraX: Double
-	@OKUserDefault(key: "cameraY", defaultValue: Defaults.cameraY) public var cameraY: Double
 	@OKUserDefault(key: "hideSpriteNodes", defaultValue: Defaults.hideSpriteNodes) public var hideSpriteNodes: Bool
 
 	@OKUserDefault(key: "showBiotStats", defaultValue: Defaults.showBiotStats) public var showBiotStats: Bool
@@ -68,9 +62,6 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 
 	func reset() {
 		showPhysics = Defaults.showPhysics
-		cameraZoom = Defaults.cameraZoom
-		cameraX = Defaults.cameraX
-		cameraY = Defaults.cameraY
 		hideSpriteNodes = Defaults.hideSpriteNodes
 	
 		showBiotStats = Defaults.showBiotStats

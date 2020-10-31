@@ -9,7 +9,7 @@
 import Foundation
 import OctopusKit
 
-struct BiotParam {
+struct BiotParam: CustomStringConvertible {
 	var start: CGFloat
 	var end: CGFloat
 	static let generationThreshold = Constants.Biot.environmentalPressureGenerationalThreshold.cgFloat
@@ -17,6 +17,10 @@ struct BiotParam {
 	func valueForGeneration(_ generation: Int) -> CGFloat {
 		let percentage = (generation.cgFloat/BiotParam.generationThreshold).clamped(0, 1)
 		return start + percentage * (end-start)
+	}
+	
+	var description: String {
+		return "{start: \(start), end: \(end)}"
 	}
 }
 
@@ -44,13 +48,20 @@ struct GameConfig: CustomStringConvertible {
 	let maximumFoodEnergy = BiotParam(start: 100, end: 120)
 	let maximumHydration = BiotParam(start: 85, end: 100)
 
-	
+	let perMovementEnergyCost = BiotParam(start: 0.0075, end: 0.0125)
+	let speedBoostStaminaCost = BiotParam(start: 0.0006, end: 0.0008)
+	let armorEnergyCost = BiotParam(start: 0.04, end: 0.06)
+
 	init(gameMode: GameMode) {
 		self.gameMode = gameMode
 		name = "Untitled"
-		algaeTarget = 12000
 		worldBlockCount = 10
-		worldObjects = DataManager.shared.loadWorldObjects(type: .less)
+		algaeTarget = 0
+
+		if gameMode != .debug {
+			worldObjects = DataManager.shared.loadWorldObjects(type: .less)
+			algaeTarget = 12000
+		}
 		
 		minimumBiotCount = 12
 		maximumBiotCount = 24

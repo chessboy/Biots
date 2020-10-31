@@ -94,11 +94,11 @@ final class WorldScene: OKScene {
     	    	    	
     	// Create the entities to present in this scene.
 		let cameraComponent = CameraComponent()
-		if let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
-			//print("creating camera, zoom: \(globalDataComponent.cameraZoom)")
-			cameraComponent.camera.setScale(CGFloat(globalDataComponent.cameraZoom))
-			cameraComponent.camera.position = CGPoint(x: CGFloat(globalDataComponent.cameraX), y: CGFloat(globalDataComponent.cameraY))
-		}
+//		if let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
+//			//print("creating camera, zoom: \(globalDataComponent.cameraZoom)")
+//			cameraComponent.camera.setScale(CGFloat(globalDataComponent.cameraZoom))
+//			cameraComponent.camera.position = CGPoint(x: CGFloat(globalDataComponent.cameraX), y: CGFloat(globalDataComponent.cameraY))
+//		}
 
     	// Set the permanent visual properties of the scene itself.
     	self.anchorPoint = CGPoint.half
@@ -212,9 +212,7 @@ final class WorldScene: OKScene {
 			biotComponent.setSelected(false)
 		}
 
-		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let globalDataComponent = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
-			globalDataComponent.cameraX = Double(cameraComponent.camera.position.x)
-			globalDataComponent.cameraY = Double(cameraComponent.camera.position.y)
+		if let cameraComponent = entity?.component(ofType: CameraComponent.self) {
 			trackedEntity = nil
 			cameraComponent.nodeToTrack = nil
 		}
@@ -282,13 +280,13 @@ final class WorldScene: OKScene {
 		switch event.keyCode {
 		
 //		case Keycode.t:
-//			
+//
 //			if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename), let worldComponent = entity?.component(ofType: WorldComponent.self) {
 //				GameManager.shared.gameConfig = GameConfig(saveState: saveState)
 //				OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
 //				worldComponent.createWorld()
 //			}
-//			
+//
 //			break
 			
 		case Keycode.u:
@@ -658,25 +656,47 @@ final class WorldScene: OKScene {
 			let menu = NSMenu(title: "Biots")
 			menu.autoenablesItems = false
 			
-			let addSelectedItem = NSMenuItem(title: "New Random World", action: #selector(newRandomWorld), keyEquivalent: "")
-			addSelectedItem.target = self
-			menu.addItem(addSelectedItem)
-			menu.addItem(NSMenuItem.separator())
+			let createHeaderItem = NSMenuItem(title: "Create", action: nil, keyEquivalent: "")
+			createHeaderItem.isEnabled = false
+			menu.addItem(createHeaderItem)
 
+			let newEmptyWorldItem = NSMenuItem(title: "New Empty World", action: #selector(newEmptyWorld), keyEquivalent: "")
+			newEmptyWorldItem.target = self
+			menu.addItem(newEmptyWorldItem)
+			
+			let newRandomWorldItem = NSMenuItem(title: "New Random World", action: #selector(newRandomWorld), keyEquivalent: "")
+			newRandomWorldItem.target = self
+			menu.addItem(newRandomWorldItem)
+			
+			menu.addItem(NSMenuItem.separator())
 			let headerItem = NSMenuItem(title: "Open", action: nil, keyEquivalent: "")
 			headerItem.isEnabled = false
 			menu.addItem(headerItem)
 
+			let openSaveStateMenuItem = NSMenuItem(title: "Last Saved", action: #selector(openSaveState), keyEquivalent: "")
+			openSaveStateMenuItem.representedObject = Constants.Env.filenameSaveStateSave
+			openSaveStateMenuItem.target = self
+			menu.addItem(openSaveStateMenuItem)
+			menu.addItem(NSMenuItem.separator())
+
 			if let bundledFileConfigs: [BundledFileConfig] = loadJsonFromFile(DataManager.bundledFileConfigFilename) {
 				for congig in bundledFileConfigs {
-					let openSaveStateMenuItem = NSMenuItem( title: congig.filename, action: #selector(openSaveState), keyEquivalent: "")
+					let openSaveStateMenuItem = NSMenuItem(title: congig.filename, action: #selector(openSaveState), keyEquivalent: "")
 					openSaveStateMenuItem.representedObject = congig.filename
 					openSaveStateMenuItem.target = self
 					menu.addItem(openSaveStateMenuItem)
 				}
 			}
 
+
 			menu.popUp(positioning: nil, at: event.locationInWindow, in: self.view)
+		}
+	}
+	
+	@objc func newEmptyWorld() {
+		if let worldComponent = entity?.component(ofType: WorldComponent.self) {
+			GameManager.shared.gameConfig = GameConfig(gameMode: .debug)
+			worldComponent.createWorld()
 		}
 	}
 	

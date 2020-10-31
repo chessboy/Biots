@@ -35,8 +35,16 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		guard let scene = OctopusKit.shared?.currentScene else { return }
 		
+		cameraZoom = Constants.Camera.initialScale
+		if let camera = coComponent(CameraComponent.self)?.camera {
+			camera.position = .zero
+			camera.xScale = cameraZoom
+			camera.yScale = cameraZoom
+		}
+		
 		// cleanup and prepare
 		removeAllEntities()
+		unbornGenomes.removeAll()
 		currentFrame = 0
 		let gameConfig = GameManager.shared.gameConfig
 		let worldRadius = GameManager.shared.gameConfig.worldRadius
@@ -298,9 +306,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 		case Keycode.z:
 			cameraZoom = shiftDown ? 10 : Constants.Camera.initialScale
-			if let scene = OctopusKit.shared.currentScene, let globalDataComponent = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
-				globalDataComponent.cameraZoom = Double(cameraZoom)
-			}
 			let zoomAction = SKAction.scale(to: cameraZoom, duration: Constants.Camera.animationDuration)
 			//let moveAction = SKAction.move(to: .zero, duration: Constants.Camera.animationDuration)
 			camera.run(zoomAction)
@@ -313,9 +318,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 			cameraZoom = camera.xScale * scaleFactor
 			cameraZoom = cameraZoom.clamp(Constants.Camera.zoomMin, Constants.Camera.zoomMax)
-			if let scene = OctopusKit.shared.currentScene, let globalDataComponent = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
-				globalDataComponent.cameraZoom = Double(cameraZoom)
-			}
 			let zoomAction = SKAction.scale(to: cameraZoom, duration: Constants.Camera.animationDuration)
 			camera.run(zoomAction)
 			break
@@ -336,12 +338,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			vector.dy += keyCode == Keycode.upArrow ? boost : 0
 
 			let moveAction = SKAction.move(by:vector, duration: Constants.Camera.animationDuration)
-			camera.run(moveAction) {
-				if let scene = OctopusKit.shared.currentScene, let globalDataComponent = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
-					globalDataComponent.cameraX = Double(camera.position.x)
-					globalDataComponent.cameraY = Double(camera.position.y)
-				}
-			}
+			camera.run(moveAction)
 			break
 
 		default: break

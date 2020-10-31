@@ -141,20 +141,23 @@ final class BrainComponent: OKComponent {
 		node.zRotation = newHeading
 		
 		// movement energy expenditure
+		let perMovementEnergyCost = GameManager.shared.gameConfig.perMovementEnergyCost.valueForGeneration(biot.genome.generation)
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
-		biot.incurEnergyChange(-Constants.Biot.perMovementEnergyCost * forceExerted)
+		biot.incurEnergyChange(-perMovementEnergyCost * forceExerted)
 		
 		let perMovementHydrationCost = GameManager.shared.gameConfig.perMovementHydrationCost.valueForGeneration(biot.genome.generation)
 		biot.incurHydrationChange(-perMovementHydrationCost * forceExerted)
 
 		if speedBoost > 1 {
-			biot.incurEnergyChange(-Constants.Biot.perMovementEnergyCost)
+			let speedBoostStaminaCost = GameManager.shared.gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
+			biot.incurEnergyChange(-perMovementEnergyCost)
 			biot.incurHydrationChange(-perMovementHydrationCost)
-			biot.incurStaminaChange(Constants.Biot.speedBoostStaminaCost)
+			biot.incurStaminaChange(speedBoostStaminaCost)
 		}
 		
 		if armor > 0 {
-			biot.incurEnergyChange(-Constants.Biot.armorEnergyCost * armor)
+			let armorEnergyCost = GameManager.shared.gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
+			biot.incurEnergyChange(-armorEnergyCost * armor)
 		}
 		
 		// healing

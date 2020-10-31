@@ -627,20 +627,15 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 							statsNode.run(SKAction.scale(to: scale, duration: 0.2))
 						}
 					}
-					
-//					let position = entityNode?.position ?? .zero
-//					let angle = ((entityNode?.zRotation ?? .zero) + π).normalizedAngle
-//					let theta = atan2(position.y, position.x).normalizedAngle
-//					let angleToCenter = ((theta + angle + π).normalizedAngle / (2*π))
-								
+
 					let healthFormatted = health.formattedToPercentNoDecimal
 					let energyFormatted = (foodEnergy/maximumEnergy).formattedToPercentNoDecimal
 					let hydrationFormatted = (hydration/maximumHydration).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					
 					statsNode.setLineOfText("health \(healthFormatted)   (en \(energyFormatted)   hy \(hydrationFormatted)   st \(staminaFormatted))", for: .line1)
-					statsNode.setLineOfText("gen \(genome.generation)   age \((age/maximumAge).formattedToPercentNoDecimal)   preg \(isPregnant ? "✓" : "✗")", for: .line2)
-					statsNode.setLineOfText("spawn \(spawnCount)   progress \(progress.formattedToPercentNoDecimal)", for: .line3)
+					statsNode.setLineOfText("gen \(genome.generation.formatted)   age \((age/maximumAge).formattedToPercentNoDecimal)   preg \(isPregnant ? "✓" : "✗")", for: .line2)
+					statsNode.setLineOfText("spawned \(spawnCount)   progress \(progress.formattedToPercentNoDecimal)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}

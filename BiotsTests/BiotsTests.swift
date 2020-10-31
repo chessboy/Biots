@@ -25,16 +25,21 @@ class BiotsTests: XCTestCase {
     }
 	
 	func testBiotParam() throws {
-		let param1 = BiotParam(start: 10, end: 20)
-		for gen in [0, 10, 50, 75, 100, 200] {
-			print("gen: \(gen), value: \(param1.valueForGeneration(gen))")
+		let gens = [0, 10, 50, 75, 100, 200, 250]
+		let params = [
+			BiotParam(start: 10, end: 20),
+			BiotParam(start: 30, end: 20),
+			BiotParam(start: 0.1, end: 0.1),
+			BiotParam(start: 0.0004, end: 0.0006)
+		]
+		
+		for param in params {
+			print(param.description)
+			for gen in gens {
+				print("gen: \(gen), value: \(param.valueForGeneration(gen))")
+			}
+			print()
 		}
-		print()
-		let param2 = BiotParam(start: 30, end: 20)
-		for gen in [0, 10, 50, 75, 100, 200] {
-			print("gen: \(gen), value: \(param2.valueForGeneration(gen))")
-		}
-
 	}
 	
 	func testNeuralNet() throws {
