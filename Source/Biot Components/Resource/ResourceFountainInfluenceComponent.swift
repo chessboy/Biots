@@ -14,6 +14,7 @@ final class ResourceFountainInfluenceComponent: OKComponent {
 	
 	let rootNode = SKNode()
 	var labelNode: SKLabelNode!
+	var frame = 0
 
 	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
@@ -58,9 +59,10 @@ final class ResourceFountainInfluenceComponent: OKComponent {
 	}
 	
 	override func update(deltaTime seconds: TimeInterval) {
-		if let frame = OctopusKit.shared.currentScene?.currentFrameNumber, frame.isMultiple(of: 20) {
+		if frame.isMultiple(of: 20) {
 			setLabelText()
 		}
+		frame += 1
 	}
 	
 	override func willRemoveFromEntity() {

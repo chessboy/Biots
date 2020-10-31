@@ -73,19 +73,10 @@ struct BiotsUI: View {
 				.padding()
 				.frame(minWidth: 200, idealWidth: 200, maxWidth: 200)
 				
-				Button("Toggle Biot Stats", action: {
-					globalDataComponent.showBiotStats.toggle()
-					worldScene.showBiotStats(globalDataComponent.showBiotStats)
-				})
-				.font(.body)
-				.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
-				Button("Select Most Fit (a)", action: { worldScene.selectMostFit() })
-					.font(.body)
-					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
 				Button("Save", action: {
 					
-					let saveState = SaveState(name: Constants.Env.savedStateFilename, gameMode: GameMode.normal, algaeTarget: gameConfig.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
-					LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.savedStateFilename)
+					let saveState = SaveState(name: Constants.Env.filenameSaveStateSave, gameMode: GameMode.normal, algaeTarget: gameConfig.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
+					LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.filenameSaveStateSave)
 					
 				})
 					.font(.body)

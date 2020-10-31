@@ -15,6 +15,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	var cameraZoom: CGFloat = Constants.Camera.initialScale
 	var genomeDispenseIndex = 0
 	var unbornGenomes: [Genome] = []
+	var currentFrame = 0
 	
 	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
 	
@@ -36,6 +37,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		// cleanup and prepare
 		removeAllEntities()
+		currentFrame = 0
 		let gameConfig = GameManager.shared.gameConfig
 		let worldRadius = GameManager.shared.gameConfig.worldRadius
 
@@ -47,7 +49,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			scene.addChild(gridNode)
 		}
 		
-		// boundry wall
+		// boundary wall
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
 		scene.addEntity(boundary)
 						
@@ -76,7 +78,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	
 	func removeAllEntities() {
 		
-		guard let scene =  OctopusKit.shared?.currentScene else { return }
+		guard let scene = OctopusKit.shared?.currentScene else { return }
 
 		scene.entities(withName: Constants.NodeName.algae)?.forEach({ entity in
 			scene.removeEntityOnNextUpdate(entity)
@@ -97,14 +99,14 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		scene.entities(withName: Constants.NodeName.water)?.forEach({ entity in
 			scene.removeEntityOnNextUpdate(entity)
 		})
-		
-		scene.entities(withName: Constants.NodeName.grid)?.forEach({ entity in
-			scene.removeEntityOnNextUpdate(entity)
-		})
-		
+				
 		scene.entities(withName: Constants.NodeName.algaeFountain)?.forEach({ entity in
 			scene.removeEntityOnNextUpdate(entity)
 		})
+		
+		if let gridNode = scene.childNode(withName: Constants.NodeName.grid) {
+			gridNode.removeFromParent()
+		}
 	}
 	
 	func addUnbornGenome(_ genome: Genome) {
@@ -147,7 +149,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		let gameConfig = GameManager.shared.gameConfig
 		let dispenseDelay = gameConfig.gameMode.dispenseDelay
-		let frame = Int(scene.currentFrameNumber) - dispenseDelay
+		let frame = currentFrame - dispenseDelay
 
 		if frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
@@ -171,7 +173,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	override func update(deltaTime seconds: TimeInterval) {
 		
 		guard let scene =  OctopusKit.shared?.currentScene else { return }
-		let frame = scene.currentFrameNumber
 				
 		let gameConfig = GameManager.shared.gameConfig
 		// key event handling
@@ -184,7 +185,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		displayStats()
 		
 		// biot creation
-		if frame >= gameConfig.gameMode.dispenseDelay && frame.isMultiple(of: gameConfig.gameMode.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < gameConfig.minimumBiotCount {
+		if currentFrame >= gameConfig.gameMode.dispenseDelay && currentFrame.isMultiple(of: gameConfig.gameMode.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < gameConfig.minimumBiotCount {
 			
 			if unbornGenomes.count > 0 {
 				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
@@ -210,6 +211,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				genomeDispenseIndex += 1
 			}
 		}
+		
+		currentFrame += 1
 	}
 
 	/*

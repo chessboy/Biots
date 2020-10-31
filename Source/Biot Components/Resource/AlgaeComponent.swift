@@ -98,16 +98,12 @@ extension AlgaeComponent {
 			node.insertChild(shadowNode, at: 0)
 		}
 
-		let bufferNode = SKShapeNode(circleOfRadius: radius * 1.25)
-		let physicsBody = SKPhysicsBody(polygonFrom: bufferNode.path!)
-
+		let physicsBody = SKPhysicsBody(circleOfRadius: radius * 1.25)
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.algae
 		physicsBody.collisionBitMask = Constants.CollisionBitMasks.algae
-		//physicsBody.contactTestBitMask = Constants.ContactBitMasks.algae
 		physicsBody.mass = 3
 		physicsBody.angularDamping = 0.9
 		physicsBody.linearDamping = 0.9
-		//physicsBody.usesPreciseCollisionDetection = true
 
 		return OKEntity(name: Constants.NodeName.algae, components: [
 			SpriteKitComponent(node: node),

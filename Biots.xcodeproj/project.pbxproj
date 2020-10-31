@@ -251,9 +251,9 @@
 			isa = PBXGroup;
 			children = (
 				D4C2FC1C248372BE0076077A /* AlgaeComponent.swift */,
-				D451712625300C1500290A38 /* WaterSourceComponent.swift */,
 				D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */,
 				D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */,
+				D451712625300C1500290A38 /* WaterSourceComponent.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -273,13 +273,13 @@
 			isa = PBXGroup;
 			children = (
 				D47387042442DEA50022E760 /* BiotComponent.swift */,
-				D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */,
-				D4465B9E250F20250074D864 /* ThrusterNode.swift */,
-				E8C1E2FD25395A240013C290 /* ProgressNode.swift */,
-				D4D18D9C2447ADBB00BF92FA /* StatsNode.swift */,
-				D41B7A52248455170059A40B /* Resource */,
-				D44E6066245272C500694462 /* Vision */,
 				D4C6FB9724529D8500A0614F /* Brain */,
+				D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */,
+				E8C1E2FD25395A240013C290 /* ProgressNode.swift */,
+				D41B7A52248455170059A40B /* Resource */,
+				D4D18D9C2447ADBB00BF92FA /* StatsNode.swift */,
+				D4465B9E250F20250074D864 /* ThrusterNode.swift */,
+				D44E6066245272C500694462 /* Vision */,
 			);
 			path = "Biot Components";
 			sourceTree = "<group>";
@@ -287,9 +287,9 @@
 		D44E6066245272C500694462 /* Vision */ = {
 			isa = PBXGroup;
 			children = (
+				D44E606424522F8400694462 /* EyesComponent.swift */,
 				D4229EDE250A7CE600DE29CE /* RetinaNode.swift */,
 				D44E60602452298500694462 /* VisionComponent.swift */,
-				D44E606424522F8400694462 /* EyesComponent.swift */,
 			);
 			path = Vision;
 			sourceTree = "<group>";
@@ -463,10 +463,10 @@
 		D4C6FB9724529D8500A0614F /* Brain */ = {
 			isa = PBXGroup;
 			children = (
-				D4C6FB9E2453A84C00A0614F /* Senses.swift */,
+				D4D18D95244737FD00BF92FA /* BrainComponent.swift */,
 				D4C6FB9824529DAE00A0614F /* Inference.swift */,
 				D47387322443748B0022E760 /* NeuralNetComponent.swift */,
-				D4D18D95244737FD00BF92FA /* BrainComponent.swift */,
+				D4C6FB9E2453A84C00A0614F /* Senses.swift */,
 			);
 			path = Brain;
 			sourceTree = "<group>";

@@ -37,12 +37,16 @@ final class PlayState: OKGameState {
     	
 //		GameManager.shared.gameConfig = GameConfig(gameMode: .random)
 		
-		if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.savedStateFilename, treatAsWarning: true) {
+		if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.filenameSaveStateDebug, treatAsWarning: true) {
+			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
+			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+		}
+		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.filenameSaveStateSave, treatAsWarning: true) {
 			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
 			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
 		}
 		// then try to load the designated initial state
-		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename) {
+		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.filenameSaveStateEvolved) {
 			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
 			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
 		} else {

@@ -94,7 +94,6 @@ final class BoundaryComponent: OKComponent {
 		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		
 		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
-		physicsBody.isDynamic = false
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.wall
 		physicsBody.collisionBitMask = Constants.CollisionBitMasks.wall
 		

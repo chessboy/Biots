@@ -78,7 +78,7 @@ extension WaterSourceComponent {
 //		resizeThumb.fillColor = .white
 //		resizeNode.addChild(resizeThumb)
 
-		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
+		let physicsBody = SKPhysicsBody(circleOfRadius: radius)
 		physicsBody.allowsRotation = false
 		physicsBody.mass = 20
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.water

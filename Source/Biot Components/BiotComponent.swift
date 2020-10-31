@@ -20,10 +20,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var hydration: CGFloat
 	var stamina: CGFloat = 1
 	
-	var cumulativeFoodEnergy: CGFloat = 0
-	var cumulativeHydration: CGFloat = 0
-	var cumulativeDamage: CGFloat = 0
-
 	var age: CGFloat = 0
 	var lastSpawnedAge: CGFloat = 0
 	var lastPregnantAge: CGFloat = 0
@@ -42,7 +38,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var eyeNodes: [SKShapeNode] = []
 	var progressNode: ProgressNode!
 	var selectionNode: SKNode!
-
 	var visionNode: SKNode!
 	var retinaNodes: [RetinaNode] = []
 	var resourceNodes: [RetinaNode] = []
@@ -159,7 +154,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity() {
-				
 		if let node = entityNode as? SKShapeNode {
 			node.setScale(0.2)
 			node.run(SKAction.scale(to: 0.5, duration: 0.5))
@@ -175,10 +169,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 		
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
-		
-		if amount > 0 {
-			cumulativeFoodEnergy += amount
-		}
 		foodEnergy += amount
 		foodEnergy = foodEnergy.clamped(to: 0...maximumEnergy)
 		if showEffect, !healthNode.isHidden {
@@ -188,21 +178,12 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurHydrationChange(_ amount: CGFloat) {
-
-		if amount > 0 {
-			cumulativeHydration += amount
-		}
 		hydration += amount
 		hydration = hydration.clamped(to: 0...maximumHydration)
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
-
 		guard abs(amount) != 0 else { return }
-		
-		if amount > 0 {
-			cumulativeDamage += amount
-		}
 		stamina -= amount
 		stamina = stamina.clamped(to: 0...1)
 		if showEffect {
@@ -333,7 +314,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func showRipples() {
-		
 		guard isImmersedInWater, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 2), let node = entityNode as? SKShapeNode else { return }
 		
 		let rippleNode = SKShapeNode.arcOfRadius(radius: Constants.Biot.radius * 1.3 * node.xScale, startAngle: -π/4, endAngle: π/4)
@@ -353,7 +333,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func setSelected(_ selected: Bool) {
-		
 		if selected {
 			selectionNode.alpha = 0
 			selectionNode.isHidden = false
@@ -366,7 +345,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	override func update(deltaTime seconds: TimeInterval) {
-		
 		guard !isExpired else { return }
 		
 		if !isInteracting {
@@ -393,22 +371,15 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			blink()
 			showRipples()
 			showStats()
-			if !selectionNode.isHidden, let rotation = entityNode?.zRotation {
-				selectionNode.zRotation = 2*π - rotation + π/2
-			}
-			
-			if let statsNode = coComponent(EntityStatsComponent.self)?.statsNode, let rotation = entityNode?.zRotation {
-				statsNode.zRotation = 2*π - rotation
-			}
+			showSelection()
 		}
 
 		// self-replication (sexual reproduction not supported yet)
 		if !isPregnant, canMate, age - lastSpawnedAge > gestationAge {
 			mated(otherGenome: genome)
 		}
-		
 		// check spawning
-		if isPregnant, age - lastPregnantAge > gestationAge, health >= spawnHealth {
+		else if isPregnant, age - lastPregnantAge > gestationAge, health >= spawnHealth {
 			spawnChildren()
 			lastSpawnedAge = age
 		}
@@ -428,13 +399,14 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
 					let bites: CGFloat = self.isMature ? 6 : 3
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: true)
-					if let algaeComponent = algae.component(ofType: AlgaeComponent.self) {
-						if let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node, let physicsBody = algaeNode.physicsBody {
-							algaeNode.position = node.position
-							physicsBody.velocity = node.physicsBody?.velocity ?? .zero
-							physicsBody.angularVelocity = node.physicsBody?.angularVelocity ?? .zero
-							scene.addEntity(algae)
-						}
+					
+					if let algaeComponent = algae.component(ofType: AlgaeComponent.self),
+					   let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node,
+					   let physicsBody = algaeNode.physicsBody {
+						algaeNode.position = node.position
+						physicsBody.velocity = node.physicsBody?.velocity ?? .zero
+						physicsBody.angularVelocity = node.physicsBody?.angularVelocity ?? .zero
+						scene.addEntity(algae)
 					}
 				}
 			}
@@ -632,10 +604,20 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
+	func showSelection() {
+		if !selectionNode.isHidden, let rotation = entityNode?.zRotation {
+			selectionNode.zRotation = 2*π - rotation + π/2
+		}
+	}
+	
 	func showStats() {
 		
 		if  let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
 			
+			if let rotation = entityNode?.zRotation {
+				statsNode.zRotation = 2*π - rotation
+			}
+
 			if frame.isMultiple(of: 10) {
  				if globalDataComponent?.showBiotStats == true {
 					
@@ -656,9 +638,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					let hydrationFormatted = (hydration/maximumHydration).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					
-					statsNode.setLineOfText("h: \(healthFormatted), e: \(energyFormatted), w: \(hydrationFormatted), s: \(staminaFormatted)", for: .line1)
-					statsNode.setLineOfText("gen: \(genome.generation) | age: \((age/maximumAge).formattedToPercentNoDecimal) | mate: \(canMate ? "✓" : "✗"), preg: \(isPregnant ? "✓" : "✗") | prog: \(progress.formattedToPercentNoDecimal)", for: .line2)
-					statsNode.setLineOfText("spawn: \(spawnCount) | totF: \(cumulativeFoodEnergy.formattedNoDecimal), totW: \(cumulativeHydration.formattedNoDecimal), totD: \(cumulativeDamage.formatted)", for: .line3)
+					statsNode.setLineOfText("health \(healthFormatted)   (en \(energyFormatted)   hy \(hydrationFormatted)   st \(staminaFormatted))", for: .line1)
+					statsNode.setLineOfText("gen \(genome.generation)   age \((age/maximumAge).formattedToPercentNoDecimal)   preg \(isPregnant ? "✓" : "✗")", for: .line2)
+					statsNode.setLineOfText("spawn \(spawnCount)   progress \(progress.formattedToPercentNoDecimal)", for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
@@ -796,7 +778,6 @@ extension BiotComponent {
 			eyeNode.position = CGPoint(angle: angle) * radius * 0.65
 			node.addChild(eyeNode)
 			eyeNode.zPosition = node.zPosition + 0.2
-			//eyeNode.isHidden = true
 			eyeNodes.append(eyeNode)
 		}
 		
@@ -934,7 +915,6 @@ extension BiotComponent {
 		physicsBody.collisionBitMask = Constants.CollisionBitMasks.biot
 		physicsBody.contactTestBitMask = Constants.ContactBitMasks.biot
 		physicsBody.allowsRotation = false
-		physicsBody.usesPreciseCollisionDetection = true
 		physicsBody.mass = 5
 		
 		physicsBody.linearDamping = 1

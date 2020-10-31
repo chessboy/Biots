@@ -281,12 +281,15 @@ final class WorldScene: OKScene {
 				
 		switch event.keyCode {
 		
-		//case Keycode.t:
-		//	if let worldComponent = entity?.component(ofType: WorldComponent.self) {
-		//		GameManager.shared.gameConfig = GameConfig(gameMode: .random)
-		//		worldComponent.createWorld()
-		//	}
-		//	break
+//		case Keycode.t:
+//			
+//			if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename), let worldComponent = entity?.component(ofType: WorldComponent.self) {
+//				GameManager.shared.gameConfig = GameConfig(saveState: saveState)
+//				OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+//				worldComponent.createWorld()
+//			}
+//			
+//			break
 			
 		case Keycode.u:
 			globalDataComponent.showHUDPub.toggle()
@@ -517,7 +520,7 @@ final class WorldScene: OKScene {
 		let commandDown = event.modifierFlags.contains(.command)
 		let shiftDown = event.modifierFlags.contains(.shift)
 		let optionDown = event.modifierFlags.contains(.option)
-		self.touchDown(at: event.location(in: self), commandDown: commandDown, shiftDown: shiftDown, optionDown: optionDown, clickCount: event.clickCount)
+		self.touchDown(with: event, commandDown: commandDown, shiftDown: shiftDown, optionDown: optionDown, clickCount: event.clickCount)
 	}
 	
 	override func mouseUp(with event: NSEvent) {
@@ -530,16 +533,18 @@ final class WorldScene: OKScene {
 		let commandDown = event.modifierFlags.contains(.command)
 		let shiftDown = event.modifierFlags.contains(.shift)
 		let optionDown = event.modifierFlags.contains(.option)
-		self.touchDown(at: event.location(in: self), rightMouse: true, commandDown: commandDown, shiftDown: shiftDown, optionDown: optionDown)
+		self.touchDown(with: event, rightMouse: true, commandDown: commandDown, shiftDown: shiftDown, optionDown: optionDown)
 	}
 	
-	func touchDown(at point: CGPoint, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false, optionDown: Bool = false, clickCount: Int = 1) {
+	func touchDown(with event: NSEvent, rightMouse: Bool = false, commandDown: Bool = false, shiftDown: Bool = false, optionDown: Bool = false, clickCount: Int = 1) {
 		
 		guard let keyCodesDown = self.entity?.component(ofType: KeyTrackerComponent.self)?.keyCodesDown,
 			  let algaeFountain = entities(withName: Constants.NodeName.algaeFountain)?.first?.component(ofType: ResourceFountainComponent.self) else {
 			return
 		}
-
+		
+		let point = event.location(in: self)
+		
 		//print("touchDown: point: \(point.formattedTo2Places), keyCodesDown: \(keyCodesDown), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
 		
 		if keyCodesDown.contains(Keycode.w) {
@@ -648,6 +653,46 @@ final class WorldScene: OKScene {
 			zapperNode.run(.fadeOut(withDuration: 0.2)) {
 				self.removeEntity(selectedEntity)
 			}
+		}
+		else if rightMouse {
+			let menu = NSMenu(title: "Biots")
+			menu.autoenablesItems = false
+			
+			let addSelectedItem = NSMenuItem(title: "New Random World", action: #selector(newRandomWorld), keyEquivalent: "")
+			addSelectedItem.target = self
+			menu.addItem(addSelectedItem)
+			menu.addItem(NSMenuItem.separator())
+
+			let headerItem = NSMenuItem(title: "Open", action: nil, keyEquivalent: "")
+			headerItem.isEnabled = false
+			menu.addItem(headerItem)
+
+			if let bundledFileConfigs: [BundledFileConfig] = loadJsonFromFile(DataManager.bundledFileConfigFilename) {
+				for congig in bundledFileConfigs {
+					let openSaveStateMenuItem = NSMenuItem( title: congig.filename, action: #selector(openSaveState), keyEquivalent: "")
+					openSaveStateMenuItem.representedObject = congig.filename
+					openSaveStateMenuItem.target = self
+					menu.addItem(openSaveStateMenuItem)
+				}
+			}
+
+			menu.popUp(positioning: nil, at: event.locationInWindow, in: self.view)
+		}
+	}
+	
+	@objc func newRandomWorld() {
+		if let worldComponent = entity?.component(ofType: WorldComponent.self) {
+			GameManager.shared.gameConfig = GameConfig(gameMode: .random)
+			worldComponent.createWorld()
+		}
+	}
+	
+	@objc func openSaveState(menuItem: NSMenuItem) {
+			
+		if let filename = menuItem.representedObject as? String, let saveState: SaveState = LocalFileManager.shared.loadDataFile(filename), let worldComponent = entity?.component(ofType: WorldComponent.self) {
+			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
+			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
+			worldComponent.createWorld()
 		}
 	}
 

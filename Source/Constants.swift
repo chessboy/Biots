@@ -16,16 +16,18 @@ struct Constants {
 				
 		static let windowWidth: CGFloat = 2000
 
-		static let savedStateFilename = "Save"
-		static let firstRunSavedStateFilename = "Evolved"
+		static let filenameSaveStateDebug = "Debug"
+		static let filenameSaveStateSave = "Save"
+		static let filenameSaveStateEvolved = "Evolved"
+		
 		static let gridBlockSize: CGFloat = 400
-
 		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 80		
 		static let showSpriteKitStats = true
 		
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
+		static let niceGraphicsNoShadows = Graphics(isAntialiased: false, blendMode: .alpha, shadows: false, showGrid: true)
 		static let graphics = niceGraphics
 	}
 		
@@ -44,13 +46,13 @@ struct Constants {
 
 		struct Stats {
 			static let maxLinesOfText = 3
-			static let delimiter = "   "
+			static let delimiter = "     "
 		}
 	}
 	
 	struct Algae {
 		static let radius: CGFloat = 16
-		static let bite: CGFloat = 20
+		static let bite: CGFloat = 30
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 	}
 	
@@ -66,7 +68,7 @@ struct Constants {
 	}
 	
 	struct Font {
-		static let family = "Consolasligaturizedv2"
+		static let family = "Verdana"// "Consolasligaturizedv2"
 		static let regular = "\(family)"
 		static let bold = "\(family)-Bold"
 		static let italic = "\(family)-Italic"
@@ -141,7 +143,7 @@ struct Constants {
 	
 	// when to "bounce" off another
 	struct CollisionBitMasks {
-		static let wall = CategoryBitMasks.wall
+		static let wall = noBitMask
 		static let water = CategoryBitMasks.wall | CategoryBitMasks.water
 		static let biot = CategoryBitMasks.wall | CategoryBitMasks.biot
 		static let algae = CategoryBitMasks.wall | CategoryBitMasks.water | CategoryBitMasks.algae

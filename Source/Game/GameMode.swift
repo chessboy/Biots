@@ -11,11 +11,13 @@ import Foundation
 enum GameMode: Int, Codable, CustomStringConvertible {
 	case normal = 0
 	case random
+	case debug
 	
 	var humanReadableDescription: String {
 		switch self {
 			case .random: return "random"
 			case .normal: return "normal"
+			case .debug: return "debug"
 		}
 	}
 	
@@ -27,13 +29,15 @@ enum GameMode: Int, Codable, CustomStringConvertible {
 		switch self {
 			case .random: return 20
 			case .normal: return 250
+			case .debug: return 0
 		}
 	}
 	
-	var dispenseInterval: UInt64 {
+	var dispenseInterval: Int {
 		switch self {
 			case .random: return 10
 			case .normal: return 50
+			case .debug: return 0
 		}
 	}
 }
