@@ -58,6 +58,8 @@ final class BrainComponent: OKComponent {
 			pregnant: biot.isPregnant ? 1 : 0,
 			onTopOfFood: biot.isOnTopOfFood ? 1 : 0,
 			onTopOfWater: biot.isOnTopOfWater ? 1 : 0,
+			onTopOfMud: biot.isOnTopOfMud ? 1 : 0,
+			progress: biot.progress.float,
 			clockShort: Int.timerForAge(Int(biot.age), clockRate: clockRate),
 			clockLong: Int.timerForAge(Int(biot.age), clockRate: clockRate*3),
 			age: Float(biot.age/biot.maximumAge)
@@ -126,8 +128,11 @@ final class BrainComponent: OKComponent {
 	
 		let gameConfig = GameManager.shared.gameConfig
 		var thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
-		let dampening: CGFloat = (1 - (biot.isImmersedInWater ? gameConfig.dampeningWater : biot.isImmersedInMud ? gameConfig.dampeningWater * 2.5 : 0))
-//		if senses.onTopOfWater.average.cgFloat > 0 {
+		
+		let dampeningMud = gameConfig.dampeningWater * 2.5
+		let impediment = senses.onTopOfWater.average.cgFloat * gameConfig.dampeningWater + senses.onTopOfMud.average.cgFloat * dampeningMud
+		let dampening = 1 - impediment
+//		if senses.onTopOfWater.average + senses.onTopOfMud.average > 0 {
 //			print("thrust: \(thrustAverage.formattedTo2Places), dampening: \(dampening.formattedTo2Places), new: \((thrustAverage * dampening).formattedTo2Places)")
 //		}
 		

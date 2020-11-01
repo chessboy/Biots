@@ -10,7 +10,7 @@ import Foundation
 import OctopusKit
 
 struct Senses {
-	static let newInputCount = 10
+	static let newInputCount = 12
 	
 	var inputCount: Int
 	
@@ -21,6 +21,8 @@ struct Senses {
 	var pregnant = RunningValue(memory: 5)
 	var onTopOfFood = RunningValue(memory: 3)
 	var onTopOfWater = RunningValue(memory: 3)
+	var onTopOfMud = RunningValue(memory: 3)
+	var progress: Float = .zero
 	var clockShort: Float = .zero
 	var clockLong: Float = .zero
 	var age: Float = .zero
@@ -37,6 +39,8 @@ struct Senses {
 		pregnant: Float,
 		onTopOfFood: Float,
 		onTopOfWater: Float,
+		onTopOfMud: Float,
+		progress: Float,
 		clockShort: Float,
 		clockLong: Float,
 		age: Float
@@ -49,6 +53,7 @@ struct Senses {
 		self.pregnant.addValue(pregnant)
 		self.onTopOfFood.addValue(onTopOfFood)
 		self.onTopOfWater.addValue(onTopOfWater)
+		self.onTopOfMud.addValue(onTopOfMud)
 		self.clockShort = clockShort
 		self.clockLong = clockLong
 		self.age = age
@@ -56,17 +61,36 @@ struct Senses {
 	
 	var toArray: [Float] {
 		
-		return [
-			health,
-			energy,
-			hydration,
-			stamina,
-			pregnant.average,
-			onTopOfFood.average,
-			onTopOfWater.average,
-			clockShort,
-			clockLong,
-			age
-		]
+		if inputCount == 28 {
+			return [
+				health,
+				energy,
+				hydration,
+				stamina,
+				pregnant.average,
+				onTopOfFood.average,
+				onTopOfWater.average,
+				clockShort,
+				clockLong,
+				age
+			]
+		} else if inputCount == 30 {
+			return [
+				health,
+				energy,
+				hydration,
+				stamina,
+				pregnant.average,
+				onTopOfFood.average,
+				onTopOfWater.average,
+				onTopOfMud.average,
+				progress,
+				clockShort,
+				clockLong,
+				age
+			]
+		}
+
+		return []
 	}
 }

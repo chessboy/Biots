@@ -35,6 +35,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		guard let scene = OctopusKit.shared?.currentScene else { return }
 		
+		coComponent(GlobalStatsComponent.self)?.updateStats("Starting Up...")
+		
 		cameraZoom = Constants.Camera.initialScale
 		if let camera = coComponent(CameraComponent.self)?.camera {
 			camera.position = .zero

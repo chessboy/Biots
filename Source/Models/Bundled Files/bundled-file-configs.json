@@ -21,7 +21,7 @@
 	},
 	{
 		"gameMode": 0,
-		"algaeTarget": 12000,
+		"algaeTarget": 10000,
 		"worldBlockCount": 13,
 		"worldObjectsFilename": "world-objects-more",
 		"genomeFilename": "genomes-1740",

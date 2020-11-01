@@ -50,14 +50,15 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	lazy var visionComponent = coComponent(VisionComponent.self)
 
 	enum HealthMeter: Int {
-		case energy = 0
 		case hydration
+		case energy
 		case stamina
 	}
 	
 	enum ResourceMeter: Int {
-		case food = 0
-		case water
+		case water = 0
+		case food
+		case mud
 	}
 	
 	var frame = Int.random(100)
@@ -234,6 +235,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	var isOnTopOfFood = false
 	var isOnTopOfWater = false
+	var isOnTopOfMud = false
 	var isImmersedInWater = false
 	var isImmersedInMud = false
 	var contactedAlgaeComponents: [BodyContact] = []
@@ -257,6 +259,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		
 		isOnTopOfFood = false
 		isOnTopOfWater = false
+		isOnTopOfMud = false
 		isImmersedInWater = false
 		isImmersedInMud = false
 		
@@ -295,7 +298,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					}
 					
 					isOnTopOfWater = !isMud
-					
+					isOnTopOfMud = isMud
+
 					if !isMud {
 						var contact = contactedWaterComponents.filter({ $0.body == body }).first
 						
@@ -561,16 +565,23 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				}
 			}
 			
-			if let onTopOfFoodAverage = brainComponent?.senses.onTopOfFood.average, let onTopOfFWaterAverage = brainComponent?.senses.onTopOfWater.average {
+			if let onTopOfFoodAverage = brainComponent?.senses.onTopOfFood.average,
+			   let onTopOfFWaterAverage = brainComponent?.senses.onTopOfWater.average,
+			   let onTopOfMudAverage = brainComponent?.senses.onTopOfMud.average {
 				let foodColor = SKColor(red: 0, green: onTopOfFoodAverage.cgFloat, blue: 0, alpha: 1)
                 let foodMeterNode = resourceNodes[ResourceMeter.food.rawValue]
                 foodMeterNode.strokeColor = foodColor
                 foodMeterNode.zPosition = onTopOfFoodAverage.cgFloat
 
 				let waterColor = SKColor(red: 0, green: onTopOfFWaterAverage.cgFloat * 0.75, blue: onTopOfFWaterAverage.cgFloat, alpha: 1)
-                let waterMeterNode = resourceNodes[ResourceMeter.food.rawValue]
-                waterMeterNode.strokeColor = waterColor
-                waterMeterNode.zPosition = onTopOfFWaterAverage.cgFloat
+				let waterMeterNode = resourceNodes[ResourceMeter.water.rawValue]
+				waterMeterNode.strokeColor = waterColor
+				waterMeterNode.zPosition = onTopOfFWaterAverage.cgFloat
+				
+				let mudColor = SKColor(red: onTopOfMudAverage.cgFloat * 0.6, green: onTopOfMudAverage.cgFloat * 0.4, blue: onTopOfMudAverage.cgFloat * 0.2, alpha: 1)
+				let mudMeterNode = resourceNodes[ResourceMeter.mud.rawValue]
+				mudMeterNode.strokeColor = mudColor
+				mudMeterNode.zPosition = onTopOfMudAverage.cgFloat
 			}
 		}
 	}
@@ -880,11 +891,11 @@ extension BiotComponent {
 			visionNode.addChild(node)
 		}
 		
-		// food and water
+		// food, water and mud
 		var resourceNodes: [RetinaNode] = []
-		for angle in [-π/15, π/15] {
-			let resourceBackgroundNode = RetinaNode(angle: π + angle, radius: radius * 0.55, thickness: retinaThickness * 0.6, arcLength: retinaArcLength/2, forBackground: true)
-			let resourceNode = RetinaNode(angle: π + angle, radius: radius * 0.55, thickness: retinaThickness * 0.6, arcLength: retinaArcLength/2)
+		for angle in [-π/6, 0, π/6] {
+			let resourceBackgroundNode = RetinaNode(angle: π + angle, radius: radius * 0.55, thickness: retinaThickness * 0.6, arcLength: retinaArcLength * 0.66, forBackground: true)
+			let resourceNode = RetinaNode(angle: π + angle, radius: radius * 0.55, thickness: retinaThickness * 0.6, arcLength: retinaArcLength * 0.66)
 			resourceNodes.append(resourceNode)
 			visionNode.addChild(resourceBackgroundNode)
 			visionNode.addChild(resourceNode)

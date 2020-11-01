@@ -192,6 +192,8 @@ final class WorldScene: OKScene {
 	
 	func trackEntity(_ trackedEntity: OKEntity) {
 		
+		let currentPosition = camera?.position ?? .zero
+		
 		stopTrackingEntity()
 			
 		if let biotComponent = trackedEntity.component(ofType: BiotComponent.self) {
@@ -200,7 +202,8 @@ final class WorldScene: OKScene {
 		self.trackedEntity = trackedEntity
 		if let cameraComponent = entity?.component(ofType: CameraComponent.self), let node = trackedEntity.node {
 			cameraComponent.nodeToTrack = nil
-			cameraComponent.camera.run(SKAction.move(to: node.position, duration: 0.5)) {
+			let duration = TimeInterval(node.position.distance(to: currentPosition) / GameManager.shared.gameConfig.worldRadius)
+			cameraComponent.camera.run(SKAction.move(to: node.position, duration: duration).withTimingMode(.easeInEaseOut)) {
 				cameraComponent.nodeToTrack = node
 			}
 		}
@@ -387,7 +390,7 @@ final class WorldScene: OKScene {
 			}
 			else if commandDown {
 				let gameConfig = GameManager.shared.gameConfig
-				let saveState = SaveState(name: Constants.Env.filenameSaveStateSave, gameMode: GameMode.normal, algaeTarget: gameConfig.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
+				let saveState = SaveState(name: Constants.Env.filenameSaveStateSave, gameMode: GameMode.normal, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
 				LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.filenameSaveStateSave)
 				return
 			}

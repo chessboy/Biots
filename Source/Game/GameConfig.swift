@@ -63,7 +63,7 @@ struct GameConfig: CustomStringConvertible {
 
 		if gameMode != .debug {
 			worldObjects = DataManager.shared.loadWorldObjects(type: .less)
-			algaeTarget = 12000
+			algaeTarget = 10000
 		}
 		
 		minimumBiotCount = 12
