@@ -90,12 +90,15 @@ extension AlgaeComponent {
 		node.constraints = [keepInBounds]
 		
 		if Constants.Env.graphics.shadows {
-			let shadowNode = SKShapeNode()
-			shadowNode.path = node.path
-			shadowNode.glowWidth = 5
-			shadowNode.zPosition = Constants.ZeeOrder.algae - 2
-			shadowNode.strokeColor = SKColor.black.withAlpha(0.2)
-			node.insertChild(shadowNode, at: 0)
+//			let shadowNode = SKShapeNode()
+//			shadowNode.path = node.path
+//			shadowNode.glowWidth = 5
+//			shadowNode.zPosition = Constants.ZeeOrder.algae - 2
+//			shadowNode.strokeColor = SKColor.black.withAlpha(0.2)
+//			node.insertChild(shadowNode, at: 0)
+			
+			node.strokeColor = SKColor.black.withAlpha(0.25)
+			node.lineWidth = radius * 0.2
 		}
 
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius * 1.25)

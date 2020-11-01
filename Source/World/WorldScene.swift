@@ -131,7 +131,7 @@ final class WorldScene: OKScene {
 		
 		for component in entities(withName: Constants.NodeName.water)?.map({$0.component(ofType: WaterSourceComponent.self)}) as? [WaterSourceComponent] ?? [] {
 			if let node = component.entityNode {
-				worldObjects.append(node.createWorldObject(placeableType: .water, radius: component.radius))
+				worldObjects.append(node.createWorldObject(placeableType: component.isMud ? .mud : .water, radius: component.radius))
 			}
 		}
 		
@@ -548,7 +548,7 @@ final class WorldScene: OKScene {
 		
 		if keyCodesDown.contains(Keycode.w) {
 			let radius: CGFloat = Constants.Resource.plopSize
-			let water = WaterSourceComponent.create(radius: radius, position: point)
+			let water = WaterSourceComponent.create(radius: radius, position: point, isMud: shiftDown)
 			addEntity(water)
 			return
 		}
@@ -737,16 +737,18 @@ final class WorldScene: OKScene {
 		self.entity?.component(ofType: KeyTrackerComponent.self)?.clearKeysDown()
 		self.backgroundColor = Constants.Colors.grid
 		self.entity?.addComponent(WorldComponent())
-					
-		self.view?.showsFPS = Constants.Env.showSpriteKitStats
-		self.view?.showsNodeCount = Constants.Env.showSpriteKitStats
-		self.view?.showsDrawCount = Constants.Env.showSpriteKitStats
-		self.view?.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false
-		self.view?.ignoresSiblingOrder = true
-		self.view?.shouldCullNonVisibleNodes = true
-		self.view?.preferredFramesPerSecond = 30
 		self.physicsWorld.gravity = .zero
-	    		    	
+
+		if let view = self.view {
+			view.showsFPS = Constants.Env.showSpriteKitStats
+			view.showsNodeCount = Constants.Env.showSpriteKitStats
+			view.showsDrawCount = Constants.Env.showSpriteKitStats
+			view.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false
+			view.ignoresSiblingOrder = true
+			view.shouldCullNonVisibleNodes = true
+			view.preferredFramesPerSecond = 30
+		}
+			
     	default: break
     	}
 	}

@@ -71,8 +71,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				let zapper = ZapperComponent.create(radius: radius, position: position)
 				scene.addEntity(zapper)
 			}
-			else if worldObject.placeableType == .water {
-				let water = WaterSourceComponent.create(radius: radius, position: position)
+			else if worldObject.placeableType == .water || worldObject.placeableType == .mud {
+				let water = WaterSourceComponent.create(radius: radius, position: position, isMud: worldObject.placeableType == .mud)
 				scene.addEntity(water)
 			}
 		}
@@ -89,27 +89,27 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		guard let scene = OctopusKit.shared?.currentScene else { return }
 
 		scene.entities(withName: Constants.NodeName.algae)?.forEach({ entity in
-			scene.removeEntityOnNextUpdate(entity)
+			scene.removeEntity(entity)
 		})
 		
 		scene.entities(withName: Constants.NodeName.biot)?.forEach({ entity in
-			scene.removeEntityOnNextUpdate(entity)
+			scene.removeEntity(entity)
 		})
 		
 		scene.entities(withName: Constants.NodeName.wall)?.forEach({ entity in
-			scene.removeEntityOnNextUpdate(entity)
+			scene.removeEntity(entity)
 		})
 		
 		scene.entities(withName: Constants.NodeName.zapper)?.forEach({ entity in
-			scene.removeEntityOnNextUpdate(entity)
+			scene.removeEntity(entity)
 		})
 
 		scene.entities(withName: Constants.NodeName.water)?.forEach({ entity in
-			scene.removeEntityOnNextUpdate(entity)
+			scene.removeEntity(entity)
 		})
 				
 		scene.entities(withName: Constants.NodeName.algaeFountain)?.forEach({ entity in
-			scene.removeEntityOnNextUpdate(entity)
+			scene.removeEntity(entity)
 		})
 		
 		if let gridNode = scene.childNode(withName: Constants.NodeName.grid) {
@@ -159,7 +159,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let dispenseDelay = gameConfig.gameMode.dispenseDelay
 		let frame = currentFrame - dispenseDelay
 
-		if frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
+		if currentFrame >= 50, frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 

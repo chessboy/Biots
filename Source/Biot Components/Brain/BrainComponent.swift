@@ -46,6 +46,8 @@ final class BrainComponent: OKComponent {
 			let vision = visionComponent
 			else { return }
 		
+		let clockRate = GameManager.shared.gameConfig.clockRate
+		
 		vision.detect()
 		
 		senses.setSenses(
@@ -56,8 +58,8 @@ final class BrainComponent: OKComponent {
 			pregnant: biot.isPregnant ? 1 : 0,
 			onTopOfFood: biot.isOnTopOfFood ? 1 : 0,
 			onTopOfWater: biot.isOnTopOfWater ? 1 : 0,
-			clockShort: Int.timerForAge(Int(biot.age), clockRate: Constants.Biot.clockRate),
-			clockLong: Int.timerForAge(Int(biot.age), clockRate: Constants.Biot.clockRate*3),
+			clockShort: Int.timerForAge(Int(biot.age), clockRate: clockRate),
+			clockLong: Int.timerForAge(Int(biot.age), clockRate: clockRate*3),
 			age: Float(biot.age/biot.maximumAge)
 		)
 		
@@ -122,8 +124,9 @@ final class BrainComponent: OKComponent {
 			let biot = biotComponent,
 			let node = entityNode as? SKShapeNode, !biot.isInteracting else { return }
 	
+		let gameConfig = GameManager.shared.gameConfig
 		var thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
-		let dampening = (1 - (senses.onTopOfWater.average.cgFloat * 0.2))
+		let dampening: CGFloat = (1 - (biot.isImmersedInWater ? gameConfig.dampeningWater : biot.isImmersedInMud ? gameConfig.dampeningWater * 2.5 : 0))
 //		if senses.onTopOfWater.average.cgFloat > 0 {
 //			print("thrust: \(thrustAverage.formattedTo2Places), dampening: \(dampening.formattedTo2Places), new: \((thrustAverage * dampening).formattedTo2Places)")
 //		}
@@ -141,22 +144,22 @@ final class BrainComponent: OKComponent {
 		node.zRotation = newHeading
 		
 		// movement energy expenditure
-		let perMovementEnergyCost = GameManager.shared.gameConfig.perMovementEnergyCost.valueForGeneration(biot.genome.generation)
+		let perMovementEnergyCost = gameConfig.perMovementEnergyCost.valueForGeneration(biot.genome.generation)
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
 		biot.incurEnergyChange(-perMovementEnergyCost * forceExerted)
 		
-		let perMovementHydrationCost = GameManager.shared.gameConfig.perMovementHydrationCost.valueForGeneration(biot.genome.generation)
+		let perMovementHydrationCost = gameConfig.perMovementHydrationCost.valueForGeneration(biot.genome.generation)
 		biot.incurHydrationChange(-perMovementHydrationCost * forceExerted)
 
 		if speedBoost > 1 {
-			let speedBoostStaminaCost = GameManager.shared.gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
+			let speedBoostStaminaCost = gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
 			biot.incurEnergyChange(-perMovementEnergyCost)
 			biot.incurHydrationChange(-perMovementHydrationCost)
 			biot.incurStaminaChange(speedBoostStaminaCost)
 		}
 		
 		if armor > 0 {
-			let armorEnergyCost = GameManager.shared.gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
+			let armorEnergyCost = gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
 			biot.incurEnergyChange(-armorEnergyCost * armor)
 		}
 		

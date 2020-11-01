@@ -14,9 +14,11 @@ final class WaterSourceComponent: OKComponent {
 	
 	var radius: CGFloat
 	var isSelected = false
+	var isMud = false
 	
-	init(radius: CGFloat) {
+	init(radius: CGFloat, isMud: Bool) {
 		self.radius = radius
+		self.isMud = isMud
 		super.init()
 	}
 	
@@ -33,9 +35,9 @@ final class WaterSourceComponent: OKComponent {
 
 extension WaterSourceComponent {
 	
-	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
+	static func create(radius: CGFloat, position: CGPoint, isMud: Bool = false) -> OKEntity {
 		
-		let color = Constants.Colors.water.withAlpha(0.8)
+		let color = isMud ? Constants.Colors.mud.withAlpha(0.8) : Constants.Colors.water.withAlpha(0.8)
 
 		let node = SKShapeNode.polygonOfRadius(radius, sides: 12, cornerRadius: radius/4, lineWidth: 8, rotationOffset: π/12)
 		node.name = Constants.NodeName.water
@@ -87,7 +89,7 @@ extension WaterSourceComponent {
 		return OKEntity(components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),
-			WaterSourceComponent(radius: radius)
+			WaterSourceComponent(radius: radius, isMud: isMud)
 		])
 	}
 }

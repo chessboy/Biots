@@ -27,20 +27,7 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 
 		super.init()
 	}
-	
-	func createWaterEntity() -> OKEntity {
-
-		let radius = CGFloat.random(in: 40...200)
-		let position = CGPoint.randomAngle * CGFloat.random(in: 0...GameManager.shared.gameConfig.worldRadius * 0.8)
-		let water = WaterSourceComponent.create(radius: radius, position: position)
-		
-		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
-			water.node?.isHidden = hideNode
-		}
-		
-		return water
-	}
-		
+			
 	func createAlgaeEntity(energy: CGFloat, fromBiot: Bool = false) -> OKEntity {
 		
 		let position = algaeEntities.count > 0 && Int.oneChanceIn(3) ? pointNextToExistingAlgaeSource : randomPoint

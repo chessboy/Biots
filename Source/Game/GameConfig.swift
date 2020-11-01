@@ -52,6 +52,9 @@ struct GameConfig: CustomStringConvertible {
 	let speedBoostStaminaCost = BiotParam(start: 0.0006, end: 0.0008)
 	let armorEnergyCost = BiotParam(start: 0.04, end: 0.06)
 
+	let clockRate = 60 // ticks per 1-way cycle
+	let dampeningWater: CGFloat = 0.2
+	
 	init(gameMode: GameMode) {
 		self.gameMode = gameMode
 		name = "Untitled"

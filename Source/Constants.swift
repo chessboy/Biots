@@ -33,7 +33,6 @@ struct Constants {
 		
 	struct Biot {
 		static let radius: CGFloat = 40
-		static let clockRate = 60 // ticks per 1-way cycle
 		static let environmentalPressureGenerationalThreshold = 200
 		static let adjustBodyColor = false
 		
@@ -153,18 +152,20 @@ struct Constants {
 	struct DetectionBitMasks {
 		static let biot = CategoryBitMasks.biot | CategoryBitMasks.water | CategoryBitMasks.algae | CategoryBitMasks.wall
 	}
-	
+	//28.24% red, 21.18% green and 15.69%
 	struct Colors {
 		static let background = SKColor(white: 0.125, alpha: 1)
 		static let grid = SKColor(white: 0.08125, alpha: 1)
-		static let wall = SKColor(red: 0.33 * 1.25, green: 0.103 * 1.25, blue: 0.103 * 1.25, alpha: 1)
-		static let water = SKColor(red: 0.1, green: 0.2875 * 1.25, blue: 0.44 * 1.25, alpha: 1)
+		static let wall = SKColor(red: 0.4125, green: 0.1288, blue: 0.1288, alpha: 1)
+		static let water = SKColor(red: 0.1, green: 0.3594, blue: 0.55, alpha: 1)
+		static let mud = SKColor(red: 0.2824, green: 0.2128, blue: 0.1569, alpha: 1)
 		static let algae = SKColor(red: 0.1137, green: 0.439, blue: 0.1137, alpha: 1)
 	}
 	
 	struct VisionColors {
 		static let wall = SKColor(srgbRed: 1, green: 0, blue: 0, alpha: 1)
 		static let water = SKColor(srgbRed: 0, green: 0.5, blue: 1, alpha: 1)
+		static let mud = SKColor(srgbRed: 0.28, green: 0.21, blue: 0.15, alpha: 1)
 		static let algae = SKColor(srgbRed: 0, green: 1, blue: 0, alpha: 1)
 		static let algaeFromBiot = SKColor(srgbRed: 1, green: 1, blue: 0, alpha: 1)
 	}

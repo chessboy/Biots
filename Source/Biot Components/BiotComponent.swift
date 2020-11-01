@@ -235,6 +235,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var isOnTopOfFood = false
 	var isOnTopOfWater = false
 	var isImmersedInWater = false
+	var isImmersedInMud = false
 	var contactedAlgaeComponents: [BodyContact] = []
 	var contactedWaterComponents: [BodyContact] = []
 
@@ -257,7 +258,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		isOnTopOfFood = false
 		isOnTopOfWater = false
 		isImmersedInWater = false
-
+		isImmersedInMud = false
+		
 		if let scene = OctopusKit.shared.currentScene, let bodies = entityNode?.physicsBody?.allContactedBodies(), bodies.count > 0 {
 			for body in bodies {
 				
@@ -280,23 +282,33 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					}
 				}
 				else if body.categoryBitMask == Constants.CategoryBitMasks.water {
+					let isMud = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first?.component(ofType: WaterSourceComponent.self)?.isMud ?? false
 					
 					let tailPoint = node.position + CGPoint(angle: node.zRotation + π) * Constants.Biot.radius
 					if let waterNode = body.node, waterNode.contains(tailPoint) {
-						isImmersedInWater = true
+						if isMud {
+							isImmersedInMud = true
+						}
+						else {
+							isImmersedInWater = true
+						}
 					}
-					isOnTopOfWater = true
-					var contact = contactedWaterComponents.filter({ $0.body == body }).first
 					
-					if contact == nil {
-						//print("water added at \(now), drank water")
-						contactedWaterComponents.append(BodyContact(when: now, body: body))
-						biotAndWaterCollided()
-					}
-					else if now - contact!.when > Constants.Water.timeBetweenSips {
-						//print("water found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), drank water")
-						contact!.updateWhen(when: now)
-						biotAndWaterCollided()
+					isOnTopOfWater = !isMud
+					
+					if !isMud {
+						var contact = contactedWaterComponents.filter({ $0.body == body }).first
+						
+						if contact == nil {
+							//print("water added at \(now), drank water")
+							contactedWaterComponents.append(BodyContact(when: now, body: body))
+							biotAndWaterCollided()
+						}
+						else if now - contact!.when > Constants.Water.timeBetweenSips {
+							//print("water found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), drank water")
+							contact!.updateWhen(when: now)
+							biotAndWaterCollided()
+						}
 					}
 				}
 			}
@@ -314,19 +326,19 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func showRipples() {
-		guard isImmersedInWater, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 2), let node = entityNode as? SKShapeNode else { return }
+		guard isImmersedInWater || isImmersedInMud, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 3), let node = entityNode as? SKShapeNode else { return }
 		
 		let rippleNode = SKShapeNode.arcOfRadius(radius: Constants.Biot.radius * 1.3 * node.xScale, startAngle: -π/4, endAngle: π/4)
 		rippleNode.position = node.position
 		rippleNode.zRotation = node.zRotation + π
 		rippleNode.lineWidth = Constants.Biot.radius * 0.1 * node.xScale
 		rippleNode.lineCap = .round
-		rippleNode.strokeColor = SKColor.white.withAlpha(0.33)
+		rippleNode.strokeColor = isImmersedInMud ? SKColor.black.withAlpha(0.33) : SKColor.white.withAlpha(0.33)
 		rippleNode.isAntialiased = Constants.Env.graphics.isAntialiased
 		rippleNode.zPosition = Constants.ZeeOrder.biot - 1
 		OctopusKit.shared.currentScene?.addChild(rippleNode)
-		let duraction: TimeInterval = 0.75
-		let group = SKAction.group([SKAction.scale(to: 0.2, duration: duraction), SKAction.fadeAlpha(to: 0, duration: duraction)])
+		let duration: TimeInterval = 0.75
+		let group = SKAction.group([SKAction.scale(to: 0.2, duration: duration), SKAction.fadeAlpha(to: 0, duration: duration)])
 		rippleNode.run(group) {
 			rippleNode.removeFromParent()
 		}

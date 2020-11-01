@@ -57,4 +57,5 @@ The height of the window will be `windowWidth/φ` (where φ = golden ratio)
 - f+click anywhere → add some **algae** in that area
 - b+click anywhere → add a **block**
 - w+click anywhere → add a **water source**
+- w+shift-click anywhere → add a **mud source**
 - shift-click a **block** or **water source** → drag to resize that object

@@ -12,6 +12,7 @@ import SpriteKit
 enum PlaceableType: Int, Codable {
 	case zapper = 0
 	case water
+	case mud
 }
 
 struct WorldObject: Codable {
