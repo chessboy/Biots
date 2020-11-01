@@ -35,7 +35,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var healthMeterNodes: [RetinaNode] = []
 	var speedNode: SKShapeNode!
 	var armorNode: SKShapeNode!
-	var eyeNodes: [SKShapeNode] = []
+	var eyeNodes: [SKNode] = []
 	var progressNode: ProgressNode!
 	var selectionNode: SKNode!
 	var visionNode: SKNode!
@@ -82,7 +82,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	var gestationAge: CGFloat {
-		return maximumAge * 0.15
+		return maximumAge * 0.125
 	}
 
 	var maximumEnergy: CGFloat {
@@ -155,10 +155,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	]}
 	
 	override func didAddToEntity() {
-		if let node = entityNode as? SKShapeNode {
-			node.setScale(0.2)
-			node.run(SKAction.scale(to: 0.5, duration: 0.5))
-		}
+		entityNode?.setScale(0.2)
+		entityNode?.run(SKAction.scale(to: 0.5, duration: 0.5))
 		
 		let showVision = globalDataComponent?.showBiotVision ?? false
 		
@@ -330,7 +328,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func showRipples() {
-		guard isImmersedInWater || isImmersedInMud, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 3), let node = entityNode as? SKShapeNode else { return }
+		guard isImmersedInWater || isImmersedInMud, let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes, frame.isMultiple(of: 2), let node = entityNode else { return }
 		
 		let rippleNode = SKShapeNode.arcOfRadius(radius: Constants.Biot.radius * 1.3 * node.xScale, startAngle: -π/4, endAngle: π/4)
 		rippleNode.position = node.position
@@ -485,24 +483,24 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			if showingHealthDetails {
 				
 				progressNode.setProgress(progress)
-				if let bodyColor = (entityNode as? SKShapeNode)?.fillColor {
+				if let bodyColor = (entityNode as? SKSpriteNode)?.color {
 					progressNode.progressRing.strokeColor = bodyColor.withAlpha(1)
 				}
 				
 				let energyHealthNode = healthMeterNodes[HealthMeter.energy.rawValue]
 				let intenstityEnergy = foodEnergy/maximumEnergy
 				energyHealthNode.strokeColor = SKColor(red: 1 - intenstityEnergy, green: intenstityEnergy, blue: 0, alpha: 1)
-				energyHealthNode.zPosition = intenstityEnergy
+				energyHealthNode.zPosition = Constants.ZeeOrder.biot + intenstityEnergy
 				
 				let hydrationHealthNode = healthMeterNodes[HealthMeter.hydration.rawValue]
 				let intenstityHydration = hydration/maximumHydration
 				hydrationHealthNode.strokeColor = SKColor(red: 0, green: intenstityHydration*0.75, blue: intenstityHydration, alpha: 1)
-				hydrationHealthNode.zPosition = intenstityHydration
+				hydrationHealthNode.zPosition = Constants.ZeeOrder.biot + intenstityHydration
 
 				let staminaHealthNode = healthMeterNodes[HealthMeter.stamina.rawValue]
 				let intenstityStamina = 1 - (stamina * stamina)
 				staminaHealthNode.strokeColor = SKColor(red: intenstityStamina, green: 0, blue: 0, alpha: 1)
-				staminaHealthNode.zPosition = intenstityStamina
+				staminaHealthNode.zPosition = Constants.ZeeOrder.biot + intenstityStamina
 			}
 		}
 	}
@@ -571,17 +569,17 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				let foodColor = SKColor(red: 0, green: onTopOfFoodAverage.cgFloat, blue: 0, alpha: 1)
                 let foodMeterNode = resourceNodes[ResourceMeter.food.rawValue]
                 foodMeterNode.strokeColor = foodColor
-                foodMeterNode.zPosition = onTopOfFoodAverage.cgFloat
+                foodMeterNode.zPosition = Constants.ZeeOrder.biot + onTopOfFoodAverage.cgFloat
 
 				let waterColor = SKColor(red: 0, green: onTopOfFWaterAverage.cgFloat * 0.75, blue: onTopOfFWaterAverage.cgFloat, alpha: 1)
 				let waterMeterNode = resourceNodes[ResourceMeter.water.rawValue]
 				waterMeterNode.strokeColor = waterColor
-				waterMeterNode.zPosition = onTopOfFWaterAverage.cgFloat
+				waterMeterNode.zPosition = Constants.ZeeOrder.biot + onTopOfFWaterAverage.cgFloat
 				
 				let mudColor = SKColor(red: onTopOfMudAverage.cgFloat * 0.6, green: onTopOfMudAverage.cgFloat * 0.4, blue: onTopOfMudAverage.cgFloat * 0.2, alpha: 1)
 				let mudMeterNode = resourceNodes[ResourceMeter.mud.rawValue]
 				mudMeterNode.strokeColor = mudColor
-				mudMeterNode.zPosition = onTopOfMudAverage.cgFloat
+				mudMeterNode.zPosition = Constants.ZeeOrder.biot + onTopOfMudAverage.cgFloat
 			}
 		}
 	}
@@ -635,7 +633,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	func showStats() {
 		
-		if  let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
+		if let statsNode = coComponent(EntityStatsComponent.self)?.statsNode {
 			
 			if let rotation = entityNode?.zRotation {
 				statsNode.zRotation = 2*π - rotation
@@ -730,9 +728,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		matingGenome = otherGenome
 		lastPregnantAge = age
 		
-		if let node = entityNode as? SKShapeNode {
-			node.run(SKAction.scale(to: 1.25, duration: 0.25))
-		}
+		entityNode?.run(SKAction.scale(to: 1.25, duration: 0.25))
 	}
 	
 	func contactEffect(impact: CGFloat) {
@@ -763,39 +759,28 @@ extension BiotComponent {
 	static func createBiot(genome: Genome, at position: CGPoint, fountainComponent: RelayComponent<ResourceFountainComponent>) -> OKEntity {
 
 		let radius = Constants.Biot.radius
-		let node = SKShapeNode(circleOfRadius: radius)
+		let node = SKSpriteNode(imageNamed: "Biot")
+		let size = radius * 2.35
+		node.size = CGSize(width: size, height: size)
+		node.colorBlendFactor = 1
 		node.name = Constants.NodeName.biot
-		node.fillColor = SKColor.lightGray
-		node.lineWidth = radius * 0.075
-		node.strokeColor = .clear
 		node.position = position
 		node.zPosition = Constants.ZeeOrder.biot
 		node.zRotation = CGFloat.randomAngle
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		
 		let biotComponent = BiotComponent(genome: genome)
-
-		if Constants.Env.graphics.shadows {
-			let shadowNode = SKShapeNode()
-			shadowNode.path = node.path
-			shadowNode.zPosition = Constants.ZeeOrder.biot - 6
-			shadowNode.glowWidth = radius * 0.25
-			shadowNode.strokeColor = SKColor.black.withAlpha(0.333)
-			node.insertChild(shadowNode, at: 0)
-		}
 		
-		var eyeNodes: [SKShapeNode] = []
+		var eyeNodes: [SKNode] = []
 		for angle in [-π/4.5, π/4.5] {
-			let eyeNode = SKShapeNode(circleOfRadius: radius * 0.2)
+			//let eyeNode = SKShapeNode(circleOfRadius: radius * 0.2)
+			let eyeNode = SKSpriteNode(imageNamed: "Eye")
+			let size = radius * 0.48
+			eyeNode.size = CGSize(width: size, height: size)
 			eyeNode.isHidden = true
-			eyeNode.fillColor = .black
-			eyeNode.strokeColor = .white
-			eyeNode.yScale = 0.75
-			eyeNode.lineWidth = Constants.Biot.radius * 0.1
 			eyeNode.position = CGPoint(angle: angle) * radius * 0.65
+			eyeNode.zRotation = -angle/4
 			node.addChild(eyeNode)
-			eyeNode.zPosition = node.zPosition + 0.2
 			eyeNodes.append(eyeNode)
 		}
 		
@@ -811,7 +796,7 @@ extension BiotComponent {
 				
 		// main health meter
 		let healthOverallNode = SKShapeNode(circleOfRadius: radius * 0.25)
-		healthOverallNode.zPosition = Constants.ZeeOrder.biot + 20
+		healthOverallNode.zPosition = Constants.ZeeOrder.biot + 0.2
 		healthOverallNode.fillColor = .darkGray
 		healthOverallNode.lineWidth = radius * 0.02
 		healthOverallNode.strokeColor = .black
@@ -841,7 +826,6 @@ extension BiotComponent {
 		// progress
 		let progressNode = ProgressNode(radius: radius * 0.31, lineWidth: Constants.Biot.radius * 0.1)
 		healthDetailsNode.addChild(progressNode)
-		progressNode.zPosition = Constants.ZeeOrder.biot + 0.09
 
 		// speed boost
 		let speedNode = SKShapeNode()
@@ -856,7 +840,6 @@ extension BiotComponent {
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
 		speedNode.isAntialiased = Constants.Env.graphics.isAntialiased
-		speedNode.zPosition = Constants.ZeeOrder.biot + 0.1
 		node.addChild(speedNode)
 
 		// armor
@@ -872,7 +855,6 @@ extension BiotComponent {
 		armorNode.lineCap = .round
 		armorNode.strokeColor = .green
 		armorNode.isAntialiased = Constants.Env.graphics.isAntialiased
-		armorNode.zPosition = Constants.ZeeOrder.biot + 0.2
 		node.addChild(armorNode)
 
 		// vision

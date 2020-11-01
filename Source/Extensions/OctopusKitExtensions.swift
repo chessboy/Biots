@@ -10,12 +10,6 @@ import OctopusKit
 import SpriteKit
 
 extension OctopusComponent {
-	
-//	var skColor: SKColor {
-//		if let node = entityNode as? SKShapeNode {
-//			return node.fillColor
-//		}
-//		return .white
-//	}
+
 }
 

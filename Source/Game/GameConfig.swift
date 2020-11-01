@@ -15,7 +15,12 @@ struct BiotParam: CustomStringConvertible {
 	static let generationThreshold = Constants.Biot.environmentalPressureGenerationalThreshold.cgFloat
 	
 	func valueForGeneration(_ generation: Int) -> CGFloat {
-		let percentage = (generation.cgFloat/BiotParam.generationThreshold).clamped(0, 1)
+		
+		if generation.cgFloat >= BiotParam.generationThreshold {
+			return end
+		}
+		
+		let percentage = generation.cgFloat / BiotParam.generationThreshold
 		return start + percentage * (end-start)
 	}
 	
@@ -37,22 +42,25 @@ struct GameConfig: CustomStringConvertible {
 	var minimumBiotCount: Int = 0
 	var maximumBiotCount: Int = 0
 	
-	let collisionDamage = BiotParam(start: 0.15, end: 0.25)
-	let perMovementRecovery = BiotParam(start: 0.0015, end: 0.00125)
-	let perMovementHydrationCost = BiotParam(start: 0.0075, end: 0.01)
+	// age
+	let maximumAge = BiotParam(start: 2400, end: 3600)
+	let clockRate = 60 // ticks per 1-way cycle
 
+	// requirements
 	let mateHealth = BiotParam(start: 0.7, end: 0.8)
 	let spawnHealth = BiotParam(start: 0.6, end: 0.75)
-	let maximumAge = BiotParam(start: 2000, end: 3200)
-	
 	let maximumFoodEnergy = BiotParam(start: 100, end: 120)
 	let maximumHydration = BiotParam(start: 85, end: 100)
 
+	// costs
+	let collisionDamage = BiotParam(start: 0.15, end: 0.25)
+	let perMovementRecovery = BiotParam(start: 0.0015, end: 0.00125)
+	let perMovementHydrationCost = BiotParam(start: 0.0075, end: 0.01)
 	let perMovementEnergyCost = BiotParam(start: 0.0075, end: 0.0125)
 	let speedBoostStaminaCost = BiotParam(start: 0.0006, end: 0.0008)
 	let armorEnergyCost = BiotParam(start: 0.04, end: 0.06)
 
-	let clockRate = 60 // ticks per 1-way cycle
+	// environmental
 	let dampeningWater: CGFloat = 0.2
 	
 	init(gameMode: GameMode) {

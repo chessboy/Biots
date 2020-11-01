@@ -137,7 +137,7 @@ struct Constants {
 	
 	// when to "bounce" off another
 	struct CollisionBitMasks {
-		static let wall = noBitMask
+		static let wall = CategoryBitMasks.wall
 		static let water = CategoryBitMasks.wall | CategoryBitMasks.water
 		static let biot = CategoryBitMasks.wall | CategoryBitMasks.biot
 		static let algae = CategoryBitMasks.wall | CategoryBitMasks.water | CategoryBitMasks.algae
@@ -157,7 +157,7 @@ struct Constants {
 		static let grid = SKColor(white: 0.08125, alpha: 1)
 		static let wall = SKColor(red: 0.4125, green: 0.1288, blue: 0.1288, alpha: 1)
 		static let water = SKColor(red: 0.1, green: 0.3594, blue: 0.55, alpha: 1)
-		static let mud = SKColor(red: 0.4196, green: 0.3333, blue: 0.2627, alpha: 1)
+		static let mud = SKColor(red: 0.4196, green: 0.3333, blue: 0.2627, alpha: 1) // 107, 85, 67
 		static let algae = SKColor(red: 0.1137, green: 0.439, blue: 0.1137, alpha: 1)
 	}
 	
@@ -179,6 +179,7 @@ struct Constants {
 	}
 	
 	struct ZeeOrder {
+		static let scene: CGFloat = -100
 		static let background: CGFloat = -10
 		static let grid: CGFloat = -3
 		static let water: CGFloat = 1

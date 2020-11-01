@@ -15,6 +15,8 @@ class AlgaeComponent: OKComponent {
 	var energy: CGFloat = 0
 	var frame = Int.random(100)
 	var fromBiot = false
+	static let textureAlgae = SKTexture(imageNamed: "Algae")
+	static let textureAlgaeFromBiot = SKTexture(imageNamed: "AlgaeFromBiot")
 
 	init(energy: CGFloat, fromBiot: Bool) {
 		self.energy = energy
@@ -73,34 +75,25 @@ extension AlgaeComponent {
 	
 	static func create(position: CGPoint, energy: CGFloat, fromBiot: Bool) -> OKEntity {
 
-		let blendColor: SKColor = Bool.random() ? .yellow : .brown		
-		let color = fromBiot ? Constants.VisionColors.algaeFromBiot : Constants.Colors.algae.blended(withFraction: CGFloat.random(in: 0..<0.5), of: blendColor) ?? Constants.Colors.algae
+		let node = SKSpriteNode(texture: fromBiot ? textureAlgaeFromBiot : textureAlgae)
+		
+		if !fromBiot {
+			let blendColor: SKColor = Bool.random() ? .yellow : .brown
+			let color = Constants.Colors.algae.blended(withFraction: CGFloat.random(in: 0..<0.5), of: blendColor) ?? Constants.Colors.algae
+			node.color = color
+			node.colorBlendFactor = 1
+		}
+		
 		let radius = Constants.Algae.radius
-		let node = SKShapeNode.polygonOfRadius(radius, sides: fromBiot ? 12 : 8, cornerRadius: radius/4, lineWidth: 0, rotationOffset: 0)
-
+		node.size = CGSize(width: radius*2.5, height: radius*2.5)
 		node.position = position
-		node.fillColor = color
-		node.lineWidth = 0
 		node.zPosition = Constants.ZeeOrder.algae
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		node.isHidden = true
 		let range = SKRange(lowerLimit: 0, upperLimit: GameManager.shared.gameConfig.worldRadius * 0.9)
 		let keepInBounds = SKConstraint.distance(range, to: .zero)
 		node.constraints = [keepInBounds]
 		
-		if Constants.Env.graphics.shadows {
-//			let shadowNode = SKShapeNode()
-//			shadowNode.path = node.path
-//			shadowNode.glowWidth = 5
-//			shadowNode.zPosition = Constants.ZeeOrder.algae - 2
-//			shadowNode.strokeColor = SKColor.black.withAlpha(0.2)
-//			node.insertChild(shadowNode, at: 0)
-			
-			node.strokeColor = SKColor.black.withAlpha(0.25)
-			node.lineWidth = radius * 0.2
-		}
-
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius * 1.25)
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.algae
 		physicsBody.collisionBitMask = Constants.CollisionBitMasks.algae

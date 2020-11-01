@@ -124,12 +124,12 @@ final class BrainComponent: OKComponent {
 		
 		guard
 			let biot = biotComponent,
-			let node = entityNode as? SKShapeNode, !biot.isInteracting else { return }
+			let node = entityNode as? SKSpriteNode, !biot.isInteracting else { return }
 	
 		let gameConfig = GameManager.shared.gameConfig
 		var thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
 		
-		let dampeningMud = gameConfig.dampeningWater * 2.5
+		let dampeningMud = gameConfig.dampeningWater * 2
 		let impediment = senses.onTopOfWater.average.cgFloat * gameConfig.dampeningWater + senses.onTopOfMud.average.cgFloat * dampeningMud
 		let dampening = 1 - impediment
 //		if senses.onTopOfWater.average + senses.onTopOfMud.average > 0 {
@@ -184,13 +184,13 @@ final class BrainComponent: OKComponent {
 			let adjustedBlue = skColor.blueComponent.clamped(minRGB, 1)
 			let alpha: CGFloat = Constants.Env.graphics.blendMode != .replace ? (biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667) : 1
 			let adjustedColor = SKColor(red: adjustedRed, green: adjustedGreen, blue: adjustedBlue, alpha: alpha)
-			node.fillColor = adjustedColor
+			node.color = adjustedColor
 		}
 		else {
 			if Constants.Env.graphics.blendMode != .replace {
-				node.fillColor = inference.color.average.skColor.withAlpha(biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667)
+				node.color = inference.color.average.skColor.withAlpha(biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667)
 			} else {
-				node.fillColor = inference.color.average.skColor
+				node.color = inference.color.average.skColor
 			}
 		}
 	}    

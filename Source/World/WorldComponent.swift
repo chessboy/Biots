@@ -27,6 +27,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		GlobalStatsComponent.self
 	]}
 	
+	// MARK: Create
+
 	override func didAddToEntity(withNode node: SKNode) {
 		createWorld()
  	}
@@ -119,67 +121,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		}
 	}
 	
-	func addUnbornGenome(_ genome: Genome) {
-		if unbornGenomes.count == Constants.Env.unbornGenomeCacheCount {
-			unbornGenomes.remove(at: 0)
-		}
-		unbornGenomes.append(genome)
-		OctopusKit.logForSimInfo.add("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
-	}
-		
-	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
-		
-		let worldRadius = GameManager.shared.gameConfig.worldRadius
-		let distance = CGFloat.random(in: worldRadius * 0.35...worldRadius * 0.9)
-		let position = CGPoint.randomDistance(distance)
-
-		let fountainComponent = scene.entities.filter({ $0.component(ofType: ResourceFountainComponent.self) != nil }).first?.component(ofType: ResourceFountainComponent.self)
-		let biot = BiotComponent.createBiot(genome: genome, at: position, fountainComponent: RelayComponent(for: fountainComponent))
-		
-		let showEyeSpots = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showBiotEyeSpots ?? false
-		if showEyeSpots {
-			biot.addComponent(EyesComponent())
-		}
-		let showBiotStats = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showBiotStats ?? false
-		if showBiotStats {
-			biot.addComponent(EntityStatsComponent())
-		}
-		scene.addEntity(biot)
-
-		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
-			biot.node?.isHidden = hideNode
-		}
-		
-		return biot
-	}
-				
-	func displayStats() {
-		
-		guard let scene = OctopusKit.shared?.currentScene else { return }
-		
-		let gameConfig = GameManager.shared.gameConfig
-		let dispenseDelay = gameConfig.gameMode.dispenseDelay
-		let frame = currentFrame - dispenseDelay
-
-		if currentFrame >= 50, frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
-			
-			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
-
-			let mode = gameConfig.gameMode.humanReadableDescription
-			let name = gameConfig.name
-			let biotStats = currentBiotStats
-			let statsText = "\(name) (\(mode)) | \(Int(frame).abbrev) | pop: \(biotCount)/\(gameConfig.maximumBiotCount), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
-
-			statsComponent.updateStats(statsText)
-			
-//			if frame > 0, frame.isMultiple(of: 20000) {
-//				print()
-//				print(statsText)
-//				print()
-//				(scene as? WorldScene)?.dumpGenomes()
-//			}
-		}
-	}
+	// MARK: Update
 	
 	override func update(deltaTime seconds: TimeInterval) {
 		
@@ -226,6 +168,72 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		currentFrame += 1
 	}
 
+	// MARK: Biots
+	
+	func addUnbornGenome(_ genome: Genome) {
+		if unbornGenomes.count == Constants.Env.unbornGenomeCacheCount {
+			unbornGenomes.remove(at: 0)
+		}
+		unbornGenomes.append(genome)
+		OctopusKit.logForSimInfo.add("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
+	}
+		
+	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
+		
+		let worldRadius = GameManager.shared.gameConfig.worldRadius
+		let distance = CGFloat.random(in: worldRadius * 0.35...worldRadius * 0.9)
+		let position = CGPoint.randomDistance(distance)
+
+		let fountainComponent = scene.entities.filter({ $0.component(ofType: ResourceFountainComponent.self) != nil }).first?.component(ofType: ResourceFountainComponent.self)
+		let biot = BiotComponent.createBiot(genome: genome, at: position, fountainComponent: RelayComponent(for: fountainComponent))
+		
+		let showEyeSpots = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showBiotEyeSpots ?? false
+		if showEyeSpots {
+			biot.addComponent(EyesComponent())
+		}
+		let showBiotStats = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showBiotStats ?? false
+		if showBiotStats {
+			biot.addComponent(EntityStatsComponent())
+		}
+		scene.addEntity(biot)
+
+		if let hideNode = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.hideSpriteNodes {
+			biot.node?.isHidden = hideNode
+		}
+		
+		return biot
+	}
+				
+	// MARK: Stats
+	
+	func displayStats() {
+		
+		guard let scene = OctopusKit.shared?.currentScene else { return }
+		
+		let gameConfig = GameManager.shared.gameConfig
+		let dispenseDelay = gameConfig.gameMode.dispenseDelay
+		let frame = currentFrame - dispenseDelay
+
+		if currentFrame >= 50, frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
+			
+			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
+
+			let mode = gameConfig.gameMode.humanReadableDescription
+			let name = gameConfig.name
+			let biotStats = currentBiotStats
+			let statsText = "\(name) (\(mode)) | \(Int(frame).abbrev) | pop: \(biotCount)/\(gameConfig.maximumBiotCount), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
+
+			statsComponent.updateStats(statsText)
+			
+//			if frame > 0, frame.isMultiple(of: 20000) {
+//				print()
+//				print(statsText)
+//				print()
+//				(scene as? WorldScene)?.dumpGenomes()
+//			}
+		}
+	}
+	
 	/*
 	var currentRunningTime: String {
 		let hours = Int(totalTime*2) / 3600
@@ -238,7 +246,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	struct ResourceStats {
 		var algaeTarget: CGFloat
 		var algaeSupply: CGFloat
-		static let zero = ResourceStats(algaeTarget: 0, algaeSupply: 0)
+		var algaeCount: Int
+		static let zero = ResourceStats(algaeTarget: 0, algaeSupply: 0, algaeCount: 0)
 	}
 	
 	struct BiotStats {
@@ -258,7 +267,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			return BiotStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgHydration: 0, avgStamina: 0, avgHealth: 0, pregnantPercent: 0, spawnAverage: 0, resourceStats: .zero)
 		}
 	}
-	
 	
 	var currentBiots: [BiotComponent] {
 		return OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: BiotComponent.self) }) ?? []
@@ -287,9 +295,12 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		let algaeTarget = fountains.reduce(0) { $0 + $1.targetAlgaeSupply }
 		let algaeSupply = fountains.reduce(0) { $0 + $1.currentAlgaeSupply }
+		let algaeCount = fountains.reduce(0) { $0 + $1.algaeEntities.count }
 		
-		return ResourceStats(algaeTarget: algaeTarget, algaeSupply: algaeSupply)
+		return ResourceStats(algaeTarget: algaeTarget, algaeSupply: algaeSupply, algaeCount: algaeCount)
 	}
+	
+	// MARK: interaction
 	
 	func zoomAndCenter(scale: CGFloat = 25) {
 		guard let camera = coComponent(CameraComponent.self)?.camera else { return }

@@ -37,48 +37,14 @@ extension WaterSourceComponent {
 	
 	static func create(radius: CGFloat, position: CGPoint, isMud: Bool = false) -> OKEntity {
 		
-		let color = isMud ? Constants.Colors.mud.withAlpha(0.8) : Constants.Colors.water.withAlpha(0.8)
-
-		let node = SKShapeNode.polygonOfRadius(radius, sides: 12, cornerRadius: radius/4, lineWidth: 8, rotationOffset: π/12)
+		let node = SKSpriteNode(imageNamed: isMud ? "Mud" : "Water")
+		node.size = CGSize(width: radius*2.4, height: radius*2.4)
 		node.name = Constants.NodeName.water
 		node.zPosition = Constants.ZeeOrder.water
-		node.lineWidth = Constants.Env.graphics.shadows ? 0 : 4
-		node.fillColor = color
-		node.strokeColor = color.blended(withFraction: 0.1, of: .white) ?? .white
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		node.position = position
 
-		if Constants.Env.graphics.blendMode != .replace {
-			for scale: CGFloat in [0.92, 0.84, 0.76] {
-				let rippleRadius = radius * scale
-				let rippleNode = SKShapeNode.polygonOfRadius(rippleRadius, sides: 12, cornerRadius: rippleRadius/4, lineWidth: 8, rotationOffset: π/12)
-				rippleNode.blendMode = Constants.Env.graphics.blendMode
-				rippleNode.fillColor = SKColor.black.withAlpha(scale/10)
-				node.addChild(rippleNode)
-			}
-		}
-
-		if Constants.Env.graphics.shadows {
-			let shadowWidth: CGFloat = sqrt(radius)
-			let shadowRadius = radius
-			let shadowNode =  SKShapeNode.polygonOfRadius(shadowRadius, sides: 12, cornerRadius: shadowRadius/4, lineWidth: 8, rotationOffset: π/12)
-			shadowNode.zPosition = Constants.ZeeOrder.water
-			shadowNode.glowWidth = shadowWidth
-			shadowNode.lineWidth = shadowWidth
-			shadowNode.strokeColor = color.withAlpha(0.33)
-			node.insertChild(shadowNode, at: 0)
-		}
-		
-//		let resizeNode = SKShapeNode(rect: CGRect(center: CGPoint(angle: 0) * (radius + 10), size: CGSize(width: 20, height: radius*2)), cornerRadius: 10)
-//		resizeNode.lineWidth = 0
-//		resizeNode.fillColor = SKColor.white.withAlpha(0.33)
-//		node.addChild(resizeNode)
-//		let resizeThumb = SKShapeNode(circleOfRadius: 40)
-//		resizeThumb.position = CGPoint(angle: 0) * (radius + 10)
-//		resizeThumb.lineWidth = 0
-//		resizeThumb.fillColor = .white
-//		resizeNode.addChild(resizeThumb)
+		//let color = isMud ? Constants.Colors.mud.withAlpha(0.8) : Constants.Colors.water.withAlpha(0.8)
 
 		let physicsBody = SKPhysicsBody(circleOfRadius: radius)
 		physicsBody.allowsRotation = false

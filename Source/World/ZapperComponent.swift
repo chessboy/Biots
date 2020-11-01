@@ -34,41 +34,15 @@ extension ZapperComponent {
 	
 	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
 		
-		let color = Constants.Colors.wall.withAlpha(0.8)
-
-		let node = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
+		let node = SKSpriteNode(imageNamed: "Zapper")
+		node.size = CGSize(width: radius*2.28, height: radius*2.28)
 		node.name = Constants.NodeName.zapper
 		node.zPosition = Constants.ZeeOrder.wall
-		node.lineWidth = 4
-		node.fillColor = color
-		node.strokeColor = Constants.Colors.grid
 		node.blendMode = Constants.Env.graphics.blendMode
-		node.isAntialiased = Constants.Env.graphics.isAntialiased
 		node.position = position
 
-		if Constants.Env.graphics.shadows {
-			let shadowWidth: CGFloat = 10
-			let shadowRadius = radius + shadowWidth/2
-			let shadowNode =  SKShapeNode.polygonOfRadius(shadowRadius, sides: 8, cornerRadius: shadowRadius/4, lineWidth: 4, rotationOffset: π/8)
-			shadowNode.zPosition = Constants.ZeeOrder.wall - 0.1
-			shadowNode.glowWidth = shadowWidth
-			shadowNode.lineWidth = shadowWidth
-			shadowNode.strokeColor = SKColor.black.withAlpha(0.167)
-			node.insertChild(shadowNode, at: 0)
-		}
-		
-		if Constants.Env.graphics.blendMode != .replace {
-			for scale: CGFloat in [0.92, 0.84, 0.76] {
-			
-				let rippleRadius = radius * scale
-				let rippleNode = SKShapeNode.polygonOfRadius(rippleRadius, sides: 8, cornerRadius: rippleRadius/4, lineWidth: 8, rotationOffset: π/8)
-				rippleNode.blendMode = Constants.Env.graphics.blendMode
-				rippleNode.fillColor = SKColor.white.withAlpha(scale/33)
-				node.addChild(rippleNode)
-			}
-		}
-
-		let physicsBody = SKPhysicsBody(polygonFrom: node.path!)
+		let physicsNode = SKShapeNode.polygonOfRadius(radius, sides: 8, cornerRadius: radius/4, lineWidth: 4, rotationOffset: π/8)
+		let physicsBody = SKPhysicsBody(polygonFrom: physicsNode.path!)
 		physicsBody.allowsRotation = false
 		physicsBody.mass = 20
 		physicsBody.categoryBitMask = Constants.CategoryBitMasks.wall

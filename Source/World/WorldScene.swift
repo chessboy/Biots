@@ -46,6 +46,8 @@ final class WorldScene: OKScene {
 		to.addCursorRect(to.bounds, cursor: .pointingHand)
 		//NSCursor.pointingHand.set()
 
+		self.zPosition = Constants.ZeeOrder.scene
+		
 		#endif
 	}
 

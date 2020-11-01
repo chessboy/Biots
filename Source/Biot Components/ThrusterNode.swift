@@ -30,6 +30,7 @@ class ThrusterNode: SKNode {
 
 		for angleOffset: CGFloat in Constants.Thrust.thrusterSpots.reversed() {
 			let node = RetinaNode(angle: angleOffset, radius: thrusterRadius, thickness: thickness, arcLength: arcLength, forBackground: true)
+			node.zPosition = Constants.ZeeOrder.biot
 			addChild(node)
 		}
 		
@@ -48,21 +49,21 @@ class ThrusterNode: SKNode {
 		if leftThrustIntensity >= 0 {
 			let intensity = (abs(leftThrustIntensity * 1.25)).clamped(0, 1)
 			leftThrustPostitiveNode.strokeColor = SKColor(white: intensity, alpha: 1)
-			leftThrustPostitiveNode.zPosition = intensity
+			leftThrustPostitiveNode.zPosition = Constants.ZeeOrder.biot + intensity
 		} else {
 			let intensity = (abs(leftThrustIntensity * 1.5)).clamped(0, 1)
 			leftThrustNegativeNode.strokeColor = SKColor(red: intensity, green: intensity, blue: 0, alpha: 1)
-			leftThrustNegativeNode.zPosition = intensity
+			leftThrustNegativeNode.zPosition = Constants.ZeeOrder.biot + intensity
 		}
 		
 		if rightThrustIntensity >= 0 {
 			let intensity = (abs(rightThrustIntensity * 1.25)).clamped(0, 1)
 			rightThrustPositiveNode.strokeColor = SKColor(white: intensity, alpha: 1)
-			rightThrustPositiveNode.zPosition = intensity
+			rightThrustPositiveNode.zPosition = Constants.ZeeOrder.biot + intensity
 		} else {
 			let intensity = (abs(rightThrustIntensity * 1.5)).clamped(0, 1)
 			rightThrustNegativeNode.strokeColor = SKColor(red: intensity, green: intensity, blue: 0, alpha: 1)
-			rightThrustNegativeNode.zPosition = intensity
+			rightThrustNegativeNode.zPosition = Constants.ZeeOrder.biot + intensity
 		}
 	}
 	

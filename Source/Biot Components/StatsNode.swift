@@ -26,6 +26,7 @@ class StatsNode: SKNode {
 		backgroundNode.fillColor = SKColor.black.withAlphaComponent(0.75)
 		backgroundNode.lineWidth = 0.0
 		backgroundNode.isHidden = true
+		backgroundNode.zPosition = Constants.ZeeOrder.biot + 1
 		self.addChild(backgroundNode)
 
 		let padding: CGFloat = fontSize + 20
@@ -36,6 +37,7 @@ class StatsNode: SKNode {
 			node.fontSize = fontSize
 			node.fontColor = SKColor.white
 			node.horizontalAlignmentMode = .left
+			node.zPosition = Constants.ZeeOrder.biot + 1.1
 			
 			labelNodes.append(node)
 			self.addChild(node)
