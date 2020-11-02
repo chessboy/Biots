@@ -321,9 +321,9 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		case Keycode.z:
 			cameraZoom = shiftDown ? 10 : Constants.Camera.initialScale
 			let zoomAction = SKAction.scale(to: cameraZoom, duration: Constants.Camera.animationDuration)
-			//let moveAction = SKAction.move(to: .zero, duration: Constants.Camera.animationDuration)
-			camera.run(zoomAction)
-			//camera.run(.group([zoomAction, moveAction]))
+			let moveAction = SKAction.move(to: .zero, duration: Constants.Camera.animationDuration)
+			camera.run(.group([zoomAction, moveAction]))
+			checkLevelOfDetail()
 			break
 
 		case Keycode.equals, // camera zoom
@@ -334,6 +334,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			cameraZoom = cameraZoom.clamp(Constants.Camera.zoomMin, Constants.Camera.zoomMax)
 			let zoomAction = SKAction.scale(to: cameraZoom, duration: Constants.Camera.animationDuration)
 			camera.run(zoomAction)
+			checkLevelOfDetail()
 			break
 			
 		case Keycode.leftArrow, // camera pan
@@ -357,6 +358,20 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 		default: break
 		
+		}
+	}
+	
+	func checkLevelOfDetail() {
+		guard let globalDataComponent = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) else {
+			return
+		}
+		//print(cameraZoom.formattedTo2Places)
+		if cameraZoom >= Constants.Camera.levelOfDetailMedium {
+			globalDataComponent.showBiotVision = false
+			globalDataComponent.showBiotThrust = false
+		}
+		if cameraZoom >= Constants.Camera.levelOfDetailLow {
+			globalDataComponent.showBiotHealth = false
 		}
 	}
 }

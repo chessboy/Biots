@@ -173,6 +173,8 @@ struct Constants {
 		static let initialScale: CGFloat = 3
 		static let zoomMin: CGFloat = 0.1
 		static let zoomMax: CGFloat = 20
+		static let levelOfDetailMedium: CGFloat = 2.3
+		static let levelOfDetailLow: CGFloat = 5
 		static let scaleFactor: CGFloat = 1.25
 		static let panBoost: CGFloat = 100
 		static let animationDuration: TimeInterval = 0.25

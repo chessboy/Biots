@@ -321,6 +321,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		guard age - lastBlinkAge > 60 else { return }
 		lastBlinkAge = age
 		eyeNodes.forEach({ eyeNode in
+			if eyeNode.isHidden {
+				eyeNode.isHidden = false
+			}
 			eyeNode.run(SKAction.bulge(xScale: 0.05, yScale: 0.85, scalingDuration: 0.075, revertDuration: 0.125)) {
 				eyeNode.yScale = 0.85
 			}
@@ -357,10 +360,10 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 	}
-	
+		
 	override func update(deltaTime seconds: TimeInterval) {
 		guard !isExpired else { return }
-		
+				
 		if !isInteracting {
 			age += 1
 		}
@@ -377,8 +380,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			expire()
 		}
 		
-		// update visual indicators
-		if let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes {
+		if let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes,
+		   let position = entityNode?.position,
+		   let coords = OctopusKit.shared.currentScene?.viewSizeInLocalCoordinates(), coords.contains(position) {
+				
+			// update visual indicators
 			updateVisionNode()
 			updateHealthNode()
 			updateThrusterNode()

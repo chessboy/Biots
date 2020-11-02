@@ -144,3 +144,12 @@ extension SKAction {
 		return SKAction.sequence([flashOn, flashOffOn])
 	}
 }
+
+extension SKScene {
+	func viewSizeInLocalCoordinates() -> CGRect {
+		let min = convertPoint(fromView: CGPoint(x: view!.bounds.minX, y: view!.bounds.minY))
+		let max = convertPoint(fromView: CGPoint(x: view!.bounds.maxX, y: view!.bounds.maxY))
+		let delta = max - min
+		return CGRect(x: min.x , y: min.y, width: delta.x, height: delta.y)
+	}
+}

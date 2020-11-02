@@ -35,7 +35,8 @@ extension ZapperComponent {
 	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
 		
 		let node = SKSpriteNode(imageNamed: "Zapper")
-		node.size = CGSize(width: radius*2.28, height: radius*2.28)
+		let scale: CGFloat = 2.075
+		node.size = CGSize(width: radius*scale, height: radius*scale)
 		node.name = Constants.NodeName.zapper
 		node.zPosition = Constants.ZeeOrder.wall
 		node.blendMode = Constants.Env.graphics.blendMode
