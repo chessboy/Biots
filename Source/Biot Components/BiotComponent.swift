@@ -385,10 +385,10 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		   let coords = OctopusKit.shared.currentScene?.viewSizeInLocalCoordinates(), coords.contains(position) {
 				
 			// update visual indicators
+			blink()
 			updateVisionNode()
 			updateHealthNode()
 			updateThrusterNode()
-			blink()
 			showRipples()
 			showStats()
 			showSelection()

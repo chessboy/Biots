@@ -25,6 +25,7 @@
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
+		D44F2461254F9A46004F97BA /* world-objects-more-no-mud.json in Resources */ = {isa = PBXBuildFile; fileRef = D44F2460254F9A46004F97BA /* world-objects-more-no-mud.json */; };
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D45F0E6B253282360067912C /* PlacedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* PlacedObject.swift */; };
 		D45F0E782532C7520067912C /* world-objects-more.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* world-objects-more.json */; };
@@ -124,6 +125,7 @@
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
+		D44F2460254F9A46004F97BA /* world-objects-more-no-mud.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-more-no-mud.json"; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
 		D45F0E6A253282360067912C /* PlacedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacedObject.swift; sourceTree = "<group>"; };
 		D45F0E772532C7520067912C /* world-objects-more.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-more.json"; sourceTree = "<group>"; };
@@ -299,6 +301,7 @@
 			children = (
 				D4A85D6D2533D4A800F4861C /* world-objects-less.json */,
 				D45F0E772532C7520067912C /* world-objects-more.json */,
+				D44F2460254F9A46004F97BA /* world-objects-more-no-mud.json */,
 			);
 			path = "World Objects";
 			sourceTree = "<group>";
@@ -629,6 +632,7 @@
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */,
 				E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */,
+				D44F2461254F9A46004F97BA /* world-objects-more-no-mud.json in Resources */,
 				E82E304F253ED2D400837E89 /* genomes-32.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D4A85D6E2533D4A800F4861C /* world-objects-less.json in Resources */,
