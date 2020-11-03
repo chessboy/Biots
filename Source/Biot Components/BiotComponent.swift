@@ -364,7 +364,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 		
 	override func update(deltaTime seconds: TimeInterval) {
-		guard !isExpired else { return }
+		guard !isExpired, let hideNodes = globalDataComponent?.hideSpriteNodes else { return }
 				
 		if !isInteracting {
 			age += 1
@@ -381,8 +381,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		if age >= maximumAge || health <= 0 {
 			expire()
 		}
-		
-		if let hideNodes = globalDataComponent?.hideSpriteNodes, !hideNodes,
+				
+		if !hideNodes,
 		   let position = entityNode?.position,
 		   let coords = OctopusKit.shared.currentScene?.viewSizeInLocalCoordinates(), coords.contains(position) {
 				
@@ -393,10 +393,14 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			updateThrusterNode()
 			updateExtrasNode()
 			showRipples()
-			showStats()
 			showSelection()
 		}
 
+		if !hideNodes {
+			showStats()
+		}
+
+		
 		// self-replication (sexual reproduction not supported yet)
 		if !isPregnant, canMate, age - lastSpawnedAge > gestationAge {
 			mated(otherGenome: genome)
@@ -420,7 +424,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				scene.removeEntityOnNextUpdate(entity)
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
-					let bites: CGFloat = self.isMature ? 6 : 3
+					let bites: CGFloat = self.genome.generation < Constants.Biot.environmentalPressureGenerationalThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: true)
 					
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self),
@@ -683,28 +687,28 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					let builder1 = AttributedStringBuilder()
 					builder1.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder1
-						.text("🌡️ ", attributes: iconAttrs)
+						.text("↗️ ", attributes: iconAttrs)
+						.text("\(genome.generation.formatted)")
+						.text("     🌡️ ", attributes: iconAttrs)
 						.text("\(healthFormatted)")
-						.text("     ⚡ ", attributes: iconAttrs)
+						.text("     🕒 ", attributes: iconAttrs)
+						.text("\((age/maximumAge).formattedToPercentNoDecimal)")
+
+					let builder2 = AttributedStringBuilder()
+					builder2.defaultAttributes = valueAttrs + [.alignment(.center)]
+					builder2
+						.text("⚡ ", attributes: iconAttrs)
 						.text("\(energyFormatted)")
 						.text("     💧 ", attributes: iconAttrs)
 						.text("\(hydrationFormatted)")
 						.text("     💪🏻 ", attributes: iconAttrs)
 						.text("\(staminaFormatted)")
 					
-					let builder2 = AttributedStringBuilder()
-					builder2.defaultAttributes = valueAttrs + [.alignment(.center)]
-					builder2
-						.text("     ↗️ ", attributes: iconAttrs)
-						.text("\(genome.generation.formatted)")
-						.text("     🕒 ", attributes: iconAttrs)
-						.text("\((age/maximumAge).formattedToPercentNoDecimal)")
-						.text("     🤰🏻 ", attributes: iconAttrs)
-						.text("\(isPregnant ? "✓" : "✗")")
-					
 					let builder3 = AttributedStringBuilder()
 					builder3.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder3
+						.text("🤰🏻 ", attributes: iconAttrs)
+						.text("\(isPregnant ? "✓" : "✗")")
 						.text("     👶🏻 ", attributes: iconAttrs)
 						.text("\(spawnCount)")
 						.text("     🏅 ", attributes: iconAttrs)

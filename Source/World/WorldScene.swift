@@ -225,20 +225,30 @@ final class WorldScene: OKScene {
 	
 	func selectMostFit() {
 		if let biotComponents = entities(withName: Constants.NodeName.biot)?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
-			if let mostFit = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
+			if let best = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
 				return biot1.health > biot2.health
-			}).first, let mostFitEntity = mostFit.entity as? OKEntity, mostFitEntity != trackedEntity {
-				trackEntity(mostFitEntity)
+			}).first, let entity = best.entity as? OKEntity, entity != trackedEntity {
+				trackEntity(entity)
 			}
 		}
 	}
 	
 	func selectLeastFit() {
 		if let biotComponents = entities(withName: Constants.NodeName.biot)?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
-			if let mostFit = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
+			if let best = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
 				return biot1.health < biot2.health
-			}).first, let mostFitEntity = mostFit.entity as? OKEntity, mostFitEntity != trackedEntity {
-				trackEntity(mostFitEntity)
+			}).first, let entity = best.entity as? OKEntity, entity != trackedEntity {
+				trackEntity(entity)
+			}
+		}
+	}
+	
+	func selectOldest() {
+		if let biotComponents = entities(withName: Constants.NodeName.biot)?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
+			if let best = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
+				return biot1.genome.generation > biot2.genome.generation
+			}).first, let entity = best.entity as? OKEntity, entity != trackedEntity {
+				trackEntity(entity)
 			}
 		}
 	}
@@ -335,6 +345,11 @@ final class WorldScene: OKScene {
 			}
 			break
 
+			
+		case Keycode.o:
+			selectOldest()
+			break
+			
 		case Keycode.a:
 			if commandDown {
 				globalDataComponent.hideSpriteNodes.toggle()

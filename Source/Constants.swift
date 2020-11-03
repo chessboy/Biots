@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 				
-		static let windowWidth: CGFloat = 2200
+		static let windowWidth: CGFloat = 1600
 
 		static let filenameSaveStateDebug = "Debug"
 		static let filenameSaveStateSave = "Save"
@@ -33,7 +33,7 @@ struct Constants {
 		
 	struct Biot {
 		static let radius: CGFloat = 40
-		static let environmentalPressureGenerationalThreshold = 100
+		static let environmentalPressureGenerationalThreshold = 200
 		static let adjustBodyColor = false
 		
 		enum StatsLine: Int { case line1, line2, line3 }

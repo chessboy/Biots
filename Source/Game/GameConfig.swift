@@ -43,7 +43,7 @@ struct GameConfig: CustomStringConvertible {
 	var maximumBiotCount: Int = 0
 	
 	// age
-	let maximumAge = BiotParam(start: 2400, end: 3600)
+	let maximumAge = BiotParam(start: 2280, end: 3300)
 	let clockRate = 60 // ticks per 1-way cycle
 
 	// requirements
