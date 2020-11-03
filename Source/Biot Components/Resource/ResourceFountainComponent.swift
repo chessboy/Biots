@@ -65,7 +65,7 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	var currentAlgaeSupply: CGFloat {
-		var sum: CGFloat = 0.0
+		var sum: CGFloat = 0
 		algaeEntities.forEach({ sum += $0.component(ofType: AlgaeComponent.self)?.energy ?? 0 })
 		return sum
 	}

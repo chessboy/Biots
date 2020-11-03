@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 				
-		static let windowWidth: CGFloat = 2000
+		static let windowWidth: CGFloat = 2200
 
 		static let filenameSaveStateDebug = "Debug"
 		static let filenameSaveStateSave = "Save"
@@ -40,7 +40,20 @@ struct Constants {
 
 		struct Stats {
 			static let maxLinesOfText = 3
-			static let delimiter = "     "
+			
+			static let labelAttrs: [AttributedStringBuilder.Attribute] = [
+				.textColor(UIColor.lightGray),
+				.font(UIFont.systemFont(ofSize: 42, weight: .bold))
+			]
+			
+			static let valueAttrs: [AttributedStringBuilder.Attribute] = [
+				.textColor(UIColor.white),
+				.font(UIFont(name: Constants.Font.regular, size: 72)!)
+			]
+			
+			static let iconAttrs: [AttributedStringBuilder.Attribute] = [
+				.font(UIFont.systemFont(ofSize: 66, weight: .bold))
+			]
 		}
 	}
 	
@@ -189,6 +202,22 @@ struct Constants {
 		static let algae: CGFloat = 1
 		static let biot: CGFloat = 5
 		static let stats: CGFloat = 100
+	}
+	
+	struct Stats {
+		static let labelAttrs: [AttributedStringBuilder.Attribute] = [
+			.textColor(UIColor.lightGray),
+			.font(UIFont.systemFont(ofSize: 14, weight: .bold))
+		]
+		
+		static let valueAttrs: [AttributedStringBuilder.Attribute] = [
+			.textColor(UIColor.white),
+			.font(UIFont(name: Constants.Font.regular, size: 24)!)
+		]
+		
+		static let iconAttrs: [AttributedStringBuilder.Attribute] = [
+			.font(UIFont.systemFont(ofSize: 22, weight: .bold))
+		]
 	}
 }
 

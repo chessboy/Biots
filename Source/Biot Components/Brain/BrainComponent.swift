@@ -164,13 +164,13 @@ final class BrainComponent: OKComponent {
 		}
 		
 		if armor > 0 {
-			let armorEnergyCost = gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
+			let armorEnergyCost = gameConfig.armorEnergyCost.valueForGeneration(biot.genome.generation)
 			biot.incurEnergyChange(-armorEnergyCost * armor)
 		}
 		
 		// healing
 		if biot.stamina < 1 {
-			let perMovementRecovery = GameManager.shared.gameConfig.perMovementRecovery.valueForGeneration(biot.genome.generation)
+			let perMovementRecovery = GameManager.shared.gameConfig.perMovementStaminaRecovery.valueForGeneration(biot.genome.generation)
 			let staminaRecovery = -perMovementRecovery * (1 - (forceExerted/3))
 			// print("biot.stamina: \(biot.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			biot.incurStaminaChange(staminaRecovery)

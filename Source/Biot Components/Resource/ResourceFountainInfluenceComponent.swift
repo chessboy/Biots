@@ -38,7 +38,7 @@ final class ResourceFountainInfluenceComponent: OKComponent {
 			
 			let labelNode = SKLabelNode(fontNamed: Constants.Font.regular)
 			labelNode.horizontalAlignmentMode = .center
-			labelNode.fontSize = maxRadius/10
+			labelNode.fontSize = maxRadius
 			labelNode.fontColor = .white
 			self.labelNode = labelNode
 			rootNode.addChild(labelNode)

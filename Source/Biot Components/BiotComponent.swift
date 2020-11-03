@@ -33,6 +33,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var healthDetailsNode: SKNode!
 	var healthOverallNode: SKShapeNode!
 	var healthMeterNodes: [RetinaNode] = []
+	var extrasNode: SKNode!
 	var speedNode: SKShapeNode!
 	var armorNode: SKShapeNode!
 	var eyeNodes: [SKNode] = []
@@ -289,6 +290,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					if let waterNode = body.node, waterNode.contains(tailPoint) {
 						if isMud {
 							isImmersedInMud = true
+							stamina = 1
 						}
 						else {
 							isImmersedInWater = true
@@ -389,6 +391,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			updateVisionNode()
 			updateHealthNode()
 			updateThrusterNode()
+			updateExtrasNode()
 			showRipples()
 			showStats()
 			showSelection()
@@ -601,35 +604,48 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			thrusterNode.alpha = 0
 			thrusterNode.isHidden = false
 			thrusterNode.run(.fadeIn(withDuration: 0.2))
-			speedNode.alpha = 0
-			speedNode.isHidden = false
-			armorNode.alpha = 0
-			armorNode.isHidden = false
 		}
 		else if showingThrust, !showThrust {
 			thrusterNode.run(.fadeOut(withDuration: 0.1)) {
 				self.thrusterNode.isHidden = true
 				self.thrusterNode.alpha = 0
 			}
-			speedNode.run(.fadeOut(withDuration: 0.1)) {
-				self.speedNode.alpha = 0
-				self.speedNode.isHidden = false
-			}
-			armorNode.run(.fadeOut(withDuration: 0.1)) {
-				self.armorNode.alpha = 0
-				self.armorNode.isHidden = false
+		}
+
+		if showThrust, let thrust = brainComponent?.inference.thrust.average {
+			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
+		}
+	}
+	
+	func updateExtrasNode() {
+		
+		guard frame.isMultiple(of: 2) else { return }
+		
+		let showingExtras = !extrasNode.isHidden
+		let showExtras = globalDataComponent?.showBiotExtras ?? false
+		
+		if !showingExtras, showExtras {
+			extrasNode.alpha = 0
+			extrasNode.isHidden = false
+			extrasNode.run(.fadeIn(withDuration: 0.2))
+			speedNode.alpha = 0
+			armorNode.alpha = 0
+		}
+		else if showingExtras, !showExtras {
+			extrasNode.run(.fadeOut(withDuration: 0.1)) {
+				self.extrasNode.isHidden = true
+				self.extrasNode.alpha = 0
 			}
 		}
 
-		if showThrust,
-		   let thrust = brainComponent?.inference.thrust.average,
+		if showExtras,
 		   let speedBoost = brainComponent?.inference.speedBoost.average,
 		   let armor = brainComponent?.inference.armor.average {
-			thrusterNode.update(leftThrustIntensity: thrust.dx, rightThrustIntensity: thrust.dy)
 			speedNode.alpha = speedBoost.cgFloat
 			armorNode.alpha = armor.cgFloat
 		}
 	}
+
 	
 	func showSelection() {
 		if !selectionNode.isHidden, let rotation = entityNode?.zRotation {
@@ -660,9 +676,43 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					let hydrationFormatted = (hydration/maximumHydration).formattedToPercentNoDecimal
 					let staminaFormatted = stamina.formattedToPercentNoDecimal
 					
-					statsNode.setLineOfText("health \(healthFormatted)   (en \(energyFormatted)   hy \(hydrationFormatted)   st \(staminaFormatted))", for: .line1)
-					statsNode.setLineOfText("gen \(genome.generation.formatted)   age \((age/maximumAge).formattedToPercentNoDecimal)   preg \(isPregnant ? "✓" : "✗")", for: .line2)
-					statsNode.setLineOfText("spawned \(spawnCount)   progress \(progress.formattedToPercentNoDecimal)", for: .line3)
+					//let labelAttrs = Constants.Biot.Stats.labelAttrs
+					let valueAttrs = Constants.Biot.Stats.valueAttrs
+					let iconAttrs = Constants.Biot.Stats.iconAttrs
+
+					let builder1 = AttributedStringBuilder()
+					builder1.defaultAttributes = valueAttrs + [.alignment(.center)]
+					builder1
+						.text("🌡️ ", attributes: iconAttrs)
+						.text("\(healthFormatted)")
+						.text("     ⚡ ", attributes: iconAttrs)
+						.text("\(energyFormatted)")
+						.text("     💧 ", attributes: iconAttrs)
+						.text("\(hydrationFormatted)")
+						.text("     💪🏻 ", attributes: iconAttrs)
+						.text("\(staminaFormatted)")
+					
+					let builder2 = AttributedStringBuilder()
+					builder2.defaultAttributes = valueAttrs + [.alignment(.center)]
+					builder2
+						.text("     ↗️ ", attributes: iconAttrs)
+						.text("\(genome.generation.formatted)")
+						.text("     🕒 ", attributes: iconAttrs)
+						.text("\((age/maximumAge).formattedToPercentNoDecimal)")
+						.text("     🤰🏻 ", attributes: iconAttrs)
+						.text("\(isPregnant ? "✓" : "✗")")
+					
+					let builder3 = AttributedStringBuilder()
+					builder3.defaultAttributes = valueAttrs + [.alignment(.center)]
+					builder3
+						.text("     👶🏻 ", attributes: iconAttrs)
+						.text("\(spawnCount)")
+						.text("     🏅 ", attributes: iconAttrs)
+						.text("\(progress.formattedToPercentNoDecimal)")
+
+					statsNode.setLineOfText(builder1.attributedString, for: .line1)
+					statsNode.setLineOfText(builder2.attributedString, for: .line2)
+					statsNode.setLineOfText(builder3.attributedString, for: .line3)
 					statsNode.updateBackgroundNode()
 				}
 			}
@@ -833,6 +883,11 @@ extension BiotComponent {
 		let progressNode = ProgressNode(radius: radius * 0.31, lineWidth: Constants.Biot.radius * 0.1)
 		healthDetailsNode.addChild(progressNode)
 
+		// extras
+		let extrasNode = SKNode()
+		extrasNode.isHidden = true
+		extrasNode.zPosition = Constants.ZeeOrder.biot + 0.1
+
 		// speed boost
 		let speedNode = SKShapeNode()
 		let speedPath = CGMutablePath()
@@ -842,11 +897,10 @@ extension BiotComponent {
 		speedNode.lineWidth = radius * 0.1
 		speedNode.zRotation = π
 		speedNode.alpha = 0
-		speedNode.isHidden = true
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
 		speedNode.isAntialiased = Constants.Env.graphics.isAntialiased
-		node.addChild(speedNode)
+		extrasNode.addChild(speedNode)
 
 		// armor
 		let armorNode = SKShapeNode()
@@ -857,12 +911,13 @@ extension BiotComponent {
 		armorNode.lineWidth = radius * 0.1
 		armorNode.zRotation = π
 		armorNode.alpha = 0
-		armorNode.isHidden = true
 		armorNode.lineCap = .round
 		armorNode.strokeColor = .green
 		armorNode.isAntialiased = Constants.Env.graphics.isAntialiased
-		node.addChild(armorNode)
+		extrasNode.addChild(armorNode)
 
+		node.addChild(extrasNode)
+		
 		// vision
 		let visionNode = SKNode()
 		visionNode.isHidden = true
@@ -939,6 +994,7 @@ extension BiotComponent {
 		biotComponent.healthOverallNode = healthOverallNode
 		biotComponent.healthMeterNodes = healthMeterNodes
 		biotComponent.progressNode = progressNode
+		biotComponent.extrasNode = extrasNode
 		biotComponent.speedNode = speedNode
 		biotComponent.armorNode = armorNode
 		biotComponent.eyeNodes = eyeNodes

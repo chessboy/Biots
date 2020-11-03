@@ -29,6 +29,10 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		textNode.text = text
 	}
 	
+	func updateStats(_ text: NSAttributedString) {
+		textNode.attributedText = text
+	}
+
 	func setPaused(_ paused: Bool) {
 		maskNode.fillColor = paused ? SKColor(red: 0.5, green: 0, blue: 0, alpha: 0.5) : SKColor(white: 0, alpha: 0.75)
 	}

@@ -218,12 +218,43 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = gameConfig.gameMode.humanReadableDescription
+			let mode = gameConfig.gameMode != .normal ? " (\(gameConfig.gameMode.humanReadableDescription))" : ""
 			let name = gameConfig.name
 			let biotStats = currentBiotStats
-			let statsText = "\(name) (\(mode)) | \(Int(frame).abbrev) | pop: \(biotCount)/\(gameConfig.maximumBiotCount), gen: \(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted) | h: \(biotStats.avgHealth.formattedToPercentNoDecimal), e: \(biotStats.avgEnergy.formattedToPercentNoDecimal), w: \(biotStats.avgHydration.formattedToPercentNoDecimal), s: \(biotStats.avgStamina.formattedToPercentNoDecimal) | preg: \(biotStats.pregnantPercent.formattedToPercentNoDecimal), spawned: \(biotStats.spawnAverage.formattedToPercentNoDecimal) | alg: \((Int(currentBiotStats.resourceStats.algaeTarget).abbrev))"
+			
+			let labelAttrs = Constants.Stats.labelAttrs
+			let valueAttrs = Constants.Stats.valueAttrs
+			let iconAttrs = Constants.Stats.iconAttrs
 
-			statsComponent.updateStats(statsText)
+			let builder = AttributedStringBuilder()
+			builder.defaultAttributes = valueAttrs + [.alignment(.center)]
+			builder
+				.text("FILE   ", attributes: labelAttrs)
+				.text("\(name)\(mode)")
+				.text("      🕒 ", attributes: iconAttrs)
+				.text("\(Int(frame).abbrev)")
+				.text("      📶 ", attributes: iconAttrs)
+				.text("\(biotCount)/\(gameConfig.maximumBiotCount)")
+				.text("      🥚 ", attributes: iconAttrs)
+				.text("\(unbornGenomes.count)")
+				.text("      ↗️ ", attributes: iconAttrs)
+				.text("\(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted)")
+				.text("      🌡️ ", attributes: iconAttrs)
+				.text("\(biotStats.avgHealth.formattedToPercentNoDecimal)")
+				.text("      ⚡ ", attributes: iconAttrs)
+				.text("\(biotStats.avgEnergy.formattedToPercentNoDecimal)")
+				.text("      💧 ", attributes: iconAttrs)
+				.text("\(biotStats.avgHydration.formattedToPercentNoDecimal)")
+				.text("      💪🏻 ", attributes: iconAttrs)
+				.text("\(biotStats.avgStamina.formattedToPercentNoDecimal)")
+				.text("      🤰🏻 ", attributes: iconAttrs)
+				.text("\(biotStats.pregnantPercent.formattedToPercentNoDecimal)")
+				.text("      👶🏻 ", attributes: iconAttrs)
+				.text("\(biotStats.spawnAverage.formattedToPercentNoDecimal)")
+				.text("      🌱 ", attributes: iconAttrs)
+				.text("\(Int(currentBiotStats.resourceStats.algaeTarget).abbrev)")
+
+			statsComponent.updateStats(builder.attributedString)
 			
 //			if frame > 0, frame.isMultiple(of: 20000) {
 //				print()

@@ -21,6 +21,7 @@ struct Defaults {
 	static let showBiotHealthDetails = false
 	static let showBiotVision = false
 	static let showBiotThrust = false
+	static let showBiotExtras = false
 	
 	static let algaeTarget = 12000
 	static let showAlgaeFountainInfluences = false
@@ -41,6 +42,7 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 	@OKUserDefault(key: "showBiotHealthDetails", defaultValue: Defaults.showBiotHealthDetails) public var showBiotHealthDetails: Bool
 	@OKUserDefault(key: "showBiotVision", defaultValue: Defaults.showBiotVision) public var showBiotVision: Bool
 	@OKUserDefault(key: "showBiotThrust", defaultValue: Defaults.showBiotThrust) public var showBiotThrust: Bool
+	@OKUserDefault(key: "showBiotExtras", defaultValue: Defaults.showBiotThrust) public var showBiotExtras: Bool
 
 	@OKUserDefault(key: "algaeTarget", defaultValue: Defaults.algaeTarget) public var algaeTarget: Int
 	@OKUserDefault(key: "showAlgaeFountainInfluences", defaultValue: Defaults.showAlgaeFountainInfluences) public var showAlgaeFountainInfluences: Bool
@@ -51,6 +53,10 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 		hideSpriteNodes = false
 		showAlgaeFountainInfluences = false
 		showHUDPub = showHUD
+		showBiotHealth = false
+		showBiotVision = false
+		showBiotThrust = false
+		showBiotExtras = false
 	}
 	
 	@Published
@@ -71,7 +77,8 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 		showBiotHealthDetails = Defaults.showBiotHealthDetails
 		showBiotVision = Defaults.showBiotVision
 		showBiotThrust = Defaults.showBiotThrust
-	
+		showBiotExtras = Defaults.showBiotExtras
+
 		algaeTarget = Defaults.algaeTarget
 		showAlgaeFountainInfluences = Defaults.showAlgaeFountainInfluences
 		

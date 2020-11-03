@@ -300,6 +300,7 @@ final class WorldScene: OKScene {
 		
 		case Keycode.r:
 			if shiftDown, commandDown, GameManager.shared.gameConfig.gameMode == .random {
+				entity?.component(ofType: WorldComponent.self)?.unbornGenomes.removeAll()
 				entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
 					removeEntity(biotEntity)
 				})
@@ -324,6 +325,14 @@ final class WorldScene: OKScene {
 
 		case Keycode.t:
 			globalDataComponent.showBiotThrust.toggle()
+			break
+
+		case Keycode.e:
+			if !shiftDown {
+				globalDataComponent.showBiotExtras.toggle()
+			} else {
+				globalDataComponent.showBiotThrust.toggle()
+			}
 			break
 
 		case Keycode.a:
@@ -392,7 +401,7 @@ final class WorldScene: OKScene {
 			}
 			else if commandDown {
 				let gameConfig = GameManager.shared.gameConfig
-				let saveState = SaveState(name: Constants.Env.filenameSaveStateSave, gameMode: GameMode.normal, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
+				let saveState = SaveState(name: gameConfig.name, gameMode: GameMode.normal, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
 				LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.filenameSaveStateSave)
 				return
 			}

@@ -47,14 +47,14 @@ struct GameConfig: CustomStringConvertible {
 	let clockRate = 60 // ticks per 1-way cycle
 
 	// requirements
-	let mateHealth = BiotParam(start: 0.7, end: 0.8)
-	let spawnHealth = BiotParam(start: 0.6, end: 0.75)
-	let maximumFoodEnergy = BiotParam(start: 100, end: 120)
-	let maximumHydration = BiotParam(start: 85, end: 100)
+	let mateHealth = BiotParam(start: 0.65, end: 0.8)
+	let spawnHealth = BiotParam(start: 0.55, end: 0.75)
+	let maximumFoodEnergy = BiotParam(start: 80, end: 120)
+	let maximumHydration = BiotParam(start: 80, end: 120)
 
 	// costs
-	let collisionDamage = BiotParam(start: 0.15, end: 0.25)
-	let perMovementRecovery = BiotParam(start: 0.0015, end: 0.00125)
+	let collisionDamage = BiotParam(start: 0.10, end: 0.25)
+	let perMovementStaminaRecovery = BiotParam(start: 0.0015, end: 0.00125)
 	let perMovementHydrationCost = BiotParam(start: 0.0075, end: 0.01)
 	let perMovementEnergyCost = BiotParam(start: 0.0075, end: 0.0125)
 	let speedBoostStaminaCost = BiotParam(start: 0.0006, end: 0.0008)

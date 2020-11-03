@@ -38,11 +38,8 @@ final class ContactComponent: PhysicsContactComponent {
 			
 			let collisionDamage = GameManager.shared.gameConfig.collisionDamage.valueForGeneration(biot.genome.generation)
 			let armor = biot.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
-			let exposure = 1 - armor
-
-			if armor < 1 {
-				biot.incurStaminaChange(collisionDamage * exposure, showEffect: true)
-			}
+			let exposure = 1 - armor/2
+			biot.incurStaminaChange(collisionDamage * exposure, showEffect: true)
 			return
 		}
 		
