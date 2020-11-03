@@ -56,7 +56,7 @@ final class GlobalDataComponent: OKComponent, OKUpdatableComponent, ObservableOb
 		showBiotHealth = false
 		showBiotVision = false
 		showBiotThrust = false
-		showBiotExtras = false
+		showBiotExtras = true
 	}
 	
 	@Published

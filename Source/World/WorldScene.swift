@@ -253,6 +253,16 @@ final class WorldScene: OKScene {
 		}
 	}
 	
+	func selectYoungest() {
+		if let biotComponents = entities(withName: Constants.NodeName.biot)?.map({$0.component(ofType: BiotComponent.self)}) as? [BiotComponent] {
+			if let best = biotComponents.sorted(by: { (biot1, biot2) -> Bool in
+				return biot1.genome.generation < biot2.genome.generation
+			}).first, let entity = best.entity as? OKEntity, entity != trackedEntity {
+				trackEntity(entity)
+			}
+		}
+	}
+	
 	func showBiotStats(_ showBiotStats: Bool) {
 		self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
 			if showBiotStats {
@@ -347,7 +357,12 @@ final class WorldScene: OKScene {
 
 			
 		case Keycode.o:
-			selectOldest()
+			if !shiftDown {
+				selectOldest()
+			} else {
+				selectYoungest()
+			}
+			
 			break
 			
 		case Keycode.a:
@@ -394,6 +409,7 @@ final class WorldScene: OKScene {
 				globalDataComponent.showBiotHealth = true
 				globalDataComponent.showBiotVision = true
 				globalDataComponent.showBiotThrust = true
+				globalDataComponent.showBiotExtras = false
 			}
 			break
 			
