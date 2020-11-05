@@ -64,7 +64,17 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		// boundary wall
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
 		scene.addEntity(boundary)
-						
+//		let boundary = BoundaryComponent.createFakeLoopWall(radius: worldRadius)
+//		scene.addEntity(boundary)
+
+		// border blocks
+//		let zapperCount: CGFloat = 45
+//		for angle: CGFloat in stride(from: 0, to: 2*π, by: π/zapperCount) {
+//			let size = worldRadius * π/(zapperCount * 2)
+//			let zapper = ZapperComponent.create(radius: size, position: CGPoint(angle: angle) * worldRadius, isBrick: true)
+//			scene.addEntity(zapper)
+//		}
+		
 		// world objects
 		let worldObjects = gameConfig.worldObjects
 		for worldObject in worldObjects {
@@ -72,7 +82,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			let radius = worldObject.percentRadius.cgFloat * worldRadius
 			
 			if worldObject.placeableType == .zapper {
-				let zapper = ZapperComponent.create(radius: radius, position: position)
+				let zapper = ZapperComponent.create(radius: radius, position: position, isBrick: false)
 				scene.addEntity(zapper)
 			}
 			else if worldObject.placeableType == .water || worldObject.placeableType == .mud {

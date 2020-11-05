@@ -126,7 +126,7 @@ final class WorldScene: OKScene {
 		var worldObjects: [WorldObject] = []
 		
 		for component in entities(withName: Constants.NodeName.zapper)?.map({$0.component(ofType: ZapperComponent.self)}) as? [ZapperComponent] ?? [] {
-			if let node = component.entityNode {
+			if let node = component.entityNode, !component.isBrick {
 				worldObjects.append(node.createWorldObject(placeableType: .zapper, radius: component.radius))
 			}
 		}
@@ -303,16 +303,6 @@ final class WorldScene: OKScene {
 		//print("keyDown: \(event.characters ?? ""), keyDownCode: \(keyDownCode), shiftDown: \(shiftDown), commandDown: \(commandDown), optionDown: \(optionDown)")
 				
 		switch event.keyCode {
-		
-//		case Keycode.t:
-//
-//			if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.firstRunSavedStateFilename), let worldComponent = entity?.component(ofType: WorldComponent.self) {
-//				GameManager.shared.gameConfig = GameConfig(saveState: saveState)
-//				OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
-//				worldComponent.createWorld()
-//			}
-//
-//			break
 			
 		case Keycode.u:
 			globalDataComponent.showHUDPub.toggle()
@@ -351,7 +341,15 @@ final class WorldScene: OKScene {
 			if !shiftDown {
 				globalDataComponent.showBiotExtras.toggle()
 			} else {
-				globalDataComponent.showBiotThrust.toggle()
+				globalDataComponent.showBiotEyeSpots.toggle()
+				self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
+					if globalDataComponent.showBiotEyeSpots {
+						biot.addComponent(EyesComponent())
+					}
+					else {
+						biot.removeComponent(ofType: EyesComponent.self)
+					}
+				})
 			}
 			break
 
@@ -409,21 +407,9 @@ final class WorldScene: OKScene {
 				globalDataComponent.showBiotHealth = true
 				globalDataComponent.showBiotVision = true
 				globalDataComponent.showBiotThrust = true
-				globalDataComponent.showBiotExtras = false
 			}
 			break
-			
-		case Keycode.e:
-			globalDataComponent.showBiotEyeSpots.toggle()
-			self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
-				if globalDataComponent.showBiotEyeSpots {
-					biot.addComponent(EyesComponent())
-				}
-				else {
-					biot.removeComponent(ofType: EyesComponent.self)
-				}
-			})
-			
+						
 		case Keycode.s:
 						
 			if commandDown, shiftDown {
@@ -538,7 +524,7 @@ final class WorldScene: OKScene {
 			if resizing {
 				let offset: CGFloat = 5
 				if let selectedEntity = entities.filter({ $0.node == draggingNode }).first as? OKEntity {
-					if let zapperComponent = selectedEntity.component(ofType: ZapperComponent.self) {
+					if let zapperComponent = selectedEntity.component(ofType: ZapperComponent.self), !zapperComponent.isBrick {
 						let delta: CGFloat = (draggingNode?.position ?? .zero).y - event.location(in: self).y > 0 ? -offset : offset
 						if !((zapperComponent.radius < Constants.Resource.minSize && delta < 0) || (zapperComponent.radius > Constants.Resource.maxSize && delta > 0)) {
 							zapperComponent.radius += delta
@@ -600,7 +586,7 @@ final class WorldScene: OKScene {
 		
 		if keyCodesDown.contains(Keycode.b) {
 			let radius: CGFloat = Constants.Resource.plopSize
-			let zapper = ZapperComponent.create(radius: radius, position: point)
+			let zapper = ZapperComponent.create(radius: radius, position: point, isBrick: false)
 			addEntity(zapper)
 			return
 		}
@@ -679,7 +665,7 @@ final class WorldScene: OKScene {
 			resizing = shiftDown
 			lastDragPoint = point - waterNode.position
 		}
-		else if !rightMouse, let zapperNode = nodes(at: point).filter({$0.name == Constants.NodeName.zapper}).first {
+		else if !rightMouse, let zapperNode = nodes(at: point).filter({$0.name == Constants.NodeName.zapper}).first, let selectedEntity = entities.filter({ $0.node == zapperNode }).first as? OKEntity, let zapper = selectedEntity.component(ofType: ZapperComponent.self), !zapper.isBrick {
 			draggingNode = zapperNode
 			resizing = shiftDown
 			lastDragPoint = point - zapperNode.position

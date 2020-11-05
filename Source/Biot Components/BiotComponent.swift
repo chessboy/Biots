@@ -64,11 +64,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	var frame = Int.random(100)
 	
-	lazy var mateHealth = GameManager.shared.gameConfig.mateHealth.valueForGeneration(genome.generation)
-	lazy var spawnHealth = GameManager.shared.gameConfig.spawnHealth.valueForGeneration(genome.generation)
-	lazy var maximumAge = GameManager.shared.gameConfig.maximumAge.valueForGeneration(genome.generation)
-	lazy var maximumFoodEnergy = GameManager.shared.gameConfig.maximumFoodEnergy.valueForGeneration(genome.generation)
-	lazy var maximumWaterHydration = GameManager.shared.gameConfig.maximumHydration.valueForGeneration(genome.generation)
+	lazy var mateHealth = GameManager.shared.gameConfig.valueForConfig(.mateHealth, generation: genome.generation)
+	lazy var spawnHealth = GameManager.shared.gameConfig.valueForConfig(.spawnHealth, generation: genome.generation)
+	lazy var maximumAge = GameManager.shared.gameConfig.valueForConfig(.maximumAge, generation: genome.generation)
+	lazy var maximumFoodEnergy = GameManager.shared.gameConfig.valueForConfig(.maximumFoodEnergy, generation: genome.generation)
+	lazy var maximumWaterHydration = GameManager.shared.gameConfig.valueForConfig(.maximumHydration, generation: genome.generation)
 	
 	var isPregnant: Bool {
 		return matingGenome != nil
@@ -415,7 +415,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func expire() {
-		if let scene = OctopusKit.shared.currentScene as? WorldScene, let entity = self.entity, let node = entityNode {
+		if let scene = OctopusKit.shared.currentScene as? WorldScene,
+		   let entity = self.entity, let node = entityNode {
 			isExpired = true
 			node.run(.group([.fadeOut(withDuration: 0.2), SKAction.scale(to: 0.1, duration: 0.2)])) {
 				if scene.trackedEntity == entity {
@@ -424,8 +425,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				scene.removeEntityOnNextUpdate(entity)
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
-					let bites: CGFloat = self.genome.generation < Constants.Biot.environmentalPressureGenerationalThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
-					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: true)
+					let bites: CGFloat = self.genome.generation < GameManager.shared.gameConfig.environmentalPressureGenerationalThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
+					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: GameManager.shared.gameConfig.biotCarcasesArePowerFood)
 					
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self),
 					   let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node,

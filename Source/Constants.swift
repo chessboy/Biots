@@ -33,7 +33,6 @@ struct Constants {
 		
 	struct Biot {
 		static let radius: CGFloat = 40
-		static let environmentalPressureGenerationalThreshold = 200
 		static let adjustBodyColor = false
 		
 		enum StatsLine: Int { case line1, line2, line3 }
@@ -59,7 +58,7 @@ struct Constants {
 	
 	struct Algae {
 		static let radius: CGFloat = 16
-		static let bite: CGFloat = 20
+		static let bite: CGFloat = 25
 		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
 	}
 	
@@ -91,9 +90,7 @@ struct Constants {
 		static let grid = "grid"
 		static let zapper = "zapper"
 	}
-	
-	// 28, 14, 8, 8
-	
+		
 	struct NeuralNet {
 		static let newGenomeHiddenCounts = [14, 8]
 		static let maxWeightValue: Float = 1

@@ -12,11 +12,10 @@ import OctopusKit
 
 final class BoundaryComponent: OKComponent {
 	
-	static let strokeWidth = Constants.Biot.radius * 2
+	static let strokeWidth = Constants.Biot.radius
 
 	override var requiredComponents: [GKComponent.Type]? {[
-		SpriteKitComponent.self,
-		PhysicsComponent.self
+		SpriteKitComponent.self
 	]}
 	
 	static func createCircularBarrier(radius: CGFloat) -> OKEntity {
@@ -39,6 +38,21 @@ final class BoundaryComponent: OKComponent {
 		])
 	}
 
+	static func createFakeLoopWall(radius: CGFloat) -> OKEntity {
+		let node = SKShapeNode(circleOfRadius: radius)
+		node.name = Constants.NodeName.wall
+		node.lineWidth = 0
+		node.fillColor = Constants.Colors.background
+		node.blendMode = Constants.Env.graphics.blendMode
+		node.isAntialiased = Constants.Env.graphics.isAntialiased
+		node.zPosition = Constants.ZeeOrder.background
+
+		return OKEntity(components: [
+			SpriteKitComponent(node: node),
+			BoundaryComponent()
+		])
+	}
+	
 	static func createLoopWall(radius: CGFloat) -> OKEntity {
 		
 		let node = SKShapeNode(circleOfRadius: radius + strokeWidth/2)
@@ -55,7 +69,7 @@ final class BoundaryComponent: OKComponent {
 		topNode.strokeColor = Constants.Env.graphics.shadows ? (Constants.Colors.wall.blended(withFraction: 0.05, of: .white)?.withAlpha(0.8) ?? .red) : Constants.Colors.wall
 		topNode.blendMode = Constants.Env.graphics.blendMode
 		topNode.isAntialiased = Constants.Env.graphics.isAntialiased
-		topNode.zPosition = Constants.ZeeOrder.wall
+		topNode.zPosition = 2000//Constants.ZeeOrder.wall
 		node.addChild(topNode)
 		
 		if Constants.Env.graphics.shadows {

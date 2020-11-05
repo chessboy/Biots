@@ -157,19 +157,6 @@ final class VisionComponent: OKComponent {
 			
 			var colorVector = ColorVector.zero
 			
-//			if biotComponent.isImmersedInMud {
-//				redTotal += Constants.VisionColors.mud.redComponent/4
-//				greenTotal += Constants.VisionColors.mud.greenComponent/4
-//				blueTotal += Constants.VisionColors.mud.blueComponent/4
-//				pings += 1
-//			}
-//			else if biotComponent.isOnTopOfWater {
-//				redTotal += Constants.VisionColors.water.redComponent/4
-//				greenTotal += Constants.VisionColors.water.greenComponent/4
-//				blueTotal += Constants.VisionColors.water.blueComponent/4
-//				pings += 1
-//			}
-
 			if pings > 0 {
 				colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
 			}

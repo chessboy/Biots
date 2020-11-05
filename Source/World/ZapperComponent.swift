@@ -13,9 +13,11 @@ import OctopusKit
 final class ZapperComponent: OKComponent {
 	
 	var radius: CGFloat
+	var isBrick: Bool
 	
-	init(radius: CGFloat) {
+	init(radius: CGFloat, isBrick: Bool) {
 		self.radius = radius
+		self.isBrick = isBrick
 		super.init()
 	}
 	
@@ -32,9 +34,9 @@ final class ZapperComponent: OKComponent {
 
 extension ZapperComponent {
 	
-	static func create(radius: CGFloat, position: CGPoint) -> OKEntity {
+	static func create(radius: CGFloat, position: CGPoint, isBrick: Bool) -> OKEntity {
 		
-		let node = SKSpriteNode(imageNamed: "Zapper")
+		let node = SKSpriteNode(imageNamed: isBrick ? "Brick" : "Zapper")
 		let scale: CGFloat = 2.075
 		node.size = CGSize(width: radius*scale, height: radius*scale)
 		node.name = Constants.NodeName.zapper
@@ -52,7 +54,7 @@ extension ZapperComponent {
 		return OKEntity(components: [
 			SpriteKitComponent(node: node),
 			PhysicsComponent(physicsBody: physicsBody),
-			ZapperComponent(radius: radius)
+			ZapperComponent(radius: radius, isBrick: isBrick)
 		])
 	}
 }

@@ -19,7 +19,7 @@ final class BrainComponent: OKComponent {
 	lazy var biotComponent = coComponent(BiotComponent.self)
 	lazy var neuralNetComponent = coComponent(NeuralNetComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
-
+	
 	override var requiredComponents: [GKComponent.Type]? {[
 		SpriteKitComponent.self,
 		PhysicsComponent.self,
@@ -149,28 +149,28 @@ final class BrainComponent: OKComponent {
 		node.zRotation = newHeading
 		
 		// movement energy expenditure
-		let perMovementEnergyCost = gameConfig.perMovementEnergyCost.valueForGeneration(biot.genome.generation)
+		let perMovementEnergyCost = GameManager.shared.gameConfig.valueForConfig(.perMovementEnergyCost, generation: biot.genome.generation)
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
 		biot.incurEnergyChange(-perMovementEnergyCost * forceExerted)
 		
-		let perMovementHydrationCost = gameConfig.perMovementHydrationCost.valueForGeneration(biot.genome.generation)
+		let perMovementHydrationCost = GameManager.shared.gameConfig.valueForConfig(.perMovementHydrationCost, generation: biot.genome.generation)
 		biot.incurHydrationChange(-perMovementHydrationCost * forceExerted)
 
 		if speedBoost > 1 {
-			let speedBoostStaminaCost = gameConfig.speedBoostStaminaCost.valueForGeneration(biot.genome.generation)
+			let speedBoostStaminaCost = GameManager.shared.gameConfig.valueForConfig(.speedBoostStaminaCost, generation: biot.genome.generation)
 			biot.incurEnergyChange(-perMovementEnergyCost)
 			biot.incurHydrationChange(-perMovementHydrationCost)
 			biot.incurStaminaChange(speedBoostStaminaCost)
 		}
 		
 		if armor > 0 {
-			let armorEnergyCost = gameConfig.armorEnergyCost.valueForGeneration(biot.genome.generation)
+			let armorEnergyCost = GameManager.shared.gameConfig.valueForConfig(.armorEnergyCost, generation: biot.genome.generation)
 			biot.incurEnergyChange(-armorEnergyCost * armor)
 		}
 		
 		// healing
 		if biot.stamina < 1 {
-			let perMovementRecovery = GameManager.shared.gameConfig.perMovementStaminaRecovery.valueForGeneration(biot.genome.generation)
+			let perMovementRecovery = GameManager.shared.gameConfig.valueForConfig(.perMovementStaminaRecovery, generation: biot.genome.generation)
 			let staminaRecovery = -perMovementRecovery * (1 - (forceExerted/3))
 			// print("biot.stamina: \(biot.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			biot.incurStaminaChange(staminaRecovery)
