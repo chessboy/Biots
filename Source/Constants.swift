@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 				
-		static let windowWidth: CGFloat = 1800
+		static let windowWidth: CGFloat = 2400
 
 		static let filenameSaveStateDebug = "Debug"
 		static let filenameSaveStateSave = "Save"

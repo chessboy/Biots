@@ -30,6 +30,7 @@ class DataManager {
 	func checkLocalDocuments() {
 		let defaults = UserDefaults.standard
 
+		// todo: add version checking here
 		if !defaults.bool(forKey: DataManager.keyCreatedLocalDocuments) {
 			
 			if let bundledFileConfigs: [BundledFileConfig] = loadJsonFromFile(DataManager.bundledFileConfigFilename) {

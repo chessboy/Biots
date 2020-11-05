@@ -1,32 +1,12 @@
 [
 	{
 		"gameMode": 0,
-		"algaeTarget": 10000,
-		"worldBlockCount": 10,
-		"worldObjectsFilename": "world-objects-less",
-		"genomeFilename": "genomes-32",
-		"filename": "Newbies",
-		"minimumBiotCount": 12,
-		"maximumBiotCount": 24
-	},
-	{
-		"gameMode": 0,
-		"algaeTarget": 12000,
+		"algaeTarget": 15000,
 		"worldBlockCount": 13,
-		"worldObjectsFilename": "world-objects-more-no-mud",
-		"genomeFilename": "genomes-135",
-		"filename": "Evolving",
-		"minimumBiotCount": 12,
-		"maximumBiotCount": 24
-	},
-	{
-		"gameMode": 0,
-		"algaeTarget": 10000,
-		"worldBlockCount": 13,
-		"worldObjectsFilename": "world-objects-more-no-mud",
-		"genomeFilename": "genomes-1740",
+		"worldObjectsFilename": "world-objects-more",
+		"genomeFilename": "genomes-evolved",
 		"filename": "Evolved",
-		"minimumBiotCount": 12,
-		"maximumBiotCount": 24
+		"minimumBiotCount": 10,
+		"maximumBiotCount": 20
 	}
 ]

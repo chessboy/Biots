@@ -25,7 +25,6 @@
 		D44E606524522F8400694462 /* EyesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44E606424522F8400694462 /* EyesComponent.swift */; };
 		D44E60682452740400694462 /* ContactComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D18D9E2447B67B00BF92FA /* ContactComponent.swift */; };
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
-		D44F2461254F9A46004F97BA /* world-objects-more-no-mud.json in Resources */ = {isa = PBXBuildFile; fileRef = D44F2460254F9A46004F97BA /* world-objects-more-no-mud.json */; };
 		D44F246F254FE242004F97BA /* AttributedStringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44F246E254FE242004F97BA /* AttributedStringBuilder.swift */; };
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D45F0E6B253282360067912C /* PlacedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* PlacedObject.swift */; };
@@ -82,8 +81,7 @@
 		D4E4BA6025008EEA0044EC48 /* ZapperComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */; };
 		D4E573AE244D515E006C2767 /* NoiseGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E573AD244D515E006C2767 /* NoiseGenerator.swift */; };
 		D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4F5055224ED282900EAA52E /* RunningFloatArray.swift */; };
-		E82E304F253ED2D400837E89 /* genomes-32.json in Resources */ = {isa = PBXBuildFile; fileRef = E82E304E253ED2D400837E89 /* genomes-32.json */; };
-		E83A6C2C2537EAC4008718EE /* genomes-1740.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* genomes-1740.json */; };
+		E83A6C2C2537EAC4008718EE /* genomes-evolved.json in Resources */ = {isa = PBXBuildFile; fileRef = E83A6C2B2537EAC4008718EE /* genomes-evolved.json */; };
 		E85C3AD825453DA7000D2926 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85C3AD725453DA7000D2926 /* LocalFileManager.swift */; };
 		E85C3AE02545D0CB000D2926 /* bundled-file-configs.json in Resources */ = {isa = PBXBuildFile; fileRef = E85C3ADF2545D0CB000D2926 /* bundled-file-configs.json */; };
 		E85C3AE82545D35F000D2926 /* BundledFileConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85C3AE72545D35F000D2926 /* BundledFileConfig.swift */; };
@@ -95,7 +93,6 @@
 		E8BB0535254487B4008C39D2 /* SaveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB0534254487B4008C39D2 /* SaveState.swift */; };
 		E8BB054425449247008C39D2 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8BB054325449247008C39D2 /* DataManager.swift */; };
 		E8C1E2FE25395A240013C290 /* ProgressNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C1E2FD25395A240013C290 /* ProgressNode.swift */; };
-		E8C1E306253A1DAA0013C290 /* genomes-135.json in Resources */ = {isa = PBXBuildFile; fileRef = E8C1E305253A1DAA0013C290 /* genomes-135.json */; };
 		E8D63D58253FFDF000ACF9D7 /* SwiftUiExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D63D57253FFDF000ACF9D7 /* SwiftUiExtensions.swift */; };
 /* End PBXBuildFile section */
 
@@ -126,7 +123,6 @@
 		D44E60602452298500694462 /* VisionComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionComponent.swift; sourceTree = "<group>"; };
 		D44E606424522F8400694462 /* EyesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EyesComponent.swift; sourceTree = "<group>"; };
 		D44EE9B624439592006A2083 /* IntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntMath.swift; sourceTree = "<group>"; };
-		D44F2460254F9A46004F97BA /* world-objects-more-no-mud.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-more-no-mud.json"; sourceTree = "<group>"; };
 		D44F246E254FE242004F97BA /* AttributedStringBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedStringBuilder.swift; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
 		D45F0E6A253282360067912C /* PlacedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacedObject.swift; sourceTree = "<group>"; };
@@ -192,8 +188,7 @@
 		D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZapperComponent.swift; sourceTree = "<group>"; };
 		D4E573AD244D515E006C2767 /* NoiseGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseGenerator.swift; sourceTree = "<group>"; };
 		D4F5055224ED282900EAA52E /* RunningFloatArray.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningFloatArray.swift; sourceTree = "<group>"; };
-		E82E304E253ED2D400837E89 /* genomes-32.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-32.json"; sourceTree = "<group>"; };
-		E83A6C2B2537EAC4008718EE /* genomes-1740.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-1740.json"; sourceTree = "<group>"; };
+		E83A6C2B2537EAC4008718EE /* genomes-evolved.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-evolved.json"; sourceTree = "<group>"; };
 		E83B9117253BE350004DE02F /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		E85C3AD725453DA7000D2926 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		E85C3ADF2545D0CB000D2926 /* bundled-file-configs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "bundled-file-configs.json"; sourceTree = "<group>"; };
@@ -206,7 +201,6 @@
 		E8BB0534254487B4008C39D2 /* SaveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveState.swift; sourceTree = "<group>"; };
 		E8BB054325449247008C39D2 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
 		E8C1E2FD25395A240013C290 /* ProgressNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressNode.swift; sourceTree = "<group>"; };
-		E8C1E305253A1DAA0013C290 /* genomes-135.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "genomes-135.json"; sourceTree = "<group>"; };
 		E8D63D57253FFDF000ACF9D7 /* SwiftUiExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUiExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,7 +297,6 @@
 			children = (
 				D4A85D6D2533D4A800F4861C /* world-objects-less.json */,
 				D45F0E772532C7520067912C /* world-objects-more.json */,
-				D44F2460254F9A46004F97BA /* world-objects-more-no-mud.json */,
 			);
 			path = "World Objects";
 			sourceTree = "<group>";
@@ -450,9 +443,7 @@
 		D49880422517D0AB00015724 /* Genomes */ = {
 			isa = PBXGroup;
 			children = (
-				E82E304E253ED2D400837E89 /* genomes-32.json */,
-				E8C1E305253A1DAA0013C290 /* genomes-135.json */,
-				E83A6C2B2537EAC4008718EE /* genomes-1740.json */,
+				E83A6C2B2537EAC4008718EE /* genomes-evolved.json */,
 			);
 			path = Genomes;
 			sourceTree = "<group>";
@@ -631,16 +622,13 @@
 				D49880462517D69400015724 /* README.md in Resources */,
 				E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */,
 				D47386402442BA850022E760 /* Main.storyboard in Resources */,
-				E8C1E306253A1DAA0013C290 /* genomes-135.json in Resources */,
 				D473863D2442BA850022E760 /* Preview Assets.xcassets in Resources */,
 				E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */,
 				E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */,
-				D44F2461254F9A46004F97BA /* world-objects-more-no-mud.json in Resources */,
-				E82E304F253ED2D400837E89 /* genomes-32.json in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D4A85D6E2533D4A800F4861C /* world-objects-less.json in Resources */,
 				D45F0E782532C7520067912C /* world-objects-more.json in Resources */,
-				E83A6C2C2537EAC4008718EE /* genomes-1740.json in Resources */,
+				E83A6C2C2537EAC4008718EE /* genomes-evolved.json in Resources */,
 				E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */,
 				E85C3AE02545D0CB000D2926 /* bundled-file-configs.json in Resources */,
 			);
