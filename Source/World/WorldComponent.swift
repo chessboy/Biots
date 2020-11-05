@@ -94,7 +94,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		// algae fountain(s)
 		let targetAlgaeSupply = gameConfig.algaeTarget
 		scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.algaeTarget = targetAlgaeSupply
-		let alageFountain = ResourceFountainComponent.create(position: .zero, minRadius: worldRadius * 0.2, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
+		let alageFountain = ResourceFountainComponent.create(position: .zero, minRadius: worldRadius * 0.1, maxRadius: worldRadius * 0.9, targetAlgaeSupply: targetAlgaeSupply.cgFloat)
 		scene.addEntity(alageFountain)
 	}
 	
