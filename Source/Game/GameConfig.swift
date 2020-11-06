@@ -102,7 +102,11 @@ struct GameConfig: CustomStringConvertible {
 	}
 	
 	var description: String {
-		return "{name: \(name), gameMode: \(gameMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), biotCounts: \(minimumBiotCount)...\(maximumBiotCount)}"
+		
+		let minGen = genomes.map({$0.generation}).min() ?? 0
+		let maxGen = genomes.map({$0.generation}).max() ?? 0
+
+		return "{name: \(name), gameMode: \(gameMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), generations: \(minGen.abbrev)–\(maxGen.abbrev), biotCounts: \(minimumBiotCount)...\(maximumBiotCount)}"
 	}
 
 	
