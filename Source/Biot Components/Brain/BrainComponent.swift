@@ -175,23 +175,11 @@ final class BrainComponent: OKComponent {
 			// print("biot.stamina: \(biot.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			biot.incurStaminaChange(staminaRecovery)
 		}
-        
-		if Constants.Biot.adjustBodyColor {
-			let minRGB: CGFloat = 0.25
-			let skColor = inference.color.average.skColor
-			let adjustedRed = skColor.redComponent.clamped(minRGB, 1)
-			let adjustedGreen = skColor.greenComponent.clamped(minRGB, 1)
-			let adjustedBlue = skColor.blueComponent.clamped(minRGB, 1)
-			let alpha: CGFloat = Constants.Env.graphics.blendMode != .replace ? (biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667) : 1
-			let adjustedColor = SKColor(red: adjustedRed, green: adjustedGreen, blue: adjustedBlue, alpha: alpha)
-			node.color = adjustedColor
+        		
+		if Constants.Env.graphics.blendMode != .replace {
+			node.color = inference.color.average.skColor.withAlpha(biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667)
+		} else {
+			node.color = inference.color.average.skColor
 		}
-		else {
-			if Constants.Env.graphics.blendMode != .replace {
-				node.color = inference.color.average.skColor.withAlpha(biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667)
-			} else {
-				node.color = inference.color.average.skColor
-			}
-		}
-	}    
+	}
 }

@@ -425,7 +425,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				scene.removeEntityOnNextUpdate(entity)
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
-					let bites: CGFloat = self.genome.generation < GameManager.shared.gameConfig.environmentalPressureGenerationalThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
+					let bites: CGFloat = self.genome.generation < GameManager.shared.gameConfig.generationThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: GameManager.shared.gameConfig.biotCarcasesArePowerFood)
 					
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self),

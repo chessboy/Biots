@@ -39,7 +39,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		window.makeKeyAndOrderFront(nil)
 		window.enableCursorRects()
 		
-		DataManager.shared.checkLocalDocuments()
+		let _ = DataManager.shared
 	}
 	
 	func applicationDidResignActive(_ notification: Notification) {

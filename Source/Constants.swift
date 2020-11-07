@@ -33,7 +33,6 @@ struct Constants {
 		
 	struct Biot {
 		static let radius: CGFloat = 40
-		static let adjustBodyColor = false
 		
 		enum StatsLine: Int { case line1, line2, line3 }
 

@@ -22,7 +22,7 @@ enum WorldObjectsBundleType {
 
 struct BundledFileConfig: Codable {
 	
-	var gameMode: GameMode
+	var simulationMode: SimulationMode
 	var algaeTarget: Int
 	var worldBlockCount: Int
 	var worldObjectsFilename: String

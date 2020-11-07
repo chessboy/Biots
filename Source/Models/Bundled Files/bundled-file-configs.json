@@ -1,6 +1,6 @@
 [
 	{
-		"gameMode": 0,
+		"simulationMode": 0,
 		"algaeTarget": 15000,
 		"worldBlockCount": 13,
 		"worldObjectsFilename": "world-objects-more",

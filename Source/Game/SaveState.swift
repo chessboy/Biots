@@ -10,7 +10,7 @@ import Foundation
 
 struct SaveState: Codable, CustomStringConvertible {
 	var name: String
-	var gameMode: GameMode
+	var simulationMode: SimulationMode
 	var algaeTarget: Int
 	var worldBlockCount: Int
     
@@ -21,6 +21,6 @@ struct SaveState: Codable, CustomStringConvertible {
 	var maximumBiotCount: Int
 	
 	var description: String {
-		return "{name: \(name), gameMode: \(gameMode), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldObjects: \(worldObjects.count), genomes: \(genomes.count), minimumBiotCount: \(minimumBiotCount), maximumBiotCount: \(maximumBiotCount)}"
+		return "{name: \(name), simulationMode: \(simulationMode), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldObjects: \(worldObjects.count), genomes: \(genomes.count), minimumBiotCount: \(minimumBiotCount), maximumBiotCount: \(maximumBiotCount)}"
 	}
 }

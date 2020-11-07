@@ -24,19 +24,20 @@ class BiotsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 	
-	func testBiotParam() throws {
+	func testConfigParam() throws {
 		let gens = [0, 10, 50, 75, 100, 200, 250]
+		let generationThreshold = 200
 		let params = [
-			BiotParam(start: 10, end: 20),
-			BiotParam(start: 30, end: 20),
-			BiotParam(start: 0.1, end: 0.1),
-			BiotParam(start: 0.0004, end: 0.0006)
+			ConfigParam(start: 10, end: 20),
+			ConfigParam(start: 30, end: 20),
+			ConfigParam(start: 0.1, end: 0.1),
+			ConfigParam(start: 0.0004, end: 0.0006)
 		]
 		
 		for param in params {
 			print(param.description)
 			for gen in gens {
-				print("gen: \(gen), value: \(param.valueForGeneration(gen))")
+				print("gen: \(gen), value: \(param.valueForGeneration(gen, generationThreshold: generationThreshold))")
 			}
 			print()
 		}

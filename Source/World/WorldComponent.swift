@@ -148,7 +148,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		displayStats()
 		
 		// biot creation
-		if currentFrame >= gameConfig.gameMode.dispenseDelay && currentFrame.isMultiple(of: gameConfig.gameMode.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < gameConfig.minimumBiotCount {
+		if currentFrame >= gameConfig.simulationMode.dispenseDelay && currentFrame.isMultiple(of: gameConfig.simulationMode.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < gameConfig.minimumBiotCount {
 			
 			if unbornGenomes.count > 0 {
 				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
@@ -159,7 +159,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
 				}
 			}
-			else if gameConfig.gameMode == .random {
+			else if gameConfig.simulationMode == .random {
 				let genome = Genome.newRandomGenome
 				OctopusKit.logForSimInfo.add("created random genome: \(genome.description)")
 				let _ = addNewBiot(genome: genome, in: scene)
@@ -221,14 +221,14 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		guard let scene = OctopusKit.shared?.currentScene else { return }
 		
 		let gameConfig = GameManager.shared.gameConfig
-		let dispenseDelay = gameConfig.gameMode.dispenseDelay
+		let dispenseDelay = gameConfig.simulationMode.dispenseDelay
 		let frame = currentFrame - dispenseDelay
 
 		if currentFrame >= 50, frame.isMultiple(of: 50), let statsComponent = coComponent(GlobalStatsComponent.self) {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = gameConfig.gameMode != .normal ? " (\(gameConfig.gameMode.humanReadableDescription))" : ""
+			let mode = gameConfig.simulationMode != .normal ? " (\(gameConfig.simulationMode.humanReadableDescription))" : ""
 			let name = gameConfig.name
 			let biotStats = currentBiotStats
 			

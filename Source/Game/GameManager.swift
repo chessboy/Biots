@@ -10,5 +10,5 @@ import Foundation
 class GameManager {
 	
 	static let shared = GameManager()
-	var gameConfig = GameConfig(gameMode: .debug)
+	var gameConfig = GameConfig(simulationMode: .debug)
 }

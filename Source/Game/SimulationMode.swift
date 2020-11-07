@@ -1,5 +1,5 @@
 //
-//  GameMode.swift
+//  SimulationMode.swift
 //  Biots
 //
 //  Created by Robert Silverman on 10/25/20.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum GameMode: Int, Codable, CustomStringConvertible {
+enum SimulationMode: Int, Codable, CustomStringConvertible {
 	case normal = 0
 	case random
 	case debug

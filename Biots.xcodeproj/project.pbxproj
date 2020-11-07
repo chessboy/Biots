@@ -85,7 +85,7 @@
 		E85C3AD825453DA7000D2926 /* LocalFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85C3AD725453DA7000D2926 /* LocalFileManager.swift */; };
 		E85C3AE02545D0CB000D2926 /* bundled-file-configs.json in Resources */ = {isa = PBXBuildFile; fileRef = E85C3ADF2545D0CB000D2926 /* bundled-file-configs.json */; };
 		E85C3AE82545D35F000D2926 /* BundledFileConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85C3AE72545D35F000D2926 /* BundledFileConfig.swift */; };
-		E85C3AF425467E97000D2926 /* GameMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85C3AF325467E97000D2926 /* GameMode.swift */; };
+		E85C3AF425467E97000D2926 /* SimulationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85C3AF325467E97000D2926 /* SimulationMode.swift */; };
 		E872B907253DEAE1009CF8A5 /* Consolasligaturizedv2-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */; };
 		E872B908253DEAE1009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */; };
 		E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */; };
@@ -193,7 +193,7 @@
 		E85C3AD725453DA7000D2926 /* LocalFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFileManager.swift; sourceTree = "<group>"; };
 		E85C3ADF2545D0CB000D2926 /* bundled-file-configs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "bundled-file-configs.json"; sourceTree = "<group>"; };
 		E85C3AE72545D35F000D2926 /* BundledFileConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledFileConfig.swift; sourceTree = "<group>"; };
-		E85C3AF325467E97000D2926 /* GameMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameMode.swift; sourceTree = "<group>"; };
+		E85C3AF325467E97000D2926 /* SimulationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationMode.swift; sourceTree = "<group>"; };
 		E872B8FF253DE8B5009CF8A5 /* Consolasligaturizedv2-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-BoldItalic.ttf"; sourceTree = "<group>"; };
 		E872B900253DE8B5009CF8A5 /* Consolasligaturizedv2.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Consolasligaturizedv2.ttf; sourceTree = "<group>"; };
 		E872B901253DE8B5009CF8A5 /* Consolasligaturizedv2-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Consolasligaturizedv2-Italic.ttf"; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 			children = (
 				E8BB054325449247008C39D2 /* DataManager.swift */,
 				D40C4D92254A6DF9008AA986 /* GameConfig.swift */,
-				E85C3AF325467E97000D2926 /* GameMode.swift */,
+				E85C3AF325467E97000D2926 /* SimulationMode.swift */,
 				D40C4D8E254A6DC1008AA986 /* GameManager.swift */,
 				E8BB0534254487B4008C39D2 /* SaveState.swift */,
 			);
@@ -648,7 +648,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E85C3AF425467E97000D2926 /* GameMode.swift in Sources */,
+				E85C3AF425467E97000D2926 /* SimulationMode.swift in Sources */,
 				D47387052442DEA50022E760 /* BiotComponent.swift in Sources */,
 				D47386912442BD6C0022E760 /* Dataset.swift in Sources */,
 				D47386DE2442BEDB0022E760 /* 3 - MyGameViewController.swift in Sources */,
