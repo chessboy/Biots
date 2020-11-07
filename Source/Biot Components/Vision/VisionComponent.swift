@@ -159,6 +159,7 @@ final class VisionComponent: OKComponent {
 			
 			if pings > 0 {
 				colorVector = ColorVector(red: redTotal/pings, green: greenTotal/pings, blue: blueTotal/pings)
+				//print("angle: \(angle.degrees): \(pings): \(colorVector.description)")
 			}
 			
 			if let visionMemory = visionMemory.filter({ $0.angle == angle }).first {

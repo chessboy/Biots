@@ -14,7 +14,7 @@ struct Constants {
 		
 	struct Env {
 				
-		static let windowWidth: CGFloat = 2400
+		static let windowWidth: CGFloat = 2000
 
 		static let filenameSaveStateDebug = "Debug"
 		static let filenameSaveStateSave = "Save"
@@ -103,8 +103,8 @@ struct Constants {
 		static let refinerAngles = [0, -π/12, π/12]
 		static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Biot.radius * 21
-		static let displayMemory = 8
-		static let inferenceMemory = 3
+		static let displayMemory = 5
+		static let inferenceMemory = 5
 		static let maxObjectsPerAngle = 4
 	}
 	

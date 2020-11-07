@@ -17,10 +17,10 @@ extension SKShapeNode {
 		
 		var points: [CGPoint] = []
 		
-		let startAngle = 2.0 * π / sides.cgFloat / 2.0
+		let startAngle = 2*π / sides.cgFloat/2
 		
 		for i in 0...sides {
-			let rotationFactor = ((2.0 * π) / sides.cgFloat) * (i.cgFloat) + startAngle
+			let rotationFactor = ((2*π) / sides.cgFloat) * (i.cgFloat) + startAngle
 			let x = cos(rotationFactor) * radius
 			let y = sin(rotationFactor) * radius
 			let point = CGPoint(x: x, y: y)
@@ -38,7 +38,7 @@ extension SKShapeNode {
 		let shapeNode = SKShapeNode()
 		shapeNode.path = path
 		shapeNode.fillColor = .clear
-		shapeNode.lineWidth = 0.0
+		shapeNode.lineWidth = 0
 		
 		return shapeNode
 	}
@@ -59,7 +59,7 @@ extension SKShapeNode {
 		let shapeNode = SKShapeNode()
 		shapeNode.path = path
 		shapeNode.fillColor = .clear
-		shapeNode.lineWidth = 0.0
+		shapeNode.lineWidth = 0
 
 		return shapeNode
 	}
@@ -138,9 +138,7 @@ extension SKAction {
 	open class func flash(onDuration: TimeInterval = 0.2, offDuration: TimeInterval = 0.1) -> SKAction {
 		let flashOff = SKAction.hide()
 		let flashOn = SKAction.unhide()
-		
 		let flashOffOn = SKAction.sequence([flashOff, SKAction.wait(forDuration: offDuration), flashOn, SKAction.wait(forDuration: onDuration)])
-		
 		return SKAction.sequence([flashOn, flashOffOn])
 	}
 }

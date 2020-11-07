@@ -512,9 +512,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				hydrationHealthNode.zPosition = Constants.ZeeOrder.biot + intenstityHydration
 
 				let staminaHealthNode = healthMeterNodes[HealthMeter.stamina.rawValue]
-				let intenstityStamina = 1 - (stamina * stamina)
-				staminaHealthNode.strokeColor = SKColor(red: intenstityStamina, green: 0, blue: 0, alpha: 1)
-				staminaHealthNode.zPosition = Constants.ZeeOrder.biot + intenstityStamina
+				let intenstityStamina = (stamina * stamina)
+				staminaHealthNode.strokeColor = SKColor(red: 1, green: intenstityStamina, blue: 0, alpha: 1)
+				staminaHealthNode.zPosition = Constants.ZeeOrder.biot + (1 - intenstityStamina)
 			}
 		}
 	}
