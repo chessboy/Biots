@@ -20,31 +20,10 @@ struct OKQuickStartView: View {
 	
 	var body: some View {
     	
-    	#if os(iOS)
-
     	return OKContainerView<MyGameCoordinator, MyGameViewController>()
 	    	.environmentObject(MyGameCoordinator())
-	    	.edgesIgnoringSafeArea(.all)
-	    	.statusBar(hidden: true)
-
-    	#elseif os(macOS)
-
-    	return OKContainerView<MyGameCoordinator, MyGameViewController>()
-	    	.environmentObject(MyGameCoordinator())
-			.frame(width: Constants.Env.windowWidth, height: Constants.Env.windowWidth/1.78)
-	    	.fixedSize()
-//			.aspectRatio(contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
-    	
-    	#elseif os(tvOS)
-    	
-    	return OKContainerView<MyGameCoordinator, MyGameViewController>()
-	    	.environmentObject(MyGameCoordinator())
-	    	.edgesIgnoringSafeArea(.all)
-    	
-    	#endif
-    	
+			.edgesIgnoringSafeArea(.all)
 	}
-	
 }
 
 struct OKQuickStartView_Previews: PreviewProvider {

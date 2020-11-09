@@ -13,8 +13,6 @@ import OctopusKit
 struct Constants {
 		
 	struct Env {
-				
-		static let windowWidth: CGFloat = 2000
 
 		static let filenameSaveStateDebug = "Debug"
 		static let filenameSaveStateSave = "Save"

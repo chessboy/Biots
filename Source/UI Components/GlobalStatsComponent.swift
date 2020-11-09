@@ -44,7 +44,6 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 			maskNode.isHidden = false
 			maskNode.alpha = 0
 			maskNode.run(.fadeIn(withDuration: 0.15))
-			maskNode.run(.fadeIn(withDuration: 0.15))
 		} else {
 			maskNode.run(.fadeOut(withDuration: 0.25)) {
 			   self.maskNode.isHidden = true
@@ -83,11 +82,5 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		if let camera = coComponent(CameraComponent.self)?.camera {
 			camera.addChild(maskNode)
 		}
-	}
-}
-
-extension GlobalStatsComponent {
-	static func create() {
-		
 	}
 }

@@ -111,6 +111,7 @@ final class WorldScene: OKScene {
 			cameraComponent,
 			KeyTrackerComponent(),
 			GlobalStatsComponent(pointerEventComponent: sharedPointerEventComponent),
+			MenuComponent(pointerEventComponent: sharedPointerEventComponent)
 		])
     	    	
     	// Add the global game coordinator entity to this scene so that global components will be included in the update cycle, and updated in the order specified by this scene's `componentSystems` array.
@@ -302,10 +303,16 @@ final class WorldScene: OKScene {
 				
 		switch event.keyCode {
 			
+		case Keycode.escape:
+			if let menuComponent = self.entity?.component(ofType: MenuComponent.self) {
+				menuComponent.toggleVisibility()
+			}
+			break
+		
 		case Keycode.u:
 			globalDataComponent.showHUDPub.toggle()
 			break
-		
+			
 		case Keycode.r:
 			if shiftDown, commandDown, GameManager.shared.gameConfig.simulationMode == .random {
 				entity?.component(ofType: WorldComponent.self)?.unbornGenomes.removeAll()

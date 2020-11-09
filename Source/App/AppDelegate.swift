@@ -28,13 +28,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 		OctopusKit.logForFramework.disabled = true
 		OctopusKit.logForComponents.disabled = true
 
+		guard let screen = NSScreen.main else {
+			OctopusKit.logForErrors.add("could not get main screen bounds")
+			return
+		}
+		
+		let width = screen.frame.size.width
+		let height = screen.frame.size.height
+		
 		// Create the window and set the content view. 
 		window = NSWindow(
-			contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-			styleMask: [.titled, .miniaturizable, .resizable, .fullSizeContentView],
+			contentRect: NSRect(x: 0, y: 0, width: width, height: height),
+			styleMask: [.titled, .resizable],
 			backing: .buffered, defer: false)
-		window.center()
-		window.setFrameAutosaveName("Main Window")
+		window.toggleFullScreen(self)
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
 		window.enableCursorRects()

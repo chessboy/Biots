@@ -8,13 +8,6 @@ A prototype "software toy" built with [OctopusKit](https://github.com/InvadingOc
 ## Adjusting Constants
 You can play with all of the settings by editing `Constants.swift`
 
-### Window Size and Graphics
-As this is still a prototype, you'll need to set the window size in code:
-```swift
-static let windowWidth: CGFloat = 1920
-```
-The height of the window will be `windowWidth/φ` (where φ = golden ratio)
-
 ### Key Commands
 
 |key|action|
