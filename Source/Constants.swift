@@ -212,6 +212,20 @@ struct Constants {
 		static let iconAttrs: [AttributedStringBuilder.Attribute] = [
 			.font(UIFont.systemFont(ofSize: 22, weight: .bold))
 		]
+		
+		static let labelSmallAttrs: [AttributedStringBuilder.Attribute] = [
+			.textColor(UIColor.lightGray),
+			.font(UIFont.systemFont(ofSize: 9.3, weight: .bold))
+		]
+		
+		static let valueSmallAttrs: [AttributedStringBuilder.Attribute] = [
+			.textColor(UIColor.white),
+			.font(UIFont(name: Constants.Font.regular, size: 16)!)
+		]
+		
+		static let iconSmallAttrs: [AttributedStringBuilder.Attribute] = [
+			.font(UIFont.systemFont(ofSize: 14.5, weight: .bold))
+		]
 	}
 }
 

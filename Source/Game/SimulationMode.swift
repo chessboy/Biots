@@ -16,7 +16,7 @@ enum SimulationMode: Int, Codable, CustomStringConvertible {
 	var humanReadableDescription: String {
 		switch self {
 			case .random: return "random"
-			case .normal: return ""
+			case .normal: return "normal"
 			case .debug: return "debug"
 		}
 	}

@@ -64,6 +64,9 @@ struct GameConfig: CustomStringConvertible {
 	let biotCarcasesArePowerFood = true
 	let generationThreshold = 200
 	let clockRate = 60 // ticks per 1-way cycle
+	
+	var minGeneration = 0
+	var maxGeneration = 0
 
 	var configParams: [ConfigParamType : ConfigParam] = [
 		// age
@@ -86,7 +89,7 @@ struct GameConfig: CustomStringConvertible {
 
 	init(simulationMode: SimulationMode) {
 		self.simulationMode = simulationMode
-		name = "Random"
+		name = "Untitled"
 		worldBlockCount = 13
 		algaeTarget = 0
 
@@ -103,13 +106,9 @@ struct GameConfig: CustomStringConvertible {
 	
 	var description: String {
 		
-		let minGen = genomes.map({$0.generation}).min() ?? 0
-		let maxGen = genomes.map({$0.generation}).max() ?? 0
-
-		return "{name: \(name), gameMode: \(simulationMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), generations: \(minGen.abbrev)–\(maxGen.abbrev), biotCounts: \(minimumBiotCount)...\(maximumBiotCount)}"
+		return "{name: \(name), gameMode: \(simulationMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), generations: \(minGeneration.abbrev)–\(maxGeneration.abbrev), biotCounts: \(minimumBiotCount)...\(maximumBiotCount)}"
 	}
 
-	
 	init(saveState: SaveState) {
 		name = saveState.name
 		simulationMode = saveState.simulationMode
@@ -124,6 +123,9 @@ struct GameConfig: CustomStringConvertible {
 	
 	mutating func setup() {
 		worldRadius = Constants.Env.gridBlockSize * worldBlockCount.cgFloat
+		minGeneration = genomes.map({$0.generation}).min() ?? 0
+		maxGeneration = genomes.map({$0.generation}).max() ?? 0
+		
 		OctopusKit.logForSimInfo.add("new config: \(description)")
 	}
 	

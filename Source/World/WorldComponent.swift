@@ -36,8 +36,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	func createWorld() {
 		
 		guard let scene = OctopusKit.shared?.currentScene else { return }
-		
-		coComponent(GlobalStatsComponent.self)?.updateStats("Starting Up...")
+		coComponent(GlobalStatsComponent.self)?.setSimpleText(text: "🚀 Starting up...")
 		
 		cameraZoom = Constants.Camera.initialScale
 		if let camera = coComponent(CameraComponent.self)?.camera {
@@ -228,19 +227,24 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			
 			let biotCount = scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count
 
-			let mode = gameConfig.simulationMode != .normal ? " (\(gameConfig.simulationMode.humanReadableDescription))" : ""
-			let name = gameConfig.name
 			let biotStats = currentBiotStats
 			
 			let labelAttrs = Constants.Stats.labelAttrs
 			let valueAttrs = Constants.Stats.valueAttrs
 			let iconAttrs = Constants.Stats.iconAttrs
+			
+			let labelSmalllAttrs = Constants.Stats.labelSmallAttrs
+			let valueSmallAttrs = Constants.Stats.valueSmallAttrs
+			let iconSmallAttrs = Constants.Stats.iconSmallAttrs
 
 			let builder = AttributedStringBuilder()
 			builder.defaultAttributes = valueAttrs + [.alignment(.center)]
+			
+			if gameConfig.simulationMode != .normal {
+				builder.text("MODE   ", attributes: labelAttrs).text("\(gameConfig.simulationMode.humanReadableDescription)")
+			}
+			
 			builder
-				.text("FILE   ", attributes: labelAttrs)
-				.text("\(name)\(mode)")
 				.text("      🕒 ", attributes: iconAttrs)
 				.text("\(Int(frame).abbrev)")
 				.text("      📶 ", attributes: iconAttrs)
@@ -263,6 +267,15 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				.text("\(biotStats.spawnAverage.formattedToPercentNoDecimal)")
 				.text("      🌱 ", attributes: iconAttrs)
 				.text("\(Int(currentBiotStats.resourceStats.algaeTarget).abbrev)")
+				.newline()
+				.newline()
+
+				.text("FILE   ", attributes: labelSmalllAttrs)
+				.text("\(gameConfig.name)", attributes: valueSmallAttrs)
+				.text("      🥚 ", attributes: iconSmallAttrs)
+				.text("\(gameConfig.genomes.count)", attributes: valueSmallAttrs)
+				.text("      ↗️ ", attributes: iconSmallAttrs)
+				.text("\(gameConfig.minGeneration.formatted)–\(gameConfig.maxGeneration.formatted)", attributes: valueSmallAttrs)
 
 			statsComponent.updateStats(builder.attributedString)
 			

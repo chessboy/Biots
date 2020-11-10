@@ -58,8 +58,7 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 	
 	override func didAddToEntity(withNode node: SKNode) {
 		
-		let height: CGFloat = 80
-		let fontHeight: CGFloat = 24
+		let height: CGFloat = 100
 
 		let parentFrame = node.frame
 		let rect = CGRect(x: parentFrame.minX, y: 0, width: parentFrame.width, height: height)
@@ -69,18 +68,24 @@ final class GlobalStatsComponent: OKComponent, OKUpdatableComponent {
 		maskNode.position = CGPoint(x: 0, y: parentFrame.origin.y)
 		maskNode.zPosition = Constants.ZeeOrder.stats
 
-		let font = OKFont(name: Constants.Font.regular, size: fontHeight, color: SKColor.white.withAlpha(0.8))
     	textNode = SKLabelNode()
-		textNode.text = "Starting up..."
+		textNode.numberOfLines = 2
 		textNode.horizontalAlignmentMode = .center
 		textNode.verticalAlignmentMode = .center
-		textNode.font = font
 		textNode.position = CGPoint(x: 0, y: height/2)
-		
 		maskNode.addChild(textNode)
 		
 		if let camera = coComponent(CameraComponent.self)?.camera {
 			camera.addChild(maskNode)
 		}
+		
+		setSimpleText(text: "🚀 Starting up...")
+	}
+	
+	func setSimpleText(text: String) {
+		let builder = AttributedStringBuilder()
+		builder.defaultAttributes = [.font(UIFont.systemFont(ofSize: 22)), .textColor(UIColor.white), .alignment(.center)]
+		builder.text(text)
+		textNode.attributedText = builder.attributedString
 	}
 }
