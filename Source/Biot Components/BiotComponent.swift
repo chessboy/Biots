@@ -426,7 +426,8 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
 					let bites: CGFloat = self.genome.generation < GameManager.shared.gameConfig.generationThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
-					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: GameManager.shared.gameConfig.biotCarcasesArePowerFood)
+					let fromBiot = self.genome.generation >= Int(GameManager.shared.gameConfig.generationThreshold.cgFloat * 0.333)
+					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: fromBiot)
 					
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self),
 					   let algaeNode = algaeComponent.coComponent(ofType: SpriteKitComponent.self)?.node,
@@ -733,7 +734,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		   let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self),
 		   worldComponent.currentBiots.count >= GameManager.shared.gameConfig.maximumBiotCount {
 			// no more room in the dish, cache a single (potentailly) mutated clone and become nonpregnant
-			let clonedGenome = Genome(parent: matingGenome)
+			let clonedGenome = Genome(parent: matingGenome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float)
 			worldComponent.addUnbornGenome(clonedGenome)
 			self.matingGenome = nil
 			self.lastPregnantAge = 0
@@ -755,7 +756,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		for (parentGenome, angle) in spawn {
 			
 			let position = node.position - CGPoint(angle: node.zRotation + angle) * Constants.Biot.radius * 2
-			let clonedGenome = Genome(parent: parentGenome)
+			let clonedGenome = Genome(parent: parentGenome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: parentGenome.generation).float)
 			let childBiot = BiotComponent.createBiot(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: coComponent(ResourceFountainComponent.self)))
 			childBiot.node?.zRotation = node.zRotation + angle + π
 			

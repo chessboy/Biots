@@ -276,6 +276,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				.text("\(gameConfig.genomes.count)", attributes: valueSmallAttrs)
 				.text("      ↗️ ", attributes: iconSmallAttrs)
 				.text("\(gameConfig.minGeneration.formatted)–\(gameConfig.maxGeneration.formatted)", attributes: valueSmallAttrs)
+				.text("      🌎 ", attributes: iconSmallAttrs)
+				.text("\(gameConfig.worldBlockCount)", attributes: valueSmallAttrs)
 
 			statsComponent.updateStats(builder.attributedString)
 			

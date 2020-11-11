@@ -31,7 +31,7 @@ class BiotsTests: XCTestCase {
 			ConfigParam(start: 10, end: 20),
 			ConfigParam(start: 30, end: 20),
 			ConfigParam(start: 0.1, end: 0.1),
-			ConfigParam(start: 0.0004, end: 0.0006)
+			ConfigParam(start: 0.0004, end: 0.0006),
 		]
 		
 		for param in params {
@@ -41,6 +41,13 @@ class BiotsTests: XCTestCase {
 			}
 			print()
 		}
+		
+		let intParam = ConfigParam(start: 4, end: 2)
+		print("Int test: \(intParam.description)")
+		for gen in gens {
+			print("gen: \(gen), value: \(Int(intParam.valueForGeneration(gen, generationThreshold: generationThreshold)))")
+		}
+
 	}
 	
 	func testNeuralNet() throws {

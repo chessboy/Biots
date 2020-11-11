@@ -41,7 +41,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 			contentRect: NSRect(x: 0, y: 0, width: width, height: height),
 			styleMask: [.titled, .resizable],
 			backing: .buffered, defer: false)
-		window.toggleFullScreen(self)
 		window.contentView = NSHostingView(rootView: contentView)
 		window.makeKeyAndOrderFront(nil)
 		window.enableCursorRects()

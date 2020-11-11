@@ -44,6 +44,8 @@ enum ConfigParamType: Int {
 	case perMovementEnergyCost
 	case speedBoostStaminaCost
 	case armorEnergyCost
+	
+	case mutationRate
 }
 
 struct GameConfig: CustomStringConvertible {
@@ -61,8 +63,7 @@ struct GameConfig: CustomStringConvertible {
 	
 	// environmental
 	let dampeningWater: CGFloat = 0.2
-	let biotCarcasesArePowerFood = true
-	let generationThreshold = 200
+	let generationThreshold = 300
 	let clockRate = 60 // ticks per 1-way cycle
 	
 	var minGeneration = 0
@@ -84,7 +85,10 @@ struct GameConfig: CustomStringConvertible {
 		.perMovementHydrationCost : ConfigParam(start: 0.0075, end: 0.01),
 		.perMovementEnergyCost : ConfigParam(start: 0.0075, end: 0.0125),
 		.speedBoostStaminaCost : ConfigParam(start: 0.0006, end: 0.0008),
-		.armorEnergyCost : ConfigParam(start: 0.04, end: 0.06)
+		.armorEnergyCost : ConfigParam(start: 0.04, end: 0.06),
+		
+		// evolution
+		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low
 	]
 
 	init(simulationMode: SimulationMode) {

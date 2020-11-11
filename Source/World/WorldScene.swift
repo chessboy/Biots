@@ -38,15 +38,12 @@ final class WorldScene: OKScene {
 		super.didMove(to: to)
 		
 		// from ShinryakuTako: Steal the focus on macOS so the player doesn't have to click on the view before using the keyboard.
-		#if os(macOS)
 		to.window?.makeFirstResponder(self)
 		
 		// CHECK: why is no cursor stuff working?
 		//to.window?.enableCursorRects()
 		to.addCursorRect(to.bounds, cursor: .pointingHand)
 		//NSCursor.pointingHand.set()
-		
-		#endif
 	}
 
 	// MARK: 🔶 STEP 6B.2
@@ -485,6 +482,14 @@ final class WorldScene: OKScene {
 			self.entity?.component(ofType: GlobalStatsComponent.self)?.setPaused(isPausedByPlayer)
 
 		case Keycode.k:
+			
+			if optionDown {
+				var biots = entities.compactMap({ $0.component(ofType: BiotComponent.self) })
+				biots = biots.filter({ $0.genome.generation == 0 })
+				biots.forEach({ $0.kill() })
+				return
+			}
+			
 			if commandDown {
 				var biots = entities.compactMap({ $0.component(ofType: BiotComponent.self) })
 				biots = biots.filter({ $0.health < 0.25 })
@@ -628,7 +633,7 @@ final class WorldScene: OKScene {
 					for _ in 1...GameManager.shared.gameConfig.minimumBiotCount {
 						let distance = CGFloat.random(in: GameManager.shared.gameConfig.worldRadius * 0.05...worldRadius * 0.9)
 						let position = CGPoint.randomDistance(distance)
-						let clonedGenome = Genome(parent: biotComponent.genome)
+						let clonedGenome = Genome(parent: biotComponent.genome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: biotComponent.genome.generation).float)
 						let childBiot = BiotComponent.createBiot(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: algaeFountain))
 						addEntity(childBiot)
 					}

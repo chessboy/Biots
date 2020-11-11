@@ -90,8 +90,8 @@ struct Constants {
 		
 	struct NeuralNet {
 		static let newGenomeHiddenCounts = [14, 8]
-		static let maxWeightValue: Float = 1
-		static let maxOutputValue: Float = 2
+		static let maxWeightValue: Float = 2
+		static let maxOutputValue: Float = 1
 		static let outputsSafetyCheck = false
 	}
 		
@@ -188,7 +188,6 @@ struct Constants {
 	}
 	
 	struct ZeeOrder {
-		static let scene: CGFloat = -100
 		static let background: CGFloat = -10
 		static let grid: CGFloat = -3
 		static let water: CGFloat = 1

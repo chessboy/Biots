@@ -21,7 +21,7 @@ struct Genome: CustomStringConvertible, Codable {
 	var outputCount: Int
 	var weights: [[Float]] = [[]]
 	var biases: [[Float]] = [[]]
-	
+
 	var nodeCounts: [Int] {
 		var counts: [Int] = []
 		counts.append(inputCount)
@@ -62,12 +62,12 @@ struct Genome: CustomStringConvertible, Codable {
 		let randomized = initialWeightsAndBiases(random: true)
 		weights = randomized.weights
 		biases = randomized.biases
-//		print("created genome:")
-//		print(jsonString)
+		//print("created genome:")
+		//print(jsonString)
 	}
 	
 	// new genome from parent
-	init(parent: Genome) {
+	init(parent: Genome, mutationRate: Float) {
 		id = UUID().uuidString
 		generation = parent.generation + 1
 		
@@ -77,7 +77,7 @@ struct Genome: CustomStringConvertible, Codable {
 		weights = parent.weights
 		biases = parent.biases
 
-		mutate()
+		mutate(mutationRate: mutationRate)
 	}
 	
 	var idFormatted: String {
@@ -107,9 +107,9 @@ struct Genome: CustomStringConvertible, Codable {
 
 extension Genome {
 
-	mutating func mutate() {
-		let mutationRate = (generation > 50 ? (generation > 200 ? 2 : 3) : 4)
-		let weightsChances = Int.random(mutationRate)
+	mutating func mutate(mutationRate: Float) {
+		// mutationRate: 1...0 ==> 4...2 chances
+		let weightsChances = Int.random(Int(2 + 2*mutationRate))
 		let biasesChances = Bool.random() ? 0 : 1
 		
 		if weightsChances + biasesChances > 0 {
@@ -135,8 +135,8 @@ extension Genome {
 		let selector = Int.random(6)
 		let max = Constants.NeuralNet.maxWeightValue.cgFloat
 
-		let minMutationRate: CGFloat = 0.25
-		let maxMutationRate: CGFloat = 0.5
+		let minMutationRate: CGFloat = max * 0.25
+		let maxMutationRate: CGFloat = max * 0.5
 		
 		switch selector {
 		case 0: return weight / 2

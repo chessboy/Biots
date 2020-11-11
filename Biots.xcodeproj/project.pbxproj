@@ -27,6 +27,7 @@
 		D44EE9B724439592006A2083 /* IntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EE9B624439592006A2083 /* IntMath.swift */; };
 		D44F246F254FE242004F97BA /* AttributedStringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44F246E254FE242004F97BA /* AttributedStringBuilder.swift */; };
 		D45E210B2558EAC10020E7AB /* MenuComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E210A2558EAC10020E7AB /* MenuComponent.swift */; };
+		D45E210F255BA63A0020E7AB /* world-objects-sculpted.json in Resources */ = {isa = PBXBuildFile; fileRef = D45E210E255BA63A0020E7AB /* world-objects-sculpted.json */; };
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D45F0E6B253282360067912C /* PlacedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* PlacedObject.swift */; };
 		D45F0E782532C7520067912C /* world-objects-more.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* world-objects-more.json */; };
@@ -127,6 +128,7 @@
 		D44F246E254FE242004F97BA /* AttributedStringBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributedStringBuilder.swift; sourceTree = "<group>"; };
 		D451712625300C1500290A38 /* WaterSourceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaterSourceComponent.swift; sourceTree = "<group>"; };
 		D45E210A2558EAC10020E7AB /* MenuComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuComponent.swift; sourceTree = "<group>"; };
+		D45E210E255BA63A0020E7AB /* world-objects-sculpted.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-sculpted.json"; sourceTree = "<group>"; };
 		D45F0E6A253282360067912C /* PlacedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacedObject.swift; sourceTree = "<group>"; };
 		D45F0E772532C7520067912C /* world-objects-more.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-more.json"; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -299,6 +301,7 @@
 			children = (
 				D4A85D6D2533D4A800F4861C /* world-objects-less.json */,
 				D45F0E772532C7520067912C /* world-objects-more.json */,
+				D45E210E255BA63A0020E7AB /* world-objects-sculpted.json */,
 			);
 			path = "World Objects";
 			sourceTree = "<group>";
@@ -630,6 +633,7 @@
 				E872B909253DEAE1009CF8A5 /* Consolasligaturizedv2.ttf in Resources */,
 				D473863A2442BA850022E760 /* Assets.xcassets in Resources */,
 				D4A85D6E2533D4A800F4861C /* world-objects-less.json in Resources */,
+				D45E210F255BA63A0020E7AB /* world-objects-sculpted.json in Resources */,
 				D45F0E782532C7520067912C /* world-objects-more.json in Resources */,
 				E83A6C2C2537EAC4008718EE /* genomes-evolved.json in Resources */,
 				E872B90A253DEAE1009CF8A5 /* Consolasligaturizedv2-Bold.ttf in Resources */,

@@ -10,7 +10,7 @@ import Foundation
 import OctopusKit
 
 class DataManager {
-	static let currentFileVersion = 4
+	static let currentFileVersion = 6
 	static let shared = DataManager()
 	
 	static let keyInstalledFileVersion = "installedFileVersion"
