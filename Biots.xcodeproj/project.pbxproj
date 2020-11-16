@@ -173,7 +173,6 @@
 		D49880452517D69400015724 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D498804D2518050A00015724 /* Biots.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Biots.png; sourceTree = "<group>"; };
 		D4A85D6D2533D4A800F4861C /* world-objects-less.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-less.json"; sourceTree = "<group>"; };
-		D4B2ED6A2562345100112620 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4B2EE37244EC434007D615E /* KeyCodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCodes.swift; sourceTree = "<group>"; };
 		D4BE801824FB6D2900208C6A /* BiotsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BiotsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4BE801A24FB6D2900208C6A /* BiotsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiotsTests.swift; sourceTree = "<group>"; };
@@ -460,7 +459,6 @@
 			children = (
 				D4BE801A24FB6D2900208C6A /* BiotsTests.swift */,
 				D4BE801C24FB6D2900208C6A /* Info.plist */,
-				D4B2ED6A2562345100112620 /* README.md */,
 			);
 			path = BiotsTests;
 			sourceTree = "<group>";
