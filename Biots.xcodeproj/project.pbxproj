@@ -14,6 +14,7 @@
 		D418F8072563B3F0009C0868 /* WeaponComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F8062563B3F0009C0868 /* WeaponComponent.swift */; };
 		D418F80B2563B923009C0868 /* WeaponNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F80A2563B923009C0868 /* WeaponNode.swift */; };
 		D418F80F25648F16009C0868 /* ArmorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F80E25648F16009C0868 /* ArmorNode.swift */; };
+		D418F81E256578F2009C0868 /* GenomeDispensary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F81225656E84009C0868 /* GenomeDispensary.swift */; };
 		D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */; };
 		D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */; };
 		D41D1F95244ACF8100A876F4 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D1F94244ACF8100A876F4 /* StringExtensions.swift */; };
@@ -119,6 +120,7 @@
 		D418F8062563B3F0009C0868 /* WeaponComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaponComponent.swift; sourceTree = "<group>"; };
 		D418F80A2563B923009C0868 /* WeaponNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaponNode.swift; sourceTree = "<group>"; };
 		D418F80E25648F16009C0868 /* ArmorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArmorNode.swift; sourceTree = "<group>"; };
+		D418F81225656E84009C0868 /* GenomeDispensary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeDispensary.swift; sourceTree = "<group>"; };
 		D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceFountainInfluenceComponent.swift; sourceTree = "<group>"; };
 		D41D1F94244ACF8100A876F4 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D4229EDE250A7CE600DE29CE /* RetinaNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetinaNode.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				D47386E02442BF1D0022E760 /* WorldComponent.swift */,
 				D47386B72442BEDB0022E760 /* WorldScene.swift */,
 				D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */,
+				D418F81225656E84009C0868 /* GenomeDispensary.swift */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -724,6 +727,7 @@
 				D47386E42442C6B20022E760 /* CGGeometry.swift in Sources */,
 				D47386E62442C6F00022E760 /* CGAffineTransform.swift in Sources */,
 				D47386E12442BF1D0022E760 /* WorldComponent.swift in Sources */,
+				D418F81E256578F2009C0868 /* GenomeDispensary.swift in Sources */,
 				D4D18D96244737FD00BF92FA /* BrainComponent.swift in Sources */,
 				D44E60612452298500694462 /* VisionComponent.swift in Sources */,
 				D47386EF2442CB510022E760 /* CGConstants.swift in Sources */,

@@ -38,7 +38,7 @@ enum ConfigParamType: Int {
 	case maximumHydration
 
 	// costs
-	case predatorNutrientRatio
+	case omnivoreNutrientRatio
 	case collisionDamage
 	case perMovementStaminaRecovery
 	case perMovementHydrationCost
@@ -62,12 +62,12 @@ struct GameConfig: CustomStringConvertible {
 
 	var worldObjects: [WorldObject] = []
 	var genomes: [Genome] = []
-	var predatorGenomes: [Genome] = []
-	var preyGenomes: [Genome] = []
+	var omnivoreGenomes: [Genome] = []
+	var herbivoreGenomes: [Genome] = []
 	
 	// environmental
 	let dampeningWater: CGFloat = 0.2
-	let generationThreshold = 300
+	let generationThreshold = 200
 	let clockRate = 60 // ticks per 1-way cycle
 	
 	var minGeneration = 0
@@ -84,7 +84,7 @@ struct GameConfig: CustomStringConvertible {
 		.maximumHydration: ConfigParam(start: 80, end: 120),
 
 		// costs
-		.predatorNutrientRatio: ConfigParam(start: 0.33, end: 0.16),
+		.omnivoreNutrientRatio: ConfigParam(start: 0.25, end: 0.12),
 		.collisionDamage: ConfigParam(start: 0.10, end: 0.25),
 		.perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125),
 		.perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01),
@@ -97,7 +97,7 @@ struct GameConfig: CustomStringConvertible {
 		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low
 	]
 
-	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000) {
+	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000, minimumBiotCount: Int = 12, maximumBiotCount: Int = 24) {
 		self.simulationMode = simulationMode
 		name = "Untitled"
 		self.worldBlockCount = worldBlockCount
@@ -108,9 +108,9 @@ struct GameConfig: CustomStringConvertible {
 			self.algaeTarget = algaeTarget
 		}
 		
-		minimumBiotCount = 10
-		maximumBiotCount = 22
-
+		self.minimumBiotCount = minimumBiotCount
+		self.maximumBiotCount = maximumBiotCount
+		
 		setup()
 	}
 	
@@ -130,8 +130,8 @@ struct GameConfig: CustomStringConvertible {
 		self.maximumBiotCount = saveState.maximumBiotCount
 		
 		if simulationMode == .predatorPrey {
-			predatorGenomes = genomes.filter { $0.isPredator }
-			preyGenomes = genomes.filter { !$0.isPredator }
+			omnivoreGenomes = genomes.filter { $0.isOmnivore }
+			herbivoreGenomes = genomes.filter { $0.isHerbivore }
 		}
 		
 		setup()

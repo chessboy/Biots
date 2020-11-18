@@ -159,11 +159,19 @@ final class WorldScene: OKScene {
 	var currentGenomes: [Genome] {
 		var genomes = self.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).map({$0.component(ofType: BiotComponent.self)}).map({$0?.genome})
 		
-		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.unbornGenomes {
+		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.generalDispensary?.unbornGenomes {
 			let unborn = Array(unbornBiots.suffix(10))
 			genomes.append(contentsOf: unborn)
 		}
-		
+		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.omnivoreDispensary?.unbornGenomes {
+			let unborn = Array(unbornBiots.suffix(10))
+			genomes.append(contentsOf: unborn)
+		}
+		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.herbivoreDispensary?.unbornGenomes {
+			let unborn = Array(unbornBiots.suffix(10))
+			genomes.append(contentsOf: unborn)
+		}
+
 		return genomes.compactMap { $0 }
 	}
 	
@@ -313,7 +321,7 @@ final class WorldScene: OKScene {
 			
 		case Keycode.r:
 			if shiftDown, commandDown, GameManager.shared.gameConfig.simulationMode == .random {
-				entity?.component(ofType: WorldComponent.self)?.unbornGenomes.removeAll()
+				entity?.component(ofType: WorldComponent.self)?.generalDispensary?.unbornGenomes.removeAll()
 				entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
 					removeEntity(biotEntity)
 				})
@@ -417,7 +425,7 @@ final class WorldScene: OKScene {
 			}
 			else if commandDown {
 				let gameConfig = GameManager.shared.gameConfig
-				let saveState = SaveState(name: gameConfig.name, simulationMode: .normal, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
+				let saveState = SaveState(name: gameConfig.name, simulationMode: gameConfig.simulationMode, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
 				LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.filenameSaveStateSave)
 				return
 			}

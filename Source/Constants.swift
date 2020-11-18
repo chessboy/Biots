@@ -19,8 +19,8 @@ struct Constants {
 		static let filenameSaveStateEvolved = "Evolved"
 		
 		static let gridBlockSize: CGFloat = 400
-		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 40
+		static let omnivoreToHerbivoreRatio: CGFloat = 0.4
 		static let showSpriteKitStats = true
 		
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)

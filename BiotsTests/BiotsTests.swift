@@ -89,7 +89,7 @@ class BiotsTests: XCTestCase {
 	
 	func testOutputs() throws {
 		
-		let genome = Genome(inputCount: 8, hiddenCounts: [4], outputCount: 2)
+		let genome = Genome(species: .herbivore, inputCount: 8, hiddenCounts: [4], outputCount: 2)
 		
         do {
 			
@@ -120,7 +120,7 @@ class BiotsTests: XCTestCase {
 	
 	func testMutation() throws {
 				
-		var genome = Genome(inputCount: 5, hiddenCounts: [4, 3], outputCount: 2)
+		var genome = Genome(species: .herbivore, inputCount: 5, hiddenCounts: [4, 3], outputCount: 2)
 
 		let weightCounts = genome.weightCounts
 		let biasCounts = genome.biasCounts
@@ -179,22 +179,13 @@ class BiotsTests: XCTestCase {
 		XCTAssertFalse(player & wall > 0)
 		XCTAssertTrue(wall & playerDetection > 0)
 	}
-	
-	func testAddPredatorField() throws {
 		
-		let filename = "Save"
-		if var saveState: SaveState = LocalFileManager.shared.loadDataFile(filename) {
-			let genomes = saveState.genomes
-			var alteredGenomes: [Genome] = []
-			for var genome in genomes {
-				genome.isPredator = true
-				alteredGenomes.append(genome)
-			}
-			saveState.genomes = alteredGenomes
-			LocalFileManager.shared.saveStateToFile(saveState, filename: "\(filename)_copy")
-		} else {
-			XCTFail()
-		}
+	func testDispensary() throws {
+		let minCount = 15
+		let maxCount = 30
+		let gameConfig = GameConfig(simulationMode: .predatorPrey, worldBlockCount: 10, algaeTarget: 10000, minimumBiotCount: minCount, maximumBiotCount: maxCount)
+		let _ = GenomeDispensary(dispensaryType: .omnivore, gameConfig: gameConfig)
+		let _ = GenomeDispensary(dispensaryType: .herbivore, gameConfig: gameConfig)
 	}
 	
 

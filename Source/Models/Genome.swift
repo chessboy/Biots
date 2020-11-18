@@ -10,12 +10,27 @@ import Foundation
 import OctopusKit
 import SpriteKit
 
+enum Species: Int, Codable, CaseIterable, CustomStringConvertible {
+	case herbivore = 0
+	case omnivore
+
+	var description: String {
+		return self == .omnivore ? "omnivore" : "herbivore"
+	}
+	
+	var icon: String {
+		return self == .omnivore ? "🦊" : "🐰"
+	}
+}
+
 struct Genome: CustomStringConvertible, Codable {
 	
 	var id: String = ""
 	var generation: Int = 0
-	var isPredator: Bool = false
-
+	var species: Species = .herbivore
+	var isOmnivore: Bool { return species == .omnivore }
+	var isHerbivore: Bool { return species == .herbivore }
+	
 	// neural net
 	var inputCount: Int = 0
 	var hiddenCounts: [Int] = []
@@ -50,37 +65,10 @@ struct Genome: CustomStringConvertible, Codable {
 		}
 		return counts
 	}
-	
-	enum CodingKeys: String, CodingKey {
-		case id
-		case generation
-		case isPredator
-		case inputCount
-		case hiddenCounts
-		case outputCount
-		case weights
-		case biases
-	}
-	
-	init(from decoder: Decoder) throws {
-		let values = try decoder.container(keyedBy: CodingKeys.self)
-
-		id = try values.decode(String.self, forKey: .id)
-		generation = try values.decode(Int.self, forKey: .generation)
-		inputCount = try values.decode(Int.self, forKey: .inputCount)
-		hiddenCounts = try values.decode([Int].self, forKey: .hiddenCounts)
-		outputCount = try values.decode(Int.self, forKey: .outputCount)
-		weights = try values.decode([[Float]].self, forKey: .weights)
-		biases = try values.decode([[Float]].self, forKey: .biases)
-		
-		if let optionalPredator = try? values.decode(Bool.self, forKey: .isPredator) {
-			isPredator = optionalPredator
-		}
-	}
-		
+			
 	// new genome
-	init(isPredator: Bool, inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
-		self.isPredator = isPredator
+	init(species: Species = .herbivore, inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
+		self.species = species
 		self.inputCount = inputCount
 		self.hiddenCounts = hiddenCounts
 		self.outputCount = outputCount
@@ -99,7 +87,7 @@ struct Genome: CustomStringConvertible, Codable {
 	init(parent: Genome, mutationRate: Float) {
 		id = UUID().uuidString
 		generation = parent.generation + 1
-		isPredator = parent.isPredator
+		species = parent.species
 		
 		inputCount = parent.inputCount
 		hiddenCounts = parent.hiddenCounts
@@ -115,7 +103,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), gen: \(generation), pred: \(isPredator), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
+		return "{id: \(idFormatted), gen: \(generation), species: \(species.description), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
 	}
 
 	var jsonString: String {
@@ -124,7 +112,7 @@ struct Genome: CustomStringConvertible, Codable {
 		{
 			"id": "\(id)",
 			"generation": \(generation),
-			"isPredator": \(isPredator),
+			"species": \(species),
 			"inputCount": \(inputCount),
 			"hiddenCounts": \(hiddenCounts),
 			"outputCount": \(outputCount),
@@ -211,11 +199,12 @@ extension Genome {
 }
 
 extension Genome {
-	static func newRandomGenome(isPredator: Bool) -> Genome {
+	static func newRandomGenome(species: Species? = nil) -> Genome {
 		let inputCount = Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth + Senses.newInputCount
 		let outputCount = Inference.outputCount
 		let hiddenCounts = Constants.NeuralNet.newGenomeHiddenCounts
 
-		return Genome(isPredator: isPredator, inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
+		let specifiedSpecies = species ?? Species.allCases.randomElement() ?? .herbivore
+		return Genome(species: specifiedSpecies, inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
 	}
 }

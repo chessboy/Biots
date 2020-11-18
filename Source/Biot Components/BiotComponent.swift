@@ -65,7 +65,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	var frame = Int.random(100)
 	
-	lazy var predatorNutrientRatio = GameManager.shared.gameConfig.valueForConfig(.predatorNutrientRatio, generation: genome.generation)
+	lazy var omnivoreNutrientRatio = GameManager.shared.gameConfig.valueForConfig(.omnivoreNutrientRatio, generation: genome.generation)
 	lazy var mateHealth = GameManager.shared.gameConfig.valueForConfig(.mateHealth, generation: genome.generation)
 	lazy var spawnHealth = GameManager.shared.gameConfig.valueForConfig(.spawnHealth, generation: genome.generation)
 	lazy var maximumAge = GameManager.shared.gameConfig.valueForConfig(.maximumAge, generation: genome.generation)
@@ -210,7 +210,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			bitesTaken = Int((maximumEnergy-foodEnergy) / bite).cgFloat
 		}
 				
-		let nutrientRatio = genome.isPredator ? predatorNutrientRatio : 1
+		let nutrientRatio = genome.isOmnivore ? omnivoreNutrientRatio : 1
 		incurEnergyChange(bite * nutrientRatio, showEffect: true)
 
 		algae.energy -= bite * bitesTaken
@@ -636,7 +636,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			armorNode.alpha = armor.cgFloat
 		}
 		
-		if genome.isPredator, let weapon = brainComponent?.inference.constrainedWeaponAverage {
+		if genome.isOmnivore, let weapon = brainComponent?.inference.constrainedWeaponAverage {
 			weaponNode.alpha = 1
 			weaponNode.update(weaponIntensity: weapon)
 		}
@@ -674,13 +674,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					//let labelAttrs = Constants.Biot.Stats.labelAttrs
 					let valueAttrs = Constants.Biot.Stats.valueAttrs
 					let iconAttrs = Constants.Biot.Stats.iconAttrs
-
-					let predatorPreyIcon = genome.isPredator ? "🦊" : "🐰"
 					
 					let builder1 = AttributedStringBuilder()
 					builder1.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder1
-						.text("\(predatorPreyIcon) ", attributes: iconAttrs)
+						.text("\(genome.species.icon) ", attributes: iconAttrs)
 						.text("\(genome.generation.formatted)")
 						.text("     🌡️ ", attributes: iconAttrs)
 						.text("\(healthFormatted)")
@@ -721,13 +719,13 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome else {
 			return
 		}
-
+		
 		if let worldScene = scene as? WorldScene,
 		   let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self),
-		   worldComponent.currentBiots.count >= GameManager.shared.gameConfig.maximumBiotCount {
+		   worldComponent.shouldCacheGenome(species: genome.species) {
 			// no more room in the dish, cache a single (potentailly) mutated clone and become nonpregnant
 			let clonedGenome = Genome(parent: matingGenome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float)
-			worldComponent.addUnbornGenome(clonedGenome)
+			worldComponent.cacheGenome(clonedGenome)
 			self.matingGenome = nil
 			self.lastPregnantAge = 0
 			node.run(SKAction.scale(to: 1, duration: 0.25))
@@ -899,7 +897,7 @@ extension BiotComponent {
 		extrasNode.addChild(speedNode)
 
 		// armor
-		let armorNode = ArmorNode(isPredator: genome.isPredator)
+		let armorNode = ArmorNode(species: genome.species)
 		extrasNode.addChild(armorNode)
 		
 		// weapon

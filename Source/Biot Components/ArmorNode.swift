@@ -11,12 +11,12 @@ import SpriteKit
 
 class ArmorNode: SKNode {
 		
-	init(isPredator: Bool) {
+	init(species: Species) {
 		super.init()
 		
 		let radius = Constants.Biot.radius
 	
-		if isPredator {
+		if species == .omnivore {
 			addChild(createNode(radius: radius, path: createSidePath(radius: radius, rotation: 0)))
 			addChild(createNode(radius: radius, path: createSidePath(radius: radius, rotation: π + π/12 + π/24)))
 		} else {
