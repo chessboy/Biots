@@ -161,7 +161,7 @@ class BiotsTests: XCTestCase {
 		genome.biases = randomizedBiases
 		
 		for _ in 1...10 {
-			genome.mutate()
+			genome.mutate(mutationRate: 1)
 		}
 		
 		print(genome.jsonString)
@@ -178,6 +178,23 @@ class BiotsTests: XCTestCase {
 		XCTAssertTrue(player & playerDetection > 0)
 		XCTAssertFalse(player & wall > 0)
 		XCTAssertTrue(wall & playerDetection > 0)
+	}
+	
+	func testAddPredatorField() throws {
+		
+		let filename = "Save"
+		if var saveState: SaveState = LocalFileManager.shared.loadDataFile(filename) {
+			let genomes = saveState.genomes
+			var alteredGenomes: [Genome] = []
+			for var genome in genomes {
+				genome.isPredator = true
+				alteredGenomes.append(genome)
+			}
+			saveState.genomes = alteredGenomes
+			LocalFileManager.shared.saveStateToFile(saveState, filename: "\(filename)_copy")
+		} else {
+			XCTFail()
+		}
 	}
 	
 

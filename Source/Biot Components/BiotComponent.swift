@@ -35,7 +35,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var healthMeterNodes: [RetinaNode] = []
 	var extrasNode: SKNode!
 	var speedNode: SKShapeNode!
-	var armorNode: SKShapeNode!
+	var armorNode: SKNode!
 	var eyeNodes: [SKNode] = []
 	var progressNode: ProgressNode!
 	var selectionNode: SKNode!
@@ -43,6 +43,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var retinaNodes: [RetinaNode] = []
 	var resourceNodes: [RetinaNode] = []
 	var thrusterNode: ThrusterNode!
+	var weaponNode: WeaponNode!
 
 	var matingGenome: Genome?
 	
@@ -64,6 +65,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	var frame = Int.random(100)
 	
+	lazy var predatorNutrientRatio = GameManager.shared.gameConfig.valueForConfig(.predatorNutrientRatio, generation: genome.generation)
 	lazy var mateHealth = GameManager.shared.gameConfig.valueForConfig(.mateHealth, generation: genome.generation)
 	lazy var spawnHealth = GameManager.shared.gameConfig.valueForConfig(.spawnHealth, generation: genome.generation)
 	lazy var maximumAge = GameManager.shared.gameConfig.valueForConfig(.maximumAge, generation: genome.generation)
@@ -207,8 +209,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		if algae.fromBiot {
 			bitesTaken = Int((maximumEnergy-foodEnergy) / bite).cgFloat
 		}
-		
-		incurEnergyChange(bite * bitesTaken, showEffect: true)
+				
+		let nutrientRatio = genome.isPredator ? predatorNutrientRatio : 1
+		incurEnergyChange(bite * nutrientRatio, showEffect: true)
 
 		algae.energy -= bite * bitesTaken
 		if algae.energy < bite {
@@ -625,34 +628,20 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	func updateExtrasNode() {
 		
-		guard frame.isMultiple(of: 2) else { return }
+		guard frame.isMultiple(of: 1) else { return }
 		
-		let showingExtras = !extrasNode.isHidden
-		let showExtras = globalDataComponent?.showBiotExtras ?? false
-		
-		if !showingExtras, showExtras {
-			extrasNode.alpha = 0
-			extrasNode.isHidden = false
-			extrasNode.run(.fadeIn(withDuration: 0.2))
-			speedNode.alpha = 0
-			armorNode.alpha = 0
-		}
-		else if showingExtras, !showExtras {
-			extrasNode.run(.fadeOut(withDuration: 0.1)) {
-				self.extrasNode.isHidden = true
-				self.extrasNode.alpha = 0
-			}
-		}
-
-		if showExtras,
-		   let speedBoost = brainComponent?.inference.speedBoost.average,
+		if let speedBoost = brainComponent?.inference.speedBoost.average,
 		   let armor = brainComponent?.inference.armor.average {
 			speedNode.alpha = speedBoost.cgFloat
 			armorNode.alpha = armor.cgFloat
 		}
+		
+		if genome.isPredator, let weapon = brainComponent?.inference.constrainedWeaponAverage {
+			weaponNode.alpha = 1
+			weaponNode.update(weaponIntensity: weapon)
+		}
 	}
 
-	
 	func showSelection() {
 		if !selectionNode.isHidden, let rotation = entityNode?.zRotation {
 			selectionNode.zRotation = 2*π - rotation + π/2
@@ -686,16 +675,19 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					let valueAttrs = Constants.Biot.Stats.valueAttrs
 					let iconAttrs = Constants.Biot.Stats.iconAttrs
 
+					let predatorPreyIcon = genome.isPredator ? "🦊" : "🐰"
+					
 					let builder1 = AttributedStringBuilder()
 					builder1.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder1
-						.text("↗️ ", attributes: iconAttrs)
+						.text("\(predatorPreyIcon) ", attributes: iconAttrs)
 						.text("\(genome.generation.formatted)")
 						.text("     🌡️ ", attributes: iconAttrs)
 						.text("\(healthFormatted)")
 						.text("     🕒 ", attributes: iconAttrs)
 						.text("\((age/maximumAge).formattedToPercentNoDecimal)")
 
+					
 					let builder2 = AttributedStringBuilder()
 					builder2.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder2
@@ -891,17 +883,15 @@ extension BiotComponent {
 
 		// extras
 		let extrasNode = SKNode()
-		extrasNode.isHidden = true
-		extrasNode.zPosition = Constants.ZeeOrder.biot + 0.1
+		extrasNode.zPosition = Constants.ZeeOrder.biot - 1
 
 		// speed boost
 		let speedNode = SKShapeNode()
 		let speedPath = CGMutablePath()
-		speedPath.addArc(center: .zero, radius: radius * 1.1, startAngle: π/6, endAngle: -π/6, clockwise: true)
+		speedPath.addArc(center: .zero, radius: radius * 1.1, startAngle: π - π/6, endAngle: π + π/6, clockwise: false)
 		speedNode.path = speedPath
 		speedNode.fillColor = .clear
 		speedNode.lineWidth = radius * 0.1
-		speedNode.zRotation = π
 		speedNode.alpha = 0
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
@@ -909,18 +899,12 @@ extension BiotComponent {
 		extrasNode.addChild(speedNode)
 
 		// armor
-		let armorNode = SKShapeNode()
-		let armorPath = CGMutablePath()
-		armorPath.addArc(center: .zero, radius: radius * 1.1, startAngle: -π/6 - π/24, endAngle: π/6 + π/24, clockwise: true)
-		armorNode.path = armorPath
-		armorNode.fillColor = .clear
-		armorNode.lineWidth = radius * 0.1
-		armorNode.zRotation = π
-		armorNode.alpha = 0
-		armorNode.lineCap = .round
-		armorNode.strokeColor = .green
-		armorNode.isAntialiased = Constants.Env.graphics.isAntialiased
+		let armorNode = ArmorNode(isPredator: genome.isPredator)
 		extrasNode.addChild(armorNode)
+		
+		// weapon
+		let weaponNode = WeaponNode()
+		extrasNode.addChild(weaponNode)
 
 		node.addChild(extrasNode)
 		
@@ -1003,6 +987,7 @@ extension BiotComponent {
 		biotComponent.extrasNode = extrasNode
 		biotComponent.speedNode = speedNode
 		biotComponent.armorNode = armorNode
+		biotComponent.weaponNode = weaponNode
 		biotComponent.eyeNodes = eyeNodes
 		biotComponent.selectionNode = selectionNode
 
@@ -1016,6 +1001,7 @@ extension BiotComponent {
 			VisionComponent(),
 			NeuralNetComponent(genome: genome),
 			BrainComponent(),
+			WeaponComponent(),
 			ContactComponent(),
 			biotComponent
 		])

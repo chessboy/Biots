@@ -38,11 +38,13 @@ enum ConfigParamType: Int {
 	case maximumHydration
 
 	// costs
+	case predatorNutrientRatio
 	case collisionDamage
 	case perMovementStaminaRecovery
 	case perMovementHydrationCost
 	case perMovementEnergyCost
 	case speedBoostStaminaCost
+	case weaponStaminaCost
 	case armorEnergyCost
 	
 	case mutationRate
@@ -60,6 +62,8 @@ struct GameConfig: CustomStringConvertible {
 
 	var worldObjects: [WorldObject] = []
 	var genomes: [Genome] = []
+	var predatorGenomes: [Genome] = []
+	var preyGenomes: [Genome] = []
 	
 	// environmental
 	let dampeningWater: CGFloat = 0.2
@@ -69,37 +73,39 @@ struct GameConfig: CustomStringConvertible {
 	var minGeneration = 0
 	var maxGeneration = 0
 
-	var configParams: [ConfigParamType : ConfigParam] = [
+	var configParams: [ConfigParamType: ConfigParam] = [
 		// age
-		.maximumAge : ConfigParam(start: 2280, end: 3300),
+		.maximumAge: ConfigParam(start: 2280, end: 3300),
 		
 		// requirements
-		.mateHealth : ConfigParam(start: 0.65, end: 0.8),
-		.spawnHealth : ConfigParam(start: 0.55, end: 0.75),
-		.maximumFoodEnergy : ConfigParam(start: 80, end: 120),
-		.maximumHydration : ConfigParam(start: 80, end: 120),
+		.mateHealth: ConfigParam(start: 0.65, end: 0.8),
+		.spawnHealth: ConfigParam(start: 0.55, end: 0.75),
+		.maximumFoodEnergy: ConfigParam(start: 80, end: 120),
+		.maximumHydration: ConfigParam(start: 80, end: 120),
 
 		// costs
-		.collisionDamage : ConfigParam(start: 0.10, end: 0.25),
-		.perMovementStaminaRecovery : ConfigParam(start: 0.0015, end: 0.00125),
-		.perMovementHydrationCost : ConfigParam(start: 0.0075, end: 0.01),
-		.perMovementEnergyCost : ConfigParam(start: 0.0075, end: 0.0125),
-		.speedBoostStaminaCost : ConfigParam(start: 0.0006, end: 0.0008),
-		.armorEnergyCost : ConfigParam(start: 0.04, end: 0.06),
+		.predatorNutrientRatio: ConfigParam(start: 0.33, end: 0.16),
+		.collisionDamage: ConfigParam(start: 0.10, end: 0.25),
+		.perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125),
+		.perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01),
+		.perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125),
+		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008),
+		.weaponStaminaCost: ConfigParam(start: 0.001 * 0.5, end: 0.002 * 0.5),
+		.armorEnergyCost: ConfigParam(start: 0.04, end: 0.06),
 		
 		// evolution
 		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low
 	]
 
-	init(simulationMode: SimulationMode) {
+	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000) {
 		self.simulationMode = simulationMode
 		name = "Untitled"
-		worldBlockCount = 13
-		algaeTarget = 0
+		self.worldBlockCount = worldBlockCount
+		self.algaeTarget = 0
 
 		if simulationMode != .debug {
 			worldObjects = DataManager.shared.loadWorldObjects(type: .less)
-			algaeTarget = 15000
+			self.algaeTarget = algaeTarget
 		}
 		
 		minimumBiotCount = 10
@@ -119,9 +125,15 @@ struct GameConfig: CustomStringConvertible {
 		algaeTarget = saveState.algaeTarget
 		worldBlockCount = saveState.worldBlockCount
 		self.worldObjects = saveState.worldObjects
-		self.genomes = saveState.genomes
+		self.genomes = saveState.genomes.shuffled()
 		self.minimumBiotCount = saveState.minimumBiotCount
 		self.maximumBiotCount = saveState.maximumBiotCount
+		
+		if simulationMode == .predatorPrey {
+			predatorGenomes = genomes.filter { $0.isPredator }
+			preyGenomes = genomes.filter { !$0.isPredator }
+		}
+		
 		setup()
 	}
 	

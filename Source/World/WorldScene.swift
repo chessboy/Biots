@@ -74,6 +74,7 @@ final class WorldScene: OKScene {
 			ContactComponent.self,
 	    	WorldComponent.self,
 			BrainComponent.self,
+			WeaponComponent.self,
 			BiotComponent.self,
     	]
 	}
@@ -340,19 +341,15 @@ final class WorldScene: OKScene {
 			break
 
 		case Keycode.e:
-			if !shiftDown {
-				globalDataComponent.showBiotExtras.toggle()
-			} else {
-				globalDataComponent.showBiotEyeSpots.toggle()
-				self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
-					if globalDataComponent.showBiotEyeSpots {
-						biot.addComponent(EyesComponent())
-					}
-					else {
-						biot.removeComponent(ofType: EyesComponent.self)
-					}
-				})
-			}
+			globalDataComponent.showBiotEyeSpots.toggle()
+			self.entities.filter { $0.component(ofType: BiotComponent.self) != nil }.forEach({ biot in
+				if globalDataComponent.showBiotEyeSpots {
+					biot.addComponent(EyesComponent())
+				}
+				else {
+					biot.removeComponent(ofType: EyesComponent.self)
+				}
+			})
 			break
 
 			
@@ -744,7 +741,7 @@ final class WorldScene: OKScene {
 	
 	@objc func newRandomWorld() {
 		if let worldComponent = entity?.component(ofType: WorldComponent.self) {
-			GameManager.shared.gameConfig = GameConfig(simulationMode: .random)
+			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, algaeTarget: 10000)
 			worldComponent.createWorld()
 		}
 	}

@@ -3,7 +3,7 @@
 		"simulationMode": 0,
 		"algaeTarget": 15000,
 		"worldBlockCount": 13,
-		"worldObjectsFilename": "world-objects-more",
+		"worldObjectsFilename": "world-objects-sculpted",
 		"genomeFilename": "genomes-evolved",
 		"filename": "Evolved",
 		"minimumBiotCount": 10,

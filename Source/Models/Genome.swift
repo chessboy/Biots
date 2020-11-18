@@ -12,13 +12,14 @@ import SpriteKit
 
 struct Genome: CustomStringConvertible, Codable {
 	
-	var id: String
-	var generation: Int
+	var id: String = ""
+	var generation: Int = 0
+	var isPredator: Bool = false
 
 	// neural net
-	var inputCount: Int
-	var hiddenCounts: [Int]
-	var outputCount: Int
+	var inputCount: Int = 0
+	var hiddenCounts: [Int] = []
+	var outputCount: Int = 0
 	var weights: [[Float]] = [[]]
 	var biases: [[Float]] = [[]]
 
@@ -49,9 +50,37 @@ struct Genome: CustomStringConvertible, Codable {
 		}
 		return counts
 	}
+	
+	enum CodingKeys: String, CodingKey {
+		case id
+		case generation
+		case isPredator
+		case inputCount
+		case hiddenCounts
+		case outputCount
+		case weights
+		case biases
+	}
+	
+	init(from decoder: Decoder) throws {
+		let values = try decoder.container(keyedBy: CodingKeys.self)
+
+		id = try values.decode(String.self, forKey: .id)
+		generation = try values.decode(Int.self, forKey: .generation)
+		inputCount = try values.decode(Int.self, forKey: .inputCount)
+		hiddenCounts = try values.decode([Int].self, forKey: .hiddenCounts)
+		outputCount = try values.decode(Int.self, forKey: .outputCount)
+		weights = try values.decode([[Float]].self, forKey: .weights)
+		biases = try values.decode([[Float]].self, forKey: .biases)
+		
+		if let optionalPredator = try? values.decode(Bool.self, forKey: .isPredator) {
+			isPredator = optionalPredator
+		}
+	}
 		
 	// new genome
-	init(inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
+	init(isPredator: Bool, inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
+		self.isPredator = isPredator
 		self.inputCount = inputCount
 		self.hiddenCounts = hiddenCounts
 		self.outputCount = outputCount
@@ -70,6 +99,7 @@ struct Genome: CustomStringConvertible, Codable {
 	init(parent: Genome, mutationRate: Float) {
 		id = UUID().uuidString
 		generation = parent.generation + 1
+		isPredator = parent.isPredator
 		
 		inputCount = parent.inputCount
 		hiddenCounts = parent.hiddenCounts
@@ -85,7 +115,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), gen: \(generation), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
+		return "{id: \(idFormatted), gen: \(generation), pred: \(isPredator), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
 	}
 
 	var jsonString: String {
@@ -94,6 +124,7 @@ struct Genome: CustomStringConvertible, Codable {
 		{
 			"id": "\(id)",
 			"generation": \(generation),
+			"isPredator": \(isPredator),
 			"inputCount": \(inputCount),
 			"hiddenCounts": \(hiddenCounts),
 			"outputCount": \(outputCount),
@@ -180,11 +211,11 @@ extension Genome {
 }
 
 extension Genome {
-	static var newRandomGenome: Genome {
+	static func newRandomGenome(isPredator: Bool) -> Genome {
 		let inputCount = Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth + Senses.newInputCount
 		let outputCount = Inference.outputCount
 		let hiddenCounts = Constants.NeuralNet.newGenomeHiddenCounts
 
-		return Genome(inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
+		return Genome(isPredator: isPredator, inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
 	}
 }

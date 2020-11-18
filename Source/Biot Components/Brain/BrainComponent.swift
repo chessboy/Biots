@@ -139,6 +139,7 @@ final class BrainComponent: OKComponent {
 		thrustAverage *= dampening
 		let speedBoost: CGFloat = max(inference.speedBoost.average.cgFloat * Constants.Thrust.maxSpeedBoost, 1)
 		let armor: CGFloat = inference.armor.average.cgFloat
+		let weapon = inference.constrainedWeaponAverage
 		let left = thrustAverage.dx * Constants.Thrust.thrustForce * speedBoost
 		let right = thrustAverage.dy * Constants.Thrust.thrustForce * speedBoost
 
@@ -166,6 +167,11 @@ final class BrainComponent: OKComponent {
 		if armor > 0 {
 			let armorEnergyCost = GameManager.shared.gameConfig.valueForConfig(.armorEnergyCost, generation: biot.genome.generation)
 			biot.incurEnergyChange(-armorEnergyCost * armor)
+		}
+		
+		if weapon > 0 {
+			let weaponEnergyCost = GameManager.shared.gameConfig.valueForConfig(.weaponStaminaCost, generation: biot.genome.generation)
+			biot.incurStaminaChange(weaponEnergyCost * weapon)
 		}
 		
 		// healing
