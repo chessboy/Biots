@@ -170,7 +170,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		guard let scene = OctopusKit.shared?.currentScene else { return }
 
 		if gameConfig.simulationMode == .random, currentBiots.count < gameConfig.minimumBiotCount {
-			let genome = Genome.newRandomGenome()
+			let genome = Genome.newRandomGenome(species: .omnivore)
 			OctopusKit.logForSimInfo.add("created random genome: \(genome.description)")
 			let _ = addNewBiot(genome: genome, in: scene)
 		}

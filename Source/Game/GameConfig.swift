@@ -125,7 +125,7 @@ struct GameConfig: CustomStringConvertible {
 		algaeTarget = saveState.algaeTarget
 		worldBlockCount = saveState.worldBlockCount
 		self.worldObjects = saveState.worldObjects
-		self.genomes = saveState.genomes.shuffled()
+		self.genomes = saveState.genomes.filter({ $0.generation > 0 }).shuffled()
 		self.minimumBiotCount = saveState.minimumBiotCount
 		self.maximumBiotCount = saveState.maximumBiotCount
 		

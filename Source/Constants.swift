@@ -65,6 +65,11 @@ struct Constants {
 		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
 	}
 	
+	struct Mud {
+		static let dip: CGFloat = 0.1 // % of max stamina increase
+		static let timeBetweenDips: TimeInterval = 7.5 // seconds between absorbing minerals from the same mud source
+	}
+	
 	struct Resource {
 		static let minSize: CGFloat = 80
 		static let plopSize: CGFloat = 200

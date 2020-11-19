@@ -124,7 +124,7 @@ final class BrainComponent: OKComponent {
 		
 		guard
 			let biot = biotComponent,
-			let node = entityNode as? SKSpriteNode, !biot.isInteracting else { return }
+			let node = entityNode as? SKSpriteNode else { return }
 	
 		let gameConfig = GameManager.shared.gameConfig
 		var thrustAverage = inference.thrust.averageOfMostRecent(memory: Constants.Thrust.inferenceMemory)
@@ -146,8 +146,11 @@ final class BrainComponent: OKComponent {
 		// determine new position and heading
 		let (newPosition, newHeading) = newPositionAndHeading(node: node, thrust: CGVector(dx: left, dy: right))
 		//node.run(SKAction.move(to: newPosition, duration: 0.05))
-		node.position = newPosition
-		node.zRotation = newHeading
+		
+		if !biot.isInteracting {
+			node.position = newPosition
+			node.zRotation = newHeading
+		}
 		
 		// movement energy expenditure
 		let perMovementEnergyCost = GameManager.shared.gameConfig.valueForConfig(.perMovementEnergyCost, generation: biot.genome.generation)

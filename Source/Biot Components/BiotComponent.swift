@@ -89,7 +89,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	var maximumEnergy: CGFloat {
-		return maximumFoodEnergy * (isPregnant ? 2 : 1)
+		return maximumFoodEnergy * (isPregnant ? (genome.isOmnivore ? 1.5 : 2) : 1)
 	}
 
 	var maximumHydration: CGFloat {
@@ -226,13 +226,13 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		incurHydrationChange(sip)
 	}
 
+	func biotAndMudCollided() {
+		incurStaminaChange(-Constants.Mud.dip)
+	}
+
 	struct BodyContact {
 		var when: TimeInterval
 		var body: SKPhysicsBody
-		
-		mutating func updateWhen(when: TimeInterval) {
-			self.when = when
-		}
 	}
 	
 	var isOnTopOfFood = false
@@ -242,6 +242,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var isImmersedInMud = false
 	var contactedAlgaeComponents: [BodyContact] = []
 	var contactedWaterComponents: [BodyContact] = []
+	var contactedMudComponents: [BodyContact] = []
 
 	func checkResourceContacts() {
 
@@ -250,13 +251,23 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		let now = Date().timeIntervalSince1970
 
 		if frame.isMultiple(of: 30) {
-			//let countAlgae = contactedAlgaeComponents.count
-			contactedAlgaeComponents = contactedAlgaeComponents.filter({ now - $0.when <= Constants.Algae.timeBetweenBites })
-			//print("algae body purge: old count: \(countAlgae), new count: \(contactedAlgaeComponents.count)")
+			let countAlgae = contactedAlgaeComponents.count
+			if countAlgae > 0 {
+				contactedAlgaeComponents = contactedAlgaeComponents.filter({ now - $0.when <= Constants.Algae.timeBetweenBites })
+				//print("algae body purge: old count: \(countAlgae), new count: \(contactedAlgaeComponents.count)")
+			}
 			
-			//let countWater = contactedWaterComponents.count
-			contactedWaterComponents = contactedWaterComponents.filter({ now - $0.when <= Constants.Water.timeBetweenSips })
-			//print("water body purge: old count: \(countWater), new count: \(contactedWaterComponents.count)")
+			let countWater = contactedWaterComponents.count
+			if countWater > 0 {
+				contactedWaterComponents = contactedWaterComponents.filter({ now - $0.when <= Constants.Water.timeBetweenSips })
+				//print("water body purge: old count: \(countWater), new count: \(contactedWaterComponents.count)")
+			}
+			
+			let countMud = contactedMudComponents.count
+			if countMud > 0 {
+				contactedMudComponents = contactedMudComponents.filter({ now - $0.when <= Constants.Mud.timeBetweenDips })
+				//print("mud body purge: old count: \(countMud), new count: \(contactedMudComponents.count)")
+			}
 		}
 		
 		isOnTopOfFood = false
@@ -272,16 +283,10 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					if let algae = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first?.component(ofType: AlgaeComponent.self), algae.energy > 0 {
 
 						isOnTopOfFood = true
-						var contact = contactedAlgaeComponents.filter({ $0.body == body }).first
-						
-						if contact == nil {
-							//print("algae added at \(now), ate algae energy: \(algae.energy.formattedTo2Places)")
+						let contact = contactedAlgaeComponents.filter({ $0.body == body }).first
+						if contact == nil || contact!.when > Constants.Algae.timeBetweenBites {
+							contactedAlgaeComponents = contactedAlgaeComponents.filter({ $0.body != body })
 							contactedAlgaeComponents.append(BodyContact(when: now, body: body))
-							biotAndAlgaeCollided(algae: algae)
-						}
-						else if now - contact!.when > Constants.Algae.timeBetweenBites {
-							//print("algae found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), ate algae energy: \(algae.energy.formattedTo2Places)")
-							contact!.updateWhen(when: now)
 							biotAndAlgaeCollided(algae: algae)
 						}
 					}
@@ -293,7 +298,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					if let waterNode = body.node, waterNode.contains(tailPoint) {
 						if isMud {
 							isImmersedInMud = true
-							stamina = 1
 						}
 						else {
 							isImmersedInWater = true
@@ -304,17 +308,19 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					isOnTopOfMud = isMud
 
 					if !isMud {
-						var contact = contactedWaterComponents.filter({ $0.body == body }).first
-						
-						if contact == nil {
-							//print("water added at \(now), drank water")
+						let contact = contactedWaterComponents.filter({ $0.body == body }).first
+						if contact == nil || now - contact!.when > Constants.Water.timeBetweenSips {
+							contactedWaterComponents = contactedWaterComponents.filter({ $0.body != body })
 							contactedWaterComponents.append(BodyContact(when: now, body: body))
 							biotAndWaterCollided()
 						}
-						else if now - contact!.when > Constants.Water.timeBetweenSips {
-							//print("water found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), drank water")
-							contact!.updateWhen(when: now)
-							biotAndWaterCollided()
+					}
+					else { // isMud
+						let contact = contactedMudComponents.filter({ $0.body == body }).first
+						if contact == nil || now - contact!.when > Constants.Mud.timeBetweenDips {
+							contactedMudComponents = contactedMudComponents.filter({ $0.body != body })
+							contactedMudComponents.append(BodyContact(when: now, body: body))
+							biotAndMudCollided()
 						}
 					}
 				}
@@ -731,13 +737,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			node.run(SKAction.scale(to: 1, duration: 0.25))
 			return
 		}
-		
-		foodEnergy = foodEnergy / 4
-		hydration = hydration / 3
-		incurStaminaChange(0.05)
-		
-		spawnCount += 1
-		
+				
 		let selfReplicationSpawn = [(genome, -π/8), (genome, π/8)]
 		let standardSpawn =  [(genome, -π/8), (matingGenome, π/8)]
 
@@ -770,6 +770,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		
 		self.matingGenome = nil
 		node.run(SKAction.scale(to: 1, duration: 0.25))
+		
+		foodEnergy = maximumFoodEnergy / 2
+		hydration = maximumWaterHydration / 2
+		incurStaminaChange(0.05)
+		spawnCount += 1
 	}
 	
 	func mated(otherGenome: Genome) {

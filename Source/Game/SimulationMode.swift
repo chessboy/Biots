@@ -39,7 +39,7 @@ enum SimulationMode: Int, Codable, CustomStringConvertible {
 		switch self {
 			case .random: return 10
 			case .normal, .predatorPrey: return 50
-			case .debug: return 0
+			case .debug: return 1
 		}
 	}
 }

@@ -181,8 +181,8 @@ class BiotsTests: XCTestCase {
 	}
 		
 	func testDispensary() throws {
-		let minCount = 15
-		let maxCount = 30
+		let minCount = 14
+		let maxCount = 28
 		let gameConfig = GameConfig(simulationMode: .predatorPrey, worldBlockCount: 10, algaeTarget: 10000, minimumBiotCount: minCount, maximumBiotCount: maxCount)
 		let _ = GenomeDispensary(dispensaryType: .omnivore, gameConfig: gameConfig)
 		let _ = GenomeDispensary(dispensaryType: .herbivore, gameConfig: gameConfig)
