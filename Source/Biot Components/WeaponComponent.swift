@@ -10,11 +10,14 @@ import OctopusKit
 
 final class WeaponComponent: OKComponent {
 	
+	var isFeeding = false
+	
 	override func update(deltaTime seconds: TimeInterval) {
 		predate()
 	}
 	
 	func predate() {
+		isFeeding = false
 
 		guard let biotComponent = coComponent(BiotComponent.self), biotComponent.genome.isOmnivore,
 			  let weaponIntensity = coComponent(BrainComponent.self)?.inference.constrainedWeaponAverage, weaponIntensity > 0,
@@ -45,6 +48,8 @@ final class WeaponComponent: OKComponent {
 				
 				stop[0] = true
 				if let preyBiot = OctopusKit.shared?.currentScene?.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first?.component(ofType: BiotComponent.self), let preyArmor = preyBiot.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat {
+					
+					self.isFeeding = true
 					
 					let energyExtracted: CGFloat = Constants.Algae.bite / 10
 					let armorDampendedImpact = energyExtracted * (1 - preyArmor)

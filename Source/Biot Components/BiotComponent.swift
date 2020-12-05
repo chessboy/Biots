@@ -44,12 +44,14 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var resourceNodes: [RetinaNode] = []
 	var thrusterNode: ThrusterNode!
 	var weaponNode: WeaponNode!
-
-	var matingGenome: Genome?
 	
 	lazy var brainComponent = coComponent(BrainComponent.self)
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
+
+	var cumulativeFoodEnergy: CGFloat = 0
+	var cumulativeHydration: CGFloat = 0
+	var cumulativeDamage: CGFloat = 0
 
 	enum HealthMeter: Int {
 		case hydration
@@ -72,9 +74,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	lazy var maximumFoodEnergy = GameManager.shared.gameConfig.valueForConfig(.maximumFoodEnergy, generation: genome.generation)
 	lazy var maximumWaterHydration = GameManager.shared.gameConfig.valueForConfig(.maximumHydration, generation: genome.generation)
 	
-	var isPregnant: Bool {
-		return matingGenome != nil
-	}
+	var healthRunningValue = RunningValue(memory: 100)
+	
+	var isPregnant: Bool = false
 
 	var canMate: Bool {
 		return !isExpired && !isPregnant && age >= matureAge && health >= mateHealth
@@ -154,6 +156,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		ContactComponent.self,
 		VisionComponent.self,
 		NeuralNetComponent.self,
+		WeaponComponent.self,
 		BrainComponent.self
 	]}
 	
@@ -171,6 +174,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 		
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
+		if amount > 0 {
+			cumulativeFoodEnergy += amount
+		}
 		foodEnergy += amount
 		foodEnergy = foodEnergy.clamped(to: 0...maximumEnergy)
 		if showEffect, !healthNode.isHidden {
@@ -180,12 +186,19 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurHydrationChange(_ amount: CGFloat) {
+		if amount > 0 {
+			cumulativeHydration += amount
+		}
 		hydration += amount
 		hydration = hydration.clamped(to: 0...maximumHydration)
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
 		guard abs(amount) != 0 else { return }
+		
+		if amount > 0 {
+			cumulativeDamage += amount
+		}
 		stamina -= amount
 		stamina = stamina.clamped(to: 0...1)
 		if showEffect {
@@ -284,7 +297,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 
 						isOnTopOfFood = true
 						let contact = contactedAlgaeComponents.filter({ $0.body == body }).first
-						if contact == nil || contact!.when > Constants.Algae.timeBetweenBites {
+						if contact == nil || now - contact!.when > Constants.Algae.timeBetweenBites {
 							contactedAlgaeComponents = contactedAlgaeComponents.filter({ $0.body != body })
 							contactedAlgaeComponents.append(BodyContact(when: now, body: body))
 							biotAndAlgaeCollided(algae: algae)
@@ -375,6 +388,10 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	override func update(deltaTime seconds: TimeInterval) {
 		guard !isExpired, let hideNodes = globalDataComponent?.hideSpriteNodes else { return }
 				
+		if frame.isMultiple(of: 30) {
+			healthRunningValue.addValue(Float(health))
+		}
+		
 		if !isInteracting {
 			age += 1
 		}
@@ -435,7 +452,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
 					let bites: CGFloat = self.genome.generation < GameManager.shared.gameConfig.generationThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
-					let fromBiot = self.genome.generation >= Int(GameManager.shared.gameConfig.generationThreshold.cgFloat * 0.333)
+					let fromBiot = self.genome.generation >= Int(GameManager.shared.gameConfig.generationThreshold.cgFloat * 0.75)
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: fromBiot)
 					
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self),
@@ -634,7 +651,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	func updateExtrasNode() {
 		
-		guard frame.isMultiple(of: 1) else { return }
+		guard frame.isMultiple(of: 2) else { return }
 		
 		if let speedBoost = brainComponent?.inference.speedBoost.average,
 		   let armor = brainComponent?.inference.armor.average {
@@ -644,7 +661,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		
 		if genome.isOmnivore, let weapon = brainComponent?.inference.constrainedWeaponAverage {
 			weaponNode.alpha = 1
-			weaponNode.update(weaponIntensity: weapon)
+			weaponNode.update(weaponIntensity: weapon, isFeeding: coComponent(WeaponComponent.self)?.isFeeding ?? false)
 		}
 	}
 
@@ -722,31 +739,32 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func spawnChildren(selfReplication: Bool = false) {
-		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome else {
+		guard isPregnant, let node = entityNode, let scene = OctopusKit.shared.currentScene, let worldComponent = scene.entity?.component(ofType: WorldComponent.self) else {
 			return
 		}
 		
-		if let worldScene = scene as? WorldScene,
-		   let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self),
-		   worldComponent.shouldCacheGenome(species: genome.species) {
+		if worldComponent.shouldCacheGenome(species: genome.species) {
 			// no more room in the dish, cache a single (potentailly) mutated clone and become nonpregnant
-			let clonedGenome = Genome(parent: matingGenome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float)
-			worldComponent.cacheGenome(clonedGenome)
-			self.matingGenome = nil
+			let clonedGenome = Genome(parent: genome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float)
+			worldComponent.cacheGenome(clonedGenome, averageHealth: healthRunningValue.average)
+			isPregnant = false
 			self.lastPregnantAge = 0
 			node.run(SKAction.scale(to: 1, duration: 0.25))
 			return
 		}
-				
-		let selfReplicationSpawn = [(genome, -π/8), (genome, π/8)]
-		let standardSpawn =  [(genome, -π/8), (matingGenome, π/8)]
-
-		let spawn = selfReplication ? selfReplicationSpawn : standardSpawn
+					
+		let mutationRate = GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float
+		var spawn = [(genome, -π/8), (genome, π/8)]
+		
+		if GameManager.shared.gameConfig.useCrossover, let mostFitGenomeFromCache = worldComponent.mostFitGenomeFromCache(species: genome.species) {
+			let genomes = genome.crossOverGenomes(other: mostFitGenomeFromCache, mutationRate: mutationRate)
+			spawn = [(genomes.0, -π/8), (genomes.1, π/8)]
+		}
 		
 		for (parentGenome, angle) in spawn {
 			
 			let position = node.position - CGPoint(angle: node.zRotation + angle) * Constants.Biot.radius * 2
-			let clonedGenome = Genome(parent: parentGenome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: parentGenome.generation).float)
+			let clonedGenome = Genome(parent: parentGenome, mutationRate: mutationRate)
 			let childBiot = BiotComponent.createBiot(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: coComponent(ResourceFountainComponent.self)))
 			childBiot.node?.zRotation = node.zRotation + angle + π
 			
@@ -768,12 +786,11 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 		
-		self.matingGenome = nil
+		isPregnant = false
 		node.run(SKAction.scale(to: 1, duration: 0.25))
 		
 		foodEnergy = maximumFoodEnergy / 2
 		hydration = maximumWaterHydration / 2
-		incurStaminaChange(0.05)
 		spawnCount += 1
 	}
 	
@@ -782,7 +799,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
-		matingGenome = otherGenome
+		isPregnant = true
 		lastPregnantAge = age
 		
 		entityNode?.run(SKAction.scale(to: 1.25, duration: 0.25))

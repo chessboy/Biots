@@ -84,7 +84,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	// new genome from parent
-	init(parent: Genome, mutationRate: Float) {
+	init(parent: Genome, mutationRate: Float, shouldMutate: Bool = true) {
 		id = UUID().uuidString
 		generation = parent.generation + 1
 		species = parent.species
@@ -95,7 +95,9 @@ struct Genome: CustomStringConvertible, Codable {
 		weights = parent.weights
 		biases = parent.biases
 
-		mutate(mutationRate: mutationRate)
+		if shouldMutate {
+			mutate(mutationRate: mutationRate)
+		}
 	}
 	
 	var idFormatted: String {
@@ -195,6 +197,68 @@ extension Genome {
 		}
 
 		return (weights: randomizedWeights, biases: randomizedBiases)
+	}
+	
+	func crossOverGenomes(other: Genome, mutationRate: Float) -> (Genome, Genome) {
+		
+		var genome1 = Genome(parent: self, mutationRate: mutationRate, shouldMutate: false)
+		var genome2 = Genome(parent: other, mutationRate: mutationRate, shouldMutate: false)
+		
+		guard genome1.nodeCounts == genome2.nodeCounts else {
+			OctopusKit.logForSimErrors.add("genome1 and genome2 do not have the same neural net structure!")
+			return (self, other)
+		}
+		
+		let flatWeights1 = genome1.weights.flatMap { $0 }
+		let flatBiases1 = genome1.biases.flatMap { $0 }
+		let flatWeights2 = genome2.weights.flatMap { $0 }
+		let flatBiases2 = genome2.biases.flatMap { $0 }
+
+		let crossoverPoint = Float.random(in: 0...1)
+		let weightsCrossoverPoint = Int(Float(flatWeights1.count) * crossoverPoint)
+		let biasesCrossoverPoint = Int(Float(flatBiases1.count) * crossoverPoint)
+
+		OctopusKit.logForSimInfo.add("🤞🏻 crossing over genomes at points: \(weightsCrossoverPoint) and \(biasesCrossoverPoint)")
+		
+		let weights1Head = flatWeights1.prefix(weightsCrossoverPoint)
+		let weights1Tail = flatWeights1.suffix(from: weightsCrossoverPoint)
+		let weights2Head = flatWeights2.prefix(weightsCrossoverPoint)
+		let weights2Tail = flatWeights2.suffix(from: weightsCrossoverPoint)
+
+		let biases1Head = flatBiases1.prefix(biasesCrossoverPoint)
+		let biases1Tail = flatBiases1.suffix(from: biasesCrossoverPoint)
+		let biases2Head = flatBiases2.prefix(biasesCrossoverPoint)
+		let biases2Tail = flatBiases2.suffix(from: biasesCrossoverPoint)
+
+		let newWeights1 = Array(weights1Head + weights2Tail)
+		let newBiases1 = Array(biases1Head + biases2Tail)
+		let newWeights2 = Array(weights2Head + weights1Tail)
+		let newBiases2 = Array(biases2Head + biases1Tail)
+
+		genome1.weights = reconstituteLayers(layerCounts: genome1.weightCounts, flatWeights: newWeights1)
+		genome1.biases = reconstituteLayers(layerCounts: genome1.biasCounts, flatWeights: newBiases1)
+		genome2.weights = reconstituteLayers(layerCounts: genome2.weightCounts, flatWeights: newWeights2)
+		genome2.biases = reconstituteLayers(layerCounts: genome2.biasCounts, flatWeights: newBiases2)
+
+		return (genome1, genome2)
+	}
+	
+	func reconstituteLayers(layerCounts: [Int], flatWeights: [Float]) -> [[Float]] {
+		
+		var reconstituted: [[Float]] =  []
+		var workingFlatArray: [Float] = flatWeights
+		
+		for layerCount in layerCounts {
+			if layerCount > 0 {
+				reconstituted.append(Array(workingFlatArray.prefix(layerCount)))
+				workingFlatArray = workingFlatArray.suffix(workingFlatArray.count - layerCount)
+			}
+			else {
+				reconstituted.append([])
+			}
+		}
+
+		return reconstituted
 	}
 }
 

@@ -35,6 +35,7 @@
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D45F0E6B253282360067912C /* PlacedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* PlacedObject.swift */; };
 		D45F0E782532C7520067912C /* world-objects-more.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* world-objects-more.json */; };
+		D46D206325702B9B008A59D6 /* ConfigParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D206225702B9B008A59D6 /* ConfigParam.swift */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -139,6 +140,7 @@
 		D45E210E255BA63A0020E7AB /* world-objects-sculpted.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-sculpted.json"; sourceTree = "<group>"; };
 		D45F0E6A253282360067912C /* PlacedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacedObject.swift; sourceTree = "<group>"; };
 		D45F0E772532C7520067912C /* world-objects-more.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-more.json"; sourceTree = "<group>"; };
+		D46D206225702B9B008A59D6 /* ConfigParam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigParam.swift; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				E85C3AF325467E97000D2926 /* SimulationMode.swift */,
 				D40C4D8E254A6DC1008AA986 /* GameManager.swift */,
 				E8BB0534254487B4008C39D2 /* SaveState.swift */,
+				D46D206225702B9B008A59D6 /* ConfigParam.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -714,6 +717,7 @@
 				D418F80B2563B923009C0868 /* WeaponNode.swift in Sources */,
 				D44EE9B724439592006A2083 /* IntMath.swift in Sources */,
 				D4D18D8E2446B54200BF92FA /* BoundaryComponent.swift in Sources */,
+				D46D206325702B9B008A59D6 /* ConfigParam.swift in Sources */,
 				E8D63D58253FFDF000ACF9D7 /* SwiftUiExtensions.swift in Sources */,
 				D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */,
 				D4D18D9D2447ADBB00BF92FA /* StatsNode.swift in Sources */,

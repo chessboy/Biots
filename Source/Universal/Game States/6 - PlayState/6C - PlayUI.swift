@@ -57,9 +57,7 @@ struct BiotsUI: View {
 				GameManager.shared.gameConfig.algaeTarget = Int($0)
 			}
 		)
-		
-		let gameConfig = GameManager.shared.gameConfig
-		
+				
 		return VStack {
 			Spacer().frame(maxWidth: .infinity)
 			HStack {
@@ -72,20 +70,11 @@ struct BiotsUI: View {
 				}
 				.padding()
 				.frame(minWidth: 200, idealWidth: 200, maxWidth: 200)
-				
-				Button("Save", action: {
-					
-					let saveState = SaveState(name: gameConfig.name, simulationMode: gameConfig.simulationMode, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: worldScene.currentWorldObjects, genomes: worldScene.currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount)
-					LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.filenameSaveStateSave)
-					
-				})
-					.font(.body)
-					.buttonStyle(FatButtonStyle(color: Constants.Colors.water.color))
 			}
 			.padding(.top, 20)
 			.frame(maxWidth: .infinity)
 			.background(Color(white: 0).opacity(0.75))
-			Spacer(minLength: 80)
+			Spacer(minLength: 100)
 		}
 		.opacity(globalDataComponent.showHUDPub ? 1 : 0)
 		.animation(.easeInOut(duration: globalDataComponent.showHUDPub ? 0.1 : 0.25))

@@ -20,7 +20,6 @@ struct Constants {
 		
 		static let gridBlockSize: CGFloat = 400
 		static let unbornGenomeCacheCount = 40
-		static let omnivoreToHerbivoreRatio: CGFloat = 0.4
 		static let showSpriteKitStats = true
 		
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
@@ -66,8 +65,8 @@ struct Constants {
 	}
 	
 	struct Mud {
-		static let dip: CGFloat = 0.1 // % of max stamina increase
-		static let timeBetweenDips: TimeInterval = 7.5 // seconds between absorbing minerals from the same mud source
+		static let dip: CGFloat = 0.2 // % of max stamina increase
+		static let timeBetweenDips: TimeInterval = 3 // seconds between absorbing minerals from the same mud source
 	}
 	
 	struct Resource {

@@ -50,13 +50,15 @@ final class BrainComponent: OKComponent {
 		
 		vision.detect()
 		
+		let isFeeding = biot.coComponent(WeaponComponent.self)?.isFeeding ?? false
+		
 		senses.setSenses(
 			health: Float(biot.health),
 			energy: Float(biot.foodEnergy / biot.maximumEnergy),
 			hydration: Float(biot.hydration / biot.maximumHydration),
 			stamina: Float(biot.stamina),
 			pregnant: biot.isPregnant ? 1 : 0,
-			onTopOfFood: biot.isOnTopOfFood ? 1 : 0,
+			onTopOfFood: biot.isOnTopOfFood || isFeeding ? 1 : 0,
 			onTopOfWater: biot.isOnTopOfWater ? 1 : 0,
 			onTopOfMud: biot.isOnTopOfMud ? 1 : 0,
 			progress: biot.progress.float,

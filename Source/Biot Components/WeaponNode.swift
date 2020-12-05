@@ -11,6 +11,7 @@ import SpriteKit
 
 class WeaponNode: SKNode {
 	
+	static let weaponColor = SKColor(srgbRed: 110/255, green: 16/255, blue: 16/255, alpha: 1)
 	var spikeNode: SKShapeNode!
 	
 	override init() {
@@ -23,8 +24,9 @@ class WeaponNode: SKNode {
 		alpha = 0
 	}
 	
-	func update(weaponIntensity: CGFloat) {
-		repathNode(spikeNode, weaponIntensity: weaponIntensity)
+	func update(weaponIntensity: CGFloat, isFeeding: Bool) {
+		repathNode(spikeNode, weaponIntensity: weaponIntensity.clamped(0.1, 1))
+		spikeNode.fillColor = isFeeding ? .red : SKColor.orange.blended(withFraction: weaponIntensity, of: WeaponNode.weaponColor)?.withAlpha(0.8) ?? .red
 	}
 	
 	func createNode(forShadow: Bool = false) -> SKShapeNode {
@@ -33,7 +35,7 @@ class WeaponNode: SKNode {
 		node.lineJoin = .round
 		node.lineWidth = forShadow ? 1.5 : 0
 		node.strokeColor = forShadow ? SKColor(white: 0.2, alpha: 0.5) : .clear
-		node.fillColor = forShadow ? .black : SKColor(srgbRed: 110/255, green: 16/255, blue: 16/255, alpha: 0.8)
+		node.fillColor = forShadow ? .black : WeaponNode.weaponColor
 		node.isAntialiased = !forShadow
 		node.zPosition = Constants.ZeeOrder.biot - 2
 		return node

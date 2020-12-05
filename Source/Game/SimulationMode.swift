@@ -13,31 +13,36 @@ enum SimulationMode: Int, Codable, CustomStringConvertible {
 	case random
 	case debug
 	case predatorPrey
-
+	case randomPredatorPrey
+	
 	var humanReadableDescription: String {
 		switch self {
 			case .random: return "random"
 			case .normal: return "normal"
 			case .debug: return "debug"
 			case .predatorPrey: return "pred/prey"
+			case .randomPredatorPrey: return "random pred/prey"
 		}
 	}
 	
+	var isRandom: Bool {
+		return self == .random || self == .randomPredatorPrey
+	}
+	
 	var description: String {
-		return "{mode: \(humanReadableDescription), dispenseDelay: \(dispenseDelay), dispenseInterval: \(dispenseInterval)}"
+		return "{mode: \(humanReadableDescription), isRandom: \(isRandom), dispenseDelay: \(dispenseDelay), dispenseInterval: \(dispenseInterval)}"
 	}
 	
 	var dispenseDelay: Int {
 		switch self {
-			case .random: return 20
-			case .normal, .predatorPrey: return 250
 			case .debug: return 0
+			default: return 250
 		}
 	}
 	
 	var dispenseInterval: Int {
 		switch self {
-			case .random: return 10
+			case .random, .randomPredatorPrey: return 10
 			case .normal, .predatorPrey: return 50
 			case .debug: return 1
 		}
