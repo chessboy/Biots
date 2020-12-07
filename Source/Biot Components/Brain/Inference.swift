@@ -48,7 +48,7 @@ struct Inference {
 		let armorAverage = armor.average
 		let weaponAverage = weapon.average
 
-		return (weaponAverage - armorAverage).cgFloat.clamped(0, 1)
+		return (weaponAverage - armorAverage).cgFloat.clamped(0.1, 1)
 	}
 	
 	mutating func infer(outputs: [Float]) {

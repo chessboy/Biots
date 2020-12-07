@@ -58,7 +58,7 @@ struct GameConfig: CustomStringConvertible {
 
 	var configParams: [ConfigParamType: ConfigParam] = [
 		// age
-		.maximumAge: ConfigParam(start: 2280, end: 3300),
+		.maximumAge: ConfigParam(start: 2280, end: 3600),
 		
 		// requirements
 		.mateHealth: ConfigParam(start: 0.65, end: 0.8),
@@ -73,14 +73,14 @@ struct GameConfig: CustomStringConvertible {
 		.perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01),
 		.perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125),
 		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008),
-		.weaponStaminaCost: ConfigParam(start: 0.0008, end: 0.0016),
+		.weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014),
 		.armorEnergyCost: ConfigParam(start: 0.04, end: 0.06),
 		
 		// evolution
 		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low (not zero)
 	]
 
-	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000, minimumBiotCount: Int = 12, maximumBiotCount: Int = 24, omnivoreToHerbivoreRatio: CGFloat = 0.5, useCrossover: Bool = false) {
+	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000, minimumBiotCount: Int = 12, maximumBiotCount: Int = 24, omnivoreToHerbivoreRatio: CGFloat = 0.5, useCrossover: Bool = true) {
 		self.simulationMode = simulationMode
 		self.omnivoreToHerbivoreRatio = omnivoreToHerbivoreRatio
 		self.worldBlockCount = worldBlockCount

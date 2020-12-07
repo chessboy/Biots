@@ -91,7 +91,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	var maximumEnergy: CGFloat {
-		return maximumFoodEnergy * (isPregnant ? (genome.isOmnivore ? 1.5 : 2) : 1)
+		return maximumFoodEnergy * (isPregnant ? 2 : 1)
 	}
 
 	var maximumHydration: CGFloat {

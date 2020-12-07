@@ -265,67 +265,45 @@ class BiotsTests: XCTestCase {
 		print()
 
 	}
-
-	/*
-	// reconstitute
-	var newWeights1: [[Float]] =  []
-	for layerCount in genome1.weightCounts {
-		if layerCount > 0 {
-			newWeights1.append(Array(flatWeights1.prefix(layerCount)))
-			flatWeights1 = flatWeights1.suffix(flatWeights1.count - layerCount)
-		}
-		else {
-			newWeights1.append([])
-		}
-	}
-
-	print("newWeights1: \(newWeights1)")
-	XCTAssert(genome1.weights == newWeights1)
-
-	var newBiases1: [[Float]] =  []
-	for layerCount in genome1.biasCounts {
-		if layerCount > 0 {
-			newBiases1.append(Array(flatBiases1.prefix(layerCount)))
-			flatBiases1 = flatBiases1.suffix(flatBiases1.count - layerCount)
-		}
-		else {
-			newBiases1.append([])
-		}
-	}
-
-	print("newBiases1: \(newBiases1)")
-	XCTAssert(genome1.biases == newBiases1)
-
 	
-	// reconstitute
-	var newWeights2: [[Float]] =  []
-	for layerCount in genome2.weightCounts {
-		if layerCount > 0 {
-			newWeights2.append(Array(flatWeights2.prefix(layerCount)))
-			flatWeights2 = flatWeights2.suffix(flatWeights2.count - layerCount)
-		}
-		else {
-			newWeights2.append([])
-		}
+	func testMutationRate() throws {
+		
+		//for mutationRate: CGFloat in stride(from: 0, through: 1, by: 0.1) {
+		let runCount = 50000
+		
+		print()
+		for mutationRate: CGFloat in stride(from: 0, through: 1, by: 0.1) {
+			
+			var totalWeightsChances = 0
+			var totalBiasesChances = 0
+			var maxWeightChance = 0
+			var minWeightChance = 0
+			var maxBiasChance = 0
+			var minBiasChance = 0
+
+			
+			for _ in 1...runCount {
+				// mutationRate: 1...0 ==> 4...0 chances
+				let weightsChances = Int.random(Int(2 + 3*mutationRate))
+				// mutationRate: 1...0 ==> 1...0 chances
+				let biasesChances = Int.oneChanceIn(12 - Int(2 + 6*mutationRate)) ? 1 : 0
+				
+				totalWeightsChances += weightsChances
+				totalBiasesChances += biasesChances
+				minWeightChance = min(minWeightChance, weightsChances)
+				maxWeightChance = max(maxWeightChance, weightsChances)
+				minBiasChance = min(minBiasChance, biasesChances)
+				maxBiasChance = max(maxBiasChance, biasesChances)
+				//print("mutationRate: \(mutationRate.formatted), weightsChances: \(weightsChances), biasesChances: \(biasesChances)")
+			}
+			
+			let weightChancesAverage = CGFloat(totalWeightsChances) / CGFloat(runCount)
+			let biasChancesAverage = CGFloat(totalBiasesChances) / CGFloat(runCount)
+			print("mutationRate: \(mutationRate.formatted): weightChances: \(weightChancesAverage.formattedTo4Places), \(minWeightChance)–\(maxWeightChance), biasChances: \(biasChancesAverage.formattedTo4Places), \(minBiasChance)–\(maxBiasChance)")
+			}
+		
+		print()
 	}
-
-	print("newWeights2: \(newWeights2)")
-	XCTAssert(genome2.weights == newWeights2)
-
-	var newBiases2: [[Float]] =  []
-	for layerCount in genome2.biasCounts {
-		if layerCount > 0 {
-			newBiases2.append(Array(flatBiases2.prefix(layerCount)))
-			flatBiases2 = flatBiases2.suffix(flatBiases2.count - layerCount)
-		}
-		else {
-			newBiases2.append([])
-		}
-	}
-
-	print("newBiases2: \(newBiases2)")
-	XCTAssert(genome2.biases == newBiases2)
-	*/
 	
 	func testMutation() throws {
 				

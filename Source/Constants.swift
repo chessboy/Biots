@@ -30,7 +30,7 @@ struct Constants {
 		
 	struct Biot {
 		static let radius: CGFloat = 40
-		static let spikeLength = radius * 3
+		static let spikeLength = radius * 4
 		
 		enum StatsLine: Int { case line1, line2, line3 }
 
@@ -94,7 +94,7 @@ struct Constants {
 	}
 		
 	struct NeuralNet {
-		static let newGenomeHiddenCounts = [14, 8]
+		static let newGenomeHiddenCounts = [16, 12, 8]
 		static let maxWeightValue: Float = 2
 		static let maxOutputValue: Float = 1
 		static let outputsSafetyCheck = false

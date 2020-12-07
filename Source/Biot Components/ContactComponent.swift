@@ -48,7 +48,7 @@ final class ContactComponent: PhysicsContactComponent {
 	
 	func biotsCollided(biotA: BiotComponent, biotB: BiotComponent) {
 		let collisionDamage = GameManager.shared.gameConfig.valueForConfig(.collisionDamage, generation: biotA.genome.generation)
-		let impact = collisionDamage/2
+		let impact = collisionDamage/4
 		
 		let armorA = biotA.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
 		let exposureA = 1 - armorA

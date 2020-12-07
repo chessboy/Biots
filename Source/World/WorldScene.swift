@@ -160,15 +160,15 @@ final class WorldScene: OKScene {
 		var genomes = self.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).map({$0.component(ofType: BiotComponent.self)}).map({$0?.genome})
 		
 		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.generalDispensary?.genomeCache {
-			let unborn = Array(unbornBiots.suffix(10))
+			let unborn = Array(unbornBiots.suffix(40))
 			genomes.append(contentsOf: unborn.map({ $0.genome }))
 		}
 		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.omnivoreDispensary?.genomeCache {
-			let unborn = Array(unbornBiots.suffix(10))
+			let unborn = Array(unbornBiots.suffix(20))
 			genomes.append(contentsOf: unborn.map({ $0.genome }))
 		}
 		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.herbivoreDispensary?.genomeCache {
-			let unborn = Array(unbornBiots.suffix(10))
+			let unborn = Array(unbornBiots.suffix(20))
 			genomes.append(contentsOf: unborn.map({ $0.genome }))
 		}
 
@@ -756,7 +756,7 @@ final class WorldScene: OKScene {
 	
 	@objc func newRandomWorld() {
 		if let worldComponent = entity?.component(ofType: WorldComponent.self) {
-			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, worldBlockCount: 8, algaeTarget: 10000, minimumBiotCount: 10, maximumBiotCount: 20)
+			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, worldBlockCount: 10, algaeTarget: 12000, minimumBiotCount: 10, maximumBiotCount: 20)
 			worldComponent.createWorld()
 		}
 	}

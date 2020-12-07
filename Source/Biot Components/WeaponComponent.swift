@@ -25,9 +25,10 @@ final class WeaponComponent: OKComponent {
 			  let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld
 		else { return }
 
-		let radius = Constants.Biot.radius * (biotComponent.isMature ? 1 : 0.5)
+		let scaleFactor: CGFloat = (biotComponent.isPregnant ? 1.25 : biotComponent.isMature ? 1 : 0.5)
+		let radius = Constants.Biot.radius * scaleFactor
 		let angle = node.zRotation
-		let rayDistance = weaponIntensity * Constants.Biot.spikeLength * (biotComponent.isMature ? 1 : 0.5)
+		let rayDistance = weaponIntensity * Constants.Biot.spikeLength * scaleFactor
 		let rayStart = node.position + (CGPoint(angle: angle) * (radius - 1))
 		let rayEnd = rayStart + (CGPoint(angle: angle) * rayDistance)
 
