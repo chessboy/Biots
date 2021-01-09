@@ -419,7 +419,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		let averageEnergy = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.foodEnergy/$1.maximumEnergy } / biots.count.cgFloat
 		let averageHydration = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.hydration/$1.maximumHydration } / biots.count.cgFloat
 		let averageStamina = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.stamina } / biots.count.cgFloat
-		let averageHealth = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.healthRunningValue.average.cgFloat } / biots.count.cgFloat
+		let averageHealth = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.healthRunningValue.averageOfMostRecent(memory: 10).cgFloat } / biots.count.cgFloat
 
 		let pregnantPercent = biots.count == 0 ? 0 : CGFloat(biots.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }) / biots.count.cgFloat
 		let spawnAverage = biots.count == 0 ? 0 : CGFloat(biots.reduce(0) { $0 + $1.spawnCount }) / biots.count.cgFloat

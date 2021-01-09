@@ -72,7 +72,7 @@ struct GameConfig: CustomStringConvertible {
 		.perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125),
 		.perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01),
 		.perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125),
-		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008),
+		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008) * 0.5,
 		.weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014),
 		.armorEnergyCost: ConfigParam(start: 0.04, end: 0.06),
 		

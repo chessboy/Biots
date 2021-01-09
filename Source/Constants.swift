@@ -92,9 +92,9 @@ struct Constants {
 		static let grid = "grid"
 		static let zapper = "zapper"
 	}
-		
+
 	struct NeuralNet {
-		static let newGenomeHiddenCounts = [16, 12, 8]
+		static let newGenomeHiddenCounts = [14, 8]
 		static let maxWeightValue: Float = 2
 		static let maxOutputValue: Float = 1
 		static let outputsSafetyCheck = false
@@ -121,9 +121,9 @@ struct Constants {
 		static let displayMemory = 8
 		static let inferenceMemory = 3
 		
-		static let spinLimiter: CGFloat = 0.4
+		static let spinLimiter: CGFloat = 0.4 // % of angular velocity
 		static let thrustForce: CGFloat = 7.5
-		static let maxSpeedBoost: CGFloat = 1.375
+		static let maxSpeedBoost: CGFloat = 1.375 // % of thrust force
 	}
 	
 	struct Graphics {

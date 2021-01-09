@@ -140,7 +140,6 @@ class BiotsTests: XCTestCase {
 			print("biases counts: \(biases1.count)/\(biases2.count), total: \(biases1.count + biases2.count)")
 			print()
 		}
-		
 	}
 		
 	func testCrossover() throws {
@@ -277,9 +276,9 @@ class BiotsTests: XCTestCase {
 			var totalWeightsChances = 0
 			var totalBiasesChances = 0
 			var maxWeightChance = 0
-			var minWeightChance = 0
+			var minWeightChance = 1000
 			var maxBiasChance = 0
-			var minBiasChance = 0
+			var minBiasChance = 1000
 
 			
 			for _ in 1...runCount {
