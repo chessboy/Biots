@@ -80,13 +80,13 @@ extension CGFloat {
 	}
 
 	var formattedToPercent: String { return
-		String(format: "%.1f", locale: Locale.current, self.clamped(0.0, 1.0) * 100.0) + "%"
+		String(format: "%.1f", locale: Locale.current, self.clamped(0, 1) * 100) + "%"
 	}
 
 	var formattedToPercentNoDecimal: String { return
-		String(format: "%.0f", locale: Locale.current, self.clamped(0.0, 1.0) * 100.0) + "%"
+		String(format: "%.0f", locale: Locale.current, self.clamped(0, 1) * 100) + "%"
 	}
-	
+		
 	// 0 <= normalized <= 360
 	var normalizedAngle: CGFloat {
 		var angle = fmod(self, 2*π)
@@ -102,10 +102,42 @@ extension CGFloat {
 
 extension Float {
 	
+	/* Ensures that the float value stays between the given values, inclusive.
+	*/
+	func clamped(_ v1: Float, _ v2: Float) -> Float {
+		let min = v1 < v2 ? v1 : v2
+		let max = v1 > v2 ? v1 : v2
+		return self < min ? min : (self > max ? max : self)
+	}
+	
+	/**
+	* Ensures that the float value stays between the given values, inclusive.
+	*/
+	mutating func clamp(_ v1: Float, _ v2: Float) -> Float {
+		self = clamped(v1, v2)
+		return self
+	}
+
 	var formattedTo2Places: String { return
 		String(format: "%.2f", locale: Locale.current, self)
 	}
 	
+	var formattedTo3Places: String { return
+		String(format: "%.3f", locale: Locale.current, self)
+	}
+	
+	var formattedTo4Places: String { return
+		String(format: "%.4f", locale: Locale.current, self)
+	}
+
+	var formattedToPercent: String { return
+		String(format: "%.1f", locale: Locale.current, self.clamped(0, 1) * 100) + "%"
+	}
+
+	var formattedToPercentNoDecimal: String { return
+		String(format: "%.0f", locale: Locale.current, self.clamped(0, 1) * 100) + "%"
+	}
+
 	var cgFloat: CGFloat { return CGFloat(self) }
 	
 	var unsigned: Float { return abs(self) }

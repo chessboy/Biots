@@ -35,7 +35,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var healthMeterNodes: [RetinaNode] = []
 	var extrasNode: SKNode!
 	var speedNode: SKShapeNode!
-	var armorNode: SKShapeNode!
+	var armorNode: SKNode!
 	var eyeNodes: [SKNode] = []
 	var progressNode: ProgressNode!
 	var selectionNode: SKNode!
@@ -43,12 +43,15 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var retinaNodes: [RetinaNode] = []
 	var resourceNodes: [RetinaNode] = []
 	var thrusterNode: ThrusterNode!
-
-	var matingGenome: Genome?
+	var weaponNode: WeaponNode!
 	
 	lazy var brainComponent = coComponent(BrainComponent.self)
 	lazy var globalDataComponent = coComponent(GlobalDataComponent.self)
 	lazy var visionComponent = coComponent(VisionComponent.self)
+
+	var cumulativeFoodEnergy: CGFloat = 0
+	var cumulativeHydration: CGFloat = 0
+	var cumulativeDamage: CGFloat = 0
 
 	enum HealthMeter: Int {
 		case hydration
@@ -64,15 +67,16 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	var frame = Int.random(100)
 	
+	lazy var omnivoreNutrientRatio = GameManager.shared.gameConfig.valueForConfig(.omnivoreNutrientRatio, generation: genome.generation)
 	lazy var mateHealth = GameManager.shared.gameConfig.valueForConfig(.mateHealth, generation: genome.generation)
 	lazy var spawnHealth = GameManager.shared.gameConfig.valueForConfig(.spawnHealth, generation: genome.generation)
 	lazy var maximumAge = GameManager.shared.gameConfig.valueForConfig(.maximumAge, generation: genome.generation)
 	lazy var maximumFoodEnergy = GameManager.shared.gameConfig.valueForConfig(.maximumFoodEnergy, generation: genome.generation)
 	lazy var maximumWaterHydration = GameManager.shared.gameConfig.valueForConfig(.maximumHydration, generation: genome.generation)
 	
-	var isPregnant: Bool {
-		return matingGenome != nil
-	}
+	var healthRunningValue = RunningValue(memory: 100)
+	
+	var isPregnant: Bool = false
 
 	var canMate: Bool {
 		return !isExpired && !isPregnant && age >= matureAge && health >= mateHealth
@@ -152,6 +156,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		ContactComponent.self,
 		VisionComponent.self,
 		NeuralNetComponent.self,
+		WeaponComponent.self,
 		BrainComponent.self
 	]}
 	
@@ -169,6 +174,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 		
 	func incurEnergyChange(_ amount: CGFloat, showEffect: Bool = false) {
+		if amount > 0 {
+			cumulativeFoodEnergy += amount
+		}
 		foodEnergy += amount
 		foodEnergy = foodEnergy.clamped(to: 0...maximumEnergy)
 		if showEffect, !healthNode.isHidden {
@@ -178,12 +186,19 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 	
 	func incurHydrationChange(_ amount: CGFloat) {
+		if amount > 0 {
+			cumulativeHydration += amount
+		}
 		hydration += amount
 		hydration = hydration.clamped(to: 0...maximumHydration)
 	}
 	
 	func incurStaminaChange(_ amount: CGFloat, showEffect: Bool = false) {
 		guard abs(amount) != 0 else { return }
+		
+		if amount > 0 {
+			cumulativeDamage += amount
+		}
 		stamina -= amount
 		stamina = stamina.clamped(to: 0...1)
 		if showEffect {
@@ -207,8 +222,9 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		if algae.fromBiot {
 			bitesTaken = Int((maximumEnergy-foodEnergy) / bite).cgFloat
 		}
-		
-		incurEnergyChange(bite * bitesTaken, showEffect: true)
+				
+		let nutrientRatio = genome.isOmnivore ? omnivoreNutrientRatio : 1
+		incurEnergyChange(bite * nutrientRatio, showEffect: true)
 
 		algae.energy -= bite * bitesTaken
 		if algae.energy < bite {
@@ -223,13 +239,13 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		incurHydrationChange(sip)
 	}
 
+	func biotAndMudCollided() {
+		incurStaminaChange(-Constants.Mud.dip)
+	}
+
 	struct BodyContact {
 		var when: TimeInterval
 		var body: SKPhysicsBody
-		
-		mutating func updateWhen(when: TimeInterval) {
-			self.when = when
-		}
 	}
 	
 	var isOnTopOfFood = false
@@ -239,6 +255,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	var isImmersedInMud = false
 	var contactedAlgaeComponents: [BodyContact] = []
 	var contactedWaterComponents: [BodyContact] = []
+	var contactedMudComponents: [BodyContact] = []
 
 	func checkResourceContacts() {
 
@@ -247,13 +264,23 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		let now = Date().timeIntervalSince1970
 
 		if frame.isMultiple(of: 30) {
-			//let countAlgae = contactedAlgaeComponents.count
-			contactedAlgaeComponents = contactedAlgaeComponents.filter({ now - $0.when <= Constants.Algae.timeBetweenBites })
-			//print("algae body purge: old count: \(countAlgae), new count: \(contactedAlgaeComponents.count)")
+			let countAlgae = contactedAlgaeComponents.count
+			if countAlgae > 0 {
+				contactedAlgaeComponents = contactedAlgaeComponents.filter({ now - $0.when <= Constants.Algae.timeBetweenBites })
+				//print("algae body purge: old count: \(countAlgae), new count: \(contactedAlgaeComponents.count)")
+			}
 			
-			//let countWater = contactedWaterComponents.count
-			contactedWaterComponents = contactedWaterComponents.filter({ now - $0.when <= Constants.Water.timeBetweenSips })
-			//print("water body purge: old count: \(countWater), new count: \(contactedWaterComponents.count)")
+			let countWater = contactedWaterComponents.count
+			if countWater > 0 {
+				contactedWaterComponents = contactedWaterComponents.filter({ now - $0.when <= Constants.Water.timeBetweenSips })
+				//print("water body purge: old count: \(countWater), new count: \(contactedWaterComponents.count)")
+			}
+			
+			let countMud = contactedMudComponents.count
+			if countMud > 0 {
+				contactedMudComponents = contactedMudComponents.filter({ now - $0.when <= Constants.Mud.timeBetweenDips })
+				//print("mud body purge: old count: \(countMud), new count: \(contactedMudComponents.count)")
+			}
 		}
 		
 		isOnTopOfFood = false
@@ -269,16 +296,10 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					if let algae = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first?.component(ofType: AlgaeComponent.self), algae.energy > 0 {
 
 						isOnTopOfFood = true
-						var contact = contactedAlgaeComponents.filter({ $0.body == body }).first
-						
-						if contact == nil {
-							//print("algae added at \(now), ate algae energy: \(algae.energy.formattedTo2Places)")
+						let contact = contactedAlgaeComponents.filter({ $0.body == body }).first
+						if contact == nil || now - contact!.when > Constants.Algae.timeBetweenBites {
+							contactedAlgaeComponents = contactedAlgaeComponents.filter({ $0.body != body })
 							contactedAlgaeComponents.append(BodyContact(when: now, body: body))
-							biotAndAlgaeCollided(algae: algae)
-						}
-						else if now - contact!.when > Constants.Algae.timeBetweenBites {
-							//print("algae found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), ate algae energy: \(algae.energy.formattedTo2Places)")
-							contact!.updateWhen(when: now)
 							biotAndAlgaeCollided(algae: algae)
 						}
 					}
@@ -290,7 +311,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					if let waterNode = body.node, waterNode.contains(tailPoint) {
 						if isMud {
 							isImmersedInMud = true
-							stamina = 1
 						}
 						else {
 							isImmersedInWater = true
@@ -301,17 +321,19 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					isOnTopOfMud = isMud
 
 					if !isMud {
-						var contact = contactedWaterComponents.filter({ $0.body == body }).first
-						
-						if contact == nil {
-							//print("water added at \(now), drank water")
+						let contact = contactedWaterComponents.filter({ $0.body == body }).first
+						if contact == nil || now - contact!.when > Constants.Water.timeBetweenSips {
+							contactedWaterComponents = contactedWaterComponents.filter({ $0.body != body })
 							contactedWaterComponents.append(BodyContact(when: now, body: body))
 							biotAndWaterCollided()
 						}
-						else if now - contact!.when > Constants.Water.timeBetweenSips {
-							//print("water found at: \(contact!.when), now: \(now), delta: \(now - contact!.when), drank water")
-							contact!.updateWhen(when: now)
-							biotAndWaterCollided()
+					}
+					else { // isMud
+						let contact = contactedMudComponents.filter({ $0.body == body }).first
+						if contact == nil || now - contact!.when > Constants.Mud.timeBetweenDips {
+							contactedMudComponents = contactedMudComponents.filter({ $0.body != body })
+							contactedMudComponents.append(BodyContact(when: now, body: body))
+							biotAndMudCollided()
 						}
 					}
 				}
@@ -366,6 +388,10 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	override func update(deltaTime seconds: TimeInterval) {
 		guard !isExpired, let hideNodes = globalDataComponent?.hideSpriteNodes else { return }
 				
+		if frame.isMultiple(of: 30) {
+			healthRunningValue.addValue(Float(health))
+		}
+		
 		if !isInteracting {
 			age += 1
 		}
@@ -426,7 +452,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 				
 				if let fountainComponent = self.coComponent(ResourceFountainComponent.self) {
 					let bites: CGFloat = self.genome.generation < GameManager.shared.gameConfig.generationThreshold ? self.isMature ? 4 : 2 : self.isMature ? 6 : 3
-					let fromBiot = self.genome.generation >= Int(GameManager.shared.gameConfig.generationThreshold.cgFloat * 0.333)
+					let fromBiot = self.genome.generation >= Int(GameManager.shared.gameConfig.generationThreshold.cgFloat * 0.75)
 					let algae = fountainComponent.createAlgaeEntity(energy: Constants.Algae.bite * bites, fromBiot: fromBiot)
 					
 					if let algaeComponent = algae.component(ofType: AlgaeComponent.self),
@@ -627,32 +653,18 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		
 		guard frame.isMultiple(of: 2) else { return }
 		
-		let showingExtras = !extrasNode.isHidden
-		let showExtras = globalDataComponent?.showBiotExtras ?? false
-		
-		if !showingExtras, showExtras {
-			extrasNode.alpha = 0
-			extrasNode.isHidden = false
-			extrasNode.run(.fadeIn(withDuration: 0.2))
-			speedNode.alpha = 0
-			armorNode.alpha = 0
-		}
-		else if showingExtras, !showExtras {
-			extrasNode.run(.fadeOut(withDuration: 0.1)) {
-				self.extrasNode.isHidden = true
-				self.extrasNode.alpha = 0
-			}
-		}
-
-		if showExtras,
-		   let speedBoost = brainComponent?.inference.speedBoost.average,
+		if let speedBoost = brainComponent?.inference.speedBoost.average,
 		   let armor = brainComponent?.inference.armor.average {
 			speedNode.alpha = speedBoost.cgFloat
 			armorNode.alpha = armor.cgFloat
 		}
+		
+		if genome.isOmnivore, let weapon = brainComponent?.inference.constrainedWeaponAverage {
+			weaponNode.alpha = 1
+			weaponNode.update(weaponIntensity: weapon, isFeeding: coComponent(WeaponComponent.self)?.isFeeding ?? false)
+		}
 	}
 
-	
 	func showSelection() {
 		if !selectionNode.isHidden, let rotation = entityNode?.zRotation {
 			selectionNode.zRotation = 2*π - rotation + π/2
@@ -685,17 +697,18 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					//let labelAttrs = Constants.Biot.Stats.labelAttrs
 					let valueAttrs = Constants.Biot.Stats.valueAttrs
 					let iconAttrs = Constants.Biot.Stats.iconAttrs
-
+					
 					let builder1 = AttributedStringBuilder()
 					builder1.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder1
-						.text("↗️ ", attributes: iconAttrs)
+						.text("\(genome.species.icon) ", attributes: iconAttrs)
 						.text("\(genome.generation.formatted)")
 						.text("     🌡️ ", attributes: iconAttrs)
 						.text("\(healthFormatted)")
 						.text("     🕒 ", attributes: iconAttrs)
 						.text("\((age/maximumAge).formattedToPercentNoDecimal)")
 
+					
 					let builder2 = AttributedStringBuilder()
 					builder2.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder2
@@ -726,37 +739,32 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 
 	func spawnChildren(selfReplication: Bool = false) {
-		guard let node = entityNode, let scene = OctopusKit.shared.currentScene, let matingGenome = matingGenome else {
+		guard isPregnant, let node = entityNode, let scene = OctopusKit.shared.currentScene, let worldComponent = scene.entity?.component(ofType: WorldComponent.self) else {
 			return
 		}
-
-		if let worldScene = scene as? WorldScene,
-		   let worldComponent = worldScene.entity?.component(ofType: WorldComponent.self),
-		   worldComponent.currentBiots.count >= GameManager.shared.gameConfig.maximumBiotCount {
+		
+		if worldComponent.shouldCacheGenome(species: genome.species) {
 			// no more room in the dish, cache a single (potentailly) mutated clone and become nonpregnant
-			let clonedGenome = Genome(parent: matingGenome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float)
-			worldComponent.addUnbornGenome(clonedGenome)
-			self.matingGenome = nil
+			let clonedGenome = Genome(parent: genome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float)
+			worldComponent.cacheGenome(clonedGenome, averageHealth: healthRunningValue.average)
+			isPregnant = false
 			self.lastPregnantAge = 0
 			node.run(SKAction.scale(to: 1, duration: 0.25))
 			return
 		}
+					
+		let mutationRate = GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float
+		var spawn = [(genome, -π/8), (genome, π/8)]
 		
-		foodEnergy = foodEnergy / 4
-		hydration = hydration / 3
-		incurStaminaChange(0.05)
-		
-		spawnCount += 1
-		
-		let selfReplicationSpawn = [(genome, -π/8), (genome, π/8)]
-		let standardSpawn =  [(genome, -π/8), (matingGenome, π/8)]
-
-		let spawn = selfReplication ? selfReplicationSpawn : standardSpawn
+		if GameManager.shared.gameConfig.useCrossover, let mostFitGenomeFromCache = worldComponent.mostFitGenomeFromCache(species: genome.species) {
+			let genomes = genome.crossOverGenomes(other: mostFitGenomeFromCache, mutationRate: mutationRate)
+			spawn = [(genomes.0, -π/8), (genomes.1, π/8)]
+		}
 		
 		for (parentGenome, angle) in spawn {
 			
 			let position = node.position - CGPoint(angle: node.zRotation + angle) * Constants.Biot.radius * 2
-			let clonedGenome = Genome(parent: parentGenome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: parentGenome.generation).float)
+			let clonedGenome = Genome(parent: parentGenome, mutationRate: mutationRate)
 			let childBiot = BiotComponent.createBiot(genome: clonedGenome, at: position, fountainComponent: RelayComponent(for: coComponent(ResourceFountainComponent.self)))
 			childBiot.node?.zRotation = node.zRotation + angle + π
 			
@@ -778,8 +786,12 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			}
 		}
 		
-		self.matingGenome = nil
+		isPregnant = false
 		node.run(SKAction.scale(to: 1, duration: 0.25))
+		
+		foodEnergy = maximumFoodEnergy / 2
+		hydration = maximumWaterHydration / 2
+		spawnCount += 1
 	}
 	
 	func mated(otherGenome: Genome) {
@@ -787,7 +799,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
-		matingGenome = otherGenome
+		isPregnant = true
 		lastPregnantAge = age
 		
 		entityNode?.run(SKAction.scale(to: 1.25, duration: 0.25))
@@ -891,17 +903,15 @@ extension BiotComponent {
 
 		// extras
 		let extrasNode = SKNode()
-		extrasNode.isHidden = true
-		extrasNode.zPosition = Constants.ZeeOrder.biot + 0.1
+		extrasNode.zPosition = Constants.ZeeOrder.biot - 1
 
 		// speed boost
 		let speedNode = SKShapeNode()
 		let speedPath = CGMutablePath()
-		speedPath.addArc(center: .zero, radius: radius * 1.1, startAngle: π/6, endAngle: -π/6, clockwise: true)
+		speedPath.addArc(center: .zero, radius: radius * 1.1, startAngle: π - π/6, endAngle: π + π/6, clockwise: false)
 		speedNode.path = speedPath
 		speedNode.fillColor = .clear
 		speedNode.lineWidth = radius * 0.1
-		speedNode.zRotation = π
 		speedNode.alpha = 0
 		speedNode.lineCap = .round
 		speedNode.strokeColor = .white
@@ -909,18 +919,12 @@ extension BiotComponent {
 		extrasNode.addChild(speedNode)
 
 		// armor
-		let armorNode = SKShapeNode()
-		let armorPath = CGMutablePath()
-		armorPath.addArc(center: .zero, radius: radius * 1.1, startAngle: -π/6 - π/24, endAngle: π/6 + π/24, clockwise: true)
-		armorNode.path = armorPath
-		armorNode.fillColor = .clear
-		armorNode.lineWidth = radius * 0.1
-		armorNode.zRotation = π
-		armorNode.alpha = 0
-		armorNode.lineCap = .round
-		armorNode.strokeColor = .green
-		armorNode.isAntialiased = Constants.Env.graphics.isAntialiased
+		let armorNode = ArmorNode(species: genome.species)
 		extrasNode.addChild(armorNode)
+		
+		// weapon
+		let weaponNode = WeaponNode()
+		extrasNode.addChild(weaponNode)
 
 		node.addChild(extrasNode)
 		
@@ -1003,6 +1007,7 @@ extension BiotComponent {
 		biotComponent.extrasNode = extrasNode
 		biotComponent.speedNode = speedNode
 		biotComponent.armorNode = armorNode
+		biotComponent.weaponNode = weaponNode
 		biotComponent.eyeNodes = eyeNodes
 		biotComponent.selectionNode = selectionNode
 
@@ -1016,6 +1021,7 @@ extension BiotComponent {
 			VisionComponent(),
 			NeuralNetComponent(genome: genome),
 			BrainComponent(),
+			WeaponComponent(),
 			ContactComponent(),
 			biotComponent
 		])

@@ -10,15 +10,31 @@ import Foundation
 import OctopusKit
 import SpriteKit
 
+enum Species: Int, Codable, CaseIterable, CustomStringConvertible {
+	case herbivore = 0
+	case omnivore
+
+	var description: String {
+		return self == .omnivore ? "omnivore" : "herbivore"
+	}
+	
+	var icon: String {
+		return self == .omnivore ? "🦊" : "🐰"
+	}
+}
+
 struct Genome: CustomStringConvertible, Codable {
 	
-	var id: String
-	var generation: Int
-
+	var id: String = ""
+	var generation: Int = 0
+	var species: Species = .herbivore
+	var isOmnivore: Bool { return species == .omnivore }
+	var isHerbivore: Bool { return species == .herbivore }
+	
 	// neural net
-	var inputCount: Int
-	var hiddenCounts: [Int]
-	var outputCount: Int
+	var inputCount: Int = 0
+	var hiddenCounts: [Int] = []
+	var outputCount: Int = 0
 	var weights: [[Float]] = [[]]
 	var biases: [[Float]] = [[]]
 
@@ -49,9 +65,10 @@ struct Genome: CustomStringConvertible, Codable {
 		}
 		return counts
 	}
-		
+			
 	// new genome
-	init(inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
+	init(species: Species = .herbivore, inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
+		self.species = species
 		self.inputCount = inputCount
 		self.hiddenCounts = hiddenCounts
 		self.outputCount = outputCount
@@ -67,9 +84,10 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	// new genome from parent
-	init(parent: Genome, mutationRate: Float) {
+	init(parent: Genome, mutationRate: Float, shouldMutate: Bool = true) {
 		id = UUID().uuidString
 		generation = parent.generation + 1
+		species = parent.species
 		
 		inputCount = parent.inputCount
 		hiddenCounts = parent.hiddenCounts
@@ -77,7 +95,9 @@ struct Genome: CustomStringConvertible, Codable {
 		weights = parent.weights
 		biases = parent.biases
 
-		mutate(mutationRate: mutationRate)
+		if shouldMutate {
+			mutate(mutationRate: mutationRate)
+		}
 	}
 	
 	var idFormatted: String {
@@ -85,7 +105,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), gen: \(generation), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
+		return "{id: \(idFormatted), gen: \(generation), species: \(species.description), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
 	}
 
 	var jsonString: String {
@@ -94,6 +114,7 @@ struct Genome: CustomStringConvertible, Codable {
 		{
 			"id": "\(id)",
 			"generation": \(generation),
+			"species": \(species),
 			"inputCount": \(inputCount),
 			"hiddenCounts": \(hiddenCounts),
 			"outputCount": \(outputCount),
@@ -108,10 +129,11 @@ struct Genome: CustomStringConvertible, Codable {
 extension Genome {
 
 	mutating func mutate(mutationRate: Float) {
-		// mutationRate: 1...0 ==> 4...2 chances
-		let weightsChances = Int.random(Int(2 + 2*mutationRate))
-		let biasesChances = Bool.random() ? 0 : 1
-		
+		// mutationRate: 1...0 ==> 4...0 chances
+		let weightsChances = Int.random(Int(2 + 3*mutationRate))
+		// mutationRate: 1...0 ==> 1...0 chances
+		let biasesChances = Int.oneChanceIn(12 - Int(2 + 6*mutationRate)) ? 1 : 0
+
 		if weightsChances + biasesChances > 0 {
 			for _ in 0..<weightsChances { mutateWeights() }
 			for _ in 0..<biasesChances { mutateBiases() }
@@ -177,14 +199,77 @@ extension Genome {
 
 		return (weights: randomizedWeights, biases: randomizedBiases)
 	}
+	
+	func crossOverGenomes(other: Genome, mutationRate: Float) -> (Genome, Genome) {
+		
+		var genome1 = Genome(parent: self, mutationRate: mutationRate, shouldMutate: false)
+		var genome2 = Genome(parent: other, mutationRate: mutationRate, shouldMutate: false)
+		
+		guard genome1.nodeCounts == genome2.nodeCounts else {
+			OctopusKit.logForSimErrors.add("genome1 and genome2 do not have the same neural net structure!")
+			return (self, other)
+		}
+		
+		let flatWeights1 = genome1.weights.flatMap { $0 }
+		let flatBiases1 = genome1.biases.flatMap { $0 }
+		let flatWeights2 = genome2.weights.flatMap { $0 }
+		let flatBiases2 = genome2.biases.flatMap { $0 }
+
+		let crossoverPoint = Float.random(in: 0...1)
+		let weightsCrossoverPoint = Int(Float(flatWeights1.count) * crossoverPoint)
+		let biasesCrossoverPoint = Int(Float(flatBiases1.count) * crossoverPoint)
+
+		OctopusKit.logForSimInfo.add("🤞🏻 crossing over genomes at points: \(weightsCrossoverPoint) and \(biasesCrossoverPoint)")
+		
+		let weights1Head = flatWeights1.prefix(weightsCrossoverPoint)
+		let weights1Tail = flatWeights1.suffix(from: weightsCrossoverPoint)
+		let weights2Head = flatWeights2.prefix(weightsCrossoverPoint)
+		let weights2Tail = flatWeights2.suffix(from: weightsCrossoverPoint)
+
+		let biases1Head = flatBiases1.prefix(biasesCrossoverPoint)
+		let biases1Tail = flatBiases1.suffix(from: biasesCrossoverPoint)
+		let biases2Head = flatBiases2.prefix(biasesCrossoverPoint)
+		let biases2Tail = flatBiases2.suffix(from: biasesCrossoverPoint)
+
+		let newWeights1 = Array(weights1Head + weights2Tail)
+		let newBiases1 = Array(biases1Head + biases2Tail)
+		let newWeights2 = Array(weights2Head + weights1Tail)
+		let newBiases2 = Array(biases2Head + biases1Tail)
+
+		genome1.weights = reconstituteLayers(layerCounts: genome1.weightCounts, flatWeights: newWeights1)
+		genome1.biases = reconstituteLayers(layerCounts: genome1.biasCounts, flatWeights: newBiases1)
+		genome2.weights = reconstituteLayers(layerCounts: genome2.weightCounts, flatWeights: newWeights2)
+		genome2.biases = reconstituteLayers(layerCounts: genome2.biasCounts, flatWeights: newBiases2)
+
+		return (genome1, genome2)
+	}
+	
+	func reconstituteLayers(layerCounts: [Int], flatWeights: [Float]) -> [[Float]] {
+		
+		var reconstituted: [[Float]] =  []
+		var workingFlatArray: [Float] = flatWeights
+		
+		for layerCount in layerCounts {
+			if layerCount > 0 {
+				reconstituted.append(Array(workingFlatArray.prefix(layerCount)))
+				workingFlatArray = workingFlatArray.suffix(workingFlatArray.count - layerCount)
+			}
+			else {
+				reconstituted.append([])
+			}
+		}
+
+		return reconstituted
+	}
 }
 
 extension Genome {
-	static var newRandomGenome: Genome {
+	static func newRandomGenome(species: Species? = nil) -> Genome {
 		let inputCount = Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth + Senses.newInputCount
 		let outputCount = Inference.outputCount
 		let hiddenCounts = Constants.NeuralNet.newGenomeHiddenCounts
 
-		return Genome(inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
+		let specifiedSpecies = species ?? Species.allCases.randomElement() ?? .herbivore
+		return Genome(species: specifiedSpecies, inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
 	}
 }

@@ -9,25 +9,6 @@
 import Foundation
 import OctopusKit
 
-struct ConfigParam: CustomStringConvertible {
-	var start: CGFloat
-	var end: CGFloat
-	
-	func valueForGeneration(_ generation: Int, generationThreshold: Int) -> CGFloat {
-		
-		if generation >= generationThreshold {
-			return end
-		}
-		
-		let percentage = generation.cgFloat / generationThreshold.cgFloat
-		return start + percentage * (end-start)
-	}
-	
-	var description: String {
-		return "{start: \(start), end: \(end)}"
-	}
-}
-
 enum ConfigParamType: Int {
 	case maximumAge = 0
 
@@ -38,11 +19,13 @@ enum ConfigParamType: Int {
 	case maximumHydration
 
 	// costs
+	case omnivoreNutrientRatio
 	case collisionDamage
 	case perMovementStaminaRecovery
 	case perMovementHydrationCost
 	case perMovementEnergyCost
 	case speedBoostStaminaCost
+	case weaponStaminaCost
 	case armorEnergyCost
 	
 	case mutationRate
@@ -52,6 +35,7 @@ struct GameConfig: CustomStringConvertible {
 	
 	var name: String
 	var simulationMode: SimulationMode
+	var omnivoreToHerbivoreRatio: CGFloat = 0.5
 	var algaeTarget: Int
 	var worldBlockCount: Int
 	var worldRadius: CGFloat = .zero
@@ -60,57 +44,65 @@ struct GameConfig: CustomStringConvertible {
 
 	var worldObjects: [WorldObject] = []
 	var genomes: [Genome] = []
+	var omnivoreGenomes: [Genome] = []
+	var herbivoreGenomes: [Genome] = []
 	
 	// environmental
 	let dampeningWater: CGFloat = 0.2
-	let generationThreshold = 300
+	let generationThreshold = 200
 	let clockRate = 60 // ticks per 1-way cycle
 	
 	var minGeneration = 0
 	var maxGeneration = 0
+	var useCrossover = false
 
-	var configParams: [ConfigParamType : ConfigParam] = [
+	var configParams: [ConfigParamType: ConfigParam] = [
 		// age
-		.maximumAge : ConfigParam(start: 2280, end: 3300),
+		.maximumAge: ConfigParam(start: 2280, end: 3600),
 		
 		// requirements
-		.mateHealth : ConfigParam(start: 0.65, end: 0.8),
-		.spawnHealth : ConfigParam(start: 0.55, end: 0.75),
-		.maximumFoodEnergy : ConfigParam(start: 80, end: 120),
-		.maximumHydration : ConfigParam(start: 80, end: 120),
+		.mateHealth: ConfigParam(start: 0.65, end: 0.8),
+		.spawnHealth: ConfigParam(start: 0.55, end: 0.75),
+		.maximumFoodEnergy: ConfigParam(start: 80, end: 120),
+		.maximumHydration: ConfigParam(start: 80, end: 120),
 
 		// costs
-		.collisionDamage : ConfigParam(start: 0.10, end: 0.25),
-		.perMovementStaminaRecovery : ConfigParam(start: 0.0015, end: 0.00125),
-		.perMovementHydrationCost : ConfigParam(start: 0.0075, end: 0.01),
-		.perMovementEnergyCost : ConfigParam(start: 0.0075, end: 0.0125),
-		.speedBoostStaminaCost : ConfigParam(start: 0.0006, end: 0.0008),
-		.armorEnergyCost : ConfigParam(start: 0.04, end: 0.06),
+		.omnivoreNutrientRatio: ConfigParam(start: 1, end: 1),
+		.collisionDamage: ConfigParam(start: 0.1, end: 0.25),
+		.perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125),
+		.perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01),
+		.perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125),
+		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008) * 0.5,
+		.weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014),
+		.armorEnergyCost: ConfigParam(start: 0.04, end: 0.06),
 		
 		// evolution
-		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low
+		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low (not zero)
 	]
 
-	init(simulationMode: SimulationMode) {
+	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000, minimumBiotCount: Int = 12, maximumBiotCount: Int = 24, omnivoreToHerbivoreRatio: CGFloat = 0.5, useCrossover: Bool = true) {
 		self.simulationMode = simulationMode
+		self.omnivoreToHerbivoreRatio = omnivoreToHerbivoreRatio
+		self.worldBlockCount = worldBlockCount
+		self.algaeTarget = 0
+
 		name = "Untitled"
-		worldBlockCount = 13
-		algaeTarget = 0
 
 		if simulationMode != .debug {
 			worldObjects = DataManager.shared.loadWorldObjects(type: .less)
-			algaeTarget = 15000
+			self.algaeTarget = algaeTarget
 		}
 		
-		minimumBiotCount = 10
-		maximumBiotCount = 22
+		self.minimumBiotCount = minimumBiotCount
+		self.maximumBiotCount = maximumBiotCount
+		self.useCrossover = useCrossover
 
 		setup()
 	}
 	
 	var description: String {
 		
-		return "{name: \(name), gameMode: \(simulationMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), generations: \(minGeneration.abbrev)–\(maxGeneration.abbrev), biotCounts: \(minimumBiotCount)...\(maximumBiotCount)}"
+		return "{name: \(name), gameMode: \(simulationMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), generations: \(minGeneration.abbrev)–\(maxGeneration.abbrev), biotCounts: \(minimumBiotCount)...\(maximumBiotCount), omnivoreToHerbivoreRatio: \(omnivoreToHerbivoreRatio.formattedTo2Places), useCrossover: \(useCrossover)}"
 	}
 
 	init(saveState: SaveState) {
@@ -119,9 +111,17 @@ struct GameConfig: CustomStringConvertible {
 		algaeTarget = saveState.algaeTarget
 		worldBlockCount = saveState.worldBlockCount
 		self.worldObjects = saveState.worldObjects
-		self.genomes = saveState.genomes
+		self.genomes = saveState.genomes.filter({ $0.generation > 0 }).shuffled()
 		self.minimumBiotCount = saveState.minimumBiotCount
 		self.maximumBiotCount = saveState.maximumBiotCount
+		self.useCrossover = saveState.useCrossover
+
+		if simulationMode == .predatorPrey || simulationMode == .randomPredatorPrey {
+			omnivoreGenomes = genomes.filter { $0.isOmnivore }
+			herbivoreGenomes = genomes.filter { $0.isHerbivore }
+			omnivoreToHerbivoreRatio = CGFloat(saveState.omnivoreToHerbivoreRatio)
+		}
+		
 		setup()
 	}
 	

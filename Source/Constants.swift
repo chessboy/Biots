@@ -19,7 +19,6 @@ struct Constants {
 		static let filenameSaveStateEvolved = "Evolved"
 		
 		static let gridBlockSize: CGFloat = 400
-		static let selfReplicationMaxSpawn = 3
 		static let unbornGenomeCacheCount = 40
 		static let showSpriteKitStats = true
 		
@@ -31,6 +30,7 @@ struct Constants {
 		
 	struct Biot {
 		static let radius: CGFloat = 40
+		static let spikeLength = radius * 4
 		
 		enum StatsLine: Int { case line1, line2, line3 }
 
@@ -64,6 +64,11 @@ struct Constants {
 		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
 	}
 	
+	struct Mud {
+		static let dip: CGFloat = 0.2 // % of max stamina increase
+		static let timeBetweenDips: TimeInterval = 3 // seconds between absorbing minerals from the same mud source
+	}
+	
 	struct Resource {
 		static let minSize: CGFloat = 80
 		static let plopSize: CGFloat = 200
@@ -87,7 +92,7 @@ struct Constants {
 		static let grid = "grid"
 		static let zapper = "zapper"
 	}
-		
+
 	struct NeuralNet {
 		static let newGenomeHiddenCounts = [14, 8]
 		static let maxWeightValue: Float = 2
@@ -116,9 +121,9 @@ struct Constants {
 		static let displayMemory = 8
 		static let inferenceMemory = 3
 		
-		static let spinLimiter: CGFloat = 0.4
+		static let spinLimiter: CGFloat = 0.4 // % of angular velocity
 		static let thrustForce: CGFloat = 7.5
-		static let maxSpeedBoost: CGFloat = 1.375
+		static let maxSpeedBoost: CGFloat = 1.375 // % of thrust force
 	}
 	
 	struct Graphics {

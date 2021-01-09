@@ -11,6 +11,10 @@
 		D4040D2024FB477400A2C500 /* RunningCGVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4040D1F24FB477400A2C500 /* RunningCGVector.swift */; };
 		D40C4D8F254A6DC1008AA986 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C4D8E254A6DC1008AA986 /* GameManager.swift */; };
 		D40C4D93254A6DF9008AA986 /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C4D92254A6DF9008AA986 /* GameConfig.swift */; };
+		D418F8072563B3F0009C0868 /* WeaponComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F8062563B3F0009C0868 /* WeaponComponent.swift */; };
+		D418F80B2563B923009C0868 /* WeaponNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F80A2563B923009C0868 /* WeaponNode.swift */; };
+		D418F80F25648F16009C0868 /* ArmorNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F80E25648F16009C0868 /* ArmorNode.swift */; };
+		D418F81E256578F2009C0868 /* GenomeDispensary.swift in Sources */ = {isa = PBXBuildFile; fileRef = D418F81225656E84009C0868 /* GenomeDispensary.swift */; };
 		D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */; };
 		D41B7A55248459380059A40B /* ResourceFountainComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C2FC1B248372BE0076077A /* ResourceFountainComponent.swift */; };
 		D41D1F95244ACF8100A876F4 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41D1F94244ACF8100A876F4 /* StringExtensions.swift */; };
@@ -31,6 +35,7 @@
 		D45F0E47253130AF0067912C /* WaterSourceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D451712625300C1500290A38 /* WaterSourceComponent.swift */; };
 		D45F0E6B253282360067912C /* PlacedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F0E6A253282360067912C /* PlacedObject.swift */; };
 		D45F0E782532C7520067912C /* world-objects-more.json in Resources */ = {isa = PBXBuildFile; fileRef = D45F0E772532C7520067912C /* world-objects-more.json */; };
+		D46D206325702B9B008A59D6 /* ConfigParam.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46D206225702B9B008A59D6 /* ConfigParam.swift */; };
 		D47386362442BA830022E760 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386352442BA830022E760 /* AppDelegate.swift */; };
 		D47386382442BA830022E760 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47386372442BA830022E760 /* ContentView.swift */; };
 		D473863A2442BA850022E760 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D47386392442BA850022E760 /* Assets.xcassets */; };
@@ -113,6 +118,10 @@
 		D4040D1F24FB477400A2C500 /* RunningCGVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunningCGVector.swift; sourceTree = "<group>"; };
 		D40C4D8E254A6DC1008AA986 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		D40C4D92254A6DF9008AA986 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
+		D418F8062563B3F0009C0868 /* WeaponComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaponComponent.swift; sourceTree = "<group>"; };
+		D418F80A2563B923009C0868 /* WeaponNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeaponNode.swift; sourceTree = "<group>"; };
+		D418F80E25648F16009C0868 /* ArmorNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArmorNode.swift; sourceTree = "<group>"; };
+		D418F81225656E84009C0868 /* GenomeDispensary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenomeDispensary.swift; sourceTree = "<group>"; };
 		D41B7A53248455170059A40B /* ResourceFountainInfluenceComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceFountainInfluenceComponent.swift; sourceTree = "<group>"; };
 		D41D1F94244ACF8100A876F4 /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		D4229EDE250A7CE600DE29CE /* RetinaNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RetinaNode.swift; sourceTree = "<group>"; };
@@ -131,6 +140,7 @@
 		D45E210E255BA63A0020E7AB /* world-objects-sculpted.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-sculpted.json"; sourceTree = "<group>"; };
 		D45F0E6A253282360067912C /* PlacedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacedObject.swift; sourceTree = "<group>"; };
 		D45F0E772532C7520067912C /* world-objects-more.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "world-objects-more.json"; sourceTree = "<group>"; };
+		D46D206225702B9B008A59D6 /* ConfigParam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigParam.swift; sourceTree = "<group>"; };
 		D47386322442BA830022E760 /* Biots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Biots.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47386352442BA830022E760 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D47386372442BA830022E760 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -235,6 +245,7 @@
 				E85C3AF325467E97000D2926 /* SimulationMode.swift */,
 				D40C4D8E254A6DC1008AA986 /* GameManager.swift */,
 				E8BB0534254487B4008C39D2 /* SaveState.swift */,
+				D46D206225702B9B008A59D6 /* ConfigParam.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -281,7 +292,10 @@
 				D41B7A52248455170059A40B /* Resource */,
 				D4D18D9C2447ADBB00BF92FA /* StatsNode.swift */,
 				D4465B9E250F20250074D864 /* ThrusterNode.swift */,
+				D418F80A2563B923009C0868 /* WeaponNode.swift */,
+				D418F80E25648F16009C0868 /* ArmorNode.swift */,
 				D44E6066245272C500694462 /* Vision */,
+				D418F8062563B3F0009C0868 /* WeaponComponent.swift */,
 			);
 			path = "Biot Components";
 			sourceTree = "<group>";
@@ -484,6 +498,7 @@
 				D47386E02442BF1D0022E760 /* WorldComponent.swift */,
 				D47386B72442BEDB0022E760 /* WorldScene.swift */,
 				D4E4BA5F25008EEA0044EC48 /* ZapperComponent.swift */,
+				D418F81225656E84009C0868 /* GenomeDispensary.swift */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -673,6 +688,7 @@
 				D41D1F95244ACF8100A876F4 /* StringExtensions.swift in Sources */,
 				D4F5055324ED282900EAA52E /* RunningFloatArray.swift in Sources */,
 				D4C2FC2824842C910076077A /* CGRectMath.swift in Sources */,
+				D418F8072563B3F0009C0868 /* WeaponComponent.swift in Sources */,
 				D41B7A54248456470059A40B /* ResourceFountainInfluenceComponent.swift in Sources */,
 				D40C4D93254A6DF9008AA986 /* GameConfig.swift in Sources */,
 				D47386F22442CB9E0022E760 /* Constants.swift in Sources */,
@@ -693,12 +709,15 @@
 				D47386D02442BEDB0022E760 /* 6A - PlayState.swift in Sources */,
 				D47386362442BA830022E760 /* AppDelegate.swift in Sources */,
 				D4C2FC1F248372BF0076077A /* AlgaeComponent.swift in Sources */,
+				D418F80F25648F16009C0868 /* ArmorNode.swift in Sources */,
 				D47D71942447F5950079D2F1 /* RunningValue.swift in Sources */,
 				D47386CE2442BEDB0022E760 /* 1 - OKQuickStartView.swift in Sources */,
 				D4C2FC242483A4160076077A /* NoiseComponent.swift in Sources */,
 				D4E573AE244D515E006C2767 /* NoiseGenerator.swift in Sources */,
+				D418F80B2563B923009C0868 /* WeaponNode.swift in Sources */,
 				D44EE9B724439592006A2083 /* IntMath.swift in Sources */,
 				D4D18D8E2446B54200BF92FA /* BoundaryComponent.swift in Sources */,
+				D46D206325702B9B008A59D6 /* ConfigParam.swift in Sources */,
 				E8D63D58253FFDF000ACF9D7 /* SwiftUiExtensions.swift in Sources */,
 				D48E2DE524F76141009FB3D7 /* OctopusKitExtensions.swift in Sources */,
 				D4D18D9D2447ADBB00BF92FA /* StatsNode.swift in Sources */,
@@ -712,6 +731,7 @@
 				D47386E42442C6B20022E760 /* CGGeometry.swift in Sources */,
 				D47386E62442C6F00022E760 /* CGAffineTransform.swift in Sources */,
 				D47386E12442BF1D0022E760 /* WorldComponent.swift in Sources */,
+				D418F81E256578F2009C0868 /* GenomeDispensary.swift in Sources */,
 				D4D18D96244737FD00BF92FA /* BrainComponent.swift in Sources */,
 				D44E60612452298500694462 /* VisionComponent.swift in Sources */,
 				D47386EF2442CB510022E760 /* CGConstants.swift in Sources */,

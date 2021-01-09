@@ -51,7 +51,7 @@ final class PlayState: OKGameState {
 			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
 		} else {
 			OctopusKit.logForSimErrors.add("could not load a save state")
-			GameManager.shared.gameConfig = GameConfig(simulationMode: .random)
+			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, algaeTarget: 10000)
 		}
 
     	super.didEnter(from: previousState)

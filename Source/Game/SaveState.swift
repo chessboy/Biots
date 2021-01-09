@@ -19,8 +19,10 @@ struct SaveState: Codable, CustomStringConvertible {
 	
 	var minimumBiotCount: Int
 	var maximumBiotCount: Int
-	
+	var omnivoreToHerbivoreRatio: Double
+	var useCrossover: Bool
+
 	var description: String {
-		return "{name: \(name), simulationMode: \(simulationMode), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldObjects: \(worldObjects.count), genomes: \(genomes.count), minimumBiotCount: \(minimumBiotCount), maximumBiotCount: \(maximumBiotCount)}"
+		return "{name: \(name), simulationMode: \(simulationMode), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldObjects: \(worldObjects.count), genomes: \(genomes.count), minimumBiotCount: \(minimumBiotCount), maximumBiotCount: \(maximumBiotCount), omnivoreToHerbivoreRatio: \(omnivoreToHerbivoreRatio), useCrossover: \(useCrossover)}"
 	}
 }

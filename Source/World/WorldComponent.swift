@@ -13,9 +13,11 @@ import OctopusKit
 final class WorldComponent: OKComponent, OKUpdatableComponent {
 
 	var cameraZoom: CGFloat = Constants.Camera.initialScale
-	var genomeDispenseIndex = 0
-	var unbornGenomes: [Genome] = []
 	var currentFrame = 0
+	
+	var generalDispensary: GenomeDispensary?
+	var omnivoreDispensary: GenomeDispensary?
+	var herbivoreDispensary: GenomeDispensary?
 	
 	lazy var keyTrackerComponent = coComponent(KeyTrackerComponent.self)
 	
@@ -47,11 +49,18 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 		// cleanup and prepare
 		removeAllEntities()
-		unbornGenomes.removeAll()
 		currentFrame = 0
+				
 		let gameConfig = GameManager.shared.gameConfig
 		let worldRadius = GameManager.shared.gameConfig.worldRadius
-
+		
+		if gameConfig.simulationMode == .predatorPrey || gameConfig.simulationMode == .randomPredatorPrey {
+			omnivoreDispensary = GenomeDispensary(dispensaryType: .omnivore, gameConfig: gameConfig)
+			herbivoreDispensary = GenomeDispensary(dispensaryType: .herbivore, gameConfig: gameConfig)
+		} else {
+			generalDispensary = GenomeDispensary(dispensaryType: .general, gameConfig: gameConfig)
+		}
+		
 		// grid
 		if Constants.Env.graphics.showGrid {
 			let blockSize = Constants.Env.gridBlockSize
@@ -63,16 +72,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		// boundary wall
 		let boundary = BoundaryComponent.createLoopWall(radius: worldRadius)
 		scene.addEntity(boundary)
-//		let boundary = BoundaryComponent.createFakeLoopWall(radius: worldRadius)
-//		scene.addEntity(boundary)
-
-		// border blocks
-//		let zapperCount: CGFloat = 45
-//		for angle: CGFloat in stride(from: 0, to: 2*π, by: π/zapperCount) {
-//			let size = worldRadius * π/(zapperCount * 2)
-//			let zapper = ZapperComponent.create(radius: size, position: CGPoint(angle: angle) * worldRadius, isBrick: true)
-//			scene.addEntity(zapper)
-//		}
 		
 		// world objects
 		let worldObjects = gameConfig.worldObjects
@@ -133,10 +132,8 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	// MARK: Update
 	
 	override func update(deltaTime seconds: TimeInterval) {
-		
-		guard let scene =  OctopusKit.shared?.currentScene else { return }
-				
 		let gameConfig = GameManager.shared.gameConfig
+		
 		// key event handling
 		if let keyTracker = keyTrackerComponent {
 			for keyCode in keyTracker.keyCodesDown {
@@ -145,46 +142,74 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		}
 		
 		displayStats()
-		
+				
 		// biot creation
-		if currentFrame >= gameConfig.simulationMode.dispenseDelay && currentFrame.isMultiple(of: gameConfig.simulationMode.dispenseInterval), scene.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).count < gameConfig.minimumBiotCount {
-			
-			if unbornGenomes.count > 0 {
-				if let highestGenGenome = unbornGenomes.sorted(by: { (genome1, genome2) -> Bool in
-					genome1.generation > genome2.generation
-				}).first {
-					OctopusKit.logForSimInfo.add("decanting unborn genome: \(highestGenGenome.description), cache size: \(unbornGenomes.count)")
-					let _ = addNewBiot(genome: highestGenGenome, in: scene)
-					unbornGenomes = unbornGenomes.filter({ $0.id != highestGenGenome.id })
-				}
-			}
-			else if gameConfig.simulationMode == .random {
-				let genome = Genome.newRandomGenome
-				OctopusKit.logForSimInfo.add("created random genome: \(genome.description)")
-				let _ = addNewBiot(genome: genome, in: scene)
-			}
-			else if GameManager.shared.gameConfig.genomes.count > 0 {
-				let genomes = GameManager.shared.gameConfig.genomes
-				let genomeIndex = genomeDispenseIndex % genomes.count
-				var genome = genomes[genomeIndex]
-				genome.id = "\(genome.id)-\(genomeDispenseIndex)"
-				OctopusKit.logForSimInfo.add("dispensing genome from file: \(genome.id) - \(genomeIndex): \(genome.description)")
-				let _ = addNewBiot(genome: genome, in: scene)
-				genomeDispenseIndex += 1
-			}
+		if currentFrame >= gameConfig.simulationMode.dispenseDelay && currentFrame.isMultiple(of: gameConfig.simulationMode.dispenseInterval) {
+			topOffGenomes(gameConfig: gameConfig)
 		}
 		
 		currentFrame += 1
 	}
-
-	// MARK: Biots
 	
-	func addUnbornGenome(_ genome: Genome) {
-		if unbornGenomes.count == Constants.Env.unbornGenomeCacheCount {
-			unbornGenomes.remove(at: 0)
+	// MARK: Genome Dispening
+
+	func shouldCacheGenome(species: Species) -> Bool {
+		let simulationMode = GameManager.shared.gameConfig.simulationMode
+
+		switch simulationMode {
+			
+			case .predatorPrey, .randomPredatorPrey:
+			return species == .omnivore ?
+				omnivoreDispensary?.shouldCacheGenome(currentCount: currentOmnivores.count) ?? false :
+				herbivoreDispensary?.shouldCacheGenome(currentCount: currentHerbivores.count) ?? false
+				
+			default: return generalDispensary?.shouldCacheGenome(currentCount: currentBiots.count) ?? false
 		}
-		unbornGenomes.append(genome)
-		OctopusKit.logForSimInfo.add("added 1 unborn genome: \(genome.description), cache size: \(unbornGenomes.count)")
+	}
+	
+	func mostFitGenomeFromCache(species: Species) -> Genome? {
+		let simulationMode = GameManager.shared.gameConfig.simulationMode
+
+		switch simulationMode {
+			case .predatorPrey, .randomPredatorPrey:
+			return species == .omnivore ? omnivoreDispensary?.mostFitGenome(removeFromCache: true) : herbivoreDispensary?.mostFitGenome(removeFromCache: true)
+			default: return generalDispensary?.mostFitGenome(removeFromCache: true)
+		}
+	}
+		
+	func topOffGenomes(gameConfig: GameConfig) {
+				
+		guard let scene = OctopusKit.shared?.currentScene else { return }
+
+		if gameConfig.simulationMode == .predatorPrey || gameConfig.simulationMode == .randomPredatorPrey {
+			if let genome = herbivoreDispensary?.nextGenome(currentCount: currentHerbivores.count) {
+				//OctopusKit.logForSimInfo.add("created herbivore genome: \(genome.description)")
+				let _ = addNewBiot(genome: genome, in: scene)
+			}
+			else if let genome = omnivoreDispensary?.nextGenome(currentCount: currentOmnivores.count) {
+				//OctopusKit.logForSimInfo.add("created omnivore genome: \(genome.description)")
+				let _ = addNewBiot(genome: genome, in: scene)
+			}
+		}
+		else if let genome = generalDispensary?.nextGenome(currentCount: currentBiots.count) {
+			//OctopusKit.logForSimInfo.add("created general genome: \(genome.description)")
+			let _ = addNewBiot(genome: genome, in: scene)
+		}
+	}
+	
+	func cacheGenome(_ genome: Genome, averageHealth: Float) {
+		let simulationMode = GameManager.shared.gameConfig.simulationMode
+		
+		if simulationMode == .predatorPrey || simulationMode == .randomPredatorPrey {
+			if genome.isOmnivore {
+				omnivoreDispensary?.cacheGenome(genome, averageHealth: averageHealth)
+			}
+			else {
+				herbivoreDispensary?.cacheGenome(genome, averageHealth: averageHealth)
+			}
+		} else {
+			generalDispensary?.cacheGenome(genome, averageHealth: averageHealth)
+		}
 	}
 		
 	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
@@ -217,7 +242,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	
 	func displayStats() {
 		
-		guard let scene = OctopusKit.shared?.currentScene else { return }
+		guard let scene = OctopusKit.shared?.currentScene as? WorldScene else { return }
 		
 		let gameConfig = GameManager.shared.gameConfig
 		let dispenseDelay = gameConfig.simulationMode.dispenseDelay
@@ -247,12 +272,42 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 			builder
 				.text("      🕒 ", attributes: iconAttrs)
 				.text("\(Int(frame).abbrev)")
+				.text("      🌱 ", attributes: iconAttrs)
+				.text("\(Int(currentBiotStats.resourceStats.algaeTarget).abbrev)")
+
 				.text("      📶 ", attributes: iconAttrs)
 				.text("\(biotCount)/\(gameConfig.maximumBiotCount)")
-				.text("      🥚 ", attributes: iconAttrs)
-				.text("\(unbornGenomes.count)")
-				.text("      ↗️ ", attributes: iconAttrs)
-				.text("\(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted)")
+				
+			if gameConfig.simulationMode == .predatorPrey || gameConfig.simulationMode == .randomPredatorPrey {
+				builder
+					.text("      🐰 ", attributes: iconAttrs)
+					.text("\(currentHerbivores.count)")
+					.text(" +🥚 ", attributes: iconAttrs)
+					.text("\(herbivoreDispensary?.genomeCache.count ?? 0)")
+					.text("      🦊 ", attributes: iconAttrs)
+					.text("\(currentOmnivores.count)")
+					.text(" +🥚 ", attributes: iconAttrs)
+					.text("\(omnivoreDispensary?.genomeCache.count ?? 0)")
+			} else {
+				builder
+					.text("      🥚 ", attributes: iconAttrs)
+					.text("\(generalDispensary?.genomeCache.count ?? 0)")
+			}
+				
+			if gameConfig.simulationMode == .predatorPrey || gameConfig.simulationMode == .randomPredatorPrey {
+				builder
+					.text("      ↗️🐰 ", attributes: iconAttrs)
+					.text("\(biotStats.minGenHerbivore.formatted)–\(biotStats.maxGenHerbivore.formatted)")
+					.text("      ↗️🦊 ", attributes: iconAttrs)
+					.text("\(biotStats.minGenOmnivore.formatted)–\(biotStats.maxGenOmnivore.formatted)")
+			}
+			else {
+				builder
+					.text("      ↗️ ", attributes: iconAttrs)
+					.text("\(biotStats.minGen.formatted)–\(biotStats.maxGen.formatted)")
+			}
+			
+			builder
 				.text("      🌡️ ", attributes: iconAttrs)
 				.text("\(biotStats.avgHealth.formattedToPercentNoDecimal)")
 				.text("      ⚡ ", attributes: iconAttrs)
@@ -265,8 +320,6 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				.text("\(biotStats.pregnantPercent.formattedToPercentNoDecimal)")
 				.text("      👶🏻 ", attributes: iconAttrs)
 				.text("\(biotStats.spawnAverage.formattedToPercentNoDecimal)")
-				.text("      🌱 ", attributes: iconAttrs)
-				.text("\(Int(currentBiotStats.resourceStats.algaeTarget).abbrev)")
 				.newline()
 				.newline()
 
@@ -278,15 +331,23 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 				.text("\(gameConfig.minGeneration.formatted)–\(gameConfig.maxGeneration.formatted)", attributes: valueSmallAttrs)
 				.text("      🌎 ", attributes: iconSmallAttrs)
 				.text("\(gameConfig.worldBlockCount)", attributes: valueSmallAttrs)
-
+				
+			if gameConfig.useCrossover {
+				builder
+					.text("      🤞🏻", attributes: iconSmallAttrs)
+			}
+				
 			statsComponent.updateStats(builder.attributedString)
 			
-//			if frame > 0, frame.isMultiple(of: 20000) {
-//				print()
-//				print(statsText)
-//				print()
-//				(scene as? WorldScene)?.dumpGenomes()
-//			}
+			if frame > 0, frame.isMultiple(of: 20000), let globalDataComponent = OctopusKit.shared.currentScene?.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self) {
+				let gameConfig = GameManager.shared.gameConfig
+				let sortedGenomes: [Genome] = scene.currentGenomes.sorted { (genome1, genome2) -> Bool in
+					return genome1.species.rawValue > genome2.species.rawValue
+				}
+				let saveState = SaveState(name: "\(gameConfig.name)", simulationMode: gameConfig.simulationMode, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: scene.currentWorldObjects, genomes: sortedGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount, omnivoreToHerbivoreRatio: Double(gameConfig.omnivoreToHerbivoreRatio), useCrossover: gameConfig.useCrossover)
+
+				LocalFileManager.shared.saveStateToFile(saveState, filename: "\(Constants.Env.filenameSaveStateSave).backup")
+			}
 		}
 	}
 	
@@ -309,6 +370,11 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 	struct BiotStats {
 		var minGen: Int
 		var maxGen: Int
+		var minGenHerbivore: Int
+		var maxGenHerbivore: Int
+		var minGenOmnivore: Int
+		var maxGenOmnivore: Int
+
 		var avgEnergy: CGFloat
 		var avgHydration: CGFloat
 		var avgStamina: CGFloat
@@ -320,7 +386,7 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		var resourceStats: ResourceStats
 
 		static var zero: BiotStats {
-			return BiotStats(minGen: 0, maxGen: 0, avgEnergy: 0, avgHydration: 0, avgStamina: 0, avgHealth: 0, pregnantPercent: 0, spawnAverage: 0, resourceStats: .zero)
+			return BiotStats(minGen: 0, maxGen: 0, minGenHerbivore: 0, maxGenHerbivore: 0, minGenOmnivore: 0, maxGenOmnivore: 0, avgEnergy: 0, avgHydration: 0, avgStamina: 0, avgHealth: 0, pregnantPercent: 0, spawnAverage: 0, resourceStats: .zero)
 		}
 	}
 	
@@ -328,22 +394,37 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		return OctopusKit.shared.currentScene?.entities.compactMap({ $0.component(ofType: BiotComponent.self) }) ?? []
 	}
 	
+	var currentOmnivores: [BiotComponent] {
+		return currentBiots.filter({ $0.genome.isOmnivore })
+	}
+	
+	var currentHerbivores: [BiotComponent] {
+		return currentBiots.filter({ $0.genome.isHerbivore })
+	}
+	
 	var currentBiotStats: BiotStats {
 				
 		let biots = currentBiots
-		
 		let minGen = biots.map({$0.genome.generation}).min() ?? 0
 		let maxGen = biots.map({$0.genome.generation}).max() ?? 0
+
+		let herbivores = currentHerbivores
+		let minGenHerbivore = herbivores.map({$0.genome.generation}).min() ?? 0
+		let maxGenHerbivore = herbivores.map({$0.genome.generation}).max() ?? 0
+
+		let omnivores = currentOmnivores
+		let minGenOmnivore = omnivores.map({$0.genome.generation}).min() ?? 0
+		let maxGenOmnivore = omnivores.map({$0.genome.generation}).max() ?? 0
 
 		let averageEnergy = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.foodEnergy/$1.maximumEnergy } / biots.count.cgFloat
 		let averageHydration = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.hydration/$1.maximumHydration } / biots.count.cgFloat
 		let averageStamina = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.stamina } / biots.count.cgFloat
-		let averageHealth = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.health } / biots.count.cgFloat
+		let averageHealth = biots.count == 0 ? 0 : biots.reduce(0) { $0 + $1.healthRunningValue.averageOfMostRecent(memory: 10).cgFloat } / biots.count.cgFloat
 
 		let pregnantPercent = biots.count == 0 ? 0 : CGFloat(biots.reduce(0) { $0 + ($1.isPregnant ? 1 : 0) }) / biots.count.cgFloat
 		let spawnAverage = biots.count == 0 ? 0 : CGFloat(biots.reduce(0) { $0 + $1.spawnCount }) / biots.count.cgFloat
 
-		return BiotStats(minGen: minGen, maxGen: maxGen, avgEnergy: averageEnergy, avgHydration: averageHydration, avgStamina: averageStamina, avgHealth: averageHealth, pregnantPercent: pregnantPercent, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
+		return BiotStats(minGen: minGen, maxGen: maxGen,  minGenHerbivore: minGenHerbivore, maxGenHerbivore: maxGenHerbivore, minGenOmnivore: minGenOmnivore, maxGenOmnivore: maxGenOmnivore, avgEnergy: averageEnergy, avgHydration: averageHydration, avgStamina: averageStamina, avgHealth: averageHealth, pregnantPercent: pregnantPercent, spawnAverage: spawnAverage, resourceStats: currentResourceStats)
 	}
 
 	var currentResourceStats: ResourceStats {
