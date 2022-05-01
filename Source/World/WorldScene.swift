@@ -609,7 +609,7 @@ final class WorldScene: OKScene {
 			return
 		}
 				
-		if keyCodesDown.contains(Keycode.f) {
+		if !rightMouse, keyCodesDown.contains(Keycode.f) {
 			for _ in 1...3 + Int.random(3) {
 				let algae = algaeFountain.createAlgaeEntity(energy: Constants.Algae.bite * Int.random(in: 2...5).cgFloat)
 				if let node = algae.component(ofType: SpriteKitComponent.self)?.node {

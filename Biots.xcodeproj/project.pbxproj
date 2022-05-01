@@ -323,6 +323,7 @@
 		D47386292442BA830022E760 = {
 			isa = PBXGroup;
 			children = (
+				D47386E22442C50C0022E760 /* Source */,
 				D47386422442BA850022E760 /* Biots.entitlements */,
 				D498804D2518050A00015724 /* Biots.png */,
 				D4BE801924FB6D2900208C6A /* BiotsTests */,
@@ -332,7 +333,6 @@
 				D47386332442BA830022E760 /* Products */,
 				D49880452517D69400015724 /* README.md */,
 				D40C4D7D254A6AE4008AA986 /* Resources */,
-				D47386E22442C50C0022E760 /* Source */,
 			);
 			sourceTree = "<group>";
 		};
