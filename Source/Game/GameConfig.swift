@@ -58,7 +58,7 @@ struct GameConfig: CustomStringConvertible {
 
 	var configParams: [ConfigParamType: ConfigParam] = [
 		// age
-		.maximumAge: ConfigParam(start: 2280, end: 3600),
+        .maximumAge: ConfigParam(start: 2280 * 1.5, end: 3600 * 1.5),
 		
 		// requirements
 		.mateHealth: ConfigParam(start: 0.65, end: 0.8),
@@ -68,13 +68,13 @@ struct GameConfig: CustomStringConvertible {
 
 		// costs
 		.omnivoreNutrientRatio: ConfigParam(start: 1, end: 1),
-		.collisionDamage: ConfigParam(start: 0.1, end: 0.25),
+        .collisionDamage: ConfigParam(start: 0.1, end: 0.25),
 		.perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125),
-		.perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01),
-		.perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125),
-		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008) * 0.5,
-		.weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014),
-		.armorEnergyCost: ConfigParam(start: 0.04, end: 0.06),
+        .perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01) * 0.75,
+        .perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125) * 0.75,
+		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008) * 0.25,
+        .weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014) * 0.75,
+        .armorEnergyCost: ConfigParam(start: 0.04, end: 0.06) * 0.75,
 		
 		// evolution
 		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low (not zero)

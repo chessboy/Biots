@@ -460,7 +460,7 @@ final class WorldScene: OKScene {
 			}
 			else if optionDown {
 				let bump = 1000 * (shiftDown ? -1 : 1)
-				if globalDataComponent.algaeTarget + bump >= 0, globalDataComponent.algaeTarget + bump <= 20000 {
+				if globalDataComponent.algaeTarget + bump >= 0, globalDataComponent.algaeTarget + bump <= 30000 {
 					globalDataComponent.algaeTarget += bump
 					setAlgaeTargetsInFountains(globalDataComponent.algaeTarget)
 				}
@@ -806,7 +806,7 @@ final class WorldScene: OKScene {
 			view.showsPhysics = self.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showPhysics ?? false
 			view.ignoresSiblingOrder = true
 			view.shouldCullNonVisibleNodes = true
-			view.preferredFramesPerSecond = 30
+            view.preferredFramesPerSecond = Constants.Env.fpsTarget
 		}
 			
     	default: break

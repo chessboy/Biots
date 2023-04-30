@@ -20,8 +20,9 @@ struct Constants {
 		
 		static let gridBlockSize: CGFloat = 400
 		static let unbornGenomeCacheCount = 40
-		static let showSpriteKitStats = true
-		
+        static let showSpriteKitStats = true
+        static let fpsTarget = 60
+
 		static let simpleGraphics = Graphics(isAntialiased: false, blendMode: .replace, shadows: false, showGrid: false)
 		static let niceGraphics = Graphics(isAntialiased: true, blendMode: .alpha, shadows: true, showGrid: true)
 		static let niceGraphicsNoShadows = Graphics(isAntialiased: false, blendMode: .alpha, shadows: false, showGrid: true)

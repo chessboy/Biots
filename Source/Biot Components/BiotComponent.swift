@@ -484,7 +484,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		let showBiotHealthDetails = globalDataComponent?.showBiotHealthDetails ?? false
 		let showingVision = !visionNode.isHidden
 
-		if !showingHealth, showHealth{
+		if !showingHealth, showHealth {
 			healthNode.alpha = 0
 			healthNode.isHidden = false
 			healthDetailsNode.alpha = !showingVision ? 0 : 1

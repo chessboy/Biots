@@ -36,7 +36,7 @@ final class ContactComponent: PhysicsContactComponent {
 
 		if contact.bodyA.categoryBitMask == Constants.CategoryBitMasks.wall {
 			
-			let collisionDamage = GameManager.shared.gameConfig.valueForConfig(.collisionDamage, generation: biot.genome.generation)*2
+			let collisionDamage = GameManager.shared.gameConfig.valueForConfig(.collisionDamage, generation: biot.genome.generation) * 2
 			let armor = biot.coComponent(BrainComponent.self)?.inference.armor.average.cgFloat ?? 0
 			let exposure = 1 - armor/2
 			biot.incurStaminaChange(collisionDamage * exposure, showEffect: true)

@@ -135,7 +135,7 @@ extension CGPath {
 extension SKAction {
 	
 	// based on OctopusKit extension but allows for independent on and off times
-	open class func flash(onDuration: TimeInterval = 0.2, offDuration: TimeInterval = 0.1) -> SKAction {
+    public class func flash(onDuration: TimeInterval = 0.2, offDuration: TimeInterval = 0.1) -> SKAction {
 		let flashOff = SKAction.hide()
 		let flashOn = SKAction.unhide()
 		let flashOffOn = SKAction.sequence([flashOff, SKAction.wait(forDuration: offDuration), flashOn, SKAction.wait(forDuration: onDuration)])
