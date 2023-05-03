@@ -19,7 +19,6 @@ enum ConfigParamType: Int {
 	case maximumHydration
 
 	// costs
-	case omnivoreNutrientRatio
 	case collisionDamage
 	case perMovementStaminaRecovery
 	case perMovementHydrationCost
@@ -35,7 +34,6 @@ struct GameConfig: CustomStringConvertible {
 	
 	var name: String
 	var simulationMode: SimulationMode
-	var omnivoreToHerbivoreRatio: CGFloat = 0.5
 	var algaeTarget: Int
 	var worldBlockCount: Int
 	var worldRadius: CGFloat = .zero
@@ -44,8 +42,6 @@ struct GameConfig: CustomStringConvertible {
 
 	var worldObjects: [WorldObject] = []
 	var genomes: [Genome] = []
-	var omnivoreGenomes: [Genome] = []
-	var herbivoreGenomes: [Genome] = []
 	
 	// environmental
 	let dampeningWater: CGFloat = 0.2
@@ -67,22 +63,20 @@ struct GameConfig: CustomStringConvertible {
 		.maximumHydration: ConfigParam(start: 80, end: 120),
 
 		// costs
-		.omnivoreNutrientRatio: ConfigParam(start: 1, end: 1),
         .collisionDamage: ConfigParam(start: 0.1, end: 0.25),
-		.perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125),
-        .perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01) * 0.75,
-        .perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125) * 0.75,
-		.speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008) * 0.25,
-        .weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014) * 0.75,
-        .armorEnergyCost: ConfigParam(start: 0.04, end: 0.06) * 0.75,
+        .perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125) * 0.5,
+        .perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01) * 0.25,
+        .perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125) * 0.25,
+        .speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008) * 0.5,
+        .weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014) * 0.5,
+        .armorEnergyCost: ConfigParam(start: 0.04, end: 0.06) * 0.5,
 		
 		// evolution
 		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low (not zero)
 	]
 
-	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000, minimumBiotCount: Int = 12, maximumBiotCount: Int = 24, omnivoreToHerbivoreRatio: CGFloat = 0.5, useCrossover: Bool = true) {
+	init(simulationMode: SimulationMode, worldBlockCount: Int = 10, algaeTarget: Int = 15000, minimumBiotCount: Int = 12, maximumBiotCount: Int = 24, useCrossover: Bool = true) {
 		self.simulationMode = simulationMode
-		self.omnivoreToHerbivoreRatio = omnivoreToHerbivoreRatio
 		self.worldBlockCount = worldBlockCount
 		self.algaeTarget = 0
 
@@ -102,7 +96,7 @@ struct GameConfig: CustomStringConvertible {
 	
 	var description: String {
 		
-		return "{name: \(name), gameMode: \(simulationMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), generations: \(minGeneration.abbrev)–\(maxGeneration.abbrev), biotCounts: \(minimumBiotCount)...\(maximumBiotCount), omnivoreToHerbivoreRatio: \(omnivoreToHerbivoreRatio.formattedTo2Places), useCrossover: \(useCrossover)}"
+		return "{name: \(name), gameMode: \(simulationMode.description), algaeTarget: \(algaeTarget), worldBlockCount: \(worldBlockCount), worldRadius: \(worldRadius.formattedNoDecimal), worldObjects: \(worldObjects.count), genomes: \(genomes.count), generations: \(minGeneration.abbrev)–\(maxGeneration.abbrev), biotCounts: \(minimumBiotCount)...\(maximumBiotCount), useCrossover: \(useCrossover)}"
 	}
 
 	init(saveState: SaveState) {
@@ -115,12 +109,6 @@ struct GameConfig: CustomStringConvertible {
 		self.minimumBiotCount = saveState.minimumBiotCount
 		self.maximumBiotCount = saveState.maximumBiotCount
 		self.useCrossover = saveState.useCrossover
-
-		if simulationMode == .predatorPrey || simulationMode == .randomPredatorPrey {
-			omnivoreGenomes = genomes.filter { $0.isOmnivore }
-			herbivoreGenomes = genomes.filter { $0.isHerbivore }
-			omnivoreToHerbivoreRatio = CGFloat(saveState.omnivoreToHerbivoreRatio)
-		}
 		
 		setup()
 	}

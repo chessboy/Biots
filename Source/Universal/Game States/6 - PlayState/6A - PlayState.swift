@@ -44,14 +44,9 @@ final class PlayState: OKGameState {
 		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.filenameSaveStateSave, treatAsWarning: true) {
 			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
 			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
-		}
-		// then try to load the designated initial state
-		else if let saveState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.filenameSaveStateEvolved) {
-			GameManager.shared.gameConfig = GameConfig(saveState: saveState)
-			OctopusKit.logForSimInfo.add("loaded save state: \(saveState.description)")
 		} else {
 			OctopusKit.logForSimErrors.add("could not load a save state")
-			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, algaeTarget: 10000)
+			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, algaeTarget: 15000)
 		}
 
     	super.didEnter(from: previousState)

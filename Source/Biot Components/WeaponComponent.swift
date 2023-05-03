@@ -19,7 +19,7 @@ final class WeaponComponent: OKComponent {
 	func predate() {
 		isFeeding = false
 
-		guard let biotComponent = coComponent(BiotComponent.self), biotComponent.genome.isOmnivore,
+		guard let biotComponent = coComponent(BiotComponent.self),
 			  let weaponIntensity = coComponent(BrainComponent.self)?.inference.constrainedWeaponAverage, weaponIntensity > 0,
 			  let node = entityNode,
 			  let physicsWorld = OctopusKit.shared.currentScene?.physicsWorld
@@ -55,7 +55,7 @@ final class WeaponComponent: OKComponent {
 					let energyExtracted: CGFloat = Constants.Algae.bite / 10
 					let armorDampendedImpact = energyExtracted * (1 - preyArmor)
 					
-					// omnivore gains energy and hydration
+					// predator gains energy and hydration
 					biotComponent.incurEnergyChange(armorDampendedImpact, showEffect: true)
 					biotComponent.incurHydrationChange(armorDampendedImpact)
 

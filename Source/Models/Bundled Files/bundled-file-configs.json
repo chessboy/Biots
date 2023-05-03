@@ -1,14 +1,3 @@
 [
-	{
-		"simulationMode": 0,
-		"algaeTarget": 15000,
-		"worldBlockCount": 13,
-		"worldObjectsFilename": "world-objects-sculpted",
-		"genomeFilename": "genomes-evolved",
-		"filename": "Evolved",
-		"minimumBiotCount": 10,
-		"maximumBiotCount": 20,
-		"useCrossover": true,
-		"omnivoreToHerbivoreRatio": 0.5
-	}
+
 ]

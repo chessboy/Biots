@@ -67,7 +67,6 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	
 	var frame = Int.random(100)
 	
-	lazy var omnivoreNutrientRatio = GameManager.shared.gameConfig.valueForConfig(.omnivoreNutrientRatio, generation: genome.generation)
 	lazy var mateHealth = GameManager.shared.gameConfig.valueForConfig(.mateHealth, generation: genome.generation)
 	lazy var spawnHealth = GameManager.shared.gameConfig.valueForConfig(.spawnHealth, generation: genome.generation)
 	lazy var maximumAge = GameManager.shared.gameConfig.valueForConfig(.maximumAge, generation: genome.generation)
@@ -223,8 +222,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			bitesTaken = Int((maximumEnergy-foodEnergy) / bite).cgFloat
 		}
 				
-		let nutrientRatio = genome.isOmnivore ? omnivoreNutrientRatio : 1
-		incurEnergyChange(bite * nutrientRatio, showEffect: true)
+		incurEnergyChange(bite, showEffect: true)
 
 		algae.energy -= bite * bitesTaken
 		if algae.energy < bite {
@@ -659,7 +657,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			armorNode.alpha = armor.cgFloat
 		}
 		
-		if genome.isOmnivore, let weapon = brainComponent?.inference.constrainedWeaponAverage {
+		if let weapon = brainComponent?.inference.constrainedWeaponAverage {
 			weaponNode.alpha = 1
 			weaponNode.update(weaponIntensity: weapon, isFeeding: coComponent(WeaponComponent.self)?.isFeeding ?? false)
 		}
@@ -701,7 +699,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 					let builder1 = AttributedStringBuilder()
 					builder1.defaultAttributes = valueAttrs + [.alignment(.center)]
 					builder1
-						.text("\(genome.species.icon) ", attributes: iconAttrs)
+                        .text("↗️ ", attributes: iconAttrs)
 						.text("\(genome.generation.formatted)")
 						.text("     🌡️ ", attributes: iconAttrs)
 						.text("\(healthFormatted)")
@@ -743,7 +741,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 			return
 		}
 		
-		if worldComponent.shouldCacheGenome(species: genome.species) {
+		if worldComponent.shouldCacheGenome() {
 			// no more room in the dish, cache a single (potentailly) mutated clone and become nonpregnant
 			let clonedGenome = Genome(parent: genome, mutationRate: GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float)
 			worldComponent.cacheGenome(clonedGenome, averageHealth: healthRunningValue.average)
@@ -756,7 +754,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 		let mutationRate = GameManager.shared.gameConfig.valueForConfig(.mutationRate, generation: genome.generation).float
 		var spawn = [(genome, -π/8), (genome, π/8)]
 		
-		if GameManager.shared.gameConfig.useCrossover, let mostFitGenomeFromCache = worldComponent.mostFitGenomeFromCache(species: genome.species) {
+		if GameManager.shared.gameConfig.useCrossover, let mostFitGenomeFromCache = worldComponent.mostFitGenomeFromCache() {
 			let genomes = genome.crossOverGenomes(other: mostFitGenomeFromCache, mutationRate: mutationRate)
 			spawn = [(genomes.0, -π/8), (genomes.1, π/8)]
 		}
@@ -919,7 +917,7 @@ extension BiotComponent {
 		extrasNode.addChild(speedNode)
 
 		// armor
-		let armorNode = ArmorNode(species: genome.species)
+		let armorNode = ArmorNode()
 		extrasNode.addChild(armorNode)
 		
 		// weapon

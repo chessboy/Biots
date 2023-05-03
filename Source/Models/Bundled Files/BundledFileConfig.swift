@@ -32,7 +32,6 @@ struct BundledFileConfig: Codable {
 	var filename: String
 	var minimumBiotCount: Int
 	var maximumBiotCount: Int
-	var omnivoreToHerbivoreRatio: Float
 	var useCrossover: Bool
 }
 

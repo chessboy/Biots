@@ -159,16 +159,8 @@ final class WorldScene: OKScene {
 	var currentGenomes: [Genome] {
 		var genomes = self.entities.filter({ $0.component(ofType: BiotComponent.self) != nil }).map({$0.component(ofType: BiotComponent.self)}).map({$0?.genome})
 		
-		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.generalDispensary?.genomeCache {
+		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.dispensary?.genomeCache {
 			let unborn = Array(unbornBiots.suffix(40))
-			genomes.append(contentsOf: unborn.map({ $0.genome }))
-		}
-		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.omnivoreDispensary?.genomeCache {
-			let unborn = Array(unbornBiots.suffix(20))
-			genomes.append(contentsOf: unborn.map({ $0.genome }))
-		}
-		if let unbornBiots = (entity?.component(ofType: WorldComponent.self))?.herbivoreDispensary?.genomeCache {
-			let unborn = Array(unbornBiots.suffix(20))
 			genomes.append(contentsOf: unborn.map({ $0.genome }))
 		}
 
@@ -321,7 +313,7 @@ final class WorldScene: OKScene {
 			
 		case Keycode.r:
 			if shiftDown, commandDown, GameManager.shared.gameConfig.simulationMode == .random {
-				entity?.component(ofType: WorldComponent.self)?.generalDispensary?.genomeCache.removeAll()
+				entity?.component(ofType: WorldComponent.self)?.dispensary?.genomeCache.removeAll()
 				entities(withName: Constants.NodeName.biot)?.forEach({ biotEntity in
 					removeEntity(biotEntity)
 				})
@@ -425,10 +417,7 @@ final class WorldScene: OKScene {
 			}
 			else if commandDown {
 				let gameConfig = GameManager.shared.gameConfig
-				let sortedGenomes: [Genome] = currentGenomes.sorted { (genome1, genome2) -> Bool in
-					return genome1.species.rawValue > genome2.species.rawValue
-				}
-				let saveState = SaveState(name: gameConfig.name, simulationMode: gameConfig.simulationMode, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: sortedGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount, omnivoreToHerbivoreRatio: Double(gameConfig.omnivoreToHerbivoreRatio), useCrossover: gameConfig.useCrossover)
+				let saveState = SaveState(name: gameConfig.name, simulationMode: gameConfig.simulationMode, algaeTarget: globalDataComponent.algaeTarget, worldBlockCount: gameConfig.worldBlockCount, worldObjects: currentWorldObjects, genomes: currentGenomes, minimumBiotCount: gameConfig.minimumBiotCount, maximumBiotCount: gameConfig.maximumBiotCount, useCrossover: gameConfig.useCrossover)
 				LocalFileManager.shared.saveStateToFile(saveState, filename: Constants.Env.filenameSaveStateSave)
 				return
 			}
@@ -718,10 +707,6 @@ final class WorldScene: OKScene {
 			newRandomWorldItem.target = self
 			menu.addItem(newRandomWorldItem)
 			
-			let newRandomPredatorPreyWorldItem = NSMenuItem(title: "New Random Predator/Prey World", action: #selector(newRandomPredatorPreyWorld), keyEquivalent: "")
-			newRandomPredatorPreyWorldItem.target = self
-			menu.addItem(newRandomPredatorPreyWorldItem)
-
 			menu.addItem(NSMenuItem.separator())
 			let headerItem = NSMenuItem(title: "Open", action: nil, keyEquivalent: "")
 			headerItem.isEnabled = false
@@ -756,18 +741,11 @@ final class WorldScene: OKScene {
 	
 	@objc func newRandomWorld() {
 		if let worldComponent = entity?.component(ofType: WorldComponent.self) {
-			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, worldBlockCount: 10, algaeTarget: 12000, minimumBiotCount: 10, maximumBiotCount: 20)
+			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, worldBlockCount: 10, algaeTarget: 15000, minimumBiotCount: 10, maximumBiotCount: 20)
 			worldComponent.createWorld()
 		}
 	}
-	
-	@objc func newRandomPredatorPreyWorld() {
-		if let worldComponent = entity?.component(ofType: WorldComponent.self) {
-			GameManager.shared.gameConfig = GameConfig(simulationMode: .randomPredatorPrey, worldBlockCount: 7, algaeTarget: 9000, minimumBiotCount: 12, maximumBiotCount: 24)
-			worldComponent.createWorld()
-		}
-	}
-	
+		
 	@objc func openSaveState(menuItem: NSMenuItem) {
 			
 		if let filename = menuItem.representedObject as? String, let saveState: SaveState = LocalFileManager.shared.loadDataFile(filename), let worldComponent = entity?.component(ofType: WorldComponent.self) {

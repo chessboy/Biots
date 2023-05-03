@@ -11,17 +11,13 @@ import SpriteKit
 
 class ArmorNode: SKNode {
 		
-	init(species: Species) {
+    override init() {
 		super.init()
 		
 		let radius = Constants.Biot.radius
 	
-		if species == .omnivore {
-			addChild(createNode(radius: radius, path: createSidePath(radius: radius, rotation: 0)))
-			addChild(createNode(radius: radius, path: createSidePath(radius: radius, rotation: π + π/12 + π/24)))
-		} else {
-			addChild(createNode(radius: radius, path: createFullPath(radius: radius)))
-		}
+        addChild(createNode(radius: radius, path: createSidePath(radius: radius, rotation: 0)))
+        addChild(createNode(radius: radius, path: createSidePath(radius: radius, rotation: π + π/12 + π/24)))
 
 		zPosition = Constants.ZeeOrder.biot - 2
 		alpha = 0

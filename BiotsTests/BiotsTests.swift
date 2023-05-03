@@ -89,7 +89,7 @@ class BiotsTests: XCTestCase {
 	
 	func testOutputs() throws {
 		
-		let genome = Genome(species: .herbivore, inputCount: 8, hiddenCounts: [4], outputCount: 2)
+		let genome = Genome(inputCount: 8, hiddenCounts: [4], outputCount: 2)
 		
         do {
 			
@@ -119,7 +119,7 @@ class BiotsTests: XCTestCase {
 	
 	func testCrossoverIndex() throws {
 		
-		let genome = Genome(species: .herbivore, inputCount: 30, hiddenCounts: [14, 8], outputCount: 8)
+		let genome = Genome(inputCount: 30, hiddenCounts: [14, 8], outputCount: 8)
 
 		let flatWeights = genome.weights.flatMap { $0 }
 		let flatBiases = genome.biases.flatMap { $0 }
@@ -144,8 +144,8 @@ class BiotsTests: XCTestCase {
 		
 	func testCrossover() throws {
 				
-		let genome1 = Genome(species: .herbivore, inputCount: 4, hiddenCounts: [4, 2], outputCount: 2)
-		let genome2 = Genome(species: .herbivore, inputCount: 4, hiddenCounts: [4, 2], outputCount: 2)
+		let genome1 = Genome(inputCount: 4, hiddenCounts: [4, 2], outputCount: 2)
+		let genome2 = Genome(inputCount: 4, hiddenCounts: [4, 2], outputCount: 2)
 
 		
 		for genome in [genome1, genome2] {
@@ -306,7 +306,7 @@ class BiotsTests: XCTestCase {
 	
 	func testMutation() throws {
 				
-		var genome = Genome(species: .herbivore, inputCount: 5, hiddenCounts: [4, 3], outputCount: 2)
+		var genome = Genome(inputCount: 5, hiddenCounts: [4, 3], outputCount: 2)
 
 		let weightCounts = genome.weightCounts
 		let biasCounts = genome.biasCounts
@@ -366,31 +366,6 @@ class BiotsTests: XCTestCase {
 		XCTAssertTrue(wall & playerDetection > 0)
 	}
 		
-	func testDispensary() throws {
-		let minCount = 14
-		let maxCount = 28
-		let gameConfig = GameConfig(simulationMode: .predatorPrey, worldBlockCount: 10, algaeTarget: 10000, minimumBiotCount: minCount, maximumBiotCount: maxCount)
-		let _ = GenomeDispensary(dispensaryType: .omnivore, gameConfig: gameConfig)
-		let _ = GenomeDispensary(dispensaryType: .herbivore, gameConfig: gameConfig)
-	}
-	
-//	func testAlterSaveFile() throws {
-//		
-//		if var saveState: SaveState = LocalFileManager.shared.loadDataFile("Save_almost", treatAsWarning: true) {
-//			let gameConfig = GameConfig(saveState: saveState)
-//			//let omnivores = gameConfig.omnivoreGenomes
-//			let herbivores = gameConfig.herbivoreGenomes
-//			var alteredGenomes: [Genome] = []
-//			for var herbivore in herbivores {
-//				herbivore.generation = 50
-//				alteredGenomes.append(herbivore)
-//			}
-//
-//			saveState.genomes = alteredGenomes
-//			LocalFileManager.shared.saveStateToFile(saveState, filename: "Save_altered")
-//		}
-//	}
-	
 	func testTimer() {
 		for age in 0..<200 {
 			let value = Int.timerForAge(age, clockRate: 60)

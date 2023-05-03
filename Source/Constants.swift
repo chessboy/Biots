@@ -16,7 +16,6 @@ struct Constants {
 
 		static let filenameSaveStateDebug = "Debug"
 		static let filenameSaveStateSave = "Save"
-		static let filenameSaveStateEvolved = "Evolved"
 		
 		static let gridBlockSize: CGFloat = 400
 		static let unbornGenomeCacheCount = 40
@@ -106,7 +105,7 @@ struct Constants {
 		static let refinerAngles = [0, -π/12, π/12]
 		static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Biot.radius * 21
-		static let displayMemory = 5
+		static let displayMemory = 10
 		static let inferenceMemory = 5
 		static let maxObjectsPerAngle = 4
 	}
@@ -123,7 +122,7 @@ struct Constants {
 		static let inferenceMemory = 3
 		
 		static let spinLimiter: CGFloat = 0.4 // % of angular velocity
-		static let thrustForce: CGFloat = 7.5
+        static let thrustForce: CGFloat = 7.5 * 0.33
 		static let maxSpeedBoost: CGFloat = 1.375 // % of thrust force
 	}
 	

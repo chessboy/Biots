@@ -10,26 +10,10 @@ import Foundation
 import OctopusKit
 import SpriteKit
 
-enum Species: Int, Codable, CaseIterable, CustomStringConvertible {
-	case herbivore = 0
-	case omnivore
-
-	var description: String {
-		return self == .omnivore ? "omnivore" : "herbivore"
-	}
-	
-	var icon: String {
-		return self == .omnivore ? "🦊" : "🐰"
-	}
-}
-
 struct Genome: CustomStringConvertible, Codable {
 	
 	var id: String = ""
 	var generation: Int = 0
-	var species: Species = .herbivore
-	var isOmnivore: Bool { return species == .omnivore }
-	var isHerbivore: Bool { return species == .herbivore }
 	
 	// neural net
 	var inputCount: Int = 0
@@ -67,8 +51,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 			
 	// new genome
-	init(species: Species = .herbivore, inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
-		self.species = species
+	init(inputCount: Int, hiddenCounts: [Int], outputCount: Int) {
 		self.inputCount = inputCount
 		self.hiddenCounts = hiddenCounts
 		self.outputCount = outputCount
@@ -87,7 +70,6 @@ struct Genome: CustomStringConvertible, Codable {
 	init(parent: Genome, mutationRate: Float, shouldMutate: Bool = true) {
 		id = UUID().uuidString
 		generation = parent.generation + 1
-		species = parent.species
 		
 		inputCount = parent.inputCount
 		hiddenCounts = parent.hiddenCounts
@@ -105,7 +87,7 @@ struct Genome: CustomStringConvertible, Codable {
 	}
 	
 	var description: String {
-		return "{id: \(idFormatted), gen: \(generation), species: \(species.description), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
+		return "{id: \(idFormatted), gen: \(generation), nodes: [\(inputCount), \(hiddenCounts), \(outputCount)]}"
 	}
 
 	var jsonString: String {
@@ -114,7 +96,6 @@ struct Genome: CustomStringConvertible, Codable {
 		{
 			"id": "\(id)",
 			"generation": \(generation),
-			"species": \(species),
 			"inputCount": \(inputCount),
 			"hiddenCounts": \(hiddenCounts),
 			"outputCount": \(outputCount),
@@ -264,12 +245,11 @@ extension Genome {
 }
 
 extension Genome {
-	static func newRandomGenome(species: Species? = nil) -> Genome {
+	static func newRandomGenome() -> Genome {
 		let inputCount = Constants.Vision.eyeAngles.count * Constants.Vision.colorDepth + Senses.newInputCount
 		let outputCount = Inference.outputCount
 		let hiddenCounts = Constants.NeuralNet.newGenomeHiddenCounts
 
-		let specifiedSpecies = species ?? Species.allCases.randomElement() ?? .herbivore
-		return Genome(species: specifiedSpecies, inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
+		return Genome(inputCount: inputCount, hiddenCounts: hiddenCounts, outputCount: outputCount)
 	}
 }

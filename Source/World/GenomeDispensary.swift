@@ -9,20 +9,6 @@
 import Foundation
 import OctopusKit
 
-enum DispensaryType: String {
-	case general
-	case omnivore
-	case herbivore
-	
-	var species: Species {
-		switch self {
-			case .herbivore: return .herbivore
-			case .omnivore: return .omnivore
-			default: return Bool.random() ? .herbivore : .omnivore
-		}
-	}
-}
-
 struct LivingGenome: CustomStringConvertible {
 	var genome: Genome
 	var averageHealth: Float
@@ -34,7 +20,6 @@ struct LivingGenome: CustomStringConvertible {
 
 struct GenomeDispensary {
 	
-	var dispensaryType: DispensaryType
 	var minWorldCount: Int = 0
 	var maxWorldCount: Int = 0
 	var fileGenomes: [Genome] = []
@@ -42,29 +27,14 @@ struct GenomeDispensary {
 	var genomeCache: [LivingGenome] = []
 	var isRandomMode: Bool = false
 
-	init(dispensaryType: DispensaryType, gameConfig: GameConfig) {
-		self.dispensaryType = dispensaryType
+	init(gameConfig: GameConfig) {
 		isRandomMode = gameConfig.simulationMode.isRandom
+        fileGenomes = gameConfig.genomes
+        
+		self.minWorldCount = gameConfig.minimumBiotCount
+		self.maxWorldCount =  gameConfig.maximumBiotCount
 		
-		switch dispensaryType {
-			case .omnivore: fileGenomes = gameConfig.omnivoreGenomes
-			case .herbivore: fileGenomes = gameConfig.herbivoreGenomes
-			default: fileGenomes = gameConfig.genomes
-		}
-				
-		let minGeneral = gameConfig.minimumBiotCount
-		let maxGeneral = gameConfig.maximumBiotCount
-		let omnivoreRatio = gameConfig.omnivoreToHerbivoreRatio
-		let herbivoreRatio = 1 - omnivoreRatio
-		let minOmnivore = Int(gameConfig.minimumBiotCount.cgFloat * omnivoreRatio)
-		let minHerbivore = Int(gameConfig.minimumBiotCount.cgFloat * herbivoreRatio)
-		let maxOmnivore = Int(gameConfig.maximumBiotCount.cgFloat * omnivoreRatio)
-		let maxHerbivore = Int(gameConfig.maximumBiotCount.cgFloat * herbivoreRatio)
-
-		self.minWorldCount = dispensaryType == .omnivore ? minOmnivore : dispensaryType == .herbivore ? minHerbivore : minGeneral
-		self.maxWorldCount = dispensaryType == .omnivore ? maxOmnivore : dispensaryType == .herbivore ? maxHerbivore : maxGeneral
-		
-		OctopusKit.logForSimInfo.add("GenomeDispensary created: \(dispensaryType.rawValue). fileGenomes = \(fileGenomes.count), worldCounts: \(minWorldCount)-\(maxWorldCount)")
+		OctopusKit.logForSimInfo.add("GenomeDispensary: fileGenomes = \(fileGenomes.count), worldCounts: \(minWorldCount)-\(maxWorldCount)")
 	}
 			
 	mutating func nextGenome(currentCount: Int) -> Genome? {
@@ -78,7 +48,7 @@ struct GenomeDispensary {
 				livingGenome1.averageHealth > livingGenome2.averageHealth
 			}).first {
 				genomeCache = genomeCache.filter({ $0.genome.id != livingGenome.genome.id })
-				OctopusKit.logForSimInfo.add("\(dispensaryType.rawValue) dispensary decanted unborn genome: \(livingGenome.genome.description), cache size: \(genomeCache.count)")
+				OctopusKit.logForSimInfo.add("dispensary decanted unborn genome: \(livingGenome.genome.description), cache size: \(genomeCache.count)")
 				return livingGenome.genome
 			}
 		}
@@ -87,12 +57,12 @@ struct GenomeDispensary {
 			var genomeToDispense = fileGenomes[genomeIndex]
 			genomeToDispense.id = "\(genomeToDispense.id)-\(fileDispenseIndex)"
 			fileDispenseIndex += 1
-			OctopusKit.logForSimInfo.add("\(dispensaryType.rawValue) dispensary decanted file genome: \(genomeToDispense.description)")
+			OctopusKit.logForSimInfo.add("dispensary decanted file genome: \(genomeToDispense.description)")
 			return genomeToDispense
 		}
 		else if isRandomMode {
-			let genome = Genome.newRandomGenome(species: .omnivore /*dispensaryType.species*/)
-			OctopusKit.logForSimInfo.add("\(dispensaryType.rawValue) dispensary created random \(dispensaryType.species.description) genome: \(genome.description)")
+			let genome = Genome.newRandomGenome()
+			OctopusKit.logForSimInfo.add("dispensary created random genome: \(genome.description)")
 			return genome
 		}
 
@@ -108,7 +78,7 @@ struct GenomeDispensary {
 			genomeCache.remove(at: 0)
 		}
 		genomeCache.append(LivingGenome(genome: genome, averageHealth: averageHealth))
-		OctopusKit.logForSimInfo.add("\(dispensaryType.rawValue) dispensary added 1 unborn genome: \(genome.description), cache size: \(genomeCache.count)")
+		OctopusKit.logForSimInfo.add("dispensary added 1 unborn genome: \(genome.description), cache size: \(genomeCache.count)")
 	}
 
 	mutating func mostFitGenome(removeFromCache: Bool) -> Genome? {
@@ -123,7 +93,7 @@ struct GenomeDispensary {
 			if removeFromCache {
 				removeGenomeFromCache(mostFit)
 			}
-			OctopusKit.logForSimInfo.add("\(dispensaryType.rawValue) dispensary decanted most fit unborn genome: \(mostFit.description), cache size: \(genomeCache.count)")
+			OctopusKit.logForSimInfo.add("dispensary decanted most fit unborn genome: \(mostFit.description), cache size: \(genomeCache.count)")
 			return mostFit
 		}
 		
