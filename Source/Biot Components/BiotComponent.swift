@@ -340,7 +340,7 @@ final class BiotComponent: OKComponent, OKUpdatableComponent {
 	}
 		
 	func blink() {
-		guard age - lastBlinkAge > 60 else { return }
+		guard age - lastBlinkAge > 120 else { return }
 		lastBlinkAge = age
 		eyeNodes.forEach({ eyeNode in
 			if eyeNode.isHidden {
@@ -845,7 +845,6 @@ extension BiotComponent {
 		
 		var eyeNodes: [SKNode] = []
 		for angle in [-π/4.5, π/4.5] {
-			//let eyeNode = SKShapeNode(circleOfRadius: radius * 0.2)
 			let eyeNode = SKSpriteNode(imageNamed: "Eye")
 			let size = radius * 0.48
 			eyeNode.size = CGSize(width: size, height: size)

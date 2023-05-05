@@ -302,9 +302,9 @@ final class WorldScene: OKScene {
 		switch event.keyCode {
 			
 		case Keycode.escape:
-			if let menuComponent = self.entity?.component(ofType: MenuComponent.self) {
-				menuComponent.toggleVisibility()
-			}
+//			if let menuComponent = self.entity?.component(ofType: MenuComponent.self) {
+//				menuComponent.toggleVisibility()
+//			}
 			break
 		
 		case Keycode.u:

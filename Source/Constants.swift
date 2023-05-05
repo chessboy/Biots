@@ -188,7 +188,7 @@ struct Constants {
 		static let levelOfDetailMedium: CGFloat = 2.3
 		static let levelOfDetailLow: CGFloat = 5
 		static let scaleFactor: CGFloat = 1.25
-		static let panBoost: CGFloat = 100
+		static let panBoost: CGFloat = 50
 		static let animationDuration: TimeInterval = 0.25
 	}
 	
