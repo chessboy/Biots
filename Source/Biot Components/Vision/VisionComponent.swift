@@ -95,8 +95,9 @@ final class VisionComponent: OKComponent {
 						
 						let distance = rayStart.distance(to: hitPoint)
 						let proximity = 1 - distance/Constants.Vision.rayDistance
-						var detectedColor: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
-						
+                        var detectedColor: SKColor = SKColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
+                        var tracerColor: SKColor? = nil
+
 						if !blockerSeenAtSubAngle,
 						   !bodiesSeenAtAngle.contains(body),
 						   let object = scene.entities.filter({ $0.component(ofType: PhysicsComponent.self)?.physicsBody == body }).first as? OKEntity {
@@ -104,45 +105,41 @@ final class VisionComponent: OKComponent {
 							if body.categoryBitMask & Constants.CategoryBitMasks.wall > 0 {
 								// wall
 								detectedColor = Constants.VisionColors.wall
+                                tracerColor = Constants.Colors.wall.withAlpha(proximity)
 								bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								pings += 1
-								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: Constants.VisionColors.wall.withAlpha(proximity), scale: tracerScale)
-								}
 							}
 							else if let water = object.component(ofType: WaterSourceComponent.self) {
 								// water
-								detectedColor = water.isMud ? Constants.VisionColors.mud : Constants.VisionColors.water
+                                detectedColor = water.isMud ? Constants.VisionColors.mud : Constants.VisionColors.water
+                                tracerColor = water.isMud ? Constants.Colors.mud.withAlpha(proximity) : Constants.Colors.water.withAlpha(proximity)
 								bodiesSeenAtAngle.append(body)
 								pings += 1
-								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: rayStart + CGPoint(angle: node.zRotation + angleOffset) * distance, color: detectedColor.withAlpha(proximity), scale: tracerScale)
-								}
 							}
 							else if let otherBiotComponent = object.component(ofType: BiotComponent.self) {
 								// biot
 								detectedColor = otherBiotComponent.bodyColor
-								bodiesSeenAtAngle.append(body)
+                                tracerColor = detectedColor.withAlpha(proximity)
+                                bodiesSeenAtAngle.append(body)
 								blockerSeenAtSubAngle = true
 								pings += 1
-								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: otherBiotComponent.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
-								}
 							}
 							else if let algae = object.component(ofType: AlgaeComponent.self) {
 								// algae
 								detectedColor = algae.fromBiot ? Constants.VisionColors.algaeFromBiot : Constants.VisionColors.algae
-								bodiesSeenAtAngle.append(body)
+                                tracerColor = Constants.Colors.algae.withAlpha(proximity)
+                                bodiesSeenAtAngle.append(body)
 								pings += 1
-								if showTracer {
-									self.showTracer(rayStart: rayStart, rayEnd: algae.entityNode?.position ?? .zero, color: detectedColor.withAlpha(proximity), scale: tracerScale)
-								}
 							}
 							else {
 								OctopusKit.logForSimInfo.add("detected object unknown: \(body.categoryBitMask)")
 							}
 						}
+                        
+                        if let bodyPosition = body.node?.position, let tracerColor = tracerColor, showTracer, bodyPosition != .zero {
+                            self.showTracer(rayStart: node.position, rayEnd: bodyPosition, color: tracerColor, scale: tracerScale)
+                        }
 						
 						redTotal += detectedColor.redComponent * proximity
 						greenTotal += detectedColor.greenComponent * proximity
@@ -171,14 +168,15 @@ final class VisionComponent: OKComponent {
 	func showTracer(rayStart: CGPoint, rayEnd: CGPoint, color: SKColor, scale: CGFloat) {
 		let path = CGMutablePath()
 		let tracerNode = SKShapeNode()
-		tracerNode.lineWidth = 0.0025 * GameManager.shared.gameConfig.worldRadius * scale
+		tracerNode.lineWidth = 0.005 * GameManager.shared.gameConfig.worldRadius * scale
 		tracerNode.strokeColor = color
+        tracerNode.lineCap = .round
 		tracerNode.zPosition = Constants.ZeeOrder.biot - 0.1
 		path.move(to: rayStart)
 		path.addLine(to: rayEnd)
 		tracerNode.path = path
 		OctopusKit.shared.currentScene?.addChild(tracerNode)
-		tracerNode.run(SKAction.wait(forDuration: 0.1)) {
+		tracerNode.run(SKAction.wait(forDuration: 0.25)) {
 			tracerNode.removeFromParent()
 		}
 	}

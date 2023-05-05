@@ -68,8 +68,8 @@ struct GameConfig: CustomStringConvertible {
         .perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01) * 0.25,
         .perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125) * 0.25,
         .speedBoostStaminaCost: ConfigParam(start: 0.0006, end: 0.0008) * 0.5,
-        .weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014) * 0.5,
-        .armorEnergyCost: ConfigParam(start: 0.04, end: 0.06) * 0.5,
+        .weaponStaminaCost: ConfigParam(start: 0.0009, end: 0.0014) * 1.25,
+        .armorEnergyCost: ConfigParam(start: 0.004, end: 0.008),
 		
 		// evolution
 		.mutationRate: ConfigParam(start: 1, end: 0) // 1 = high ... 0 = low (not zero)

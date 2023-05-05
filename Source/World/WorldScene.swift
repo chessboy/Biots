@@ -741,7 +741,7 @@ final class WorldScene: OKScene {
 	
 	@objc func newRandomWorld() {
 		if let worldComponent = entity?.component(ofType: WorldComponent.self) {
-			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, worldBlockCount: 10, algaeTarget: 15000, minimumBiotCount: 10, maximumBiotCount: 20)
+			GameManager.shared.gameConfig = GameConfig(simulationMode: .random, worldBlockCount: 10, algaeTarget: 18000, minimumBiotCount: 10, maximumBiotCount: 20)
 			worldComponent.createWorld()
 		}
 	}

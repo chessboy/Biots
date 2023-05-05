@@ -56,7 +56,7 @@ struct Constants {
 	struct Algae {
 		static let radius: CGFloat = 16
 		static let bite: CGFloat = 25
-		static let timeBetweenBites: TimeInterval = 3 // seconds between eating the same algae
+		static let timeBetweenBites: TimeInterval = 2 // seconds between eating the same algae
 	}
 	
 	struct Water {
