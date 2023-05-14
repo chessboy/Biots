@@ -33,7 +33,7 @@ class StatsNode: SKNode {
 		for i in 0..<Constants.Biot.Stats.maxLinesOfText {
 			
 			let node = SKLabelNode(fontNamed: Constants.Font.regular)
-			node.position = CGPoint(x: 0, y: (-padding * CGFloat(i)) - bodyRadius - padding)
+			node.position = CGPoint(x: 0, y: (-padding * CGFloat(i)) - bodyRadius - padding - 100)
 			node.fontSize = fontSize
 			node.fontColor = SKColor.white
 			node.horizontalAlignmentMode = .left

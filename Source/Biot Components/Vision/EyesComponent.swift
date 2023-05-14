@@ -13,6 +13,7 @@ import OctopusKit
 final class EyesComponent: OKComponent {
 	
 	let rootNode = SKNode()
+    lazy var camera = OctopusKit.shared.currentScene?.camera
 
 	override var requiredComponents: [GKComponent.Type]? {
 		[SpriteKitComponent.self]
@@ -37,12 +38,12 @@ final class EyesComponent: OKComponent {
 
 //				print("angle: \(angle.degrees.formattedTo2Places), offset: \(offset.degrees.formattedTo2Places), eye angle: \((angle + offset).degrees.formattedTo2Places)")
 				
-				let rayStart = CGPoint.zero
+                let rayStart = CGPoint(angle: angle + offset) * (Constants.Biot.radius + 10)
 				let rayEnd = rayStart + CGPoint(angle: angle + offset) * Constants.Vision.rayDistance
 
 				let path = CGMutablePath()
 				let node = SKShapeNode()
-				node.lineWidth = 0.001 * GameManager.shared.gameConfig.worldRadius
+                node.lineWidth = 10
 				node.position = .zero
 				node.lineCap = .round
 				node.strokeColor = SKColor(red: 0, green: 1, blue: 1, alpha: offset == 0 ? 0.5 : 0.25)

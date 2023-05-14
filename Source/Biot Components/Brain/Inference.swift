@@ -10,20 +10,6 @@ import Foundation
 import OctopusKit
 import SpriteKit
 
-enum Interaction: Int, CaseIterable, CustomStringConvertible {
-	case attemptToMate = 0
-	case attack
-	case doNothing
-	
-	static func fromOutputs(outputs: [Float]) -> Interaction {
-		return .doNothing
-	}
-	
-	var description: String {
-		return self == .attemptToMate ? "attemptToMate" : self == .attack ? "attack" : "doNothing"
-	}
-}
-
 struct Inference {
 	
 	var thrust = RunningCGVector(memory: Constants.Thrust.displayMemory)
@@ -31,7 +17,6 @@ struct Inference {
 	var speedBoost = RunningValue(memory: 5)
 	var armor = RunningValue(memory: 8)
 	var weapon = RunningValue(memory: 8)
-	var interaction: Interaction = .doNothing
 
 	static let minFiringValue: Float = 0.5
 	
@@ -77,13 +62,4 @@ struct Inference {
 		// armor (-1..1 --> 0|1 if > minFiringValue)
 		armor.addValue(outputs[7] > Inference.minFiringValue ? 1 : 0)
 	}
-	
-	func indexOfMax(of outputs: [Float], threshold: Float) -> Int? {
-		if let max = outputs.max(), max >= threshold, let index = outputs.firstIndex(of: max) {
-			return index
-		}
-		
-		return nil
-	}
-
 }

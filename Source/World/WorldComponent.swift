@@ -170,13 +170,21 @@ final class WorldComponent: OKComponent, OKUpdatableComponent {
 		
 	func addNewBiot(genome: Genome, in scene: OKScene) -> OKEntity {
 		
-		let worldRadius = GameManager.shared.gameConfig.worldRadius
+        let gameConfig = GameManager.shared.gameConfig
+        
+		let worldRadius = gameConfig.worldRadius
 		let distance = CGFloat.random(in: worldRadius * 0.35...worldRadius * 0.9)
-		let position = CGPoint.randomDistance(distance)
+        let position = gameConfig.simulationMode == .debug ? .zero : CGPoint.randomDistance(distance)
 
 		let fountainComponent = scene.entities.filter({ $0.component(ofType: ResourceFountainComponent.self) != nil }).first?.component(ofType: ResourceFountainComponent.self)
 		let biot = BiotComponent.createBiot(genome: genome, at: position, fountainComponent: RelayComponent(for: fountainComponent))
 		
+        if gameConfig.simulationMode == .debug {
+            scene.run(SKAction.wait(forDuration: 0.02)) {
+                biot.component(ofType: BiotComponent.self)?.isInteracting = true
+            }
+        }
+        
 		let showEyeSpots = scene.gameCoordinator?.entity.component(ofType: GlobalDataComponent.self)?.showBiotEyeSpots ?? false
 		if showEyeSpots {
 			biot.addComponent(EyesComponent())

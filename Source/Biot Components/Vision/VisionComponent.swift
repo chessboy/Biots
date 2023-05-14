@@ -137,7 +137,7 @@ final class VisionComponent: OKComponent {
 							}
 						}
                         
-                        if let bodyPosition = body.node?.position, let tracerColor = tracerColor, showTracer, bodyPosition != .zero {
+                        if let tracerColor = tracerColor, showTracer {
                             self.showTracer(rayStart: node.position + (CGPoint(angle: node.zRotation + angleOffset) * (biotRadius + 10)), rayEnd: rayStart + (CGPoint(angle: node.zRotation + angleOffset) * (distance - 10)), color: tracerColor, scale: tracerScale)
                         }
 						
