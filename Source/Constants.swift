@@ -61,17 +61,17 @@ struct Constants {
 	
 	struct Water {
 		static let sip: CGFloat = 20
-		static let timeBetweenSips: TimeInterval = 1.5 // seconds between drinking from the same water source
+		static let timeBetweenSips: TimeInterval = 1 // seconds between drinking from the same water source
 	}
 	
 	struct Mud {
 		static let dip: CGFloat = 0.2 // % of max stamina increase
-		static let timeBetweenDips: TimeInterval = 3 // seconds between absorbing minerals from the same mud source
+		static let timeBetweenDips: TimeInterval = 2 // seconds between absorbing minerals from the same mud source
 	}
 	
 	struct Resource {
 		static let minSize: CGFloat = 80
-		static let plopSize: CGFloat = 200
+		static let plopSize: CGFloat = 100
 		static let maxSize: CGFloat = 800
 	}
 	
@@ -103,7 +103,7 @@ struct Constants {
 	struct Vision {
 		static let eyeAngles = [-π/2, -π/4, 0, π/4, π/2, π]
 		static let refinerAngles = [0, -π/12, π/12]
-		static let colorDepth = 3 // r|g|b
+        static let colorDepth = 3 // r|g|b
 		static let rayDistance: CGFloat = Biot.radius * 21
 		static let displayMemory = 10
 		static let inferenceMemory = 5

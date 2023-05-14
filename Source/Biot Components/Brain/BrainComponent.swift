@@ -156,11 +156,19 @@ final class BrainComponent: OKComponent {
 		let (newPosition, newHeading) = newPositionAndHeading(node: node, thrust: CGVector(dx: left, dy: right))
 		//node.run(SKAction.move(to: newPosition, duration: 0.05))
 		
-		if !biot.isInteracting {
-			node.position = newPosition
-			node.zRotation = newHeading
-		}
-		
+        if Constants.Env.graphics.blendMode != .replace {
+            node.color = inference.color.average.skColor.withAlpha(biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667)
+        } else {
+            node.color = inference.color.average.skColor
+        }
+        
+        guard !biot.isInteracting else {
+            return
+        }
+        
+        node.position = newPosition
+        node.zRotation = newHeading
+
 		// movement energy expenditure
 		let forceExerted = (thrustAverage.dx.unsigned + thrustAverage.dy.unsigned)
 		biot.incurEnergyChange(-perMovementEnergyCost * forceExerted)
@@ -185,12 +193,6 @@ final class BrainComponent: OKComponent {
 			let staminaRecovery = -perMovementRecovery * (1 - (forceExerted/3))
 			// print("biot.stamina: \(biot.stamina.formattedTo2Places), forceExerted: \(forceExerted.formattedTo2Places), staminaRecovery: \(staminaRecovery.formattedTo4Places)")
 			biot.incurStaminaChange(staminaRecovery)
-		}
-        		
-		if Constants.Env.graphics.blendMode != .replace {
-			node.color = inference.color.average.skColor.withAlpha(biot.age > biot.maximumAge * 0.85 ? 0.33 : 0.667)
-		} else {
-			node.color = inference.color.average.skColor
 		}
 	}
 }

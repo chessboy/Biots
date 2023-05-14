@@ -54,7 +54,7 @@ struct GameConfig: CustomStringConvertible {
 
 	var configParams: [ConfigParamType: ConfigParam] = [
 		// age
-        .maximumAge: ConfigParam(start: 2280 * 1.5, end: 3600 * 1.5),
+        .maximumAge: ConfigParam(start: 2280 * 2, end: 3600 * 2),
 		
 		// requirements
 		.mateHealth: ConfigParam(start: 0.65, end: 0.8),

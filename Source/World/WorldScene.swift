@@ -707,6 +707,10 @@ final class WorldScene: OKScene {
 			newRandomWorldItem.target = self
 			menu.addItem(newRandomWorldItem)
 			
+            let newDebugWorldItem = NSMenuItem(title: "New Debug World", action: #selector(newDebugWorld), keyEquivalent: "")
+            newDebugWorldItem.target = self
+            menu.addItem(newDebugWorldItem)
+
 			menu.addItem(NSMenuItem.separator())
 			let headerItem = NSMenuItem(title: "Open", action: nil, keyEquivalent: "")
 			headerItem.isEnabled = false
@@ -746,6 +750,14 @@ final class WorldScene: OKScene {
 		}
 	}
 		
+    @objc func newDebugWorld() {
+        
+        if let debugState: SaveState = LocalFileManager.shared.loadDataFile(Constants.Env.filenameSaveStateDebug, treatAsWarning: true), let worldComponent = entity?.component(ofType: WorldComponent.self) {
+            GameManager.shared.gameConfig = GameConfig(saveState: debugState)
+            worldComponent.createWorld()
+        }
+    }
+    
 	@objc func openSaveState(menuItem: NSMenuItem) {
 			
 		if let filename = menuItem.representedObject as? String, let saveState: SaveState = LocalFileManager.shared.loadDataFile(filename), let worldComponent = entity?.component(ofType: WorldComponent.self) {

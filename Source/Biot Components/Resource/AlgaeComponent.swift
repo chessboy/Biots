@@ -18,6 +18,8 @@ class AlgaeComponent: OKComponent {
 	static let textureAlgae = SKTexture(imageNamed: "Algae")
 	static let textureAlgaeFromBiot = SKTexture(imageNamed: "AlgaeFromBiot")
 
+    lazy var simulationMode = GameManager.shared.gameConfig.simulationMode
+
 	init(energy: CGFloat, fromBiot: Bool) {
 		self.energy = energy
 		self.fromBiot = fromBiot
@@ -38,6 +40,10 @@ class AlgaeComponent: OKComponent {
 	override func update(deltaTime seconds: TimeInterval) {
 		frame += 1
 		
+        guard simulationMode != .debug else {
+            return
+        }
+        
 		// energy from biots decays	 fasters
 		if frame.isMultiple(of: 40), Int.oneChanceIn(fromBiot ? 10 : 20) {
 			energy -= Constants.Algae.bite

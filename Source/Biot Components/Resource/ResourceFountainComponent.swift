@@ -11,6 +11,8 @@ import OctopusKit
 
 final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 	
+    lazy var simulationMode = GameManager.shared.gameConfig.simulationMode
+
 	var position: CGPoint = .zero
 	var minRadius: CGFloat = 0
 	var maxRadius: CGFloat = 0
@@ -74,6 +76,10 @@ final class ResourceFountainComponent: OKComponent, OKUpdatableComponent {
 		
 		frame += 1
 
+        guard simulationMode != .debug else {
+            return
+        }
+        
 		guard frame.isMultiple(of: 10) else {
 			return
 		}
