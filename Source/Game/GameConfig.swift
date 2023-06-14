@@ -63,7 +63,7 @@ struct GameConfig: CustomStringConvertible {
 		.maximumHydration: ConfigParam(start: 80, end: 120),
 
 		// costs
-        .collisionDamage: ConfigParam(start: 0.1, end: 0.25),
+        .collisionDamage: ConfigParam(start: 0.1, end: 0.25) * 2,
         .perMovementStaminaRecovery: ConfigParam(start: 0.0015, end: 0.00125) * 0.5,
         .perMovementHydrationCost: ConfigParam(start: 0.0075, end: 0.01) * 0.25,
         .perMovementEnergyCost: ConfigParam(start: 0.0075, end: 0.0125) * 0.25,

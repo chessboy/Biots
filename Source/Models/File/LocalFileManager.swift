@@ -3,7 +3,6 @@
 //  SwiftBots
 //
 //  Created by Robert Silverman on 10/17/18.
-//  Copyright © 2018 fep. All rights reserved.
 //
 
 import Foundation

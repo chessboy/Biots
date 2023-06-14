@@ -3,7 +3,6 @@
 //  Biots
 //
 //  Created by Robert Silverman on 9/8/18.
-//  Copyright © 2018 fep. All rights reserved.
 //
 
 import Foundation
